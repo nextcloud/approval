@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<info>
+    <id>approval</id>
+    <name>Approval</name>
+    <summary>Let users approve or disapprove files</summary>
+    <description><![CDATA[Approve/disapprove files in the sidebar.]]></description>
+    <version>0.0.1</version>
+    <licence>agpl</licence>
+    <author>Julien Veyssier</author>
+    <namespace>Approval</namespace>
+    <documentation>
+        <developer>https://github.com/eneiluj/approval</developer>
+    </documentation>
+    <category>files</category>
+    <category>workflow</category>
+    <website>https://github.com/eneiluj/approval</website>
+    <bugs>https://github.com/eneiluj/approval/issues</bugs>
+    <screenshot>https://github.com/nextcloud/eneiluj/raw/master/img/screenshot1.jpg</screenshot>
+    <dependencies>
+        <database min-version="9.4">pgsql</database>
+        <database>sqlite</database>
+        <database min-version="5.5">mysql</database>
+        <nextcloud min-version="21" max-version="22"/>
+    </dependencies>
+    <settings>
+        <admin>OCA\Approval\Settings\Admin</admin>
+        <admin-section>OCA\Approval\Settings\AdminSection</admin-section>
+        <personal>OCA\Approval\Settings\Personal</personal>
+        <personal-section>OCA\Approval\Settings\PersonalSection</personal-section>
+    </settings>
+</info>
