@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Avatar from '@nextcloud/vue/dist/Components/Avatar'
+import ApprovalButtons from './components/ApprovalButtons'
 /**
  * @class OCA.Approval.ApprovalInfoView
  * @classdesc
@@ -24,20 +24,14 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		initialize(options) {
 			options = options || {}
-
-			this._inputView = {
-				$el: document.createElement('div'),
-			}
-
-			// this._inputView.collection.on('change:name', this._onTagRenamedGlobally, this)
-			// this._inputView.collection.on('remove', this._onTagDeletedGlobally, this)
-
-			// this._inputView.on('select', this._onSelectTag, this)
-			// this._inputView.on('deselect', this._onDeselectTag, this)
 		},
 
 		_onApprove() {
-			// TODO
+			console.debug('!!!!!!! Approve ' + this.filename)
+		},
+
+		_onReject() {
+			console.debug('!!!!!!! Reject ' + this.filename)
 		},
 
 		setFileInfo(fileInfo) {
@@ -49,18 +43,30 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			if (!this._rendered) {
 				this.render()
 			}
-			// this.hide()
 		},
 
 		/**
 		 * Renders this details view
 		 */
 		render() {
-			const View = Vue.extend(Avatar)
+			console.debug('RENDER')
+			// create and mount the component
+			const mountPoint = document.createElement('div')
+			const View = Vue.extend(ApprovalButtons)
 			this._inputView = new View({
-				propsData: { isNoUser: true, displayName: this.filename },
-			}).$mount(this._inputView.$el)
+				propsData: { },
+			}).$mount(mountPoint)
 			this.$el.append(this._inputView.$el)
+
+			// listen to approval events
+			this._inputView.$on('yes', () => {
+				this._onApprove()
+			})
+			this._inputView.$on('no', () => {
+				this._onReject()
+			})
+
+			this._rendered = true
 		},
 
 		isVisible() {
