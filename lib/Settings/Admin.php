@@ -40,10 +40,18 @@ class Admin implements ISettings {
 	 * @return TemplateResponse
 	 */
 	public function getForm(): TemplateResponse {
-		$whatever = $this->config->getAppValue(Application::APP_ID, 'whatever', '42');
+		$userId = $this->config->getAppValue(Application::APP_ID, 'user_id', '');
+		$userName = $this->config->getAppValue(Application::APP_ID, 'user_name', '');
+		$tagPending = (int) $this->config->getAppValue(Application::APP_ID, 'tag_pending', '0');
+		$tagApproved = (int) $this->config->getAppValue(Application::APP_ID, 'tag_approved', '0');
+		$tagRejected = (int) $this->config->getAppValue(Application::APP_ID, 'tag_rejected', '0');
 
 		$adminConfig = [
-			'whatever' => $whatever,
+			'user_id' => $userId,
+			'user_name' => $userName,
+			'tag_pending' => $tagPending,
+			'tag_approved' => $tagApproved,
+			'tag_rejected' => $tagRejected,
 		];
 		$this->initialStateService->provideInitialState($this->appName, 'admin-config', $adminConfig);
 		return new TemplateResponse(Application::APP_ID, 'adminSettings');
@@ -54,6 +62,6 @@ class Admin implements ISettings {
 	}
 
 	public function getPriority(): int {
-		return 10;
+		return 1;
 	}
 }

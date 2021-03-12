@@ -63,7 +63,7 @@ class ApprovalController extends Controller {
 	 * @return DataDisplayResponse
 	 */
 	public function isApprovalPending(int $fileId): DataResponse {
-		$isPending = $this->approvalService->isApprovalPending($fileId);
+		$isPending = $this->approvalService->isApprovalPendingForUser($fileId, $this->userId);
 		return new DataResponse($isPending);
 	}
 
@@ -88,8 +88,8 @@ class ApprovalController extends Controller {
 	 * @param int $fileId
 	 * @return DataDisplayResponse
 	 */
-	public function disapprove(int $fileId): DataResponse {
-		$this->approvalService->disapprove($fileId);
+	public function reject(int $fileId): DataResponse {
+		$this->approvalService->reject($fileId);
 		return new DataResponse(1);
 	}
 }

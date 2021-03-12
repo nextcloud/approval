@@ -78,7 +78,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		_onReject() {
 			console.debug('!!!!!!! Reject ' + this.fileName)
 			const req = {}
-			const url = generateUrl('/apps/approval/' + this.fileId + '/disapprove')
+			const url = generateUrl('/apps/approval/' + this.fileId + '/reject')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} disapproved!', { name: this.fileName }))
 			}).catch((error) => {

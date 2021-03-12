@@ -12,9 +12,13 @@
 namespace OCA\Approval\Service;
 
 use OCP\IL10N;
+use OCP\IConfig;
 use Psr\Log\LoggerInterface;
 use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\ISystemTagObjectMapper;
+use OCP\SystemTag\TagNotFoundException;
+
+use OCA\Approval\AppInfo\Application;
 
 class ApprovalService {
 
@@ -25,6 +29,7 @@ class ApprovalService {
 	 * Service to operate on tags
 	 */
 	public function __construct (string $appName,
+								IConfig $config,
 								LoggerInterface $logger,
 								ISystemTagManager $tagManager,
 								ISystemTagObjectMapper $tagObjectMapper,
@@ -32,6 +37,7 @@ class ApprovalService {
 		$this->appName = $appName;
 		$this->l10n = $l10n;
 		$this->logger = $logger;
+		$this->config = $config;
 		$this->tagManager = $tagManager;
 		$this->tagObjectMapper = $tagObjectMapper;
 	}
@@ -40,22 +46,15 @@ class ApprovalService {
 	 * @param int $fileId
 	 * @return bool
 	 */
-	public function isApprovalPending(int $fileId): bool {
-		$tagPending = $this->tagManager->getTag('pending', true, true);
-		return $this->tagObjectMapper->haveTag($fileId, 'files', $tagPending->getId());
-	}
-
-	/**
-	 * @param int $fileId
-	 * @return void
-	 */
-	public function approve(int $fileId): void {
-		$tagApproved = $this->tagManager->getTag('approved', true, true);
-		$this->tagObjectMapper->assignTags($fileId, 'files', $tagApproved->getId());
-
-		$tagPending = $this->tagManager->getTag('pending', true, true);
-		if ($this->tagObjectMapper->haveTag($fileId, 'files', $tagPending->getId())) {
-			$this->tagObjectMapper->unassignTags($fileId, 'files', $tagPending->getId());
+	public function isApprovalPendingForUser(int $fileId, ?string $userId): bool {
+		$tagPendingId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_pending', '0');
+		$approvalUserId = $this->config->getAppValue(Application::APP_ID, 'user_id', '');
+		try {
+			return $approvalUserId === $userId
+				&& $tagPendingId !== 0
+				&& $this->tagObjectMapper->haveTag($fileId, 'files', $tagPendingId);
+		} catch (TagNotFoundException $e) {
+			return false;
 		}
 	}
 
@@ -63,13 +62,33 @@ class ApprovalService {
 	 * @param int $fileId
 	 * @return void
 	 */
-	public function disapprove(int $fileId): void {
-		$tagRejected = $this->tagManager->getTag('rejected', true, true);
-		$this->tagObjectMapper->assignTags($fileId, 'files', $tagRejected->getId());
+	public function approve(int $fileId): void {
+		$tagApprovedId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_approved', '0');
+		$this->tagObjectMapper->assignTags($fileId, 'files', $tagApprovedId);
 
-		$tagPending = $this->tagManager->getTag('pending', true, true);
-		if ($this->tagObjectMapper->haveTag($fileId, 'files', $tagPending->getId())) {
-			$this->tagObjectMapper->unassignTags($fileId, 'files', $tagPending->getId());
+		$tagPendingId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_pending', '0');
+		try {
+			if ($this->tagObjectMapper->haveTag($fileId, 'files', $tagPendingId)) {
+				$this->tagObjectMapper->unassignTags($fileId, 'files', $tagPendingId);
+			}
+		} catch (TagNotFoundException $e) {
+		}
+	}
+
+	/**
+	 * @param int $fileId
+	 * @return void
+	 */
+	public function reject(int $fileId): void {
+		$tagRejectedId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_rejected', '0');
+		$this->tagObjectMapper->assignTags($fileId, 'files', $tagRejectedId);
+
+		$tagPendingId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_pending', '0');
+		try {
+			if ($this->tagObjectMapper->haveTag($fileId, 'files', $tagPendingId)) {
+				$this->tagObjectMapper->unassignTags($fileId, 'files', $tagPendingId);
+			}
+		} catch (TagNotFoundException $e) {
 		}
 	}
 }
