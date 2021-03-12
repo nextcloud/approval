@@ -1,9 +1,13 @@
 <template>
-	<div>
-		<button @click="onYes">
+	<div class="approval-container">
+		<button class="success"
+			@click="onYes">
+			<span class="icon icon-approve" />
 			{{ yesText }}
 		</button>
-		<button @click="onNo">
+		<button class="error"
+			@click="onNo">
+			<span class="icon icon-reject" />
 			{{ noText }}
 		</button>
 	</div>
@@ -24,7 +28,7 @@ export default {
 		},
 		noText: {
 			type: String,
-			default: t('approval', 'Refuse'),
+			default: t('approval', 'Reject'),
 		},
 	},
 	data() {
@@ -41,8 +45,6 @@ export default {
 	methods: {
 		onYes() {
 			this.$emit('yes')
-			const event = new CustomEvent('yes', {})
-			document.dispatchEvent(event)
 		},
 		onNo() {
 			this.$emit('no')
@@ -52,5 +54,28 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// nothing
+.approval-container {
+	display: flex;
+
+	button.success {
+		background-color: var(--color-success) !important;
+		border-color: var(--color-success) !important;
+		color: #fff !important;
+	}
+
+	.icon-approve,
+	.icon-reject {
+		background-image: url('../../img/app.svg');
+		background-size: 16px 16px;
+		margin-right: 5px;
+	}
+	.icon-reject {
+		-webkit-transform: rotate(180deg);
+		-moz-transform: rotate(180deg);
+		-ms-transform: rotate(0deg);
+		-o-transform: rotate(180deg);
+		transform: rotate(180deg);
+		margin-bottom: -4px;
+	}
+}
 </style>
