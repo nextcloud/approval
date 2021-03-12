@@ -62,9 +62,9 @@ class ApprovalController extends Controller {
 	 * @param int $fileId
 	 * @return DataDisplayResponse
 	 */
-	public function getTags(int $fileId): DataResponse {
-		$tags = $this->approvalService->getTags($fileId);
-		return new DataResponse($tags);
+	public function isApprovalPending(int $fileId): DataResponse {
+		$isPending = $this->approvalService->isApprovalPending($fileId);
+		return new DataResponse($isPending);
 	}
 
 	/**

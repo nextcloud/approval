@@ -13,7 +13,7 @@ return [
     'routes' => [
         ['name' => 'config#setConfig', 'url' => '/config', 'verb' => 'PUT'],
         ['name' => 'config#setAdminConfig', 'url' => '/admin-config', 'verb' => 'PUT'],
-        ['name' => 'approval#getTags', 'url' => '/{fileId}/tags', 'verb' => 'GET'],
+        ['name' => 'approval#isApprovalPending', 'url' => '/{fileId}/is-pending', 'verb' => 'GET'],
         ['name' => 'approval#approve', 'url' => '/{fileId}/approve', 'verb' => 'PUT'],
         ['name' => 'approval#disapprove', 'url' => '/{fileId}/disapprove', 'verb' => 'PUT'],
     ]

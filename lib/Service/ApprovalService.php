@@ -13,6 +13,8 @@ namespace OCA\Approval\Service;
 
 use OCP\IL10N;
 use Psr\Log\LoggerInterface;
+use OCP\SystemTag\ISystemTagManager;
+use OCP\SystemTag\ISystemTagObjectMapper;
 
 class ApprovalService {
 
@@ -24,18 +26,23 @@ class ApprovalService {
 	 */
 	public function __construct (string $appName,
 								LoggerInterface $logger,
+								ISystemTagManager $tagManager,
+								ISystemTagObjectMapper $tagObjectMapper,
 								IL10N $l10n) {
 		$this->appName = $appName;
 		$this->l10n = $l10n;
 		$this->logger = $logger;
+		$this->tagManager = $tagManager;
+		$this->tagObjectMapper = $tagObjectMapper;
 	}
 
 	/**
 	 * @param int $fileId
-	 * @return array
+	 * @return bool
 	 */
-	public function getTags(int $fileId): array {
-		return [];
+	public function isApprovalPending(int $fileId): bool {
+		$tagPending = $this->tagManager->getTag('pending', true, true);
+		return $this->tagObjectMapper->haveTag($fileId, 'files', $tagPending->getId());
 	}
 
 	/**
@@ -43,7 +50,13 @@ class ApprovalService {
 	 * @return void
 	 */
 	public function approve(int $fileId): void {
-		error_log('Approve '.$fileId);
+		$tagApproved = $this->tagManager->getTag('approved', true, true);
+		$this->tagObjectMapper->assignTags($fileId, 'files', $tagApproved->getId());
+
+		$tagPending = $this->tagManager->getTag('pending', true, true);
+		if ($this->tagObjectMapper->haveTag($fileId, 'files', $tagPending->getId())) {
+			$this->tagObjectMapper->unassignTags($fileId, 'files', $tagPending->getId());
+		}
 	}
 
 	/**
@@ -51,6 +64,12 @@ class ApprovalService {
 	 * @return void
 	 */
 	public function disapprove(int $fileId): void {
-		error_log('Disapprove '.$fileId);
+		$tagRejected = $this->tagManager->getTag('rejected', true, true);
+		$this->tagObjectMapper->assignTags($fileId, 'files', $tagRejected->getId());
+
+		$tagPending = $this->tagManager->getTag('pending', true, true);
+		if ($this->tagObjectMapper->haveTag($fileId, 'files', $tagPending->getId())) {
+			$this->tagObjectMapper->unassignTags($fileId, 'files', $tagPending->getId());
+		}
 	}
 }

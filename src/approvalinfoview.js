@@ -31,6 +31,34 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		initialize(options) {
 			options = options || {}
+			this.render()
+		},
+
+		/**
+		 * Renders this details view
+		 */
+		render() {
+			if (this._rendered) {
+				return
+			}
+			// create and mount the component
+			const mountPoint = document.createElement('div')
+			const View = Vue.extend(ApprovalButtons)
+			this._inputView = new View({
+				propsData: { },
+			}).$mount(mountPoint)
+			this.$el.append(this._inputView.$el)
+
+			// listen to approval events
+			this._inputView.$on('yes', () => {
+				this._onApprove()
+			})
+			this._inputView.$on('no', () => {
+				this._onReject()
+			})
+
+			this.hide()
+			this._rendered = true
 		},
 
 		_onApprove() {
@@ -62,39 +90,24 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		setFileInfo(fileInfo) {
+			this.hide()
 			console.debug('setFileInfo')
 			console.debug(fileInfo)
 			// Why is this called twice and fileInfo is not the same on each call?
 			this.fileName = fileInfo.name || fileInfo.attributes?.name || ''
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
 
-			if (!this._rendered) {
-				this.render()
-			}
-		},
-
-		/**
-		 * Renders this details view
-		 */
-		render() {
-			console.debug('RENDER')
-			// create and mount the component
-			const mountPoint = document.createElement('div')
-			const View = Vue.extend(ApprovalButtons)
-			this._inputView = new View({
-				propsData: { },
-			}).$mount(mountPoint)
-			this.$el.append(this._inputView.$el)
-
-			// listen to approval events
-			this._inputView.$on('yes', () => {
-				this._onApprove()
+			const url = generateUrl('/apps/approval/' + this.fileId + '/is-pending')
+			axios.get(url).then((response) => {
+				if (response.data) {
+					this.show()
+				}
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to check approval status')
+					+ ': ' + error.response?.request?.responseText
+				)
 			})
-			this._inputView.$on('no', () => {
-				this._onReject()
-			})
-
-			this._rendered = true
 		},
 
 		isVisible() {
