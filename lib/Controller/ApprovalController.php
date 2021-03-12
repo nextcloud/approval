@@ -12,7 +12,6 @@
 namespace OCA\Approval\Controller;
 
 use OCP\App\IAppManager;
-use OCP\AppFramework\Http\DataDisplayResponse;
 
 use OCP\IURLGenerator;
 use OCP\IConfig;
@@ -63,8 +62,34 @@ class ApprovalController extends Controller {
 	 * @param int $fileId
 	 * @return DataDisplayResponse
 	 */
-	public function getTags(int $fileId): DataDisplayResponse {
+	public function getTags(int $fileId): DataResponse {
 		$tags = $this->approvalService->getTags($fileId);
-		return new DataDisplayResponse($tags);
+		return new DataResponse($tags);
+	}
+
+	/**
+	 * Approve a file
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param int $fileId
+	 * @return DataDisplayResponse
+	 */
+	public function approve(int $fileId): DataResponse {
+		$this->approvalService->approve($fileId);
+		return new DataResponse(1);
+	}
+
+	/**
+	 * Disapprove a file
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param int $fileId
+	 * @return DataDisplayResponse
+	 */
+	public function disapprove(int $fileId): DataResponse {
+		$this->approvalService->disapprove($fileId);
+		return new DataResponse(1);
 	}
 }

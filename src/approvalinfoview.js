@@ -1,5 +1,11 @@
 import Vue from 'vue'
+import axios from '@nextcloud/axios'
+import { generateUrl } from '@nextcloud/router'
+import { showSuccess, showError } from '@nextcloud/dialogs'
+import '@nextcloud/dialogs/styles/toast.scss'
+
 import ApprovalButtons from './components/ApprovalButtons'
+
 /**
  * @class OCA.Approval.ApprovalInfoView
  * @classdesc
@@ -20,25 +26,47 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		_inputView: null,
 
-		filename: '',
+		fileName: '',
+		fileId: 0,
 
 		initialize(options) {
 			options = options || {}
 		},
 
 		_onApprove() {
-			console.debug('!!!!!!! Approve ' + this.filename)
+			console.debug('!!!!!!! Approve ' + this.fileName)
+			const req = {}
+			const url = generateUrl('/apps/approval/' + this.fileId + '/approve')
+			axios.put(url, req).then((response) => {
+				showSuccess(t('approval', '{name} approved!', { name: this.fileName }))
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to approve {name}', { name: this.fileName })
+					+ ': ' + error.response?.request?.responseText
+				)
+			})
 		},
 
 		_onReject() {
-			console.debug('!!!!!!! Reject ' + this.filename)
+			console.debug('!!!!!!! Reject ' + this.fileName)
+			const req = {}
+			const url = generateUrl('/apps/approval/' + this.fileId + '/disapprove')
+			axios.put(url, req).then((response) => {
+				showSuccess(t('approval', '{name} disapproved!', { name: this.fileName }))
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to disapprove {name}', { name: this.fileName })
+					+ ': ' + error.response?.request?.responseText
+				)
+			})
 		},
 
 		setFileInfo(fileInfo) {
 			console.debug('setFileInfo')
 			console.debug(fileInfo)
 			// Why is this called twice and fileInfo is not the same on each call?
-			this.filename = fileInfo.name || fileInfo.attributes?.name || ''
+			this.fileName = fileInfo.name || fileInfo.attributes?.name || ''
+			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
 
 			if (!this._rendered) {
 				this.render()

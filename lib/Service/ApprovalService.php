@@ -37,4 +37,20 @@ class ApprovalService {
 	public function getTags(int $fileId): array {
 		return [];
 	}
+
+	/**
+	 * @param int $fileId
+	 * @return void
+	 */
+	public function approve(int $fileId): void {
+		error_log('Approve '.$fileId);
+	}
+
+	/**
+	 * @param int $fileId
+	 * @return void
+	 */
+	public function disapprove(int $fileId): void {
+		error_log('Disapprove '.$fileId);
+	}
 }
