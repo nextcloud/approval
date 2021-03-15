@@ -60,15 +60,29 @@ class ApprovalService {
 	 * @param int $fileId
 	 * @return bool
 	 */
-	public function isApprovalPendingForUser(int $fileId, ?string $userId): bool {
+	public function getApprovalState(int $fileId, ?string $userId): int {
 		$tagPendingId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_pending', '0');
+		$tagApprovedId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_approved', '0');
+		$tagRejectedId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_rejected', '0');
 		$approvalUserId = $this->config->getAppValue(Application::APP_ID, 'user_id', '');
-		try {
-			return $approvalUserId === $userId
-				&& $tagPendingId !== 0
-				&& $this->tagObjectMapper->haveTag($fileId, 'files', $tagPendingId);
-		} catch (TagNotFoundException $e) {
-			return false;
+		if ($tagPendingId !== 0 && $tagApprovedId !== 0 && $tagRejectedId !== 0 && $approvalUserId !== '') {
+			try {
+				// pending state is returned only for responsible user
+				// other states can be returned for all users
+				if ($approvalUserId === $userId && $this->tagObjectMapper->haveTag($fileId, 'files', $tagPendingId)) {
+					return Application::STATE_PENDING;
+				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $tagApprovedId)) {
+					return Application::STATE_APPROVED;
+				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $tagRejectedId)) {
+					return Application::STATE_REJECTED;
+				} else {
+					return Application::STATE_NOTHING;
+				}
+			} catch (TagNotFoundException $e) {
+				return Application::STATE_NOTHING;
+			}
+		} else {
+			return Application::STATE_NOTHING;
 		}
 	}
 

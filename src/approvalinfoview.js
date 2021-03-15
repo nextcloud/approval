@@ -5,12 +5,13 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 import '@nextcloud/dialogs/styles/toast.scss'
 
 import ApprovalButtons from './components/ApprovalButtons'
+import { states } from './states'
 
 /**
  * @class OCA.Approval.ApprovalInfoView
  * @classdesc
  *
- * Displays a approval buttons
+ * Displays approval buttons or approval state
  *
  */
 export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
@@ -45,15 +46,15 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const mountPoint = document.createElement('div')
 			const View = Vue.extend(ApprovalButtons)
 			this._inputView = new View({
-				propsData: { },
+				propsData: { state: states.NOTHING },
 			}).$mount(mountPoint)
 			this.$el.append(this._inputView.$el)
 
 			// listen to approval events
-			this._inputView.$on('yes', () => {
+			this._inputView.$on('approve', () => {
 				this._onApprove()
 			})
-			this._inputView.$on('no', () => {
+			this._inputView.$on('reject', () => {
 				this._onReject()
 			})
 
@@ -62,7 +63,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		_onApprove() {
-			console.debug('!!!!!!! Approve ' + this.fileName)
 			const req = {}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/approve')
 			axios.put(url, req).then((response) => {
@@ -77,15 +77,14 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		_onReject() {
-			console.debug('!!!!!!! Reject ' + this.fileName)
 			const req = {}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/reject')
 			axios.put(url, req).then((response) => {
-				showSuccess(t('approval', '{name} disapproved!', { name: this.fileName }))
+				showSuccess(t('approval', '{name} rejected!', { name: this.fileName }))
 				this.getApprovalStatus()
 			}).catch((error) => {
 				showError(
-					t('approval', 'Failed to disapprove {name}', { name: this.fileName })
+					t('approval', 'Failed to reject {name}', { name: this.fileName })
 					+ ': ' + error.response?.request?.responseText
 				)
 			})
@@ -93,8 +92,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		setFileInfo(fileInfo) {
 			this.hide()
-			console.debug('setFileInfo')
-			console.debug(fileInfo)
+			// console.debug('setFileInfo')
+			// console.debug(fileInfo)
 			// Why is this called twice and fileInfo is not the same on each call?
 			this.fileName = fileInfo.name || fileInfo.attributes?.name || ''
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
@@ -103,9 +102,12 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		getApprovalStatus() {
-			const url = generateUrl('/apps/approval/' + this.fileId + '/is-pending')
+			const url = generateUrl('/apps/approval/' + this.fileId + '/state')
 			axios.get(url).then((response) => {
-				if (response.data) {
+				// i don't know how to change props with Vue instance
+				// so it's done with a method changing a data value
+				this._inputView.setState(response.data)
+				if (response.data !== states.NOTHING) {
 					this.show()
 				} else {
 					this.hide()

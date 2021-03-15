@@ -74,9 +74,9 @@ class ApprovalController extends Controller {
 	 * @param int $fileId
 	 * @return DataDisplayResponse
 	 */
-	public function isApprovalPending(int $fileId): DataResponse {
-		$isPending = $this->approvalService->isApprovalPendingForUser($fileId, $this->userId);
-		return new DataResponse($isPending);
+	public function getApprovalState(int $fileId): DataResponse {
+		$state = $this->approvalService->getApprovalState($fileId, $this->userId);
+		return new DataResponse($state);
 	}
 
 	/**

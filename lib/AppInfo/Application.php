@@ -27,6 +27,11 @@ use OCP\AppFramework\Bootstrap\IBootstrap;
  */
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'approval';
+	// approval states
+	public const STATE_NOTHING = 0;
+	public const STATE_PENDING = 1;
+	public const STATE_APPROVED = 2;
+	public const STATE_REJECTED = 3;
 
 	/**
 	 * Constructor
