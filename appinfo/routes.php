@@ -16,5 +16,6 @@ return [
         ['name' => 'approval#isApprovalPending', 'url' => '/{fileId}/is-pending', 'verb' => 'GET'],
         ['name' => 'approval#approve', 'url' => '/{fileId}/approve', 'verb' => 'PUT'],
         ['name' => 'approval#reject', 'url' => '/{fileId}/reject', 'verb' => 'PUT'],
+        ['name' => 'approval#createTag', 'url' => '/tag', 'verb' => 'POST'],
     ]
 ];

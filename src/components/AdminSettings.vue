@@ -1,15 +1,15 @@
 <template>
 	<div id="approval_prefs" class="section">
 		<h2>
-			<a class="icon icon-approval" />
+			<span class="icon icon-approval" />
 			{{ t('approval', 'Approval') }}
 		</h2>
 		<p class="settings-hint">
-			{{ t('approval', 'TODO') }}
+			{{ t('approval', '') }}
 		</p>
 		<div class="approval-user">
 			<label for="user">
-				<a class="icon icon-user" />
+				<span class="icon icon-user" />
 				{{ t('approval', 'User') }}
 			</label>
 			<Multiselect
@@ -57,7 +57,7 @@
 		</div>
 		<div class="grid-form">
 			<label for="pending">
-				<a class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
+				<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
 				{{ t('approval', 'Pending tag') }}
 			</label>
 			<MultiselectTags id="pending"
@@ -66,7 +66,7 @@
 				:multiple="false"
 				@input="onTagInput" />
 			<label for="approved">
-				<a class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
+				<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
 				{{ t('approval', 'Approved tag') }}
 			</label>
 			<MultiselectTags id="approved"
@@ -75,7 +75,7 @@
 				:multiple="false"
 				@input="onTagInput" />
 			<label for="rejected">
-				<a class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
+				<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
 				{{ t('approval', 'Rejected tag') }}
 			</label>
 			<MultiselectTags id="rejected"
@@ -83,6 +83,21 @@
 				:label="t('approval', 'Select rejected tag')"
 				:multiple="false"
 				@input="onTagInput" />
+		</div>
+		<div class="create-tag">
+			<label for="create-tag-input">
+				<span class="icon icon-tag" />
+				{{ t('approval', 'Create new hidden tag') }}
+			</label>
+			<input id="create-tag-input"
+				v-model="newTagName"
+				:placeholder="t('approval', 'New tag name')"
+				type="text"
+				@keyup.enter="onCreateTag">
+			<button @click="onCreateTag">
+				<span class="icon icon-add" />
+				{{ t('approval', 'Create') }}
+			</button>
 		</div>
 	</div>
 </template>
@@ -119,6 +134,7 @@ export default {
 			suggestions: [],
 			query: '',
 			currentUser: getCurrentUser(),
+			newTagName: '',
 		}
 	},
 
@@ -170,19 +186,16 @@ export default {
 				values,
 			}
 			const url = generateUrl('/apps/approval/admin-config')
-			axios.put(url, req)
-				.then((response) => {
-					showSuccess(t('approval', 'Approval admin options saved'))
-				})
-				.catch((error) => {
-					showError(
-						t('approval', 'Failed to save Approval admin options')
-						+ ': ' + (error.response?.request?.responseText ?? '')
-					)
-					console.debug(error)
-				})
-				.then(() => {
-				})
+			axios.put(url, req).then((response) => {
+				showSuccess(t('approval', 'Approval admin options saved'))
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to save Approval admin options')
+					+ ': ' + (error.response?.request?.responseText ?? '')
+				)
+				console.debug(error)
+			}).then(() => {
+			})
 		},
 		asyncFind(query) {
 			this.query = query
@@ -218,6 +231,26 @@ export default {
 				user_id: this.state.user_id,
 				user_name: this.state.user_name,
 			})
+		},
+		onCreateTag() {
+			if (this.newTagName) {
+				const req = {
+					name: this.newTagName,
+				}
+				const url = generateUrl('/apps/approval/tag')
+				axios.post(url, req).then((response) => {
+					showSuccess(t('approval', 'Tag "{name}" created', { name: this.newTagName }))
+					this.newTagName = ''
+					location.reload()
+				}).catch((error) => {
+					showError(
+						t('approval', 'Failed to create tag "{name}"', { name: this.newTagName })
+						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					)
+					console.debug(error)
+				}).then(() => {
+				})
+			}
 		},
 	},
 }
@@ -263,6 +296,14 @@ export default {
 
 		input {
 			width: 100%;
+		}
+	}
+
+	.create-tag {
+		margin-top: 20px;
+
+		button .icon {
+			width: unset;
 		}
 	}
 }

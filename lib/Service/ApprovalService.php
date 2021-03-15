@@ -17,6 +17,7 @@ use Psr\Log\LoggerInterface;
 use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\ISystemTagObjectMapper;
 use OCP\SystemTag\TagNotFoundException;
+use OCP\SystemTag\TagAlreadyExistsException;
 
 use OCA\Approval\AppInfo\Application;
 
@@ -40,6 +41,19 @@ class ApprovalService {
 		$this->config = $config;
 		$this->tagManager = $tagManager;
 		$this->tagObjectMapper = $tagObjectMapper;
+	}
+
+	/**
+	 * @param string $name of the new tag
+	 * @return array
+	 */
+	public function createTag(string $name): array {
+		try {
+			$this->tagManager->createTag($name, false, false);
+			return [];
+		} catch (TagAlreadyExistsException $e) {
+			return ['error' => 'Tag already exists'];
+		}
 	}
 
 	/**

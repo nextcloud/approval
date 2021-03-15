@@ -11,8 +11,6 @@
 
 namespace OCA\Approval\Controller;
 
-use OCP\App\IAppManager;
-
 use OCP\IURLGenerator;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -41,7 +39,6 @@ class ApprovalController extends Controller {
 								IRequest $request,
 								IConfig $config,
 								IL10N $l10n,
-								IAppManager $appManager,
 								LoggerInterface $logger,
 								ApprovalService $approvalService,
 								?string $userId) {
@@ -51,7 +48,22 @@ class ApprovalController extends Controller {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->approvalService = $approvalService;
-		$this->approvableTag = $this->config->getAppValue(Application::APP_ID, 'approvable_tag', 'approvable');
+	}
+
+	/**
+	 * create a tag
+	 * @NoCSRFRequired
+	 *
+	 * @param string $name of the new tag
+	 * @return DataDisplayResponse
+	 */
+	public function createTag(string $name): DataResponse {
+		$result = $this->approvalService->createTag($name);
+		if (isset($result['error'])) {
+			return new DataResponse($result, 400);
+		} else {
+			return new DataResponse($result);
+		}
 	}
 
 	/**
