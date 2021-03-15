@@ -67,6 +67,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/approve')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} approved!', { name: this.fileName }))
+				this.getApprovalStatus()
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to approve {name}', { name: this.fileName })
@@ -81,6 +82,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/reject')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} disapproved!', { name: this.fileName }))
+				this.getApprovalStatus()
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to disapprove {name}', { name: this.fileName })
@@ -97,10 +99,16 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this.fileName = fileInfo.name || fileInfo.attributes?.name || ''
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
 
+			this.getApprovalStatus()
+		},
+
+		getApprovalStatus() {
 			const url = generateUrl('/apps/approval/' + this.fileId + '/is-pending')
 			axios.get(url).then((response) => {
 				if (response.data) {
 					this.show()
+				} else {
+					this.hide()
 				}
 			}).catch((error) => {
 				showError(

@@ -75,7 +75,7 @@ export default {
 		-ms-transform: rotate(0deg);
 		-o-transform: rotate(180deg);
 		transform: rotate(180deg);
-		margin-bottom: -4px;
+		margin-bottom: -2px;
 	}
 }
 </style>
