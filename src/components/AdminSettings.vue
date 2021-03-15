@@ -7,83 +7,10 @@
 		<p class="settings-hint">
 			{{ t('approval', '') }}
 		</p>
-		<div class="approval-user">
-			<label for="user">
-				<span class="icon icon-user" />
-				{{ t('approval', 'User') }}
-			</label>
-			<Multiselect
-				class="approval-user-input"
-				label="displayName"
-				:clear-on-select="true"
-				:hide-selected="false"
-				:internal-search="false"
-				:loading="loadingUsers"
-				:options="formattedSuggestions"
-				:placeholder="t('welcome', 'Who can approve?')"
-				:preselect-first="false"
-				:preserve-search="false"
-				:searchable="true"
-				:user-select="true"
-				@search-change="asyncFind"
-				@select="supportContactSelected">
-				<template #option="{option}">
-					<Avatar
-						class="approval-avatar-option"
-						:user="option.user"
-						:show-user-status="false" />
-					<span>
-						{{ option.displayName }}
-					</span>
-				</template>
-				<template #noOptions>
-					{{ t('welcome', 'No recommendations. Start typing.') }}
-				</template>
-				<template #noResult>
-					{{ t('welcome', 'No result.') }}
-				</template>
-			</Multiselect>
-			<div v-if="state.user_name && state.user_id"
-				class="selected-user">
-				<Avatar
-					:size="20"
-					:user="state.user_id"
-					:tooltip-message="state.user_id"
-					:show-user-status="false" />
-				<span>
-					{{ state.user_name }}
-				</span>
-			</div>
-		</div>
-		<div class="grid-form">
-			<label for="pending">
-				<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
-				{{ t('approval', 'Pending tag') }}
-			</label>
-			<MultiselectTags id="pending"
-				v-model="state.tag_pending"
-				:label="t('approval', 'Select pending tag')"
-				:multiple="false"
-				@input="onTagInput" />
-			<label for="approved">
-				<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
-				{{ t('approval', 'Approved tag') }}
-			</label>
-			<MultiselectTags id="approved"
-				v-model="state.tag_approved"
-				:label="t('approval', 'Select approved tag')"
-				:multiple="false"
-				@input="onTagInput" />
-			<label for="rejected">
-				<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
-				{{ t('approval', 'Rejected tag') }}
-			</label>
-			<MultiselectTags id="rejected"
-				v-model="state.tag_rejected"
-				:label="t('approval', 'Select rejected tag')"
-				:multiple="false"
-				@input="onTagInput" />
-		</div>
+		<ApprovalSetting v-for="(setting, id) in settings"
+			:key="id"
+			v-model="settings[id]"
+			@input="onSettingInput(id, $event)" />
 		<div class="create-tag">
 			<label for="create-tag-input">
 				<span class="icon icon-tag" />
@@ -104,22 +31,18 @@
 
 <script>
 import { loadState } from '@nextcloud/initial-state'
-import { generateUrl, generateOcsUrl } from '@nextcloud/router'
-import { getCurrentUser } from '@nextcloud/auth'
+import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import '@nextcloud/dialogs/styles/toast.scss'
-import Avatar from '@nextcloud/vue/dist/Components/Avatar'
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-import MultiselectTags from '@nextcloud/vue/dist/Components/MultiselectTags'
+
+import ApprovalSetting from './ApprovalSetting'
 
 export default {
 	name: 'AdminSettings',
 
 	components: {
-		Avatar,
-		Multiselect,
-		MultiselectTags,
+		ApprovalSetting,
 	},
 
 	props: [],
@@ -127,59 +50,49 @@ export default {
 	data() {
 		return {
 			state: loadState('approval', 'admin-config'),
-			tagPendingIconUrl: generateUrl('/svg/core/actions/tag?color=0082c9'),
-			tagApprovedIconUrl: generateUrl('/svg/core/actions/tag?color=46ba61'),
-			tagRejectedIconUrl: generateUrl('/svg/core/actions/tag?color=e9322d'),
-			loadingUsers: false,
-			suggestions: [],
-			query: '',
-			currentUser: getCurrentUser(),
 			newTagName: '',
+			settings: {},
 		}
 	},
 
 	computed: {
-		formattedSuggestions() {
-			const result = this.suggestions.map((s) => {
-				return {
-					user: s.id,
-					displayName: s.label,
-					icon: 'icon-user',
-					multiselectKey: s.id + s.label,
-				}
-			})
-			if (this.currentUser) {
-				const lowerCurrent = this.currentUser.displayName.toLowerCase()
-				const lowerQuery = this.query.toLowerCase()
-				if (this.query === '' || lowerCurrent.match(lowerQuery)) {
-					result.push({
-						user: this.currentUser.uid,
-						displayName: this.currentUser.displayName,
-						icon: 'icon-user',
-						multiselectKey: this.currentUser.uid + this.currentUser.displayName,
-					})
-				}
-			}
-			return result
-		},
 	},
 
 	watch: {
 	},
 
 	mounted() {
+		// TODO correctly load multiple values from state
+		this.settings = {
+			33: {
+				tagPending: this.state.tag_pending,
+				tagApproved: this.state.tag_approved,
+				tagRejected: this.state.tag_rejected,
+				users: this.state.user_id
+					? [
+						{
+							user: this.state.user_id,
+							displayName: this.state.user_name,
+						},
+					]
+					: [],
+			},
+		}
 	},
 
 	methods: {
-		onTagInput() {
-			if (this.state.tag_pending && this.state.tag_approved && this.state.tag_rejected) {
-				const values = {
-					tag_pending: this.state.tag_pending,
-					tag_approved: this.state.tag_approved,
-					tag_rejected: this.state.tag_rejected,
-				}
-				this.saveOptions(values)
-			}
+		onSettingInput(id, setting) {
+			console.debug('INPUTTUTUTU ' + id)
+			console.debug(setting)
+			console.debug(this.settings)
+			// TODO correctly save values, send setting ID etc...
+			this.saveOptions({
+				tag_pending: setting.tagPending,
+				tag_approved: setting.tagApproved,
+				tag_rejected: setting.tagRejected,
+				user_id: setting.users[0]?.user || '',
+				user_name: setting.users[0]?.displayName || '',
+			})
 		},
 		saveOptions(values) {
 			const req = {
@@ -195,41 +108,6 @@ export default {
 				)
 				console.debug(error)
 			}).then(() => {
-			})
-		},
-		asyncFind(query) {
-			this.query = query
-			if (query === '') {
-				this.suggestions = []
-				return
-			}
-			this.loadingUsers = true
-			console.debug(query)
-			const url = generateOcsUrl('core/autocomplete/get', 2).replace(/\/$/, '')
-			axios.get(url, {
-				params: {
-					format: 'json',
-					search: query,
-					itemType: ' ',
-					itemId: ' ',
-					shareTypes: [],
-				},
-			}).then((response) => {
-				console.debug(response)
-				this.suggestions = response.data.ocs.data
-			}).catch((error) => {
-				console.error(error)
-			}).then(() => {
-				this.loadingUsers = false
-			})
-		},
-		supportContactSelected(user) {
-			console.debug(user)
-			this.state.user_id = user.user
-			this.state.user_name = user.displayName
-			this.saveOptions({
-				user_id: this.state.user_id,
-				user_name: this.state.user_name,
 			})
 		},
 		onCreateTag() {
@@ -257,46 +135,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+::v-deep .multiselect__input {
+	height: 34px !important;
+}
+
 #approval_prefs {
 	.icon {
 		display: inline-block;
 		width: 32px;
-	}
-
-	.approval-user {
-		margin-left: 30px;
-		display: flex;
-		> label {
-			width: 250px;
-		}
-		.selected-user {
-			display: flex;
-			align-items: center;
-			* {
-				margin-left: 5px;
-			}
-		}
-	}
-
-	.grid-form {
-		max-width: 500px;
-		display: grid;
-		grid-template: 1fr / 1fr 1fr;
-		margin-left: 30px;
-
-		.icon {
-			width: 16px;
-			height: 16px;
-			margin: 0 5px -3px 5px;
-		}
-
-		label {
-			line-height: 38px;
-		}
-
-		input {
-			width: 100%;
-		}
 	}
 
 	.create-tag {
