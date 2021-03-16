@@ -10,7 +10,12 @@
 		<ApprovalSetting v-for="(setting, id) in settings"
 			:key="id"
 			v-model="settings[id]"
-			@input="onSettingInput(id, $event)" />
+			@input="onSettingInput(id, $event)"
+			@delete="onSettingDelete(id)" />
+		<button @click="onAddSetting">
+			<span class="icon icon-add" />
+			{{ t('approval', 'New setting') }}
+		</button>
 		<div class="create-tag">
 			<label for="create-tag-input">
 				<span class="icon icon-tag" />
@@ -93,6 +98,10 @@ export default {
 				user_id: setting.users[0]?.user || '',
 				user_name: setting.users[0]?.displayName || '',
 			})
+			// save if all values are set
+			if (setting.tagPending && setting.tagApproved && setting.tagRejected && setting.users.length > 0) {
+				// save or create
+			}
 		},
 		saveOptions(values) {
 			const req = {
@@ -130,6 +139,25 @@ export default {
 				})
 			}
 		},
+		onAddSetting() {
+			this.$set(this.settings, 44, {
+				tagPending: this.state.tag_pending,
+				tagApproved: this.state.tag_approved,
+				tagRejected: this.state.tag_rejected,
+				users: this.state.user_id
+					? [
+						{
+							user: this.state.user_id,
+							displayName: this.state.user_name,
+						},
+					]
+					: [],
+			})
+			console.debug(this.settings)
+		},
+		onSettingDelete(id) {
+			this.$delete(this.settings, id)
+		},
 	},
 }
 </script>
@@ -145,12 +173,12 @@ export default {
 		width: 32px;
 	}
 
+	button .icon {
+		width: unset;
+	}
+
 	.create-tag {
 		margin-top: 20px;
-
-		button .icon {
-			width: unset;
-		}
 	}
 }
 

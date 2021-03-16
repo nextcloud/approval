@@ -25,15 +25,11 @@
 						class="approval-avatar-option"
 						:user="option.user"
 						:show-user-status="false" />
-					<span>
+					<span class="multiselect-name">
 						{{ option.displayName }}
 					</span>
-				</template>
-				<template #singleLabel="{ option }">
-					<ListItemIcon v-bind="option"
-						:title="option.displayName + 'lalala'"
-						:avatar-size="24"
-						:no-margin="true" />
+					<span v-if="option.icon"
+						:class="{ icon: true, [option.icon]: true, 'multiselect-icon': true }" />
 				</template>
 				<template #noOptions>
 					{{ t('welcome', 'No recommendations. Start typing.') }}
@@ -42,17 +38,6 @@
 					{{ t('welcome', 'No result.') }}
 				</template>
 			</Multiselect>
-			<!--div v-if="state.user_name && state.user_id"
-				class="selected-user">
-				<Avatar
-					:size="20"
-					:user="state.user_id"
-					:tooltip-message="state.user_id"
-					:show-user-status="false" />
-				<span>
-					{{ state.user_name }}
-				</span>
-			</div-->
 		</div>
 		<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
 		<MultiselectTags class="tag-select"
@@ -72,6 +57,9 @@
 			:label="t('approval', 'Select rejected tag')"
 			:multiple="false"
 			@input="update('tagRejected', $event)" />
+		<button @click="$emit('delete')">
+			<span class="icon icon-delete" />
+		</button>
 	</div>
 </template>
 
@@ -82,7 +70,6 @@ import axios from '@nextcloud/axios'
 import Avatar from '@nextcloud/vue/dist/Components/Avatar'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import MultiselectTags from '@nextcloud/vue/dist/Components/MultiselectTags'
-import ListItemIcon from '@nextcloud/vue/dist/Components/ListItemIcon'
 
 export default {
 	name: 'ApprovalSetting',
@@ -91,7 +78,6 @@ export default {
 		Avatar,
 		Multiselect,
 		MultiselectTags,
-		ListItemIcon,
 	},
 
 	props: {
@@ -115,17 +101,22 @@ export default {
 
 	computed: {
 		formattedSuggestions() {
-			const result = this.suggestions.map((s) => {
+			const result = this.suggestions.filter((s) => {
+				return !this.value.users.find(u => u.user === s.id)
+			}).map((s) => {
 				return {
 					user: s.id,
 					displayName: s.label,
 					icon: 'icon-user',
 				}
 			})
+			// add current user (who is absent from autocomplete suggestions)
+			// if it matches the query
 			if (this.currentUser && this.query) {
 				const lowerCurrent = this.currentUser.displayName.toLowerCase()
 				const lowerQuery = this.query.toLowerCase()
-				if (lowerCurrent.match(lowerQuery)) {
+				// don't add it if it's selected
+				if (lowerCurrent.match(lowerQuery) && !this.value.users.find(u => u.user === this.currentUser.uid)) {
 					result.push({
 						user: this.currentUser.uid,
 						displayName: this.currentUser.displayName,
@@ -133,6 +124,14 @@ export default {
 					})
 				}
 			}
+			// always add selected users at the end
+			result.push(...this.value.users.map((u) => {
+				return {
+					user: u.user,
+					displayName: u.displayName,
+					icon: 'icon-user',
+				}
+			}))
 			return result
 		},
 	},
@@ -190,6 +189,18 @@ export default {
 		width: 16px;
 		height: 16px;
 		margin: 0 5px -3px 15px;
+	}
+	button .icon {
+		margin: 0;
+	}
+	.approval-user-input {
+		width: 250px;
+		.multiselect-name {
+			flex-grow: 1;
+		}
+		.multiselect-icon {
+			opacity: 0.5;
+		}
 	}
 }
 </style>
