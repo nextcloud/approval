@@ -16,6 +16,10 @@
 			<span class="icon icon-add" />
 			{{ t('approval', 'New setting') }}
 		</button>
+		<ApprovalSetting v-if="newSetting"
+			v-model="newSetting"
+			@input="onNewSettingInput"
+			@delete="onNewSettingDelete" />
 		<div class="create-tag">
 			<label for="create-tag-input">
 				<span class="icon icon-tag" />
@@ -57,6 +61,7 @@ export default {
 			state: loadState('approval', 'admin-config'),
 			newTagName: '',
 			settings: {},
+			newSetting: null,
 		}
 	},
 
@@ -83,37 +88,94 @@ export default {
 					: [],
 			},
 		}
+		this.loadSettings()
 	},
 
 	methods: {
+		loadSettings() {
+			const url = generateUrl('/apps/approval/settings')
+			axios.get(url).then((response) => {
+				this.settings = response.data
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to get approval setting')
+					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+				)
+				console.debug(error)
+			}).then(() => {
+			})
+		},
 		onSettingInput(id, setting) {
 			console.debug('INPUTTUTUTU ' + id)
 			console.debug(setting)
 			console.debug(this.settings)
-			// TODO correctly save values, send setting ID etc...
-			this.saveOptions({
-				tag_pending: setting.tagPending,
-				tag_approved: setting.tagApproved,
-				tag_rejected: setting.tagRejected,
-				user_id: setting.users[0]?.user || '',
-				user_name: setting.users[0]?.displayName || '',
-			})
 			// save if all values are set
 			if (setting.tagPending && setting.tagApproved && setting.tagRejected && setting.users.length > 0) {
-				// save or create
+				const req = {
+					tagPending: setting.tagPending,
+					tagApproved: setting.tagApproved,
+					tagRejected: setting.tagRejected,
+					users: setting.users.map(u => u.user),
+				}
+				const url = generateUrl('/apps/approval/setting/' + id)
+				axios.put(url, req).then((response) => {
+					showSuccess(t('approval', 'Approval setting saved'))
+				}).catch((error) => {
+					showError(
+						t('approval', 'Failed to save approval setting')
+						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					)
+					console.debug(error)
+				}).then(() => {
+				})
 			}
 		},
-		saveOptions(values) {
-			const req = {
-				values,
+		onAddSetting() {
+			this.newSetting = {
+				tagPending: 0,
+				tagApproved: 0,
+				tagRejected: 0,
+				users: [],
 			}
-			const url = generateUrl('/apps/approval/admin-config')
-			axios.put(url, req).then((response) => {
-				showSuccess(t('approval', 'Approval admin options saved'))
+		},
+		onNewSettingDelete() {
+			this.newSetting = null
+		},
+		onNewSettingInput(setting) {
+			console.debug(setting)
+			if (setting.tagPending && setting.tagApproved && setting.tagRejected && setting.users.length > 0) {
+				// create
+				const req = {
+					tagPending: setting.tagPending,
+					tagApproved: setting.tagApproved,
+					tagRejected: setting.tagRejected,
+					users: setting.users.map(u => u.user),
+				}
+				const url = generateUrl('/apps/approval/setting')
+				axios.post(url, req).then((response) => {
+					showSuccess(t('approval', 'New approval setting created'))
+					const id = response.data.id
+					this.$set(this.settings, id, setting)
+					this.newSetting = null
+				}).catch((error) => {
+					showError(
+						t('approval', 'Failed to create approval setting')
+						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					)
+					console.debug(error)
+				}).then(() => {
+				})
+			}
+		},
+		onSettingDelete(id) {
+			const url = generateUrl('/apps/approval/setting/' + id)
+			axios.delete(url).then((response) => {
+				showSuccess(t('approval', 'Approval setting deleted'))
+				this.$delete(this.settings, id)
 			}).catch((error) => {
 				showError(
-					t('approval', 'Failed to save Approval admin options')
-					+ ': ' + (error.response?.request?.responseText ?? '')
+					t('approval', 'Failed to delete approval setting')
+					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
 				console.debug(error)
 			}).then(() => {
@@ -139,25 +201,6 @@ export default {
 				})
 			}
 		},
-		onAddSetting() {
-			this.$set(this.settings, 44, {
-				tagPending: this.state.tag_pending,
-				tagApproved: this.state.tag_approved,
-				tagRejected: this.state.tag_rejected,
-				users: this.state.user_id
-					? [
-						{
-							user: this.state.user_id,
-							displayName: this.state.user_name,
-						},
-					]
-					: [],
-			})
-			console.debug(this.settings)
-		},
-		onSettingDelete(id) {
-			this.$delete(this.settings, id)
-		},
 	},
 }
 </script>
@@ -178,7 +221,7 @@ export default {
 	}
 
 	.create-tag {
-		margin-top: 20px;
+		margin-top: 30px;
 	}
 }
 

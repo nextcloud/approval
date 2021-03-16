@@ -11,8 +11,11 @@
 
 return [
     'routes' => [
-        ['name' => 'config#setConfig', 'url' => '/config', 'verb' => 'PUT'],
-        ['name' => 'config#setAdminConfig', 'url' => '/admin-config', 'verb' => 'PUT'],
+        ['name' => 'config#getSettings', 'url' => '/settings', 'verb' => 'GET'],
+        ['name' => 'config#saveSetting', 'url' => '/setting/{id}', 'verb' => 'PUT'],
+        ['name' => 'config#deleteSetting', 'url' => '/setting/{id}', 'verb' => 'DELETE'],
+        ['name' => 'config#createSetting', 'url' => '/setting', 'verb' => 'POST'],
+
         ['name' => 'approval#getApprovalState', 'url' => '/{fileId}/state', 'verb' => 'GET'],
         ['name' => 'approval#approve', 'url' => '/{fileId}/approve', 'verb' => 'PUT'],
         ['name' => 'approval#reject', 'url' => '/{fileId}/reject', 'verb' => 'PUT'],
