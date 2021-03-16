@@ -97,35 +97,41 @@ class ApprovalService {
 
 	/**
 	 * @param int $fileId
-	 * @return void
+	 * @return bool success
 	 */
-	public function approve(int $fileId): void {
-		$tagApprovedId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_approved', '0');
-		$this->tagObjectMapper->assignTags($fileId, 'files', $tagApprovedId);
-
-		$tagPendingId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_pending', '0');
-		try {
-			if ($this->tagObjectMapper->haveTag($fileId, 'files', $tagPendingId)) {
-				$this->tagObjectMapper->unassignTags($fileId, 'files', $tagPendingId);
+	public function approve(int $fileId, ?string $userId): bool {
+		$settings = $this->settingService->getSettings();
+		foreach ($settings as $id => $setting) {
+			try {
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $setting['tagPending'])
+					&& in_array($userId, $setting['users'])) {
+					$this->tagObjectMapper->assignTags($fileId, 'files', $setting['tagApproved']);
+					$this->tagObjectMapper->unassignTags($fileId, 'files', $setting['tagPending']);
+					return true;
+				}
+			} catch (TagNotFoundException $e) {
 			}
-		} catch (TagNotFoundException $e) {
 		}
+		return false;
 	}
 
 	/**
 	 * @param int $fileId
-	 * @return void
+	 * @return bool success
 	 */
-	public function reject(int $fileId): void {
-		$tagRejectedId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_rejected', '0');
-		$this->tagObjectMapper->assignTags($fileId, 'files', $tagRejectedId);
-
-		$tagPendingId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_pending', '0');
-		try {
-			if ($this->tagObjectMapper->haveTag($fileId, 'files', $tagPendingId)) {
-				$this->tagObjectMapper->unassignTags($fileId, 'files', $tagPendingId);
+	public function reject(int $fileId, ?string $userId): bool {
+		$settings = $this->settingService->getSettings();
+		foreach ($settings as $id => $setting) {
+			try {
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $setting['tagPending'])
+					&& in_array($userId, $setting['users'])) {
+					$this->tagObjectMapper->assignTags($fileId, 'files', $setting['tagRejected']);
+					$this->tagObjectMapper->unassignTags($fileId, 'files', $setting['tagPending']);
+					return true;
+				}
+			} catch (TagNotFoundException $e) {
 			}
-		} catch (TagNotFoundException $e) {
 		}
+		return false;
 	}
 }

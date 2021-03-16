@@ -88,7 +88,7 @@ class ApprovalController extends Controller {
 	 * @return DataDisplayResponse
 	 */
 	public function approve(int $fileId): DataResponse {
-		$this->approvalService->approve($fileId);
+		$this->approvalService->approve($fileId, $this->userId);
 		return new DataResponse(1);
 	}
 
@@ -101,7 +101,7 @@ class ApprovalController extends Controller {
 	 * @return DataDisplayResponse
 	 */
 	public function reject(int $fileId): DataResponse {
-		$this->approvalService->reject($fileId);
+		$this->approvalService->reject($fileId, $this->userId);
 		return new DataResponse(1);
 	}
 }

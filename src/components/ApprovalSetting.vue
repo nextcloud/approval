@@ -144,7 +144,9 @@ export default {
 
 	methods: {
 		update(key, value) {
-			this.$emit('input', { ...this.value, [key]: value })
+			if (value) {
+				this.$emit('input', { ...this.value, [key]: value })
+			}
 		},
 		asyncFind(query) {
 			this.query = query
