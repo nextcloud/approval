@@ -197,6 +197,7 @@ export default {
 		width: 250px;
 		.multiselect-name {
 			flex-grow: 1;
+			margin-left: 10px;
 		}
 		.multiselect-icon {
 			opacity: 0.5;

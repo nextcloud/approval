@@ -27,7 +27,7 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
-use OCA\Approval\Service\ApprovalService;
+use OCA\Approval\Service\SettingService;
 use OCA\Approval\AppInfo\Application;
 
 class ConfigController extends Controller {
@@ -43,7 +43,7 @@ class ConfigController extends Controller {
 								IAppData $appData,
 								IL10N $l,
 								LoggerInterface $logger,
-								ApprovalService $approvalService,
+								SettingService $settingService,
 								?string $userId) {
 		parent::__construct($AppName, $request);
 		$this->l = $l;
@@ -51,21 +51,7 @@ class ConfigController extends Controller {
 		$this->appData = $appData;
 		$this->config = $config;
 		$this->logger = $logger;
-		$this->approvalService = $approvalService;
-	}
-
-	/**
-	 * set config values
-	 * @NoAdminRequired
-	 *
-	 * @param array $values
-	 * @return DataResponse
-	 */
-	public function setConfig(array $values): DataResponse {
-		foreach ($values as $key => $value) {
-			$this->config->setUserValue($this->userId, Application::APP_ID, $key, $value);
-		}
-		return new DataResponse(1);
+		$this->settingService = $settingService;
 	}
 
 	/**
@@ -79,5 +65,51 @@ class ConfigController extends Controller {
 			$this->config->setAppValue(Application::APP_ID, $key, $value);
 		}
 		return new DataResponse(1);
+	}
+
+	/**
+	 *
+	 * @return DataResponse
+	 */
+	public function getSettings(): DataResponse {
+		$settings = $this->settingService->getSettings();
+		foreach ($settings as $id => $setting) {
+			$users = [];
+			foreach ($setting['users'] as $uid) {
+				$users[] = [
+					'user' => $uid,
+					'displayName' => $uid,
+				];
+			}
+			$settings[$id]['users'] = $users;
+		}
+		return new DataResponse($settings);
+	}
+
+	/**
+	 *
+	 * @return DataResponse
+	 */
+	public function createSetting(int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
+		$id = $this->settingService->createSetting($tagPending, $tagApproved, $tagRejected, $users);
+		return new DataResponse($id);
+	}
+
+	/**
+	 *
+	 * @return DataResponse
+	 */
+	public function saveSetting(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
+		$this->settingService->saveSetting($id, $tagPending, $tagApproved, $tagRejected, $users);
+		return new DataResponse(1);
+	}
+
+	/**
+	 *
+	 * @return DataResponse
+	 */
+	public function deleteSetting(int $id): DataResponse {
+		$this->settingService->deleteSetting($id);
+		return new DataResponse();
 	}
 }

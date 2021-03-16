@@ -73,6 +73,7 @@ export default {
 
 	mounted() {
 		// TODO correctly load multiple values from state
+		/*
 		this.settings = {
 			33: {
 				tagPending: this.state.tag_pending,
@@ -88,6 +89,7 @@ export default {
 					: [],
 			},
 		}
+		*/
 		this.loadSettings()
 	},
 
@@ -106,9 +108,6 @@ export default {
 			})
 		},
 		onSettingInput(id, setting) {
-			console.debug('INPUTTUTUTU ' + id)
-			console.debug(setting)
-			console.debug(this.settings)
 			// save if all values are set
 			if (setting.tagPending && setting.tagApproved && setting.tagRejected && setting.users.length > 0) {
 				const req = {
