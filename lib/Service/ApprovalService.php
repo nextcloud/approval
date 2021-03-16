@@ -34,6 +34,7 @@ class ApprovalService {
 								LoggerInterface $logger,
 								ISystemTagManager $tagManager,
 								ISystemTagObjectMapper $tagObjectMapper,
+								SettingService $settingService,
 								IL10N $l10n) {
 		$this->appName = $appName;
 		$this->l10n = $l10n;
@@ -41,6 +42,7 @@ class ApprovalService {
 		$this->config = $config;
 		$this->tagManager = $tagManager;
 		$this->tagObjectMapper = $tagObjectMapper;
+		$this->settingService = $settingService;
 	}
 
 	/**
@@ -61,29 +63,36 @@ class ApprovalService {
 	 * @return bool
 	 */
 	public function getApprovalState(int $fileId, ?string $userId): int {
-		$tagPendingId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_pending', '0');
-		$tagApprovedId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_approved', '0');
-		$tagRejectedId = (int) $this->config->getAppValue(Application::APP_ID, 'tag_rejected', '0');
-		$approvalUserId = $this->config->getAppValue(Application::APP_ID, 'user_id', '');
-		if ($tagPendingId !== 0 && $tagApprovedId !== 0 && $tagRejectedId !== 0 && $approvalUserId !== '') {
+		// to return PENDING, 2 conditions:
+		// - user matches
+		// - tag matches
+		$settings = $this->settingService->getSettings();
+		foreach ($settings as $id => $setting) {
 			try {
-				// pending state is returned only for responsible user
-				// other states can be returned for all users
-				if ($approvalUserId === $userId && $this->tagObjectMapper->haveTag($fileId, 'files', $tagPendingId)) {
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $setting['tagPending'])
+					&& in_array($userId, $setting['users'])) {
 					return Application::STATE_PENDING;
-				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $tagApprovedId)) {
-					return Application::STATE_APPROVED;
-				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $tagRejectedId)) {
-					return Application::STATE_REJECTED;
-				} else {
-					return Application::STATE_NOTHING;
 				}
 			} catch (TagNotFoundException $e) {
-				return Application::STATE_NOTHING;
 			}
-		} else {
-			return Application::STATE_NOTHING;
 		}
+
+		// now check approved and rejected, we don't care about the user here
+		foreach ($settings as $id => $setting) {
+			try {
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $setting['tagApproved'])) {
+					return Application::STATE_APPROVED;
+				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $setting['tagRejected'])) {
+					return Application::STATE_REJECTED;
+				}
+			} catch (TagNotFoundException $e) {
+			}
+		}
+		if ($pendingSettingId) {
+			return Application::STATE_PENDING;
+		}
+
+		return Application::STATE_NOTHING;
 	}
 
 	/**

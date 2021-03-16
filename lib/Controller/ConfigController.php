@@ -11,8 +11,7 @@
 
 namespace OCA\Approval\Controller;
 
-use OCP\App\IAppManager;
-use OCP\Files\IAppData;
+use OCP\IUserManager;
 
 use OCP\IConfig;
 use OCP\IL10N;
@@ -39,8 +38,7 @@ class ConfigController extends Controller {
 	public function __construct($AppName,
 								IRequest $request,
 								IConfig $config,
-								IAppManager $appManager,
-								IAppData $appData,
+								IUserManager $userManager,
 								IL10N $l,
 								LoggerInterface $logger,
 								SettingService $settingService,
@@ -48,9 +46,9 @@ class ConfigController extends Controller {
 		parent::__construct($AppName, $request);
 		$this->l = $l;
 		$this->userId = $userId;
-		$this->appData = $appData;
 		$this->config = $config;
 		$this->logger = $logger;
+		$this->userManager = $userManager;
 		$this->settingService = $settingService;
 	}
 
@@ -76,9 +74,10 @@ class ConfigController extends Controller {
 		foreach ($settings as $id => $setting) {
 			$users = [];
 			foreach ($setting['users'] as $uid) {
+				$user = $this->userManager->get($uid);
 				$users[] = [
 					'user' => $uid,
-					'displayName' => $uid,
+					'displayName' => $user ? $user->getDisplayName() : $uid,
 				];
 			}
 			$settings[$id]['users'] = $users;
