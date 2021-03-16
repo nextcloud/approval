@@ -7,19 +7,21 @@
 		<p class="settings-hint">
 			{{ t('approval', '') }}
 		</p>
-		<ApprovalSetting v-for="(setting, id) in settings"
-			:key="id"
-			v-model="settings[id]"
-			@input="onSettingInput(id, $event)"
-			@delete="onSettingDelete(id)" />
-		<button @click="onAddSetting">
-			<span class="icon icon-add" />
-			{{ t('approval', 'New setting') }}
-		</button>
-		<ApprovalSetting v-if="newSetting"
-			v-model="newSetting"
-			@input="onNewSettingInput"
-			@delete="onNewSettingDelete" />
+		<div v-if="showSettings">
+			<ApprovalSetting v-for="(setting, id) in settings"
+				:key="id"
+				v-model="settings[id]"
+				@input="onSettingInput(id, $event)"
+				@delete="onSettingDelete(id)" />
+			<button @click="onAddSetting">
+				<span class="icon icon-add" />
+				{{ t('approval', 'New setting') }}
+			</button>
+			<ApprovalSetting v-if="newSetting"
+				v-model="newSetting"
+				@input="onNewSettingInput"
+				@delete="onNewSettingDelete" />
+		</div>
 		<div class="create-tag">
 			<label for="create-tag-input">
 				<span class="icon icon-tag" />
@@ -59,6 +61,7 @@ export default {
 	data() {
 		return {
 			state: loadState('approval', 'admin-config'),
+			showSettings: true,
 			newTagName: '',
 			settings: {},
 			newSetting: null,
@@ -72,24 +75,6 @@ export default {
 	},
 
 	mounted() {
-		// TODO correctly load multiple values from state
-		/*
-		this.settings = {
-			33: {
-				tagPending: this.state.tag_pending,
-				tagApproved: this.state.tag_approved,
-				tagRejected: this.state.tag_rejected,
-				users: this.state.user_id
-					? [
-						{
-							user: this.state.user_id,
-							displayName: this.state.user_name,
-						},
-					]
-					: [],
-			},
-		}
-		*/
 		this.loadSettings()
 	},
 
@@ -153,9 +138,9 @@ export default {
 				const url = generateUrl('/apps/approval/setting')
 				axios.post(url, req).then((response) => {
 					showSuccess(t('approval', 'New approval setting created'))
-					const id = response.data.id
-					this.$set(this.settings, id, setting)
+					const id = response.data
 					this.newSetting = null
+					this.settings[id] = setting
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to create approval setting')
@@ -189,7 +174,11 @@ export default {
 				axios.post(url, req).then((response) => {
 					showSuccess(t('approval', 'Tag "{name}" created', { name: this.newTagName }))
 					this.newTagName = ''
-					location.reload()
+					// trick to reload tag list
+					this.showSettings = false
+					this.$nextTick(() => {
+						this.showSettings = true
+					})
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to create tag "{name}"', { name: this.newTagName })
