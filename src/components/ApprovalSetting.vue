@@ -57,7 +57,9 @@
 			:label="t('approval', 'Select rejected tag')"
 			:multiple="false"
 			@input="update('tagRejected', $event)" />
-		<button @click="$emit('delete')">
+		<button class="delete-setting"
+			v-tooltip.top="{ content: deleteSettingTooltip }"
+			@click="$emit('delete')">
 			<span class="icon icon-delete" />
 		</button>
 	</div>
@@ -92,6 +94,7 @@ export default {
 			tagPendingIconUrl: generateUrl('/svg/core/actions/tag?color=0082c9'),
 			tagApprovedIconUrl: generateUrl('/svg/core/actions/tag?color=46ba61'),
 			tagRejectedIconUrl: generateUrl('/svg/core/actions/tag?color=e9322d'),
+			deleteSettingTooltip: t('approval', 'Delete this setting'),
 			loadingUsers: false,
 			suggestions: [],
 			query: '',
@@ -182,6 +185,12 @@ export default {
 .approval_setting {
 	display: flex;
 	align-items: center;
+
+	.delete-setting {
+		margin-left: 15px;
+		width: 34px;
+		padding: 0;
+	}
 
 	.tag-select {
 		width: 200px;

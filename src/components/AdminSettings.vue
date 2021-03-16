@@ -4,8 +4,12 @@
 			<span class="icon icon-approval" />
 			{{ t('approval', 'Approval') }}
 		</h2>
+		<h3>
+			<span class="icon icon-settings" />
+			{{ t('approval', 'Approval settings') }}
+		</h3>
 		<p class="settings-hint">
-			{{ t('approval', '') }}
+			{{ t('approval', 'Each setting specifies which users can act on which pending tag and which approved/rejected tag should then be assigned.') }}
 		</p>
 		<div v-if="showSettings">
 			<ApprovalSetting v-for="(setting, id) in settings"
@@ -13,7 +17,8 @@
 				v-model="settings[id]"
 				@input="onSettingInput(id, $event)"
 				@delete="onSettingDelete(id)" />
-			<button @click="onAddSetting">
+			<button class="add-setting"
+				@click="onAddSetting">
 				<span class="icon icon-add" />
 				{{ t('approval', 'New setting') }}
 			</button>
@@ -210,6 +215,14 @@ export default {
 
 	.create-tag {
 		margin-top: 30px;
+	}
+
+	button.add-setting {
+		margin: 10px 0 10px 15px;
+	}
+
+	#create-tag-input {
+		margin-left: 3px;
 	}
 }
 
