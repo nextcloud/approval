@@ -57,8 +57,9 @@
 			:label="t('approval', 'Select rejected tag')"
 			:multiple="false"
 			@input="update('tagRejected', $event)" />
-		<button class="delete-setting"
+		<button
 			v-tooltip.top="{ content: deleteSettingTooltip }"
+			class="delete-setting"
 			@click="$emit('delete')">
 			<span class="icon icon-delete" />
 		</button>
