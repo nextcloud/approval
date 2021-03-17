@@ -6,26 +6,26 @@
 		</h2>
 		<h3>
 			<span class="icon icon-settings" />
-			{{ t('approval', 'Approval settings') }}
+			{{ t('approval', 'Approval rules') }}
 		</h3>
 		<p class="settings-hint">
-			{{ t('approval', 'Each setting specifies which users can act on which pending tag and which approved/rejected tag should then be assigned.') }}
+			{{ t('approval', 'Each rule specifies which users can act on which pending tag and which approved/rejected tag should then be assigned.') }}
 		</p>
-		<div v-if="showSettings">
-			<ApprovalSetting v-for="(setting, id) in settings"
+		<div v-if="showRules">
+			<ApprovalRule v-for="(rule, id) in rules"
 				:key="id"
-				v-model="settings[id]"
-				@input="onSettingInput(id, $event)"
-				@delete="onSettingDelete(id)" />
-			<button class="add-setting"
-				@click="onAddSetting">
+				v-model="rules[id]"
+				@input="onRuleInput(id, $event)"
+				@delete="onRuleDelete(id)" />
+			<button class="add-rule"
+				@click="onAddRule">
 				<span class="icon icon-add" />
-				{{ t('approval', 'New setting') }}
+				{{ t('approval', 'New rule') }}
 			</button>
-			<ApprovalSetting v-if="newSetting"
-				v-model="newSetting"
-				@input="onNewSettingInput"
-				@delete="onNewSettingDelete" />
+			<ApprovalRule v-if="newRule"
+				v-model="newRule"
+				@input="onNewRuleInput"
+				@delete="onNewRuleDelete" />
 		</div>
 		<div class="create-tag">
 			<label for="create-tag-input">
@@ -52,13 +52,13 @@ import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import '@nextcloud/dialogs/styles/toast.scss'
 
-import ApprovalSetting from './ApprovalSetting'
+import ApprovalRule from './ApprovalRule'
 
 export default {
 	name: 'AdminSettings',
 
 	components: {
-		ApprovalSetting,
+		ApprovalRule,
 	},
 
 	props: [],
@@ -66,10 +66,10 @@ export default {
 	data() {
 		return {
 			state: loadState('approval', 'admin-config'),
-			showSettings: true,
+			showRules: true,
 			newTagName: '',
-			settings: {},
-			newSetting: null,
+			rules: {},
+			newRule: null,
 		}
 	},
 
@@ -80,38 +80,38 @@ export default {
 	},
 
 	mounted() {
-		this.loadSettings()
+		this.loadRules()
 	},
 
 	methods: {
-		loadSettings() {
-			const url = generateUrl('/apps/approval/settings')
+		loadRules() {
+			const url = generateUrl('/apps/approval/rules')
 			axios.get(url).then((response) => {
-				this.settings = response.data
+				this.rules = response.data
 			}).catch((error) => {
 				showError(
-					t('approval', 'Failed to get approval setting')
+					t('approval', 'Failed to get approval rules')
 					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
 				console.debug(error)
 			}).then(() => {
 			})
 		},
-		onSettingInput(id, setting) {
+		onRuleInput(id, rule) {
 			// save if all values are set
-			if (setting.tagPending && setting.tagApproved && setting.tagRejected && setting.users.length > 0) {
+			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.users.length > 0) {
 				const req = {
-					tagPending: setting.tagPending,
-					tagApproved: setting.tagApproved,
-					tagRejected: setting.tagRejected,
-					users: setting.users.map(u => u.user),
+					tagPending: rule.tagPending,
+					tagApproved: rule.tagApproved,
+					tagRejected: rule.tagRejected,
+					users: rule.users.map(u => u.user),
 				}
-				const url = generateUrl('/apps/approval/setting/' + id)
+				const url = generateUrl('/apps/approval/rule/' + id)
 				axios.put(url, req).then((response) => {
-					showSuccess(t('approval', 'Approval setting saved'))
+					showSuccess(t('approval', 'Approval rule saved'))
 				}).catch((error) => {
 					showError(
-						t('approval', 'Failed to save approval setting')
+						t('approval', 'Failed to save approval rule')
 						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 					)
 					console.debug(error)
@@ -119,36 +119,36 @@ export default {
 				})
 			}
 		},
-		onAddSetting() {
-			this.newSetting = {
+		onAddRule() {
+			this.newRule = {
 				tagPending: 0,
 				tagApproved: 0,
 				tagRejected: 0,
 				users: [],
 			}
 		},
-		onNewSettingDelete() {
-			this.newSetting = null
+		onNewRuleDelete() {
+			this.newRule = null
 		},
-		onNewSettingInput(setting) {
-			console.debug(setting)
-			if (setting.tagPending && setting.tagApproved && setting.tagRejected && setting.users.length > 0) {
+		onNewRuleInput(rule) {
+			console.debug(rule)
+			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.users.length > 0) {
 				// create
 				const req = {
-					tagPending: setting.tagPending,
-					tagApproved: setting.tagApproved,
-					tagRejected: setting.tagRejected,
-					users: setting.users.map(u => u.user),
+					tagPending: rule.tagPending,
+					tagApproved: rule.tagApproved,
+					tagRejected: rule.tagRejected,
+					users: rule.users.map(u => u.user),
 				}
-				const url = generateUrl('/apps/approval/setting')
+				const url = generateUrl('/apps/approval/rule')
 				axios.post(url, req).then((response) => {
-					showSuccess(t('approval', 'New approval setting created'))
+					showSuccess(t('approval', 'New approval rule created'))
 					const id = response.data
-					this.newSetting = null
-					this.settings[id] = setting
+					this.newRule = null
+					this.rules[id] = rule
 				}).catch((error) => {
 					showError(
-						t('approval', 'Failed to create approval setting')
+						t('approval', 'Failed to create approval rule')
 						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 					)
 					console.debug(error)
@@ -156,14 +156,14 @@ export default {
 				})
 			}
 		},
-		onSettingDelete(id) {
-			const url = generateUrl('/apps/approval/setting/' + id)
+		onRuleDelete(id) {
+			const url = generateUrl('/apps/approval/rule/' + id)
 			axios.delete(url).then((response) => {
-				showSuccess(t('approval', 'Approval setting deleted'))
-				this.$delete(this.settings, id)
+				showSuccess(t('approval', 'Approval rule deleted'))
+				this.$delete(this.rules, id)
 			}).catch((error) => {
 				showError(
-					t('approval', 'Failed to delete approval setting')
+					t('approval', 'Failed to delete approval rule')
 					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
 				console.debug(error)
@@ -180,9 +180,9 @@ export default {
 					showSuccess(t('approval', 'Tag "{name}" created', { name: this.newTagName }))
 					this.newTagName = ''
 					// trick to reload tag list
-					this.showSettings = false
+					this.showRules = false
 					this.$nextTick(() => {
-						this.showSettings = true
+						this.showRules = true
 					})
 				}).catch((error) => {
 					showError(
@@ -217,7 +217,7 @@ export default {
 		margin-top: 30px;
 	}
 
-	button.add-setting {
+	button.add-rule {
 		margin: 10px 0 10px 15px;
 	}
 

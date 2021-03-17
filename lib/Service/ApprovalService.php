@@ -34,7 +34,7 @@ class ApprovalService {
 								LoggerInterface $logger,
 								ISystemTagManager $tagManager,
 								ISystemTagObjectMapper $tagObjectMapper,
-								SettingService $settingService,
+								RuleService $ruleService,
 								IL10N $l10n) {
 		$this->appName = $appName;
 		$this->l10n = $l10n;
@@ -42,7 +42,7 @@ class ApprovalService {
 		$this->config = $config;
 		$this->tagManager = $tagManager;
 		$this->tagObjectMapper = $tagObjectMapper;
-		$this->settingService = $settingService;
+		$this->ruleService = $ruleService;
 	}
 
 	/**
@@ -66,11 +66,11 @@ class ApprovalService {
 		// to return PENDING, 2 conditions:
 		// - user matches
 		// - tag matches
-		$settings = $this->settingService->getSettings();
-		foreach ($settings as $id => $setting) {
+		$rules = $this->ruleService->getRules();
+		foreach ($rules as $id => $rule) {
 			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $setting['tagPending'])
-					&& in_array($userId, $setting['users'])) {
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+					&& in_array($userId, $rule['users'])) {
 					return Application::STATE_PENDING;
 				}
 			} catch (TagNotFoundException $e) {
@@ -78,17 +78,17 @@ class ApprovalService {
 		}
 
 		// now check approved and rejected, we don't care about the user here
-		foreach ($settings as $id => $setting) {
+		foreach ($rules as $id => $rule) {
 			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $setting['tagApproved'])) {
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])) {
 					return Application::STATE_APPROVED;
-				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $setting['tagRejected'])) {
+				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])) {
 					return Application::STATE_REJECTED;
 				}
 			} catch (TagNotFoundException $e) {
 			}
 		}
-		if ($pendingSettingId) {
+		if ($pendingRuleId) {
 			return Application::STATE_PENDING;
 		}
 
@@ -100,13 +100,13 @@ class ApprovalService {
 	 * @return bool success
 	 */
 	public function approve(int $fileId, ?string $userId): bool {
-		$settings = $this->settingService->getSettings();
-		foreach ($settings as $id => $setting) {
+		$rules = $this->ruleService->getRules();
+		foreach ($rules as $id => $rule) {
 			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $setting['tagPending'])
-					&& in_array($userId, $setting['users'])) {
-					$this->tagObjectMapper->assignTags($fileId, 'files', $setting['tagApproved']);
-					$this->tagObjectMapper->unassignTags($fileId, 'files', $setting['tagPending']);
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+					&& in_array($userId, $rule['users'])) {
+					$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagApproved']);
+					$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
 					return true;
 				}
 			} catch (TagNotFoundException $e) {
@@ -120,13 +120,13 @@ class ApprovalService {
 	 * @return bool success
 	 */
 	public function reject(int $fileId, ?string $userId): bool {
-		$settings = $this->settingService->getSettings();
-		foreach ($settings as $id => $setting) {
+		$rules = $this->ruleService->getRules();
+		foreach ($rules as $id => $rule) {
 			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $setting['tagPending'])
-					&& in_array($userId, $setting['users'])) {
-					$this->tagObjectMapper->assignTags($fileId, 'files', $setting['tagRejected']);
-					$this->tagObjectMapper->unassignTags($fileId, 'files', $setting['tagPending']);
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+					&& in_array($userId, $rule['users'])) {
+					$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagRejected']);
+					$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
 					return true;
 				}
 			} catch (TagNotFoundException $e) {

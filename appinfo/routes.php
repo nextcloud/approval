@@ -11,10 +11,10 @@
 
 return [
     'routes' => [
-        ['name' => 'config#getSettings', 'url' => '/settings', 'verb' => 'GET'],
-        ['name' => 'config#saveSetting', 'url' => '/setting/{id}', 'verb' => 'PUT'],
-        ['name' => 'config#deleteSetting', 'url' => '/setting/{id}', 'verb' => 'DELETE'],
-        ['name' => 'config#createSetting', 'url' => '/setting', 'verb' => 'POST'],
+        ['name' => 'config#getRules', 'url' => '/rules', 'verb' => 'GET'],
+        ['name' => 'config#saveRule', 'url' => '/rule/{id}', 'verb' => 'PUT'],
+        ['name' => 'config#deleteRule', 'url' => '/rule/{id}', 'verb' => 'DELETE'],
+        ['name' => 'config#createRule', 'url' => '/rule', 'verb' => 'POST'],
 
         ['name' => 'approval#getApprovalState', 'url' => '/{fileId}/state', 'verb' => 'GET'],
         ['name' => 'approval#approve', 'url' => '/{fileId}/approve', 'verb' => 'PUT'],

@@ -1,5 +1,5 @@
 <template>
-	<div class="approval_setting">
+	<div class="approval_rule">
 		<span class="icon icon-user" />
 		<div class="approval-user">
 			<Multiselect
@@ -58,8 +58,8 @@
 			:multiple="false"
 			@input="update('tagRejected', $event)" />
 		<button
-			v-tooltip.top="{ content: deleteSettingTooltip }"
-			class="delete-setting"
+			v-tooltip.top="{ content: deleteRuleTooltip }"
+			class="delete-rule"
 			@click="$emit('delete')">
 			<span class="icon icon-delete" />
 		</button>
@@ -75,7 +75,7 @@ import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import MultiselectTags from '@nextcloud/vue/dist/Components/MultiselectTags'
 
 export default {
-	name: 'ApprovalSetting',
+	name: 'ApprovalRule',
 
 	components: {
 		Avatar,
@@ -95,7 +95,7 @@ export default {
 			tagPendingIconUrl: generateUrl('/svg/core/actions/tag?color=0082c9'),
 			tagApprovedIconUrl: generateUrl('/svg/core/actions/tag?color=46ba61'),
 			tagRejectedIconUrl: generateUrl('/svg/core/actions/tag?color=e9322d'),
-			deleteSettingTooltip: t('approval', 'Delete this setting'),
+			deleteRuleTooltip: t('approval', 'Delete this rule'),
 			loadingUsers: false,
 			suggestions: [],
 			query: '',
@@ -183,11 +183,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.approval_setting {
+.approval_rule {
 	display: flex;
 	align-items: center;
 
-	.delete-setting {
+	.delete-rule {
 		margin-left: 15px;
 		width: 34px;
 		padding: 0;

@@ -19,7 +19,7 @@ use OCP\IDBConnection;
 
 use OCA\Approval\AppInfo\Application;
 
-class SettingService {
+class RuleService {
 
 	private $l10n;
 	private $logger;
@@ -44,7 +44,7 @@ class SettingService {
 	/**
 	 * @return void
 	 */
-	public function saveSetting(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $userIds): void {
+	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $userIds): void {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->update('approval_setting');
@@ -57,17 +57,17 @@ class SettingService {
 			$req = $qb->execute();
 			$qb = $qb->resetQueryParts();
 
-		$setting = $this->getSetting($id);
+		$rule = $this->getRule($id);
 		$toDelete = [];
 		$toAdd = [];
 
-		foreach ($setting['users'] as $uid) {
+		foreach ($rule['users'] as $uid) {
 			if (!in_array($uid, $userIds)) {
 				$toDelete[] = $uid;
 			}
 		}
 		foreach ($userIds as $uid) {
-			if (!in_array($uid, $setting['users'])) {
+			if (!in_array($uid, $rule['users'])) {
 				$toAdd[] = $uid;
 			}
 		}
@@ -96,7 +96,7 @@ class SettingService {
 	/**
 	 * @return int
 	 */
-	public function createSetting(int $tagPending, int $tagApproved, int $tagRejected, array $userIds): int {
+	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $userIds): int {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->insert('approval_setting')
@@ -108,25 +108,25 @@ class SettingService {
 		$req = $qb->execute();
 		$qb = $qb->resetQueryParts();
 
-		$insertedSettingId = $qb->getLastInsertId();
+		$insertedRuleId = $qb->getLastInsertId();
 
 		foreach ($userIds as $userId) {
 			$qb->insert('approval_setting_user')
 				->values([
 					'user_id' => $qb->createNamedParameter($userId, IQueryBuilder::PARAM_STR),
-					'setting_id' => $qb->createNamedParameter($insertedSettingId, IQueryBuilder::PARAM_INT),
+					'setting_id' => $qb->createNamedParameter($insertedRuleId, IQueryBuilder::PARAM_INT),
 				]);
 			$req = $qb->execute();
 			$qb = $qb->resetQueryParts();
 		}
 
-		return $insertedSettingId;
+		return $insertedRuleId;
 	}
 
 	/**
 	 * @return array
 	 */
-	public function deleteSetting(int $id): void {
+	public function deleteRule(int $id): void {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->delete('approval_setting')
@@ -147,8 +147,8 @@ class SettingService {
 	/**
 	 * @return array
 	 */
-	public function getSetting(int $id): ?array {
-		$setting = null;
+	public function getRule(int $id): ?array {
+		$rule = null;
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -161,7 +161,7 @@ class SettingService {
 			$tagPending = (int) $row['tag_pending'];
 			$tagApproved = (int) $row['tag_approved'];
 			$tagRejected = (int) $row['tag_rejected'];
-			$setting = [
+			$rule = [
 				'tagPending' => $tagPending,
 				'tagApproved' => $tagApproved,
 				'tagRejected' => $tagRejected,
@@ -172,8 +172,8 @@ class SettingService {
 		$req->closeCursor();
 		$qb = $qb->resetQueryParts();
 
-		if (is_null($setting)) {
-			return $setting;
+		if (is_null($rule)) {
+			return $rule;
 		}
 
 		$qb->select('*')
@@ -183,19 +183,19 @@ class SettingService {
 			);
 		$req = $qb->execute();
 		while ($row = $req->fetch()) {
-			$setting['users'][] = $row['user_id'];
+			$rule['users'][] = $row['user_id'];
 		}
 		$req->closeCursor();
 		$qb = $qb->resetQueryParts();
 
-		return $setting;
+		return $rule;
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getSettings(): array {
-		$settings = [];
+	public function getRules(): array {
+		$rules = [];
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -206,7 +206,7 @@ class SettingService {
 			$tagPending = (int) $row['tag_pending'];
 			$tagApproved = (int) $row['tag_approved'];
 			$tagRejected = (int) $row['tag_rejected'];
-			$settings[$id] = [
+			$rules[$id] = [
 				'tagPending' => $tagPending,
 				'tagApproved' => $tagApproved,
 				'tagRejected' => $tagRejected,
@@ -216,7 +216,7 @@ class SettingService {
 		$req->closeCursor();
 		$qb = $qb->resetQueryParts();
 
-		foreach ($settings as $id => $setting) {
+		foreach ($rules as $id => $rule) {
 			$qb->select('*')
 				->from('approval_setting_user')
 				->where(
@@ -224,12 +224,12 @@ class SettingService {
 				);
 			$req = $qb->execute();
 			while ($row = $req->fetch()) {
-				$settings[$id]['users'][] = $row['user_id'];
+				$rules[$id]['users'][] = $row['user_id'];
 			}
 			$req->closeCursor();
 			$qb = $qb->resetQueryParts();
 		}
 
-		return $settings;
+		return $rules;
 	}
 }

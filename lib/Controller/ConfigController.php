@@ -26,7 +26,7 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
-use OCA\Approval\Service\SettingService;
+use OCA\Approval\Service\RuleService;
 use OCA\Approval\AppInfo\Application;
 
 class ConfigController extends Controller {
@@ -41,7 +41,7 @@ class ConfigController extends Controller {
 								IUserManager $userManager,
 								IL10N $l,
 								LoggerInterface $logger,
-								SettingService $settingService,
+								RuleService $ruleService,
 								?string $userId) {
 		parent::__construct($AppName, $request);
 		$this->l = $l;
@@ -49,7 +49,7 @@ class ConfigController extends Controller {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->userManager = $userManager;
-		$this->settingService = $settingService;
+		$this->ruleService = $ruleService;
 	}
 
 	/**
@@ -69,28 +69,28 @@ class ConfigController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function getSettings(): DataResponse {
-		$settings = $this->settingService->getSettings();
-		foreach ($settings as $id => $setting) {
+	public function getRules(): DataResponse {
+		$rules = $this->ruleService->getRules();
+		foreach ($rules as $id => $rule) {
 			$users = [];
-			foreach ($setting['users'] as $uid) {
+			foreach ($rule['users'] as $uid) {
 				$user = $this->userManager->get($uid);
 				$users[] = [
 					'user' => $uid,
 					'displayName' => $user ? $user->getDisplayName() : $uid,
 				];
 			}
-			$settings[$id]['users'] = $users;
+			$rules[$id]['users'] = $users;
 		}
-		return new DataResponse($settings);
+		return new DataResponse($rules);
 	}
 
 	/**
 	 *
 	 * @return DataResponse
 	 */
-	public function createSetting(int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
-		$id = $this->settingService->createSetting($tagPending, $tagApproved, $tagRejected, $users);
+	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
+		$id = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $users);
 		return new DataResponse($id);
 	}
 
@@ -98,8 +98,8 @@ class ConfigController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function saveSetting(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
-		$this->settingService->saveSetting($id, $tagPending, $tagApproved, $tagRejected, $users);
+	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
+		$this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $users);
 		return new DataResponse(1);
 	}
 
@@ -107,8 +107,8 @@ class ConfigController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function deleteSetting(int $id): DataResponse {
-		$this->settingService->deleteSetting($id);
+	public function deleteRule(int $id): DataResponse {
+		$this->ruleService->deleteRule($id);
 		return new DataResponse();
 	}
 }
