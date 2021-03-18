@@ -18,6 +18,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 	/** @lends OCA.Approval.ApprovalInfoView.prototype */ {
 
 		_rendered: false,
+		tagEventsCaugth: false,
 
 		className: 'approvalInfoView',
 		name: 'approval',
@@ -29,6 +30,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		fileName: '',
 		fileId: 0,
+		fileInfo: null,
 
 		initialize(options) {
 			options = options || {}
@@ -68,6 +70,10 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} approved!', { name: this.fileName }))
 				this.getApprovalStatus()
+				// reload system tags after approve
+				if (OCA.SystemTags?.View) {
+					OCA.SystemTags.View.setFileInfo(this.fileInfo)
+				}
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to approve {name}', { name: this.fileName })
@@ -82,6 +88,10 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} rejected!', { name: this.fileName }))
 				this.getApprovalStatus()
+				// reload system tags after reject
+				if (OCA.SystemTags?.View) {
+					OCA.SystemTags.View.setFileInfo(this.fileInfo)
+				}
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to reject {name}', { name: this.fileName })
@@ -97,8 +107,24 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			// Why is this called twice and fileInfo is not the same on each call?
 			this.fileName = fileInfo.name || fileInfo.attributes?.name || ''
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
+			this.fileInfo = fileInfo
 
 			this.getApprovalStatus()
+
+			// reload approval status when a tag is added or removed
+			if (!this.tagEventsCaugth && OCA.SystemTags?.View) {
+				this.tagEventsCaugth = true
+				OCA.SystemTags.View._inputView.on('select', (tag) => {
+					setTimeout(() => {
+						this.getApprovalStatus()
+					}, 2000)
+				}, this)
+				OCA.SystemTags.View._inputView.on('deselect', (tag) => {
+					setTimeout(() => {
+						this.getApprovalStatus()
+					}, 2000)
+				}, this)
+			}
 		},
 
 		getApprovalStatus() {
