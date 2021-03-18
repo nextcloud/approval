@@ -1,68 +1,77 @@
 <template>
 	<div class="approval_rule">
-		<span class="icon icon-user" />
-		<div class="approval-user">
-			<Multiselect
-				class="approval-user-input"
-				label="displayName"
-				track-by="user"
-				:value="value.users"
-				:multiple="true"
-				:clear-on-select="false"
-				:hide-selected="false"
-				:internal-search="false"
-				:loading="loadingUsers"
-				:options="formattedSuggestions"
-				:placeholder="t('welcome', 'Who can approve?')"
-				:preselect-first="false"
-				:preserve-search="false"
-				:searchable="true"
-				:user-select="true"
-				@search-change="asyncFind"
-				@update:value="update('users', $event)">
-				<template #option="{option}">
-					<Avatar
-						class="approval-avatar-option"
-						:user="option.user"
-						:show-user-status="false" />
-					<span class="multiselect-name">
-						{{ option.displayName }}
-					</span>
-					<span v-if="option.icon"
-						:class="{ icon: true, [option.icon]: true, 'multiselect-icon': true }" />
-				</template>
-				<template #noOptions>
-					{{ t('welcome', 'No recommendations. Start typing.') }}
-				</template>
-				<template #noResult>
-					{{ t('welcome', 'No result.') }}
-				</template>
-			</Multiselect>
+		<div class="users">
+			<span class="icon icon-user" />
+			<div class="approval-user">
+				<Multiselect
+					class="approval-user-input"
+					label="displayName"
+					track-by="user"
+					:value="value.users"
+					:multiple="true"
+					:clear-on-select="false"
+					:hide-selected="false"
+					:internal-search="false"
+					:loading="loadingUsers"
+					:options="formattedSuggestions"
+					:placeholder="t('welcome', 'Who can approve?')"
+					:preselect-first="false"
+					:preserve-search="false"
+					:searchable="true"
+					:user-select="true"
+					@search-change="asyncFind"
+					@update:value="update('users', $event)">
+					<template #option="{option}">
+						<Avatar
+							class="approval-avatar-option"
+							:user="option.user"
+							:show-user-status="false" />
+						<span class="multiselect-name">
+							{{ option.displayName }}
+						</span>
+						<span v-if="option.icon"
+							:class="{ icon: true, [option.icon]: true, 'multiselect-icon': true }" />
+					</template>
+					<template #noOptions>
+						{{ t('welcome', 'No recommendations. Start typing.') }}
+					</template>
+					<template #noResult>
+						{{ t('welcome', 'No result.') }}
+					</template>
+				</Multiselect>
+			</div>
 		</div>
-		<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
-		<MultiselectTags class="tag-select"
-			:value="value.tagPending"
-			:label="t('approval', 'Select pending tag')"
-			:multiple="false"
-			@input="update('tagPending', $event)" />
-		<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
-		<MultiselectTags class="tag-select"
-			:value="value.tagApproved"
-			:label="t('approval', 'Select approved tag')"
-			:multiple="false"
-			@input="update('tagApproved', $event)" />
-		<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
-		<MultiselectTags class="tag-select"
-			:value="value.tagRejected"
-			:label="t('approval', 'Select rejected tag')"
-			:multiple="false"
-			@input="update('tagRejected', $event)" />
+		<div class="tag">
+			<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
+			<MultiselectTags class="tag-select"
+				:value="value.tagPending"
+				:label="t('approval', 'Select pending tag')"
+				:multiple="false"
+				@input="update('tagPending', $event)" />
+		</div>
+		<div class="tag">
+			<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
+			<MultiselectTags class="tag-select"
+				:value="value.tagApproved"
+				:label="t('approval', 'Select approved tag')"
+				:multiple="false"
+				@input="update('tagApproved', $event)" />
+		</div>
+		<div class="tag">
+			<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
+			<MultiselectTags class="tag-select"
+				:value="value.tagRejected"
+				:label="t('approval', 'Select rejected tag')"
+				:multiple="false"
+				@input="update('tagRejected', $event)" />
+		</div>
 		<button
 			v-tooltip.top="{ content: deleteRuleTooltip }"
 			class="delete-rule"
 			@click="$emit('delete')">
 			<span class="icon icon-delete" />
 		</button>
+		<div style="clear:both;" />
 	</div>
 </template>
 
@@ -184,8 +193,12 @@ export default {
 
 <style scoped lang="scss">
 .approval_rule {
-	display: flex;
-	align-items: center;
+	.tag,
+	.users {
+		display: flex;
+		align-items: center;
+		float: left;
+	}
 
 	.delete-rule {
 		margin-left: 15px;

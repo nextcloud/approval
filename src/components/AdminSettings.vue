@@ -15,6 +15,7 @@
 			<ApprovalRule v-for="(rule, id) in rules"
 				:key="id"
 				v-model="rules[id]"
+				class="approval-rule"
 				@input="onRuleInput(id, $event)"
 				@delete="onRuleDelete(id)" />
 			<button class="add-rule"
@@ -24,6 +25,7 @@
 			</button>
 			<ApprovalRule v-if="newRule"
 				v-model="newRule"
+				class="approval-rule"
 				@input="onNewRuleInput"
 				@delete="onNewRuleDelete" />
 		</div>
@@ -218,11 +220,15 @@ export default {
 	}
 
 	button.add-rule {
-		margin: 10px 0 10px 15px;
+		margin: 0 0 10px 15px;
 	}
 
 	#create-tag-input {
 		margin-left: 3px;
+	}
+
+	.approval-rule {
+		margin: 12px 0 12px 0;
 	}
 }
 
