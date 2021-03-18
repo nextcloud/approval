@@ -201,8 +201,9 @@ export default {
 	}
 
 	.delete-rule {
-		margin-left: 15px;
-		width: 34px;
+		margin: 0 0 0 15px;
+		width: 36px;
+		height: 36px;
 		padding: 0;
 	}
 

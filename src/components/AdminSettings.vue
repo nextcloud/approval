@@ -11,7 +11,8 @@
 		<p class="settings-hint">
 			{{ t('approval', 'Each rule specifies which users can act on which pending tag and which approved/rejected tag should then be assigned.') }}
 		</p>
-		<div v-if="showRules">
+		<div v-if="showRules"
+			class="rules">
 			<ApprovalRule v-for="(rule, id) in rules"
 				:key="id"
 				v-model="rules[id]"
@@ -206,6 +207,10 @@ export default {
 }
 
 #approval_prefs {
+	.rules {
+		margin-top: 20px;
+	}
+
 	.icon {
 		display: inline-block;
 		width: 32px;
