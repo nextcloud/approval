@@ -1,12 +1,12 @@
 <template>
 	<div class="approval-container">
-		<button v-if="statePending"
+		<button v-if="stateApprovable"
 			class="success"
 			@click="onApprove">
 			<span class="icon icon-approve" />
 			{{ approveText }}
 		</button>
-		<button v-if="statePending"
+		<button v-if="stateApprovable"
 			class="error"
 			@click="onReject">
 			<span class="icon icon-reject" />
@@ -19,6 +19,10 @@
 		<span v-if="stateRejected"
 			class="rejected-label">
 			{{ rejectedText }}
+		</span>
+		<span v-if="statePending"
+			class="pending-label">
+			{{ pendingText }}
 		</span>
 	</div>
 </template>
@@ -49,6 +53,10 @@ export default {
 			type: String,
 			default: t('approval', 'Rejected'),
 		},
+		pendingText: {
+			type: String,
+			default: t('approval', 'Pending'),
+		},
 		state: {
 			type: Number,
 			required: true,
@@ -69,6 +77,9 @@ export default {
 		},
 		statePending() {
 			return this.myState === states.PENDING
+		},
+		stateApprovable() {
+			return this.myState === states.APPROVABLE
 		},
 	},
 
@@ -99,11 +110,18 @@ export default {
 .approval-container {
 	display: flex;
 
+	.pending-label,
 	.approved-label,
 	.rejected-label {
 		border: solid 1px var(--color-border-dark);
 		margin: 0 5px 0 5px;
 		padding: 0 3px 0 3px;
+	}
+
+	.pending-label {
+		background-color: var(--color-warning) !important;
+		border-color: var(--color-warning) !important;
+		color: #fff !important;
 	}
 
 	.rejected-label {

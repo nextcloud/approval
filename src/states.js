@@ -3,4 +3,5 @@ export const states = {
 	PENDING: 1,
 	APPROVED: 2,
 	REJECTED: 3,
+	APPROVABLE: 4,
 }

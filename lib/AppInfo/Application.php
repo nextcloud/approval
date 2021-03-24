@@ -32,6 +32,7 @@ class Application extends App implements IBootstrap {
 	public const STATE_PENDING = 1;
 	public const STATE_APPROVED = 2;
 	public const STATE_REJECTED = 3;
+	public const STATE_APPROVABLE = 4;
 
 	/**
 	 * Constructor

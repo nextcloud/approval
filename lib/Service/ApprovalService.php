@@ -71,7 +71,7 @@ class ApprovalService {
 			try {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
 					&& in_array($userId, $rule['users'])) {
-					return Application::STATE_PENDING;
+					return Application::STATE_APPROVABLE;
 				}
 			} catch (TagNotFoundException $e) {
 			}
@@ -80,16 +80,15 @@ class ApprovalService {
 		// now check approved and rejected, we don't care about the user here
 		foreach ($rules as $id => $rule) {
 			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])) {
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])) {
+					return Application::STATE_PENDING;
+				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])) {
 					return Application::STATE_APPROVED;
 				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])) {
 					return Application::STATE_REJECTED;
 				}
 			} catch (TagNotFoundException $e) {
 			}
-		}
-		if ($pendingRuleId) {
-			return Application::STATE_PENDING;
 		}
 
 		return Application::STATE_NOTHING;
@@ -100,16 +99,20 @@ class ApprovalService {
 	 * @return bool success
 	 */
 	public function approve(int $fileId, ?string $userId): bool {
-		$rules = $this->ruleService->getRules();
-		foreach ($rules as $id => $rule) {
-			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
-					&& in_array($userId, $rule['users'])) {
-					$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagApproved']);
-					$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
-					return true;
+		$fileState = $this->getApprovalState($fileId, $userId);
+		// if file has pending tag and user is authorized to approve it
+		if ($fileState === Application::STATE_APPROVABLE) {
+			$rules = $this->ruleService->getRules();
+			foreach ($rules as $id => $rule) {
+				try {
+					if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+						&& in_array($userId, $rule['users'])) {
+						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagApproved']);
+						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
+						return true;
+					}
+				} catch (TagNotFoundException $e) {
 				}
-			} catch (TagNotFoundException $e) {
 			}
 		}
 		return false;
@@ -120,16 +123,20 @@ class ApprovalService {
 	 * @return bool success
 	 */
 	public function reject(int $fileId, ?string $userId): bool {
-		$rules = $this->ruleService->getRules();
-		foreach ($rules as $id => $rule) {
-			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
-					&& in_array($userId, $rule['users'])) {
-					$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagRejected']);
-					$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
-					return true;
+		$fileState = $this->getApprovalState($fileId, $userId);
+		// if file has pending tag and user is authorized to approve it
+		if ($fileState === Application::STATE_APPROVABLE) {
+			$rules = $this->ruleService->getRules();
+			foreach ($rules as $id => $rule) {
+				try {
+					if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+						&& in_array($userId, $rule['users'])) {
+						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagRejected']);
+						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
+						return true;
+					}
+				} catch (TagNotFoundException $e) {
 				}
-			} catch (TagNotFoundException $e) {
 			}
 		}
 		return false;
