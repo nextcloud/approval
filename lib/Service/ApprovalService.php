@@ -20,6 +20,7 @@ use OCP\SystemTag\TagNotFoundException;
 use OCP\SystemTag\TagAlreadyExistsException;
 
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\Activity\ActivityManager;
 
 class ApprovalService {
 
@@ -35,11 +36,13 @@ class ApprovalService {
 								ISystemTagManager $tagManager,
 								ISystemTagObjectMapper $tagObjectMapper,
 								RuleService $ruleService,
+								ActivityManager $activityManager,
 								IL10N $l10n) {
 		$this->appName = $appName;
 		$this->l10n = $l10n;
 		$this->logger = $logger;
 		$this->config = $config;
+		$this->activityManager = $activityManager;
 		$this->tagManager = $tagManager;
 		$this->tagObjectMapper = $tagObjectMapper;
 		$this->ruleService = $ruleService;
@@ -109,6 +112,12 @@ class ApprovalService {
 						&& in_array($userId, $rule['users'])) {
 						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagApproved']);
 						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
+
+						$this->activityManager->triggerEvent(
+							ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
+							ActivityManager::SUBJECT_APPROVED,
+							[]
+						);
 						return true;
 					}
 				} catch (TagNotFoundException $e) {
@@ -133,6 +142,12 @@ class ApprovalService {
 						&& in_array($userId, $rule['users'])) {
 						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagRejected']);
 						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
+
+						$this->activityManager->triggerEvent(
+							ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
+							ActivityManager::SUBJECT_REJECTED,
+							[]
+						);
 						return true;
 					}
 				} catch (TagNotFoundException $e) {

@@ -37,8 +37,6 @@ class RuleService {
 		$this->logger = $logger;
 		$this->config = $config;
 		$this->db = $db;
-		$this->tagManager = $tagManager;
-		$this->tagObjectMapper = $tagObjectMapper;
 	}
 
 	/**
