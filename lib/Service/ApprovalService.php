@@ -72,30 +72,34 @@ class ApprovalService {
 		}
 	}
 
+	private function userHasAccessTo(int $fileId, ?string $userId): bool {
+		$user = $this->userManager->get($userId);
+		if ($user instanceof IUser) {
+			$userFolder = $this->root->getUserFolder($userId);
+			$found = $userFolder->getById($fileId);
+			return count($found) > 0;
+		}
+		return false;
+	}
+
 	/**
 	 * @param int $fileId
 	 * @return bool
 	 */
 	public function getApprovalState(int $fileId, ?string $userId): int {
-		// to return PENDING, 2 conditions:
-		// - user matches
-		// - tag matches
+		if (!$this->userHasAccessTo($fileId, $userId)) {
+			return Application::STATE_NOTHING;
+		}
+
 		$rules = $this->ruleService->getRules();
 		foreach ($rules as $id => $rule) {
 			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
-					&& in_array($userId, $rule['users'])) {
-					return Application::STATE_APPROVABLE;
-				}
-			} catch (TagNotFoundException $e) {
-			}
-		}
-
-		// now check approved and rejected, we don't care about the user here
-		foreach ($rules as $id => $rule) {
-			try {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])) {
-					return Application::STATE_PENDING;
+					if (in_array($userId, $rule['users'])) {
+						return Application::STATE_APPROVABLE;
+					} else {
+						return Application::STATE_PENDING;
+					}
 				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])) {
 					return Application::STATE_APPROVED;
 				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])) {
@@ -170,7 +174,7 @@ class ApprovalService {
 		return false;
 	}
 
-	private function sendNotification(int $fileId, ?string $approverId, bool $approved) {
+	private function sendNotification(int $fileId, ?string $approverId, bool $approved): void {
 		$paramsByUser = [];
 		$root = $this->root;
 		// notification for eveyone having access except the one approving/rejecting

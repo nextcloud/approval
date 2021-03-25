@@ -116,8 +116,8 @@ class Notifier implements INotifier {
 						? $l->t('A directory was approved')
 						: $l->t('A directory was rejected'));
 				$content = $notification->getSubject() === 'approved'
-					? $l->t('%1$s has approved %2$s.', [$p['approverId'], $p['fileName']])
-					: $l->t('%1$s has rejected %2$s.', [$p['approverId'], $p['fileName']]);
+					? $l->t('%1$s approved %2$s.', [$p['approverId'], $p['fileName']])
+					: $l->t('%1$s rejected %2$s.', [$p['approverId'], $p['fileName']]);
 				$iconUrl = $notification->getSubject() === 'approved'
 					? $this->url->getAbsoluteURL($this->url->imagePath(Application::APP_ID, 'approved.svg'))
 					: $this->url->getAbsoluteURL($this->url->imagePath(Application::APP_ID, 'rejected.svg'));
@@ -127,7 +127,7 @@ class Notifier implements INotifier {
 					->setParsedMessage($content)
 					->setLink($linkToFile)
 					->setRichMessage(
-						$notification->getSubject() === 'approved' ? $l->t('{user} has approved {node}') : $l->t('{user} has rejected {node}'),
+						$notification->getSubject() === 'approved' ? $l->t('{user} approved {node}') : $l->t('{user} rejected {node}'),
 						[
 							'user' => $richSubjectUser,
 							'node' => $richSubjectNode,

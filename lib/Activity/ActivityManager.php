@@ -66,10 +66,10 @@ class ActivityManager {
 		$subject = '';
 		switch ($subjectIdentifier) {
 			case self::SUBJECT_APPROVED:
-				$subject = $ownActivity ? $this->l10n->t('You have approved {file}'): $this->l10n->t('{user} has approved {file}');
+				$subject = $ownActivity ? $this->l10n->t('You approved {file}'): $this->l10n->t('{user} approved {file}');
 				break;
 			case self::SUBJECT_REJECTED:
-				$subject = $ownActivity ? $this->l10n->t('You have rejected {file}'): $this->l10n->t('{user} has rejected {file}');
+				$subject = $ownActivity ? $this->l10n->t('You rejected {file}'): $this->l10n->t('{user} rejected {file}');
 				break;
 			default:
 				break;
