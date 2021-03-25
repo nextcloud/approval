@@ -132,7 +132,7 @@ class ApprovalProvider implements IProvider {
 			// name
 			$displayName = $node->getType() === FileInfo::TYPE_FILE
 				? $this->l10n->t('the file %1$s', [$event->getObjectName()])
-				: $this->l10n->t('the folder %1$s', [$event->getObjectName()]);
+				: $this->l10n->t('the directory %1$s', [$event->getObjectName()]);
 
 			$file = [
 				'type' => 'file',

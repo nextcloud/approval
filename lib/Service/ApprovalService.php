@@ -19,6 +19,7 @@ use OCP\SystemTag\ISystemTagObjectMapper;
 use OCP\SystemTag\TagNotFoundException;
 use OCP\SystemTag\TagAlreadyExistsException;
 use OCP\Files\IRootFolder;
+use OCP\Files\FileInfo;
 use OCP\IUserManager;
 use OCP\IUser;
 use OCP\Notification\IManager as INotificationManager;
@@ -181,7 +182,11 @@ class ApprovalService {
 				if (count($found) > 0) {
 					$node = $found[0];
 					$path = $userFolder->getRelativePath($node->getPath());
+					$type = $node->getType() === FileInfo::TYPE_FILE
+						? 'file'
+						: 'folder';
 					$paramsByUser[$thisUserId] = [
+						'type' => $type,
 						'fileId' => $fileId,
 						'fileName' => $node->getName(),
 						'relativePath' => $path,

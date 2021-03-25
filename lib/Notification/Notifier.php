@@ -108,9 +108,13 @@ class Notifier implements INotifier {
 					'link' => $linkToFile,
 				];
 
-				$subject = $notification->getSubject() === 'approved'
-					? $l->t('A file/folder was approved')
-					: $l->t('A file/folder was rejected');
+				$subject = $p['type'] === 'file'
+					? ($notification->getSubject() === 'approved'
+						? $l->t('A file was approved')
+						: $l->t('A file was rejected'))
+					: ($notification->getSubject() === 'approved'
+						? $l->t('A directory was approved')
+						: $l->t('A directory was rejected'));
 				$content = $notification->getSubject() === 'approved'
 					? $l->t('%1$s has approved %2$s.', [$p['approverId'], $p['fileName']])
 					: $l->t('%1$s has rejected %2$s.', [$p['approverId'], $p['fileName']]);
