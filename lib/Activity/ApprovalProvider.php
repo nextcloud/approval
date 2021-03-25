@@ -122,13 +122,13 @@ class ApprovalProvider implements IProvider {
 			$path = $subjectParams['node']['path'];
 			// get file path for current user
 			$userFolder = $this->root->getUserFolder($this->userId);
-			$userfolderPath = $userFolder->getPath();
 			$found = $userFolder->getById($event->getObjectId());
 			if (count($found) === 0) {
 				return null;
 			}
 			$node = $found[0];
-			$path = str_replace($userfolderPath, '', $node->getPath());
+			$path = $userFolder->getRelativePath($node->getPath());
+
 			// name
 			$displayName = $node->getType() === FileInfo::TYPE_FILE
 				? $this->l10n->t('the file %1$s', [$event->getObjectName()])

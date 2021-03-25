@@ -19,6 +19,9 @@ use OCP\AppFramework\IAppContainer;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
+use OCP\Notification\IManager as INotificationManager;
+
+use OCA\Approval\Notification\Notifier;
 
 /**
  * Class Application
@@ -48,9 +51,13 @@ class Application extends App implements IBootstrap {
 
 		$server = $container->getServer();
 		$eventDispatcher = $server->getEventDispatcher();
+		// load files plugin script
 		$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function() {
 			Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin');
 		});
+		// notifications
+		$manager = $container->query(INotificationManager::class);
+		$manager->registerNotifierService(Notifier::class);
 	}
 
 	public function register(IRegistrationContext $context): void {
