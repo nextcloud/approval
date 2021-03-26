@@ -25,8 +25,6 @@
 	<settings>
 		<admin>OCA\Approval\Settings\Admin</admin>
 		<admin-section>OCA\Approval\Settings\AdminSection</admin-section>
-		<personal>OCA\Approval\Settings\Personal</personal>
-		<personal-section>OCA\Approval\Settings\PersonalSection</personal-section>
 	</settings>
 	<activity>
 		<settings>
