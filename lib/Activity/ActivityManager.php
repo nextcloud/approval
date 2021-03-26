@@ -175,7 +175,6 @@ class ActivityManager {
 		$nodeInfo = [
 			'id' => $node->getId(),
 			'name' => $node->getName(),
-			'path' => $node->getPath(),
 		];
 		return [
 			'node' => $nodeInfo,

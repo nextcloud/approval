@@ -104,7 +104,7 @@ class Notifier implements INotifier {
 					'type' => 'file',
 					'id' => $p['fileId'],
 					'name' => $p['fileName'],
-					'path' => $p['relativePath'],
+					'path' => trim($p['relativePath'], '/'),
 					'link' => $linkToFile,
 				];
 
@@ -116,8 +116,8 @@ class Notifier implements INotifier {
 						? $l->t('A directory was approved')
 						: $l->t('A directory was rejected'));
 				$content = $notification->getSubject() === 'approved'
-					? $l->t('%1$s approved %2$s.', [$p['approverId'], $p['fileName']])
-					: $l->t('%1$s rejected %2$s.', [$p['approverId'], $p['fileName']]);
+					? $l->t('%1$s approved %2$s.', [$user->getDisplayName(), $p['fileName']])
+					: $l->t('%1$s rejected %2$s.', [$user->getDisplayName(), $p['fileName']]);
 				$iconUrl = $notification->getSubject() === 'approved'
 					? $this->url->getAbsoluteURL($this->url->imagePath(Application::APP_ID, 'approved.svg'))
 					: $this->url->getAbsoluteURL($this->url->imagePath(Application::APP_ID, 'rejected.svg'));

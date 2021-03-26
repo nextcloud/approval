@@ -119,7 +119,6 @@ class ApprovalProvider implements IProvider {
 			if (isset($subjectParams['node']) && $event->getObjectName() === '') {
 				$event->setObject($event->getObjectType(), $event->getObjectId(), $subjectParams['node']['name']);
 			}
-			$path = $subjectParams['node']['path'];
 			// get file path for current user
 			$userFolder = $this->root->getUserFolder($this->userId);
 			$found = $userFolder->getById($event->getObjectId());
