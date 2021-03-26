@@ -158,7 +158,11 @@ export default {
 	methods: {
 		update(key, value) {
 			if (value) {
-				this.$emit('input', { ...this.value, [key]: value })
+				const backupRule = {
+					...this.value,
+					users: this.value.users.map(u => u),
+				}
+				this.$emit('input', { ...this.value, [key]: value, backupRule })
 			}
 		},
 		asyncFind(query) {

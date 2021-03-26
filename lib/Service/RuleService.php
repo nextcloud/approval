@@ -40,9 +40,56 @@ class RuleService {
 	}
 
 	/**
-	 * @return void
+	 * Check if a rule is in conflict with others
+	 * Check if this pending tag is found in another rule (as pending, approved or rejected)
+	 *
+	 * @param ?int $id rule id, null if not specified
+	 * @param int $tagPending pending tag to serch in other rules
+	 * @return bool true if there is a conflict
 	 */
-	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $userIds): void {
+	private function hasConflict(?int $id, int $tagPending): bool {
+		$qb = $this->db->getQueryBuilder();
+
+		$or = $qb->expr()->orx();
+		$or->add($qb->expr()->eq('tag_pending', $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT)));
+		$or->add($qb->expr()->eq('tag_approved', $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT)));
+		$or->add($qb->expr()->eq('tag_rejected', $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT)));
+		$qb->andWhere($or);
+
+		$qb->select('id')
+			->from('approval_setting')
+			->where($or);
+
+		if (!is_null($id)) {
+			$qb->andWhere(
+				$qb->expr()->neq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
+			);
+		}
+		$req = $qb->execute();
+		while ($row = $req->fetch()) {
+			return true;
+		}
+		$req->closeCursor();
+		$qb = $qb->resetQueryParts();
+
+		return false;
+	}
+
+	/**
+	 * Save the rule to DB if it has no conflict with others
+	 *
+	 * @param ?int $id rule id
+	 * @param int $tagPending
+	 * @param int $tagApproved
+	 * @param int $tagRejected
+	 * @param array $userIds
+	 * @return null|string Error string
+	 */
+	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $userIds): ?string {
+		if ($this->hasConflict($id, $tagPending)) {
+			return 'Rule conflict';
+		}
+
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->update('approval_setting');
@@ -89,12 +136,23 @@ class RuleService {
 			$req = $qb->execute();
 			$qb = $qb->resetQueryParts();
 		}
+		return null;
 	}
 
 	/**
-	 * @return int
+	 * Save the rule to DB if it has no conflict with others
+	 *
+	 * @param int $tagPending
+	 * @param int $tagApproved
+	 * @param int $tagRejected
+	 * @param array $userIds
+	 * @return ?int id of created rule, null if there was a conflict
 	 */
-	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $userIds): int {
+	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $userIds): ?int {
+		if ($this->hasConflict(null, $tagPending)) {
+			return null;
+		}
+
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->insert('approval_setting')
@@ -122,7 +180,10 @@ class RuleService {
 	}
 
 	/**
-	 * @return array
+	 * Delete a rule
+	 *
+	 * @param int $id the rule id
+	 * @return void
 	 */
 	public function deleteRule(int $id): void {
 		$qb = $this->db->getQueryBuilder();
@@ -143,7 +204,9 @@ class RuleService {
 	}
 
 	/**
-	 * @return array
+	 * Get a rule by id
+	 * @param int $id the rule id
+	 * @return ?array the rule or null if not found
 	 */
 	public function getRule(int $id): ?array {
 		$rule = null;
@@ -190,6 +253,8 @@ class RuleService {
 	}
 
 	/**
+	 * Get all rules
+	 *
 	 * @return array
 	 */
 	public function getRules(): array {

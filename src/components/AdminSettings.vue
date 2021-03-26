@@ -117,7 +117,9 @@ export default {
 						t('approval', 'Failed to save approval rule')
 						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 					)
-					console.debug(error)
+					console.error(error)
+					// restore rule values
+					this.rules[id] = rule.backupRule
 				}).then(() => {
 				})
 			}
@@ -148,7 +150,7 @@ export default {
 					showSuccess(t('approval', 'New approval rule created'))
 					const id = response.data
 					this.newRule = null
-					this.rules[id] = rule
+					this.$set(this.rules, id, rule)
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to create approval rule')

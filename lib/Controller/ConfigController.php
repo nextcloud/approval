@@ -53,19 +53,6 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * set admin config values
-	 *
-	 * @param array $values
-	 * @return DataResponse
-	 */
-	public function setAdminConfig(array $values): DataResponse {
-		foreach ($values as $key => $value) {
-			$this->config->setAppValue(Application::APP_ID, $key, $value);
-		}
-		return new DataResponse(1);
-	}
-
-	/**
 	 *
 	 * @return DataResponse
 	 */
@@ -91,7 +78,9 @@ class ConfigController extends Controller {
 	 */
 	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
 		$id = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $users);
-		return new DataResponse($id);
+		return is_null($id)
+			? new DataResponse(['error' => 'Impossible to create rule'], 400)
+			: new DataResponse($id);
 	}
 
 	/**
@@ -99,8 +88,10 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 */
 	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
-		$this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $users);
-		return new DataResponse(1);
+		$error = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $users);
+		return is_null($error)
+			? new DataResponse(1)
+			: new DataResponse(['error' => $error], 400);
 	}
 
 	/**
