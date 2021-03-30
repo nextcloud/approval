@@ -3,7 +3,7 @@
 	<id>approval</id>
 	<name>Approval</name>
 	<summary>Let users approve or disapprove files</summary>
-	<description><![CDATA[Approve/disapprove files in the sidebar.]]></description>
+	<description><![CDATA[Approve/reject files based on hidden tags rules.]]></description>
 	<version>0.0.2</version>
 	<licence>agpl</licence>
 	<author>Julien Veyssier</author>

@@ -12,6 +12,20 @@ jobs:
       APP_ID: approval
     runs-on: ubuntu-latest
     steps:
+      - name: Use Node 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, intl, sqlite3
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+          tools: php-cs-fixer, phpunit
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -30,12 +44,12 @@ jobs:
           echo "##[set-output name=app_id;]$APP_ID"
           echo "###### copy certificate"
           mkdir -p ~/.nextcloud/certificates
-          echo "$APP_CRT" > ~/.nextcloud/certificates/${APP_ID}.crt
-          echo "$APP_KEY" > ~/.nextcloud/certificates/${APP_ID}.key
+          #echo "$APP_CRT" > ~/.nextcloud/certificates/${APP_ID}.crt
+          #echo "$APP_KEY" > ~/.nextcloud/certificates/${APP_ID}.key
           echo "###### install dependencies"
           export DEBIAN_FRONTEND=noninteractive
           sudo apt update -y
-          sudo apt install php-mbstring php-sqlite3 npm make openssl -y
+          sudo apt install make openssl -y
           echo "###### installing nextcloud"
           mkdir ~/html
           git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b master ~/html/nextcloud
@@ -45,18 +59,16 @@ jobs:
           php ~/html/nextcloud/occ app:enable ${APP_ID}
           php ~/html/nextcloud/occ maintenance:mode --off
           cd ~/html/nextcloud/apps/${APP_ID}
-          echo "###### npm install"
-          npm ci
-          echo "###### npm run build"
-          npm run build
+          echo "###### build app"
+          make
           echo "###### make appstore"
           tag=${{ steps.tag.outputs.currenttag }}
           version=${tag/v/}
           webserveruser=runner occ_dir=~/html/nextcloud version=$version make appstore
           echo "##[set-output name=version;]$version"
-        env:
-          APP_CRT: ${{ secrets.APP_CRT }}
-          APP_KEY: ${{ secrets.APP_KEY }}
+        #env:
+        #  APP_CRT: ${{ secrets.APP_CRT }}
+        #  APP_KEY: ${{ secrets.APP_KEY }}
 
       - name: Create Release
         if: ${{ startsWith( steps.tag.outputs.currenttag , 'v' ) }}
@@ -82,13 +94,13 @@ jobs:
           asset_name: ${{ steps.build_release.outputs.app_id }}-${{ steps.build_release.outputs.version }}.tar.gz
           asset_content_type: application/gzip
 
-      - name: Publish to appstore
-        if: ${{ startsWith( steps.tag.outputs.currenttag , 'v' ) }}
-        id: publish
-        run: |
-          SIGNATURE=$(cat /tmp/build/sign.txt | tr -d '\n')
-          VERSION=${{ steps.build_release.outputs.version }}
-          DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v${VERSION}/${APP_ID}-${VERSION}.tar.gz
-          curl -X POST -H "Authorization: Token $APPSTORE_TOKEN" https://apps.nextcloud.com/api/v1/apps/releases -H "Content-Type: application/json" -d '{"download":"'${DOWNLOAD_URL}'", "signature": "'${SIGNATURE}'"}'
-        env:
-          APPSTORE_TOKEN: ${{ secrets.APPSTORE_TOKEN }}
+      #- name: Publish to appstore
+      #  if: ${{ startsWith( steps.tag.outputs.currenttag , 'v' ) }}
+      #  id: publish
+      #  run: |
+      #    SIGNATURE=$(cat /tmp/build/sign.txt | tr -d '\n')
+      #    VERSION=${{ steps.build_release.outputs.version }}
+      #    DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v${VERSION}/${APP_ID}-${VERSION}.tar.gz
+      #    curl -X POST -H "Authorization: Token $APPSTORE_TOKEN" https://apps.nextcloud.com/api/v1/apps/releases -H "Content-Type: application/json" -d '{"download":"'${DOWNLOAD_URL}'", "signature": "'${SIGNATURE}'"}'
+      #  env:
+      #    APPSTORE_TOKEN: ${{ secrets.APPSTORE_TOKEN }}
