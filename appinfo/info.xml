@@ -4,7 +4,7 @@
 	<name>Approval</name>
 	<summary>Let users approve or disapprove files</summary>
 	<description><![CDATA[Approve/reject files based on hidden tags rules.]]></description>
-	<version>0.0.4</version>
+	<version>0.0.3</version>
 	<licence>agpl</licence>
 	<author>Julien Veyssier</author>
 	<namespace>Approval</namespace>

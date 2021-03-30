@@ -121,6 +121,7 @@ class RuleService {
 			$qb = $qb->resetQueryParts();
 
 		$rule = $this->getRule($id);
+
 		// users
 		$toDelete = [];
 		$toAdd = [];
@@ -167,6 +168,54 @@ class RuleService {
 			$req = $qb->execute();
 			$qb = $qb->resetQueryParts();
 		}
+
+		// groups
+		$toDelete = [];
+		$toAdd = [];
+		$oldGroupIds = [];
+		foreach ($rule['who'] as $elem) {
+			if (isset($elem['groupId'])) {
+				$oldUserIds[] = $elem['groupId'];
+			}
+		}
+		$newGroupIds = [];
+		foreach ($who as $elem) {
+			if (isset($elem['groupId'])) {
+				$newGroupIds[] = $elem['groupId'];
+			}
+		}
+
+		foreach ($oldGroupIds as $gid) {
+			if (!in_array($gid, $newGroupIds)) {
+				$toDelete[] = $gid;
+			}
+		}
+		foreach ($newGroupIds as $gid) {
+			if (!in_array($gid, $oldGroupIds)) {
+				$toAdd[] = $gid;
+			}
+		}
+		foreach ($toDelete as $gid) {
+			$qb->delete('approval_rule_groups')
+				->where(
+					$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
+				)
+				->andWhere(
+                    $qb->expr()->eq('group_id', $qb->createNamedParameter($gid, IQueryBuilder::PARAM_STR))
+                );
+			$req = $qb->execute();
+			$qb = $qb->resetQueryParts();
+		}
+		foreach ($toAdd as $gid) {
+			$qb->insert('approval_rule_groups')
+				->values([
+					'group_id' => $qb->createNamedParameter($gid, IQueryBuilder::PARAM_STR),
+					'rule_id' => $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT),
+				]);
+			$req = $qb->execute();
+			$qb = $qb->resetQueryParts();
+		}
+
 		return ['id' => $id];
 	}
 
@@ -209,6 +258,14 @@ class RuleService {
 					]);
 				$req = $qb->execute();
 				$qb = $qb->resetQueryParts();
+			} elseif (isset($elem['groupId'])) {
+				$qb->insert('approval_rule_groups')
+					->values([
+						'group_id' => $qb->createNamedParameter($elem['groupId'], IQueryBuilder::PARAM_STR),
+						'rule_id' => $qb->createNamedParameter($insertedRuleId, IQueryBuilder::PARAM_INT),
+					]);
+				$req = $qb->execute();
+				$qb = $qb->resetQueryParts();
 			}
 		}
 
@@ -236,6 +293,13 @@ class RuleService {
 		$qb = $qb->resetQueryParts();
 
 		$qb->delete('approval_rule_users')
+			->where(
+				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
+			);
+		$req = $qb->execute();
+		$qb = $qb->resetQueryParts();
+
+		$qb->delete('approval_rule_groups')
 			->where(
 				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
@@ -293,6 +357,20 @@ class RuleService {
 		$req->closeCursor();
 		$qb = $qb->resetQueryParts();
 
+		$qb->select('*')
+			->from('approval_rule_groups')
+			->where(
+				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
+			);
+		$req = $qb->execute();
+		while ($row = $req->fetch()) {
+			$rule['who'][] = [
+				'groupId' => $row['group_id']
+			];
+		}
+		$req->closeCursor();
+		$qb = $qb->resetQueryParts();
+
 		return $rule;
 	}
 
@@ -333,6 +411,20 @@ class RuleService {
 			while ($row = $req->fetch()) {
 				$rules[$id]['who'][] = [
 					'userId' => $row['user_id']
+				];
+			}
+			$req->closeCursor();
+			$qb = $qb->resetQueryParts();
+
+			$qb->select('*')
+				->from('approval_rule_groups')
+				->where(
+					$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
+				);
+			$req = $qb->execute();
+			while ($row = $req->fetch()) {
+				$rules[$id]['who'][] = [
+					'groupId' => $row['group_id']
 				];
 			}
 			$req->closeCursor();
