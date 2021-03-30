@@ -1,6 +1,7 @@
 <template>
 	<div class="approval_rule">
-		<div class="users">
+		<div v-tooltip.top="{ content: usersTooltip }"
+			class="users">
 			<span class="icon icon-user" />
 			<div class="approval-user">
 				<Multiselect
@@ -41,7 +42,8 @@
 				</Multiselect>
 			</div>
 		</div>
-		<div class="tag">
+		<div v-tooltip.top="{ content: pendingTooltip }"
+			class="tag">
 			<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
 			<MultiselectTags class="tag-select"
 				:value="value.tagPending"
@@ -49,7 +51,8 @@
 				:multiple="false"
 				@input="update('tagPending', $event)" />
 		</div>
-		<div class="tag">
+		<div v-tooltip.top="{ content: approvedTooltip }"
+			class="tag">
 			<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
 			<MultiselectTags class="tag-select"
 				:value="value.tagApproved"
@@ -57,7 +60,8 @@
 				:multiple="false"
 				@input="update('tagApproved', $event)" />
 		</div>
-		<div class="tag">
+		<div v-tooltip.top="{ content: rejectedTooltip }"
+			class="tag">
 			<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
 			<MultiselectTags class="tag-select"
 				:value="value.tagRejected"
@@ -101,9 +105,13 @@ export default {
 
 	data() {
 		return {
-			tagPendingIconUrl: generateUrl('/svg/core/actions/tag?color=0082c9'),
+			tagPendingIconUrl: generateUrl('/svg/core/actions/tag?color=eca700'),
 			tagApprovedIconUrl: generateUrl('/svg/core/actions/tag?color=46ba61'),
 			tagRejectedIconUrl: generateUrl('/svg/core/actions/tag?color=e9322d'),
+			usersTooltip: t('approval', 'Who can approve'),
+			pendingTooltip: t('approval', 'Pending tag'),
+			approvedTooltip: t('approval', 'Approved tag'),
+			rejectedTooltip: t('approval', 'Rejected tag'),
 			deleteRuleTooltip: t('approval', 'Delete this rule'),
 			loadingUsers: false,
 			suggestions: [],
