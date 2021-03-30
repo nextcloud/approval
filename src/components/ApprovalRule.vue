@@ -1,19 +1,19 @@
 <template>
 	<div class="approval_rule">
-		<div v-tooltip.top="{ content: usersTooltip }"
+		<div v-tooltip.left="{ content: whoTooltip }"
 			class="users">
-			<span class="icon icon-user" />
+			<span class="icon icon-group" />
 			<div class="approval-user">
 				<Multiselect
 					class="approval-user-input"
 					label="displayName"
-					track-by="user"
-					:value="value.users"
+					track-by="trackKey"
+					:value="value.who"
 					:multiple="true"
 					:clear-on-select="false"
 					:hide-selected="false"
 					:internal-search="false"
-					:loading="loadingUsers"
+					:loading="loadingSuggestions"
 					:options="formattedSuggestions"
 					:placeholder="t('welcome', 'Who can approve?')"
 					:preselect-first="false"
@@ -21,11 +21,16 @@
 					:searchable="true"
 					:user-select="true"
 					@search-change="asyncFind"
-					@update:value="update('users', $event)">
+					@update:value="update('who', $event)">
 					<template #option="{option}">
-						<Avatar
+						<Avatar v-if="option.userId"
 							class="approval-avatar-option"
-							:user="option.user"
+							:user="option.userId"
+							:show-user-status="false" />
+						<Avatar v-else-if="option.groupId"
+							class="approval-avatar-option"
+							:display-name="option.displayName"
+							:is-no-user="true"
 							:show-user-status="false" />
 						<span class="multiselect-name">
 							{{ option.displayName }}
@@ -42,7 +47,7 @@
 				</Multiselect>
 			</div>
 		</div>
-		<div v-tooltip.top="{ content: pendingTooltip }"
+		<div v-tooltip.left="{ content: pendingTooltip }"
 			class="tag">
 			<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
 			<MultiselectTags class="tag-select"
@@ -51,7 +56,7 @@
 				:multiple="false"
 				@input="update('tagPending', $event)" />
 		</div>
-		<div v-tooltip.top="{ content: approvedTooltip }"
+		<div v-tooltip.left="{ content: approvedTooltip }"
 			class="tag">
 			<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
 			<MultiselectTags class="tag-select"
@@ -60,7 +65,7 @@
 				:multiple="false"
 				@input="update('tagApproved', $event)" />
 		</div>
-		<div v-tooltip.top="{ content: rejectedTooltip }"
+		<div v-tooltip.left="{ content: rejectedTooltip }"
 			class="tag">
 			<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
 			<MultiselectTags class="tag-select"
@@ -108,12 +113,12 @@ export default {
 			tagPendingIconUrl: generateUrl('/svg/core/actions/tag?color=eca700'),
 			tagApprovedIconUrl: generateUrl('/svg/core/actions/tag?color=46ba61'),
 			tagRejectedIconUrl: generateUrl('/svg/core/actions/tag?color=e9322d'),
-			usersTooltip: t('approval', 'Who can approve'),
+			whoTooltip: t('approval', 'Who can approve'),
 			pendingTooltip: t('approval', 'Pending tag'),
 			approvedTooltip: t('approval', 'Approved tag'),
 			rejectedTooltip: t('approval', 'Rejected tag'),
 			deleteRuleTooltip: t('approval', 'Delete this rule'),
-			loadingUsers: false,
+			loadingSuggestions: false,
 			suggestions: [],
 			query: '',
 			currentUser: getCurrentUser(),
@@ -122,37 +127,66 @@ export default {
 
 	computed: {
 		formattedSuggestions() {
+			// users (avoid selected users)
 			const result = this.suggestions.filter((s) => {
-				return !this.value.users.find(u => u.user === s.id)
+				return s.source === 'users' && !this.value.who.find(u => u.userId === s.id)
 			}).map((s) => {
 				return {
-					user: s.id,
+					userId: s.id,
 					displayName: s.label,
 					icon: 'icon-user',
+					trackKey: 'user-' + s.id,
 				}
 			})
+
 			// add current user (who is absent from autocomplete suggestions)
 			// if it matches the query
 			if (this.currentUser && this.query) {
 				const lowerCurrent = this.currentUser.displayName.toLowerCase()
 				const lowerQuery = this.query.toLowerCase()
 				// don't add it if it's selected
-				if (lowerCurrent.match(lowerQuery) && !this.value.users.find(u => u.user === this.currentUser.uid)) {
+				if (lowerCurrent.match(lowerQuery) && !this.value.who.find(u => u.userId === this.currentUser.uid)) {
 					result.push({
-						user: this.currentUser.uid,
+						userId: this.currentUser.uid,
 						displayName: this.currentUser.displayName,
 						icon: 'icon-user',
+						trackKey: 'user-' + this.currentUser.uid,
 					})
 				}
 			}
-			// always add selected users at the end
-			result.push(...this.value.users.map((u) => {
+
+			// groups (avoid selected ones)
+			const groups = this.suggestions.filter((s) => {
+				return s.source === 'groups' && !this.value.who.find(u => u.groupId === s.id)
+			}).map((s) => {
 				return {
-					user: u.user,
-					displayName: u.displayName,
-					icon: 'icon-user',
+					groupId: s.id,
+					displayName: s.label,
+					icon: 'icon-group',
+					trackKey: 'group-' + s.id,
 				}
+			})
+			result.push(...groups)
+
+			// always add selected users/groups at the end
+			result.push(...this.value.who.map((w) => {
+				return w.userId
+					? {
+						userId: w.userId,
+						displayName: w.displayName,
+						icon: 'icon-user',
+						trackKey: 'user-' + w.userId,
+					}
+					: {
+						groupId: w.groupId,
+						displayName: w.displayName,
+						icon: 'icon-group',
+						trackKey: 'group-' + w.groupId,
+					}
 			}))
+
+			console.debug('SUSUSUSUS')
+			console.debug(result)
 			return result
 		},
 	},
@@ -165,10 +199,13 @@ export default {
 
 	methods: {
 		update(key, value) {
+			console.debug('update')
+			console.debug(key)
+			console.debug(value)
 			if (value) {
 				const backupRule = {
 					...this.value,
-					users: this.value.users.map(u => u),
+					who: this.value.who.map(e => e),
 				}
 				this.$emit('input', { ...this.value, [key]: value, backupRule })
 			}
@@ -179,7 +216,7 @@ export default {
 				this.suggestions = []
 				return
 			}
-			this.loadingUsers = true
+			this.loadingSuggestions = true
 			console.debug(query)
 			const url = generateOcsUrl('core/autocomplete/get', 2).replace(/\/$/, '')
 			axios.get(url, {
@@ -188,7 +225,8 @@ export default {
 					search: query,
 					itemType: ' ',
 					itemId: ' ',
-					shareTypes: [],
+					// users and groups
+					shareTypes: [0, 1],
 				},
 			}).then((response) => {
 				console.debug(response)
@@ -196,7 +234,7 @@ export default {
 			}).catch((error) => {
 				console.error(error)
 			}).then(() => {
-				this.loadingUsers = false
+				this.loadingSuggestions = false
 			})
 		},
 	},

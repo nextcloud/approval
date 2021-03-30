@@ -59,15 +59,14 @@ class ConfigController extends Controller {
 	public function getRules(): DataResponse {
 		$rules = $this->ruleService->getRules();
 		foreach ($rules as $id => $rule) {
-			$users = [];
-			foreach ($rule['users'] as $uid) {
-				$user = $this->userManager->get($uid);
-				$users[] = [
-					'user' => $uid,
-					'displayName' => $user ? $user->getDisplayName() : $uid,
-				];
+			foreach ($rule['who'] as $k => $elem) {
+				if (isset($elem['userId'])) {
+					$user = $this->userManager->get($elem['userId']);
+					$rules[$id]['who'][$k]['displayName'] = $user ? $user->getDisplayName() : $elem['userId'];
+				} else {
+					$rules[$id]['who'][$k]['displayName'] = $elem['groupId'];
+				}
 			}
-			$rules[$id]['users'] = $users;
 		}
 		return new DataResponse($rules);
 	}
@@ -76,8 +75,8 @@ class ConfigController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
-		$result = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $users);
+	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $who): DataResponse {
+		$result = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $who);
 		return isset($result['error'])
 			? new DataResponse($result, 400)
 			: new DataResponse($result['id']);
@@ -87,8 +86,8 @@ class ConfigController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
-		$result = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $users);
+	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $who): DataResponse {
+		$result = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $who);
 		return isset($result['error'])
 			? new DataResponse($result, 400)
 			: new DataResponse($result['id']);

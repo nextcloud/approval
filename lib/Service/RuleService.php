@@ -97,10 +97,10 @@ class RuleService {
 	 * @param int $tagPending
 	 * @param int $tagApproved
 	 * @param int $tagRejected
-	 * @param array $userIds
+	 * @param array $who
 	 * @return null|string Error string
 	 */
-	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $userIds): array {
+	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $who): array {
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Invalid rule'];
 		}
@@ -121,16 +121,29 @@ class RuleService {
 			$qb = $qb->resetQueryParts();
 
 		$rule = $this->getRule($id);
+		// users
 		$toDelete = [];
 		$toAdd = [];
+		$oldUserIds = [];
+		foreach ($rule['who'] as $elem) {
+			if (isset($elem['userId'])) {
+				$oldUserIds[] = $elem['userId'];
+			}
+		}
+		$newUserIds = [];
+		foreach ($who as $elem) {
+			if (isset($elem['userId'])) {
+				$newUserIds[] = $elem['userId'];
+			}
+		}
 
-		foreach ($rule['users'] as $uid) {
-			if (!in_array($uid, $userIds)) {
+		foreach ($oldUserIds as $uid) {
+			if (!in_array($uid, $newUserIds)) {
 				$toDelete[] = $uid;
 			}
 		}
-		foreach ($userIds as $uid) {
-			if (!in_array($uid, $rule['users'])) {
+		foreach ($newUserIds as $uid) {
+			if (!in_array($uid, $oldUserIds)) {
 				$toAdd[] = $uid;
 			}
 		}
@@ -163,10 +176,10 @@ class RuleService {
 	 * @param int $tagPending
 	 * @param int $tagApproved
 	 * @param int $tagRejected
-	 * @param array $userIds
+	 * @param array $who
 	 * @return array id of created rule or error string
 	 */
-	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $userIds): array {
+	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $who): array {
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Rule is invalid'];
 		}
@@ -187,14 +200,16 @@ class RuleService {
 
 		$insertedRuleId = $qb->getLastInsertId();
 
-		foreach ($userIds as $userId) {
-			$qb->insert('approval_rule_users')
-				->values([
-					'user_id' => $qb->createNamedParameter($userId, IQueryBuilder::PARAM_STR),
-					'rule_id' => $qb->createNamedParameter($insertedRuleId, IQueryBuilder::PARAM_INT),
-				]);
-			$req = $qb->execute();
-			$qb = $qb->resetQueryParts();
+		foreach ($who as $elem) {
+			if (isset($elem['userId'])) {
+				$qb->insert('approval_rule_users')
+					->values([
+						'user_id' => $qb->createNamedParameter($elem['userId'], IQueryBuilder::PARAM_STR),
+						'rule_id' => $qb->createNamedParameter($insertedRuleId, IQueryBuilder::PARAM_INT),
+					]);
+				$req = $qb->execute();
+				$qb = $qb->resetQueryParts();
+			}
 		}
 
 		return ['id' => $insertedRuleId];
@@ -253,7 +268,7 @@ class RuleService {
 				'tagPending' => $tagPending,
 				'tagApproved' => $tagApproved,
 				'tagRejected' => $tagRejected,
-				'users' => [],
+				'who' => [],
 			];
 			break;
 		}
@@ -271,7 +286,9 @@ class RuleService {
 			);
 		$req = $qb->execute();
 		while ($row = $req->fetch()) {
-			$rule['users'][] = $row['user_id'];
+			$rule['who'][] = [
+				'userId' => $row['user_id']
+			];
 		}
 		$req->closeCursor();
 		$qb = $qb->resetQueryParts();
@@ -300,7 +317,7 @@ class RuleService {
 				'tagPending' => $tagPending,
 				'tagApproved' => $tagApproved,
 				'tagRejected' => $tagRejected,
-				'users' => [],
+				'who' => [],
 			];
 		}
 		$req->closeCursor();
@@ -314,7 +331,9 @@ class RuleService {
 				);
 			$req = $qb->execute();
 			while ($row = $req->fetch()) {
-				$rules[$id]['users'][] = $row['user_id'];
+				$rules[$id]['who'][] = [
+					'userId' => $row['user_id']
+				];
 			}
 			$req->closeCursor();
 			$qb = $qb->resetQueryParts();

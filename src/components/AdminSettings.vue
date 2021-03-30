@@ -91,6 +91,15 @@ export default {
 			const url = generateUrl('/apps/approval/rules')
 			axios.get(url).then((response) => {
 				this.rules = response.data
+				// add unique ids to who values
+				for (const id in this.rules) {
+					this.rules[id].who = this.rules[id].who.map(w => {
+						return {
+							...w,
+							trackKey: w.userId ? 'user-' + w.userId : 'group-' + w.groupId,
+						}
+					})
+				}
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to get approval rules')
@@ -101,15 +110,18 @@ export default {
 			})
 		},
 		onRuleInput(id, rule) {
-			console.debug('SAVE rule')
-			console.debug(id)
 			// save if all values are set
-			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.users.length > 0) {
+			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.who.length > 0) {
 				const req = {
 					tagPending: rule.tagPending,
 					tagApproved: rule.tagApproved,
 					tagRejected: rule.tagRejected,
-					users: rule.users.map(u => u.user),
+					who: rule.who.map((u) => {
+						return {
+							userId: u.userId,
+							groupId: u.groupId,
+						}
+					}),
 				}
 				const url = generateUrl('/apps/approval/rule/' + id)
 				axios.put(url, req).then((response) => {
@@ -131,7 +143,7 @@ export default {
 				tagPending: 0,
 				tagApproved: 0,
 				tagRejected: 0,
-				users: [],
+				who: [],
 			}
 		},
 		onNewRuleDelete() {
@@ -139,13 +151,18 @@ export default {
 		},
 		onNewRuleInput(rule) {
 			console.debug(rule)
-			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.users.length > 0) {
+			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.who.length > 0) {
 				// create
 				const req = {
 					tagPending: rule.tagPending,
 					tagApproved: rule.tagApproved,
 					tagRejected: rule.tagRejected,
-					users: rule.users.map(u => u.user),
+					who: rule.who.map((u) => {
+						return {
+							userId: u.userId,
+							groupId: u.groupId,
+						}
+					}),
 				}
 				const url = generateUrl('/apps/approval/rule')
 				axios.post(url, req).then((response) => {
