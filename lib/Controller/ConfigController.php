@@ -77,10 +77,10 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 */
 	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
-		$id = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $users);
-		return is_null($id)
-			? new DataResponse(['error' => 'Impossible to create rule'], 400)
-			: new DataResponse($id);
+		$result = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $users);
+		return isset($result['error'])
+			? new DataResponse($result, 400)
+			: new DataResponse($result['id']);
 	}
 
 	/**
@@ -88,10 +88,10 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 */
 	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $users): DataResponse {
-		$error = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $users);
-		return is_null($error)
-			? new DataResponse(1)
-			: new DataResponse(['error' => $error], 400);
+		$result = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $users);
+		return isset($result['error'])
+			? new DataResponse($result, 400)
+			: new DataResponse($result['id']);
 	}
 
 	/**
@@ -99,7 +99,9 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 */
 	public function deleteRule(int $id): DataResponse {
-		$this->ruleService->deleteRule($id);
-		return new DataResponse();
+		$result = $this->ruleService->deleteRule($id);
+		return isset($result['error'])
+			? new DataResponse($result, 400)
+			: new DataResponse();
 	}
 }

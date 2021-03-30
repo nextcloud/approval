@@ -101,6 +101,8 @@ export default {
 			})
 		},
 		onRuleInput(id, rule) {
+			console.debug('SAVE rule')
+			console.debug(id)
 			// save if all values are set
 			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.users.length > 0) {
 				const req = {

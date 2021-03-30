@@ -40,11 +40,26 @@ class RuleService {
 	}
 
 	/**
+	 * Check if a rule is valid
+	 * All tags must be different
+	 *
+	 * @param int $tagPending
+	 * @param int $tagApproved
+	 * @param int $tagRejected
+	 * @return bool true if rule is valid
+	 */
+	private function isValid(int $tagPending, int $tagApproved, int $tagRejected): bool {
+		return $tagPending !== $tagApproved
+			&& $tagPending !== $tagRejected
+			&& $tagApproved !== $tagRejected;
+	}
+
+	/**
 	 * Check if a rule is in conflict with others
 	 * Check if this pending tag is found in another rule (as pending, approved or rejected)
 	 *
 	 * @param ?int $id rule id, null if not specified
-	 * @param int $tagPending pending tag to serch in other rules
+	 * @param int $tagPending pending tag to search in other rules
 	 * @return bool true if there is a conflict
 	 */
 	private function hasConflict(?int $id, int $tagPending): bool {
@@ -85,9 +100,12 @@ class RuleService {
 	 * @param array $userIds
 	 * @return null|string Error string
 	 */
-	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $userIds): ?string {
+	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $userIds): array {
+		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
+			return ['error' => 'Invalid rule'];
+		}
 		if ($this->hasConflict($id, $tagPending)) {
-			return 'Rule conflict';
+			return ['error' => 'Rule conflict'];
 		}
 
 		$qb = $this->db->getQueryBuilder();
@@ -136,7 +154,7 @@ class RuleService {
 			$req = $qb->execute();
 			$qb = $qb->resetQueryParts();
 		}
-		return null;
+		return ['id' => $id];
 	}
 
 	/**
@@ -146,11 +164,14 @@ class RuleService {
 	 * @param int $tagApproved
 	 * @param int $tagRejected
 	 * @param array $userIds
-	 * @return ?int id of created rule, null if there was a conflict
+	 * @return array id of created rule or error string
 	 */
-	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $userIds): ?int {
+	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $userIds): array {
+		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
+			return ['error' => 'Rule is invalid'];
+		}
 		if ($this->hasConflict(null, $tagPending)) {
-			return null;
+			return ['error' => 'Rule conflicts'];
 		}
 
 		$qb = $this->db->getQueryBuilder();
@@ -176,16 +197,20 @@ class RuleService {
 			$qb = $qb->resetQueryParts();
 		}
 
-		return $insertedRuleId;
+		return ['id' => $insertedRuleId];
 	}
 
 	/**
 	 * Delete a rule
 	 *
 	 * @param int $id the rule id
-	 * @return void
+	 * @return array potential error
 	 */
-	public function deleteRule(int $id): void {
+	public function deleteRule(int $id): array {
+		if (is_null($this->getRule($id))) {
+			return ['error' => 'Rule does not exist'];
+		}
+
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->delete('approval_setting')
@@ -201,6 +226,8 @@ class RuleService {
 			);
 		$req = $qb->execute();
 		$qb = $qb->resetQueryParts();
+
+		return [];
 	}
 
 	/**
