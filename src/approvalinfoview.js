@@ -102,8 +102,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		setFileInfo(fileInfo) {
 			this.hide()
-			// console.debug('setFileInfo')
-			// console.debug(fileInfo)
 			// Why is this called twice and fileInfo is not the same on each call?
 			this.fileName = fileInfo.name || fileInfo.attributes?.name || ''
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0

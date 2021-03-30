@@ -67,8 +67,8 @@ class RuleService {
 
 		$or = $qb->expr()->orx();
 		$or->add($qb->expr()->eq('tag_pending', $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT)));
-		$or->add($qb->expr()->eq('tag_approved', $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT)));
-		$or->add($qb->expr()->eq('tag_rejected', $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT)));
+		// $or->add($qb->expr()->eq('tag_approved', $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT)));
+		// $or->add($qb->expr()->eq('tag_rejected', $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT)));
 		$qb->andWhere($or);
 
 		$qb->select('id')
@@ -175,7 +175,7 @@ class RuleService {
 		$oldGroupIds = [];
 		foreach ($rule['who'] as $elem) {
 			if (isset($elem['groupId'])) {
-				$oldUserIds[] = $elem['groupId'];
+				$oldGroupIds[] = $elem['groupId'];
 			}
 		}
 		$newGroupIds = [];
@@ -233,7 +233,7 @@ class RuleService {
 			return ['error' => 'Rule is invalid'];
 		}
 		if ($this->hasConflict(null, $tagPending)) {
-			return ['error' => 'Rule conflicts'];
+			return ['error' => 'Rule conflict'];
 		}
 
 		$qb = $this->db->getQueryBuilder();

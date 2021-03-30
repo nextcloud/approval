@@ -22,6 +22,7 @@ use OCP\Files\IRootFolder;
 use OCP\Files\FileInfo;
 use OCP\IUserManager;
 use OCP\IUser;
+use OCP\IGroupManager;
 use OCP\Notification\IManager as INotificationManager;
 
 use OCA\Approval\AppInfo\Application;
@@ -42,6 +43,7 @@ class ApprovalService {
 								ISystemTagObjectMapper $tagObjectMapper,
 								IRootFolder $root,
 								IUserManager $userManager,
+								IGroupManager $groupManager,
 								INotificationManager $notificationManager,
 								RuleService $ruleService,
 								ActivityManager $activityManager,
@@ -52,6 +54,7 @@ class ApprovalService {
 		$this->config = $config;
 		$this->root = $root;
 		$this->userManager = $userManager;
+		$this->groupManager = $groupManager;
 		$this->notificationManager = $notificationManager;
 		$this->activityManager = $activityManager;
 		$this->tagManager = $tagManager;
@@ -82,24 +85,61 @@ class ApprovalService {
 		return false;
 	}
 
+	private function userIsAuthorizedByRule(string $userId, array $rule): bool {
+		$user = $this->userManager->get($userId);
+
+		$ruleUserIds = array_map(function ($w) {
+			return $w['userId'];
+		}, array_filter($rule['who'], function ($w) {
+			return isset($w['userId']);
+		}));
+
+		// if user is in rule's user list
+		if (in_array($userId, $ruleUserIds)) {
+			return true;
+		} else {
+			// if user is member of one rule's group list
+			$ruleGroupIds = array_map(function ($w) {
+				return $w['groupId'];
+			}, array_filter($rule['who'], function ($w) {
+				return isset($w['groupId']);
+			}));
+			foreach ($ruleGroupIds as $groupId) {
+				if ($this->groupManager->groupExists($groupId) && $this->groupManager->get($groupId)->inGroup($user)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * @param int $fileId
 	 * @return bool
 	 */
 	public function getApprovalState(int $fileId, ?string $userId): int {
-		if (!$this->userHasAccessTo($fileId, $userId)) {
+		if (is_null($userId) || !$this->userHasAccessTo($fileId, $userId)) {
 			return Application::STATE_NOTHING;
 		}
 
 		$rules = $this->ruleService->getRules();
+
+		// first check if it's approvable
+		foreach ($rules as $id => $rule) {
+			try {
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+					&& $this->userIsAuthorizedByRule($userId, $rule)) {
+					return Application::STATE_APPROVABLE;
+				}
+			} catch (TagNotFoundException $e) {
+			}
+		}
+
+		// then check other states
 		foreach ($rules as $id => $rule) {
 			try {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])) {
-					if (in_array($userId, $rule['users'])) {
-						return Application::STATE_APPROVABLE;
-					} else {
-						return Application::STATE_PENDING;
-					}
+					return Application::STATE_PENDING;
 				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])) {
 					return Application::STATE_APPROVED;
 				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])) {
@@ -124,7 +164,7 @@ class ApprovalService {
 			foreach ($rules as $id => $rule) {
 				try {
 					if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
-						&& in_array($userId, $rule['users'])) {
+						&& $this->userIsAuthorizedByRule($userId, $rule)) {
 						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagApproved']);
 						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
 
@@ -155,7 +195,7 @@ class ApprovalService {
 			foreach ($rules as $id => $rule) {
 				try {
 					if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
-						&& in_array($userId, $rule['users'])) {
+						&& $this->userIsAuthorizedByRule($userId, $rule)) {
 						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagRejected']);
 						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
 

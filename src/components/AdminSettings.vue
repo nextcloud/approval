@@ -150,7 +150,6 @@ export default {
 			this.newRule = null
 		},
 		onNewRuleInput(rule) {
-			console.debug(rule)
 			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.who.length > 0) {
 				// create
 				const req = {

@@ -185,8 +185,6 @@ export default {
 					}
 			}))
 
-			console.debug('SUSUSUSUS')
-			console.debug(result)
 			return result
 		},
 	},
@@ -199,9 +197,6 @@ export default {
 
 	methods: {
 		update(key, value) {
-			console.debug('update')
-			console.debug(key)
-			console.debug(value)
 			if (value) {
 				const backupRule = {
 					...this.value,
@@ -217,7 +212,6 @@ export default {
 				return
 			}
 			this.loadingSuggestions = true
-			console.debug(query)
 			const url = generateOcsUrl('core/autocomplete/get', 2).replace(/\/$/, '')
 			axios.get(url, {
 				params: {
@@ -229,7 +223,6 @@ export default {
 					shareTypes: [0, 1],
 				},
 			}).then((response) => {
-				console.debug(response)
 				this.suggestions = response.data.ocs.data
 			}).catch((error) => {
 				console.error(error)
