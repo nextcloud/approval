@@ -12,7 +12,7 @@ use OCP\Migration\IOutput;
 /**
  * Auto-generated migration step: Please modify to your needs!
  */
-class Version000002Date20210316110812 extends SimpleMigrationStep {
+class Version000002Date20210330122733 extends SimpleMigrationStep {
 
 	/**
 	 * @param IOutput $output
@@ -32,8 +32,8 @@ class Version000002Date20210316110812 extends SimpleMigrationStep {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 
-		if (!$schema->hasTable('approval_setting')) {
-			$table = $schema->createTable('approval_setting');
+		if (!$schema->hasTable('approval_rules')) {
+			$table = $schema->createTable('approval_rules');
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -54,14 +54,14 @@ class Version000002Date20210316110812 extends SimpleMigrationStep {
 			$table->setPrimaryKey(['id']);
 		}
 
-		if (!$schema->hasTable('approval_setting_user')) {
-			$table = $schema->createTable('approval_setting_user');
+		if (!$schema->hasTable('approval_rule_users')) {
+			$table = $schema->createTable('approval_rule_users');
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('setting_id', 'integer', [
+			$table->addColumn('rule_id', 'integer', [
 				'notnull' => true,
 				'length' => 4,
 			]);
