@@ -19,6 +19,7 @@
 					:preselect-first="false"
 					:preserve-search="false"
 					:searchable="true"
+					:auto-limit="false"
 					:user-select="true"
 					@search-change="asyncFind"
 					@update:value="update('who', $event)">

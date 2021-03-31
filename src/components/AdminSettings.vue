@@ -8,8 +8,18 @@
 			<span class="icon icon-settings" />
 			{{ t('approval', 'Approval rules') }}
 		</h3>
+		<br>
 		<p class="settings-hint">
-			{{ t('approval', 'Each rule specifies which users can act on which pending tag and which approved/rejected tag should then be assigned.') }}
+			<span class="icon icon-info" />
+			{{ t('approval', 'Each rule specifies who (which users, groups or circles) can act on which pending tag and which approved/rejected tag should then be assigned.') }}
+		</p>
+		<p class="settings-hint">
+			<span class="icon icon-info" />
+			{{ t('approval', 'You can chain approval rules by using a pending tag as approved/rejected tag in another rule.') }}
+		</p>
+		<p class="settings-hint">
+			<span class="icon icon-error" />
+			{{ t('approval', 'All tags must be different in a rule. A pending tag can only be used in one rule.') }}
 		</p>
 		<div v-if="showRules"
 			class="rules">
@@ -240,6 +250,17 @@ export default {
 	.icon {
 		display: inline-block;
 		width: 32px;
+	}
+
+	.settings-hint {
+		.icon {
+			margin-bottom: -3px;
+		}
+		.icon-error {
+			padding: 11px 20px;
+			vertical-align: text-bottom;
+			opacity: 0.5;
+		}
 	}
 
 	button .icon {
