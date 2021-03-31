@@ -27,7 +27,7 @@
 							class="approval-avatar-option"
 							:user="option.userId"
 							:show-user-status="false" />
-						<Avatar v-else-if="option.groupId"
+						<Avatar v-else-if="option.groupId || option.circleId"
 							class="approval-avatar-option"
 							:display-name="option.displayName"
 							:is-no-user="true"
@@ -168,6 +168,19 @@ export default {
 			})
 			result.push(...groups)
 
+			// circles (avoid selected ones)
+			const circles = this.suggestions.filter((s) => {
+				return s.source === 'circles' && !this.value.who.find(u => u.circleId === s.id)
+			}).map((s) => {
+				return {
+					circleId: s.id,
+					displayName: s.label,
+					icon: 'icon-circle',
+					trackKey: 'circle-' + s.id,
+				}
+			})
+			result.push(...circles)
+
 			// always add selected users/groups at the end
 			result.push(...this.value.who.map((w) => {
 				return w.userId
@@ -177,12 +190,19 @@ export default {
 						icon: 'icon-user',
 						trackKey: 'user-' + w.userId,
 					}
-					: {
-						groupId: w.groupId,
-						displayName: w.displayName,
-						icon: 'icon-group',
-						trackKey: 'group-' + w.groupId,
-					}
+					: w.groupId
+						? {
+							groupId: w.groupId,
+							displayName: w.displayName,
+							icon: 'icon-group',
+							trackKey: 'group-' + w.groupId,
+						}
+						: {
+							circleId: w.circleId,
+							displayName: w.displayName,
+							icon: 'icon-circle',
+							trackKey: 'circle-' + w.circleId,
+						}
 			}))
 
 			return result
@@ -220,7 +240,7 @@ export default {
 					itemType: ' ',
 					itemId: ' ',
 					// users and groups
-					shareTypes: [0, 1],
+					shareTypes: [0, 1, 7],
 				},
 			}).then((response) => {
 				this.suggestions = response.data.ocs.data
@@ -263,13 +283,21 @@ export default {
 		margin: 0;
 	}
 	.approval-user-input {
-		width: 250px;
+		width: 300px;
 		.multiselect-name {
 			flex-grow: 1;
 			margin-left: 10px;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 		.multiselect-icon {
 			opacity: 0.5;
+		}
+		.icon-circle {
+			background-image: var(--icon-circles-circles-000);
+			background-size: 100% 100%;
+			background-repeat: no-repeat;
+			background-position: center;
 		}
 	}
 }

@@ -12,7 +12,7 @@ use OCP\Migration\IOutput;
 /**
  * Auto-generated migration step: Please modify to your needs!
  */
-class Version000002Date20210330142733 extends SimpleMigrationStep {
+class Version000003Date20210331142733 extends SimpleMigrationStep {
 
 	/**
 	 * @param IOutput $output
@@ -84,6 +84,24 @@ class Version000002Date20210330142733 extends SimpleMigrationStep {
 				'length' => 4,
 			]);
 			$table->addColumn('group_id', 'string', [
+				'notnull' => true,
+				'length' => 300,
+			]);
+			$table->setPrimaryKey(['id']);
+		}
+
+		if (!$schema->hasTable('approval_rule_circles')) {
+			$table = $schema->createTable('approval_rule_circles');
+			$table->addColumn('id', 'integer', [
+				'autoincrement' => true,
+				'notnull' => true,
+				'length' => 4,
+			]);
+			$table->addColumn('rule_id', 'integer', [
+				'notnull' => true,
+				'length' => 4,
+			]);
+			$table->addColumn('circle_id', 'string', [
 				'notnull' => true,
 				'length' => 300,
 			]);

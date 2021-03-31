@@ -16,11 +16,10 @@ use OCP\IUserManager;
 use OCP\IConfig;
 use OCP\IL10N;
 use Psr\Log\LoggerInterface;
-
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\RedirectResponse;
-
 use OCP\AppFramework\Http\ContentSecurityPolicy;
+use OCP\App\IAppManager;
 
 use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
@@ -39,6 +38,7 @@ class ConfigController extends Controller {
 								IRequest $request,
 								IConfig $config,
 								IUserManager $userManager,
+								IAppManager $appManager,
 								IL10N $l,
 								LoggerInterface $logger,
 								RuleService $ruleService,
@@ -49,6 +49,7 @@ class ConfigController extends Controller {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->userManager = $userManager;
+		$this->appManager = $appManager;
 		$this->ruleService = $ruleService;
 	}
 
@@ -57,14 +58,23 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 */
 	public function getRules(): DataResponse {
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+
 		$rules = $this->ruleService->getRules();
 		foreach ($rules as $id => $rule) {
 			foreach ($rule['who'] as $k => $elem) {
 				if (isset($elem['userId'])) {
 					$user = $this->userManager->get($elem['userId']);
 					$rules[$id]['who'][$k]['displayName'] = $user ? $user->getDisplayName() : $elem['userId'];
-				} else {
+				} elseif (isset($elem['groupId'])) {
 					$rules[$id]['who'][$k]['displayName'] = $elem['groupId'];
+				} elseif (isset($elem['circleId'])) {
+					if ($circlesEnabled) {
+						$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($elem['circleId']);
+						$rules[$id]['who'][$k]['displayName'] = $circleDetails->getName();
+					} else {
+						unset($rules[$id]['who'][$k]);
+					}
 				}
 			}
 		}

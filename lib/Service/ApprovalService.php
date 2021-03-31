@@ -23,6 +23,7 @@ use OCP\Files\FileInfo;
 use OCP\IUserManager;
 use OCP\IUser;
 use OCP\IGroupManager;
+use OCP\App\IAppManager;
 use OCP\Notification\IManager as INotificationManager;
 
 use OCA\Approval\AppInfo\Application;
@@ -44,6 +45,7 @@ class ApprovalService {
 								IRootFolder $root,
 								IUserManager $userManager,
 								IGroupManager $groupManager,
+								IAppManager $appManager,
 								INotificationManager $notificationManager,
 								RuleService $ruleService,
 								ActivityManager $activityManager,
@@ -55,6 +57,7 @@ class ApprovalService {
 		$this->root = $root;
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
+		$this->appManager = $appManager;
 		$this->notificationManager = $notificationManager;
 		$this->activityManager = $activityManager;
 		$this->tagManager = $tagManager;
@@ -86,6 +89,8 @@ class ApprovalService {
 	}
 
 	private function userIsAuthorizedByRule(string $userId, array $rule): bool {
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+
 		$user = $this->userManager->get($userId);
 
 		$ruleUserIds = array_map(function ($w) {
@@ -107,6 +112,42 @@ class ApprovalService {
 			foreach ($ruleGroupIds as $groupId) {
 				if ($this->groupManager->groupExists($groupId) && $this->groupManager->get($groupId)->inGroup($user)) {
 					return true;
+				}
+			}
+			// if user is member of one rule's circle list
+			if ($circlesEnabled) {
+				$ruleCircleIds = array_map(function ($w) {
+					return $w['circleId'];
+				}, array_filter($rule['who'], function ($w) {
+					return isset($w['circleId']);
+				}));
+				foreach ($ruleCircleIds as $circleId) {
+					if ($this->isUserInCircle($userId, $circleId)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private function isUserInCircle(string $userId, string $circleId): bool {
+		$circleDetails = null;
+		try {
+			$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($circleId);
+		} catch (\OCA\Circles\Exceptions\CircleDoesNotExistException $e) {
+			return false;
+		}
+		// is the circle owner
+		if ($circleDetails->getOwner()->getUserId() === $userId) {
+			return true;
+		} else {
+			if ($circleDetails->getMembers() !== null) {
+				foreach ($circleDetails->getMembers() as $m) {
+					// is member of this circle
+					if ($m->getUserId() === $userId) {
+						return true;
+					}
 				}
 			}
 		}

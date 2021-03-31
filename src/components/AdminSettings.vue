@@ -96,7 +96,11 @@ export default {
 					this.rules[id].who = this.rules[id].who.map(w => {
 						return {
 							...w,
-							trackKey: w.userId ? 'user-' + w.userId : 'group-' + w.groupId,
+							trackKey: w.userId
+								? 'user-' + w.userId
+								: w.groupId
+									? 'group-' + w.groupId
+									: 'circle-' + w.circleId,
 						}
 					})
 				}
@@ -120,6 +124,7 @@ export default {
 						return {
 							userId: u.userId,
 							groupId: u.groupId,
+							circleId: u.circleId,
 						}
 					}),
 				}
@@ -160,6 +165,7 @@ export default {
 						return {
 							userId: u.userId,
 							groupId: u.groupId,
+							circleId: u.circleId,
 						}
 					}),
 				}
