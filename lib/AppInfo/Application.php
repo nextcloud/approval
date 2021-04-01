@@ -54,6 +54,7 @@ class Application extends App implements IBootstrap {
 		// load files plugin script
 		$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function() {
 			Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin');
+			Util::addStyle(self::APP_ID, 'files-style');
 		});
 		// notifications
 		$manager = $container->query(INotificationManager::class);

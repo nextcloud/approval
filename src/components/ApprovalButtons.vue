@@ -13,15 +13,17 @@
 			{{ rejectText }}
 		</button>
 		<span v-if="stateApproved"
-			class="approved-label">
+			class="state-label approved-label">
+			<span class="icon icon-approve" />
 			{{ approvedText }}
 		</span>
 		<span v-if="stateRejected"
-			class="rejected-label">
+			class="state-label rejected-label">
+			<span class="icon icon-reject" />
 			{{ rejectedText }}
 		</span>
 		<span v-if="statePending"
-			class="pending-label">
+			class="state-label pending-label">
 			{{ pendingText }}
 		</span>
 	</div>
@@ -109,6 +111,18 @@ export default {
 <style scoped lang="scss">
 .approval-container {
 	display: flex;
+	margin: 5px 0 5px 0;
+
+	button {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	.state-label {
+		height: 34px;
+		display: flex;
+		align-items: center;
+	}
 
 	.pending-label,
 	.approved-label,
