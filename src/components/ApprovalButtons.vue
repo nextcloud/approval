@@ -19,11 +19,14 @@
 			<span v-if="myUserId && myDatetime"
 				class="details">
 				by
-				<UserBubble
+				<UserBubble v-if="notMe"
 					class="user-bubble"
 					:user="myUserId"
 					:display-name="myUserName"
 					:size="24" />
+				<span v-else>
+					{{ you }}
+				</span>
 				{{ relativeTime }}
 			</span>
 		</span>
@@ -53,6 +56,7 @@
 import { states } from '../states'
 
 import moment from '@nextcloud/moment'
+import { getCurrentUser } from '@nextcloud/auth'
 import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
 
 export default {
@@ -106,6 +110,7 @@ export default {
 			myUserId: null,
 			myUserName: null,
 			myDatetime: null,
+			you: t('approval', 'you'),
 		}
 	},
 
@@ -124,6 +129,9 @@ export default {
 		},
 		relativeTime() {
 			return moment(this.myDatetime).fromNow()
+		},
+		notMe() {
+			return this.myUserId !== getCurrentUser().uid
 		},
 	},
 

@@ -176,6 +176,9 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					console.error(error)
 				}
 			} while (response.data.ocs.data.length === limit)
+			this._inputView.setUserId('')
+			this._inputView.setUserName('')
+			this._inputView.setDatetime('')
 		},
 
 		isVisible() {
