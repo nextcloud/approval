@@ -29,7 +29,13 @@
 				class="approval-rule"
 				@input="onRuleInput(id, $event)"
 				@delete="onRuleDelete(id)" />
-			<button class="add-rule"
+			<EmptyContent v-if="noRules"
+				class="no-rules"
+				icon="icon-approval">
+				{{ t('approval', 'No rules yet') }}
+			</EmptyContent>
+			<button :class="{ 'add-rule': true, loading: savingRule }"
+				:disabled="savingRule"
 				@click="onAddRule">
 				<span class="icon icon-add" />
 				{{ t('approval', 'New rule') }}
@@ -50,7 +56,9 @@
 				:placeholder="t('approval', 'New tag name')"
 				type="text"
 				@keyup.enter="onCreateTag">
-			<button @click="onCreateTag">
+			<button @click="onCreateTag"
+				:class="{ loading: creatingTag }"
+				:disabled="creatingTag">
 				<span class="icon icon-add" />
 				{{ t('approval', 'Create') }}
 			</button>
@@ -64,6 +72,7 @@ import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import '@nextcloud/dialogs/styles/toast.scss'
+import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
 
 import ApprovalRule from './ApprovalRule'
 
@@ -71,7 +80,7 @@ export default {
 	name: 'AdminSettings',
 
 	components: {
-		ApprovalRule,
+		ApprovalRule, EmptyContent,
 	},
 
 	props: [],
@@ -83,10 +92,15 @@ export default {
 			newTagName: '',
 			rules: {},
 			newRule: null,
+			creatingTag: false,
+			savingRule: false,
 		}
 	},
 
 	computed: {
+		noRules() {
+			return Object.keys(this.rules).length === 0
+		},
 	},
 
 	watch: {
@@ -126,6 +140,7 @@ export default {
 		onRuleInput(id, rule) {
 			// save if all values are set
 			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.who.length > 0) {
+				this.savingRule = true
 				const req = {
 					tagPending: rule.tagPending,
 					tagApproved: rule.tagApproved,
@@ -150,6 +165,7 @@ export default {
 					// restore rule values
 					this.rules[id] = rule.backupRule
 				}).then(() => {
+					this.savingRule = false
 				})
 			}
 		},
@@ -166,6 +182,7 @@ export default {
 		},
 		onNewRuleInput(rule) {
 			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.who.length > 0) {
+				this.savingRule = true
 				// create
 				const req = {
 					tagPending: rule.tagPending,
@@ -192,6 +209,7 @@ export default {
 					)
 					console.debug(error)
 				}).then(() => {
+					this.savingRule = false
 				})
 			}
 		},
@@ -211,6 +229,7 @@ export default {
 		},
 		onCreateTag() {
 			if (this.newTagName) {
+				this.creatingTag = true
 				const req = {
 					name: this.newTagName,
 				}
@@ -230,6 +249,7 @@ export default {
 					)
 					console.debug(error)
 				}).then(() => {
+					this.creatingTag = false
 				})
 			}
 		},
@@ -282,16 +302,20 @@ export default {
 	.approval-rule {
 		margin: 12px 0 12px 0;
 	}
+	.no-rules {
+		margin-top: 0;
+		width: 300px;
+	}
 }
 
-.icon-approval {
+::v-deep .icon-approval {
 	background-image: url(./../../img/app-dark.svg);
 	background-size: 23px 23px;
 	height: 23px;
 	margin-bottom: -4px;
 }
 
-body.theme--dark .icon-approval {
+::v-deep body.theme--dark .icon-approval {
 	background-image: url(./../../img/app.svg);
 }
 </style>
