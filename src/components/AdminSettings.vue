@@ -29,7 +29,7 @@
 				class="approval-rule"
 				@input="onRuleInput(id, $event)"
 				@delete="onRuleDelete(id)" />
-			<EmptyContent v-if="noRules"
+			<EmptyContent v-if="noRules && !loadingRules"
 				class="no-rules"
 				icon="icon-approval">
 				{{ t('approval', 'No rules yet') }}
@@ -94,6 +94,7 @@ export default {
 			newRule: null,
 			creatingTag: false,
 			savingRule: false,
+			loadingRules: false,
 		}
 	},
 
@@ -112,6 +113,7 @@ export default {
 
 	methods: {
 		loadRules() {
+			this.loadingRules = true
 			const url = generateUrl('/apps/approval/rules')
 			axios.get(url).then((response) => {
 				this.rules = response.data
@@ -135,6 +137,7 @@ export default {
 				)
 				console.debug(error)
 			}).then(() => {
+				this.loadingRules = false
 			})
 		},
 		onRuleInput(id, rule) {
