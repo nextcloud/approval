@@ -2,23 +2,16 @@
 	<div id="approval_prefs" class="section">
 		<h2>
 			<span class="icon icon-approval" />
-			{{ t('approval', 'Approval') }}
-		</h2>
-		<h3>
-			<span class="icon icon-settings" />
 			{{ t('approval', 'Approval rules') }}
-		</h3>
+		</h2>
 		<br>
 		<p class="settings-hint">
-			<span class="icon icon-info" />
 			{{ t('approval', 'Each rule specifies who (which users, groups or circles) can act on which pending tag and which approved/rejected tag should then be assigned.') }}
 		</p>
 		<p class="settings-hint">
-			<span class="icon icon-info" />
 			{{ t('approval', 'You can chain approval rules by using a pending tag as approved/rejected tag in another rule.') }}
 		</p>
 		<p class="settings-hint">
-			<span class="icon icon-error" />
 			{{ t('approval', 'All tags must be different in a rule. A pending tag can only be used in one rule.') }}
 		</p>
 		<div v-if="showRules"
@@ -110,24 +103,32 @@ export default {
 			return Object.keys(this.rules).length === 0
 		},
 		newRuleIsValid() {
+			return !this.invalidRuleMessage
+		},
+		invalidRuleMessage() {
 			const newRule = this.newRule
 			const noMissingField = newRule.tagPending && newRule.tagApproved && newRule.tagRejected && newRule.who.length > 0
-				&& newRule.tagPending !== newRule.tagApproved
-				&& newRule.tagPending !== newRule.tagRejected
-				&& newRule.tagApproved !== newRule.tagRejected
+			if (!noMissingField) {
+				return t('approval', 'One field is missing')
+			}
 
-			const conflictingRule = newRule.tagPending
-				? Object.keys(this.rules).find((id) => {
-					return this.rules[id].tagPending === newRule.tagPending
-				})
-				: null
+			if (newRule.tagPending === newRule.tagApproved
+				|| newRule.tagPending === newRule.tagRejected
+				|| newRule.tagApproved === newRule.tagRejected) {
+				return t('approval', 'All tags must be different')
+			}
 
-			return noMissingField && !conflictingRule
+			const conflictingRule = Object.keys(this.rules).find((id) => {
+				return this.rules[id].tagPending === newRule.tagPending
+			})
+			if (conflictingRule) {
+				return t('approval', 'Pending tag is already used in another rule')
+			}
+
+			return null
 		},
 		createTooltip() {
-			return this.newRuleIsValid
-				? t('approval', 'Create this rule')
-				: t('approval', 'Rule is invalid')
+			return this.invalidRuleMessage || t('approval', 'Create this rule')
 		},
 	},
 
