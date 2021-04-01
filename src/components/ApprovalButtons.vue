@@ -57,7 +57,7 @@ export default {
 		},
 		pendingText: {
 			type: String,
-			default: t('approval', 'Pending'),
+			default: t('approval', 'Pending approval'),
 		},
 		state: {
 			type: Number,
