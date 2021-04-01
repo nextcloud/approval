@@ -27,24 +27,24 @@
 				icon="icon-approval">
 				{{ t('approval', 'No rules yet') }}
 			</EmptyContent>
-			<button :class="{ 'add-rule': true, loading: savingRule }"
-				:disabled="savingRule"
-				@click="onAddRule">
-				<span class="icon icon-add" />
-				{{ t('approval', 'New rule') }}
+		</div>
+		<button :class="{ 'add-rule': true, loading: savingRule }"
+			:disabled="savingRule"
+			@click="onAddRule">
+			<span class="icon icon-add" />
+			{{ t('approval', 'New rule') }}
+		</button>
+		<div v-if="newRule" class="new-rule">
+			<ApprovalRule
+				v-model="newRule"
+				delete-icon="icon-history"
+				@delete="onNewRuleDelete" />
+			<button
+				v-tooltip.top="{ content: createTooltip }"
+				:disabled="!newRuleIsValid"
+				@click="onValidateNewRule">
+				<span class="icon icon-checkmark-color" />
 			</button>
-			<div v-if="newRule" class="new-rule">
-				<ApprovalRule
-					v-model="newRule"
-					delete-icon="icon-history"
-					@delete="onNewRuleDelete" />
-				<button
-					v-tooltip.top="{ content: createTooltip }"
-					:disabled="!newRuleIsValid"
-					@click="onValidateNewRule">
-					<span class="icon icon-checkmark-color" />
-				</button>
-			</div>
 		</div>
 		<div class="create-tag">
 			<label for="create-tag-input">
@@ -297,6 +297,8 @@ export default {
 #approval_prefs {
 	.rules {
 		margin-top: 20px;
+		display: flex;
+		flex-wrap: wrap;
 	}
 
 	.icon {
@@ -333,10 +335,11 @@ export default {
 
 	.approval-rule,
 	.new-rule {
-		margin: 12px 0 12px 0;
+		margin: 20px 20px 20px 20px;
 	}
 	.new-rule {
 		display: flex;
+		align-items: center;
 		>button {
 			width: 36px;
 			min-width: 36px;

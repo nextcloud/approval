@@ -1,79 +1,81 @@
 <template>
 	<div class="approval_rule">
-		<div v-tooltip.left="{ content: whoTooltip }"
-			class="users">
-			<span class="icon icon-group" />
-			<div class="approval-user">
-				<Multiselect
-					class="approval-user-input"
-					label="displayName"
-					track-by="trackKey"
-					:value="value.who"
-					:multiple="true"
-					:clear-on-select="false"
-					:hide-selected="false"
-					:internal-search="false"
-					:loading="loadingSuggestions"
-					:options="formattedSuggestions"
-					:placeholder="t('welcome', 'Who can approve?')"
-					:preselect-first="false"
-					:preserve-search="false"
-					:searchable="true"
-					:auto-limit="false"
-					:user-select="true"
-					@search-change="asyncFind"
-					@update:value="update('who', $event)">
-					<template #option="{option}">
-						<Avatar v-if="option.userId"
-							class="approval-avatar-option"
-							:user="option.userId"
-							:show-user-status="false" />
-						<Avatar v-else-if="option.groupId || option.circleId"
-							class="approval-avatar-option"
-							:display-name="option.displayName"
-							:is-no-user="true"
-							:show-user-status="false" />
-						<span class="multiselect-name">
-							{{ option.displayName }}
-						</span>
-						<span v-if="option.icon"
-							:class="{ icon: true, [option.icon]: true, 'multiselect-icon': true }" />
-					</template>
-					<template #noOptions>
-						{{ t('welcome', 'No recommendations. Start typing.') }}
-					</template>
-					<template #noResult>
-						{{ t('welcome', 'No result.') }}
-					</template>
-				</Multiselect>
+		<div class="fields">
+			<div class="tag">
+				<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
+				<span class="field-label main-label">{{ pendingLabel }}</span>
+				<MultiselectTags class="tag-select"
+					:value="value.tagPending"
+					:label="t('approval', 'Select pending tag')"
+					:multiple="false"
+					@input="update('tagPending', $event)" />
 			</div>
-		</div>
-		<div v-tooltip.left="{ content: pendingTooltip }"
-			class="tag">
-			<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
-			<MultiselectTags class="tag-select"
-				:value="value.tagPending"
-				:label="t('approval', 'Select pending tag')"
-				:multiple="false"
-				@input="update('tagPending', $event)" />
-		</div>
-		<div v-tooltip.left="{ content: approvedTooltip }"
-			class="tag">
-			<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
-			<MultiselectTags class="tag-select"
-				:value="value.tagApproved"
-				:label="t('approval', 'Select approved tag')"
-				:multiple="false"
-				@input="update('tagApproved', $event)" />
-		</div>
-		<div v-tooltip.left="{ content: rejectedTooltip }"
-			class="tag">
-			<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
-			<MultiselectTags class="tag-select"
-				:value="value.tagRejected"
-				:label="t('approval', 'Select rejected tag')"
-				:multiple="false"
-				@input="update('tagRejected', $event)" />
+			<div class="users">
+				<span class="icon icon-group" />
+				<span class="field-label">{{ whoLabel }}</span>
+				<div class="approval-user">
+					<Multiselect
+						class="approval-user-input"
+						label="displayName"
+						track-by="trackKey"
+						:value="value.who"
+						:multiple="true"
+						:clear-on-select="false"
+						:hide-selected="false"
+						:internal-search="false"
+						:loading="loadingSuggestions"
+						:options="formattedSuggestions"
+						:placeholder="t('welcome', 'Who can approve?')"
+						:preselect-first="false"
+						:preserve-search="false"
+						:searchable="true"
+						:auto-limit="false"
+						:user-select="true"
+						@search-change="asyncFind"
+						@update:value="update('who', $event)">
+						<template #option="{option}">
+							<Avatar v-if="option.userId"
+								class="approval-avatar-option"
+								:user="option.userId"
+								:show-user-status="false" />
+							<Avatar v-else-if="option.groupId || option.circleId"
+								class="approval-avatar-option"
+								:display-name="option.displayName"
+								:is-no-user="true"
+								:show-user-status="false" />
+							<span class="multiselect-name">
+								{{ option.displayName }}
+							</span>
+							<span v-if="option.icon"
+								:class="{ icon: true, [option.icon]: true, 'multiselect-icon': true }" />
+						</template>
+						<template #noOptions>
+							{{ t('welcome', 'No recommendations. Start typing.') }}
+						</template>
+						<template #noResult>
+							{{ t('welcome', 'No result.') }}
+						</template>
+					</Multiselect>
+				</div>
+			</div>
+			<div class="tag">
+				<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
+				<span class="field-label">{{ approvedLabel }}</span>
+				<MultiselectTags class="tag-select"
+					:value="value.tagApproved"
+					:label="t('approval', 'Select approved tag')"
+					:multiple="false"
+					@input="update('tagApproved', $event)" />
+			</div>
+			<div class="tag">
+				<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
+				<span class="field-label">{{ rejectedLabel }}</span>
+				<MultiselectTags class="tag-select"
+					:value="value.tagRejected"
+					:label="t('approval', 'Select rejected tag')"
+					:multiple="false"
+					@input="update('tagRejected', $event)" />
+			</div>
 		</div>
 		<button
 			v-tooltip.top="{ content: deleteRuleTooltip }"
@@ -118,10 +120,10 @@ export default {
 			tagPendingIconUrl: generateUrl('/svg/core/actions/tag?color=eca700'),
 			tagApprovedIconUrl: generateUrl('/svg/core/actions/tag?color=46ba61'),
 			tagRejectedIconUrl: generateUrl('/svg/core/actions/tag?color=e9322d'),
-			whoTooltip: t('approval', 'Who can approve'),
-			pendingTooltip: t('approval', 'Pending tag'),
-			approvedTooltip: t('approval', 'Approved tag'),
-			rejectedTooltip: t('approval', 'Rejected tag'),
+			whoLabel: t('approval', 'Who can approve'),
+			pendingLabel: t('approval', 'Pending tag'),
+			approvedLabel: t('approval', 'Approved tag'),
+			rejectedLabel: t('approval', 'Rejected tag'),
 			deleteRuleTooltip: t('approval', 'Delete this rule'),
 			loadingSuggestions: false,
 			suggestions: [],
@@ -261,34 +263,55 @@ export default {
 
 <style scoped lang="scss">
 .approval_rule {
-	.tag,
-	.users {
+	display: flex;
+	align-items: center;
+	// width: 650px;
+	border-radius: var(--border-radius-large);
+	background: rgba(70, 186, 97, 0.1);
+	padding: 5px 0 5px 0;
+
+	.fields {
 		display: flex;
-		align-items: center;
-		float: left;
+		flex-direction: column;
+
+		.tag,
+		.users {
+			display: flex;
+			align-items: center;
+			margin: 5px 0 5px 0;
+		}
+
+		.field-label {
+			margin-right: 5px;
+			width: 200px;
+		}
+
+		.main-label {
+			font-weight: bold;
+		}
+
+		.tag-select {
+			width: 250px;
+		}
 	}
 
 	.delete-rule {
-		margin: 0 0 0 15px;
+		margin: 0 15px 0 15px;
 		width: 36px;
 		height: 36px;
 		padding: 0;
 	}
 
-	.tag-select {
-		width: 200px;
-	}
-
 	.icon {
 		width: 16px;
 		height: 16px;
-		margin: 0 5px -3px 15px;
+		margin: 0 15px -3px 15px;
 	}
 	button .icon {
 		margin: 0;
 	}
 	.approval-user-input {
-		width: 300px;
+		width: 250px;
 		.multiselect-name {
 			flex-grow: 1;
 			margin-left: 10px;
