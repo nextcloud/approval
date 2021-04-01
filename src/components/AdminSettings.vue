@@ -40,11 +40,18 @@
 				<span class="icon icon-add" />
 				{{ t('approval', 'New rule') }}
 			</button>
-			<ApprovalRule v-if="newRule"
-				v-model="newRule"
-				class="approval-rule"
-				@input="onNewRuleInput"
-				@delete="onNewRuleDelete" />
+			<div v-if="newRule" class="new-rule">
+				<ApprovalRule
+					v-model="newRule"
+					delete-icon="icon-history"
+					@delete="onNewRuleDelete" />
+				<button
+					v-tooltip.top="{ content: createTooltip }"
+					:disabled="!newRuleIsValid"
+					@click="onValidateNewRule">
+					<span class="icon icon-checkmark-color" />
+				</button>
+			</div>
 		</div>
 		<div class="create-tag">
 			<label for="create-tag-input">
@@ -56,9 +63,9 @@
 				:placeholder="t('approval', 'New tag name')"
 				type="text"
 				@keyup.enter="onCreateTag">
-			<button @click="onCreateTag"
-				:class="{ loading: creatingTag }"
-				:disabled="creatingTag">
+			<button :class="{ loading: creatingTag }"
+				:disabled="creatingTag"
+				@click="onCreateTag">
 				<span class="icon icon-add" />
 				{{ t('approval', 'Create') }}
 			</button>
@@ -101,6 +108,18 @@ export default {
 	computed: {
 		noRules() {
 			return Object.keys(this.rules).length === 0
+		},
+		newRuleIsValid() {
+			const rule = this.newRule
+			return rule.tagPending && rule.tagApproved && rule.tagRejected && rule.who.length > 0
+				&& rule.tagPending !== rule.tagApproved
+				&& rule.tagPending !== rule.tagRejected
+				&& rule.tagApproved !== rule.tagRejected
+		},
+		createTooltip() {
+			return this.newRuleIsValid
+				? t('approval', 'Create this rule')
+				: t('approval', 'Rule is invalid')
 		},
 	},
 
@@ -183,7 +202,8 @@ export default {
 		onNewRuleDelete() {
 			this.newRule = null
 		},
-		onNewRuleInput(rule) {
+		onValidateNewRule() {
+			const rule = this.newRule
 			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.who.length > 0) {
 				this.savingRule = true
 				// create
@@ -302,8 +322,18 @@ export default {
 		margin-left: 3px;
 	}
 
-	.approval-rule {
+	.approval-rule,
+	.new-rule {
 		margin: 12px 0 12px 0;
+	}
+	.new-rule {
+		display: flex;
+		>button {
+			width: 36px;
+			height: 36px;
+			padding: 0;
+			margin: 0 0 0 5px;
+		}
 	}
 	.no-rules {
 		margin-top: 0;

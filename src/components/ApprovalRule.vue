@@ -79,7 +79,7 @@
 			v-tooltip.top="{ content: deleteRuleTooltip }"
 			class="delete-rule"
 			@click="$emit('delete')">
-			<span class="icon icon-delete" />
+			<span :class="'icon ' + deleteIcon" />
 		</button>
 		<div style="clear:both;" />
 	</div>
@@ -106,6 +106,10 @@ export default {
 		value: {
 			type: Object,
 			required: true,
+		},
+		deleteIcon: {
+			type: String,
+			default: 'icon-delete',
 		},
 	},
 
