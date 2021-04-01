@@ -37,11 +37,14 @@
 			<span v-if="myUserId && myDatetime"
 				class="details">
 				by
-				<UserBubble
+				<UserBubble v-if="notMe"
 					class="user-bubble"
 					:user="myUserId"
 					:display-name="myUserName"
 					:size="24" />
+				<span v-else>
+					{{ you }}
+				</span>
 				{{ relativeTime }}
 			</span>
 		</span>
@@ -131,6 +134,8 @@ export default {
 			return moment(this.myDatetime).fromNow()
 		},
 		notMe() {
+			console.debug('aaaaaaaaa')
+			console.debug(this.myUserId + ' ::::: ' + getCurrentUser().uid)
 			return this.myUserId !== getCurrentUser().uid
 		},
 	},
