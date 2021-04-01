@@ -18,7 +18,7 @@
 			<span>{{ approvedText }}</span>
 			<span v-if="myUserId && myDatetime"
 				class="details">
-				by
+				-
 				<UserBubble v-if="notMe"
 					class="user-bubble"
 					:user="myUserId"
@@ -27,6 +27,7 @@
 				<span v-else>
 					{{ you }}
 				</span>
+				-
 				{{ relativeTime }}
 			</span>
 		</span>
@@ -36,7 +37,7 @@
 			<span>{{ rejectedText }}</span>
 			<span v-if="myUserId && myDatetime"
 				class="details">
-				by
+				-
 				<UserBubble v-if="notMe"
 					class="user-bubble"
 					:user="myUserId"
@@ -45,6 +46,7 @@
 				<span v-else>
 					{{ you }}
 				</span>
+				-
 				{{ relativeTime }}
 			</span>
 		</span>

@@ -34,7 +34,7 @@
 			<span class="icon icon-add" />
 			{{ t('approval', 'New rule') }}
 		</button>
-		<div v-if="newRule" class="new-rule">
+		<div v-if="newRule && showRules" class="new-rule">
 			<ApprovalRule
 				v-model="newRule"
 				delete-icon="icon-history"
@@ -335,7 +335,7 @@ export default {
 
 	.approval-rule,
 	.new-rule {
-		margin: 20px 20px 20px 20px;
+		margin: 15px 15px 15px 15px;
 	}
 	.new-rule {
 		display: flex;
@@ -347,6 +347,9 @@ export default {
 			padding: 0;
 			margin: 0 0 0 5px;
 		}
+		.approval_rule {
+			background: rgba(0, 130, 201, 0.1);
+		}
 	}
 	.no-rules {
 		margin-top: 0;
@@ -354,14 +357,14 @@ export default {
 	}
 }
 
-::v-deep .icon-approval {
+.icon-approval {
 	background-image: url(./../../img/app-dark.svg);
 	background-size: 23px 23px;
 	height: 23px;
 	margin-bottom: -4px;
 }
 
-::v-deep body.theme--dark .icon-approval {
+body.theme--dark .icon-approval {
 	background-image: url(./../../img/app.svg);
 }
 </style>
