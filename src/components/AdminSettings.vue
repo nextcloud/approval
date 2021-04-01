@@ -338,6 +338,7 @@ export default {
 		display: flex;
 		>button {
 			width: 36px;
+			min-width: 36px;
 			height: 36px;
 			padding: 0;
 			margin: 0 0 0 5px;
