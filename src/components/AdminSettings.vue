@@ -110,11 +110,19 @@ export default {
 			return Object.keys(this.rules).length === 0
 		},
 		newRuleIsValid() {
-			const rule = this.newRule
-			return rule.tagPending && rule.tagApproved && rule.tagRejected && rule.who.length > 0
-				&& rule.tagPending !== rule.tagApproved
-				&& rule.tagPending !== rule.tagRejected
-				&& rule.tagApproved !== rule.tagRejected
+			const newRule = this.newRule
+			const noMissingField = newRule.tagPending && newRule.tagApproved && newRule.tagRejected && newRule.who.length > 0
+				&& newRule.tagPending !== newRule.tagApproved
+				&& newRule.tagPending !== newRule.tagRejected
+				&& newRule.tagApproved !== newRule.tagRejected
+
+			const conflictingRule = newRule.tagPending
+				? Object.keys(this.rules).find((id) => {
+					return this.rules[id].tagPending === newRule.tagPending
+				})
+				: null
+
+			return noMissingField && !conflictingRule
 		},
 		createTooltip() {
 			return this.newRuleIsValid
