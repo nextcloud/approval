@@ -181,7 +181,13 @@ class ApprovalService {
 			try {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])) {
 					return Application::STATE_PENDING;
-				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])) {
+				}
+			} catch (TagNotFoundException $e) {
+			}
+		}
+		foreach ($rules as $id => $rule) {
+			try {
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])) {
 					return Application::STATE_APPROVED;
 				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])) {
 					return Application::STATE_REJECTED;
