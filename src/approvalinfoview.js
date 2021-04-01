@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import axios from '@nextcloud/axios'
-import { generateUrl } from '@nextcloud/router'
+import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import '@nextcloud/dialogs/styles/toast.scss'
 
@@ -133,6 +133,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				this._inputView.setState(response.data)
 				if (response.data !== states.NOTHING) {
 					this.show()
+					this.getDetails()
 				} else {
 					this.hide()
 				}
@@ -142,6 +143,39 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					+ ': ' + error.response?.request?.responseText
 				)
 			})
+		},
+
+		async getDetails() {
+			const limit = 50
+			let since = 0
+			let response
+			do {
+				// eslint-disable-next-line
+				const params = new URLSearchParams()
+				params.append('format', 'json')
+				params.append('limit', limit)
+				if (since > 0) {
+					params.append('since', since)
+				}
+				try {
+					response = await axios.get(generateOcsUrl('apps/activity/api/v2/activity') + 'approval' + '?' + params)
+					const activities = response.data.ocs.data
+					since = activities.length
+						? activities[activities.length - 1].activity_id
+						: 0
+					const lastActivity = activities.find((a) => {
+						return a.object_id === this.fileId
+					})
+					if (lastActivity) {
+						this._inputView.setUserId(lastActivity.subject_rich[1].user.id)
+						this._inputView.setUserName(lastActivity.subject_rich[1].user.name)
+						this._inputView.setDatetime(lastActivity.datetime)
+						return
+					}
+				} catch (error) {
+					console.error(error)
+				}
+			} while (response.data.ocs.data.length === limit)
 		},
 
 		isVisible() {

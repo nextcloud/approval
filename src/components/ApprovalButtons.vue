@@ -15,12 +15,32 @@
 		<span v-if="stateApproved"
 			class="state-label approved-label">
 			<span class="icon icon-approve" />
-			{{ approvedText }}
+			<span>{{ approvedText }}</span>
+			<span v-if="myUserId && myDatetime"
+				class="details">
+				by
+				<UserBubble
+					class="user-bubble"
+					:user="myUserId"
+					:display-name="myUserName"
+					:size="24" />
+				{{ relativeTime }}
+			</span>
 		</span>
 		<span v-if="stateRejected"
 			class="state-label rejected-label">
 			<span class="icon icon-reject" />
-			{{ rejectedText }}
+			<span>{{ rejectedText }}</span>
+			<span v-if="myUserId && myDatetime"
+				class="details">
+				by
+				<UserBubble
+					class="user-bubble"
+					:user="myUserId"
+					:display-name="myUserName"
+					:size="24" />
+				{{ relativeTime }}
+			</span>
 		</span>
 		<span v-if="statePending"
 			class="state-label pending-label">
@@ -32,10 +52,14 @@
 <script>
 import { states } from '../states'
 
+import moment from '@nextcloud/moment'
+import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
+
 export default {
 	name: 'ApprovalButtons',
 
 	components: {
+		UserBubble,
 	},
 
 	props: {
@@ -63,10 +87,25 @@ export default {
 			type: Number,
 			required: true,
 		},
+		userId: {
+			type: String,
+			default: '',
+		},
+		userName: {
+			type: String,
+			default: '',
+		},
+		datetime: {
+			type: String,
+			default: '',
+		},
 	},
 	data() {
 		return {
 			myState: 0,
+			myUserId: null,
+			myUserName: null,
+			myDatetime: null,
 		}
 	},
 
@@ -83,11 +122,23 @@ export default {
 		stateApprovable() {
 			return this.myState === states.APPROVABLE
 		},
+		relativeTime() {
+			return moment(this.myDatetime).fromNow()
+		},
 	},
 
 	watch: {
 		state(state) {
 			this.setState(state)
+		},
+		userId(userId) {
+			this.setUserId(userId)
+		},
+		userName(userName) {
+			this.setUserName(userName)
+		},
+		datetime(datetime) {
+			this.setDatetime(datetime)
 		},
 	},
 
@@ -104,6 +155,15 @@ export default {
 		setState(state) {
 			this.myState = state
 		},
+		setUserId(userId) {
+			this.myUserId = userId
+		},
+		setUserName(userName) {
+			this.myUserName = userName
+		},
+		setDatetime(datetime) {
+			this.myDatetime = datetime
+		},
 	},
 }
 </script>
@@ -119,9 +179,17 @@ export default {
 	}
 
 	.state-label {
+		border-radius: var(--border-radius);
 		height: 34px;
 		display: flex;
 		align-items: center;
+		.details {
+			height: 24px;
+			margin-left: 2px;
+			.user-bubble {
+				color: var(--color-main-text);
+			}
+		}
 	}
 
 	.pending-label,
