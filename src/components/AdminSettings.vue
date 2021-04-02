@@ -39,12 +39,15 @@
 				v-model="newRule"
 				delete-icon="icon-history"
 				@delete="onNewRuleDelete" />
-			<button
+			<button v-if="newRuleIsValid"
 				v-tooltip.top="{ content: createTooltip }"
-				:disabled="!newRuleIsValid"
 				@click="onValidateNewRule">
 				<span class="icon icon-checkmark-color" />
 			</button>
+			<span v-else
+				class="new-rule-error">
+				{{ invalidRuleMessage }}
+			</span>
 		</div>
 		<div class="create-tag">
 			<label for="create-tag-input">
@@ -109,7 +112,7 @@ export default {
 			const newRule = this.newRule
 			const noMissingField = newRule.tagPending && newRule.tagApproved && newRule.tagRejected && newRule.who.length > 0
 			if (!noMissingField) {
-				return t('approval', 'One field is missing')
+				return t('approval', 'All fields are required')
 			}
 
 			if (newRule.tagPending === newRule.tagApproved
@@ -128,7 +131,7 @@ export default {
 			return null
 		},
 		createTooltip() {
-			return this.invalidRuleMessage || t('approval', 'Create this rule')
+			return t('approval', 'Create this rule')
 		},
 	},
 
@@ -349,6 +352,13 @@ export default {
 		}
 		.approval_rule {
 			background: rgba(0, 130, 201, 0.1);
+		}
+		.new-rule-error {
+			margin-left: 10px;
+			padding: 0 5px 0 5px;
+			color: white;
+			background-color: var(--color-warning);
+			border-radius: var(--border-radius);
 		}
 	}
 	.no-rules {
