@@ -47,7 +47,8 @@
 		</span>
 		<span v-if="statePending"
 			class="state-label pending-label">
-			{{ pendingText }}
+			<span class="icon icon-pending" />
+			<b>{{ pendingText }}</b>
 		</span>
 	</div>
 </template>
@@ -221,7 +222,7 @@ export default {
 		padding: 0 3px 0 3px;
 	}
 
-	.pending-label {
+	.pending-label .icon {
 		background-color: var(--color-warning) !important;
 		border-color: var(--color-warning) !important;
 		color: #fff !important;
@@ -240,6 +241,7 @@ export default {
 		color: #fff !important;
 	}
 
+	.pending-label .icon,
 	.approved-label .icon,
 	.rejected-label .icon {
 		width: 32px;
@@ -247,6 +249,7 @@ export default {
 		border-radius: var(--border-radius-pill);
 	}
 
+	.icon-pending,
 	.icon-approve,
 	.icon-reject {
 		background-image: url('../../img/app.svg');
@@ -259,7 +262,15 @@ export default {
 		-ms-transform: rotate(0deg);
 		-o-transform: rotate(180deg);
 		transform: rotate(180deg);
-		margin-bottom: -2px;
+		background-position-y: 6px;
+	}
+	.icon-pending {
+		-webkit-transform: rotate(270deg);
+		-moz-transform: rotate(270deg);
+		-ms-transform: rotate(0deg);
+		-o-transform: rotate(270deg);
+		transform: rotate(270deg);
+		background-position-y: 6px;
 	}
 }
 </style>
