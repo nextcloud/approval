@@ -15,40 +15,32 @@
 		<span v-if="stateApproved"
 			class="state-label approved-label">
 			<span class="icon icon-approve" />
-			<span>{{ approvedText }}</span>
 			<span v-if="myUserId && myDatetime"
 				class="details">
-				-
-				<UserBubble v-if="notMe"
+				<span>{{ approvedByText }}</span>
+				<UserBubble
 					class="user-bubble"
 					:user="myUserId"
-					:display-name="myUserName"
+					:display-name="notMe ? myUserName : you"
 					:size="24" />
-				<span v-else>
-					{{ you }}
-				</span>
-				-
 				{{ relativeTime }}
 			</span>
+			<span v-else>{{ approvedText }}</span>
 		</span>
 		<span v-if="stateRejected"
 			class="state-label rejected-label">
 			<span class="icon icon-reject" />
-			<span>{{ rejectedText }}</span>
 			<span v-if="myUserId && myDatetime"
 				class="details">
-				-
-				<UserBubble v-if="notMe"
+				<span>{{ rejectedByText }}</span>
+				<UserBubble
 					class="user-bubble"
 					:user="myUserId"
-					:display-name="myUserName"
+					:display-name="notMe ? myUserName : you"
 					:size="24" />
-				<span v-else>
-					{{ you }}
-				</span>
-				-
 				{{ relativeTime }}
 			</span>
+			<span v-else>{{ rejectedText }}</span>
 		</span>
 		<span v-if="statePending"
 			class="state-label pending-label">
@@ -84,9 +76,17 @@ export default {
 			type: String,
 			default: t('approval', 'Approved'),
 		},
+		approvedByText: {
+			type: String,
+			default: t('approval', 'Approved by'),
+		},
 		rejectedText: {
 			type: String,
 			default: t('approval', 'Rejected'),
+		},
+		rejectedByText: {
+			type: String,
+			default: t('approval', 'Rejected by'),
 		},
 		pendingText: {
 			type: String,
