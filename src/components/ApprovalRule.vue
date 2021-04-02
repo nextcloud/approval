@@ -91,7 +91,7 @@
 			<span :class="'icon ' + deleteIcon" />
 			{{ deleteRuleTooltip }}
 		</button>
-		<div style="clear:both;" />
+		<slot name="extra" />
 	</div>
 </template>
 
@@ -310,6 +310,7 @@ export default {
 		width: max-content;
 		color: var(--color-error);
 		border-color: var(--color-error);
+		margin: 0;
 	}
 
 	.icon {

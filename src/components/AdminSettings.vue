@@ -38,16 +38,20 @@
 			<ApprovalRule
 				v-model="newRule"
 				delete-icon="icon-history"
-				@delete="onNewRuleDelete" />
-			<button v-if="newRuleIsValid"
-				v-tooltip.top="{ content: createTooltip }"
-				@click="onValidateNewRule">
-				<span class="icon icon-checkmark-color" />
-			</button>
-			<span v-else
-				class="new-rule-error">
-				{{ invalidRuleMessage }}
-			</span>
+				@delete="onNewRuleDelete">
+				<template #extra>
+					<button v-if="newRuleIsValid"
+						class="new-rule-ok"
+						@click="onValidateNewRule">
+						<span class="icon icon-checkmark-color" />
+						{{ createTooltip }}
+					</button>
+					<span v-else
+						class="new-rule-error">
+						{{ invalidRuleMessage }}
+					</span>
+				</template>
+			</ApprovalRule>
 		</div>
 		<div class="create-tag">
 			<label for="create-tag-input">
@@ -351,11 +355,18 @@ export default {
 			margin: 0 0 0 5px;
 		}
 		.new-rule-error {
-			margin-left: 10px;
 			padding: 0 5px 0 5px;
 			color: white;
 			background-color: var(--color-warning);
 			border-radius: var(--border-radius);
+		}
+		.new-rule-ok {
+			width: max-content;
+			margin: 0;
+		}
+		.new-rule-error,
+		.new-rule-ok {
+			margin-top: 10px;
 		}
 	}
 	.no-rules {
