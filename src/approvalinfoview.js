@@ -27,6 +27,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		id: 'approvalInfoView',
 
 		_inputView: null,
+		state: states.NOTHING,
 
 		fileName: '',
 		fileId: 0,
@@ -107,6 +108,11 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
 			this.fileInfo = fileInfo
 
+			// reset component details
+			this._inputView.setUserId('')
+			this._inputView.setUserName('')
+			this._inputView.setDatetime('')
+
 			this.getApprovalStatus()
 
 			// reload approval status when a tag is added or removed
@@ -128,11 +134,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		getApprovalStatus() {
 			const url = generateUrl('/apps/approval/' + this.fileId + '/state')
 			axios.get(url).then((response) => {
-				// i don't know how to change props with Vue instance
-				// so it's done with a method changing a data value
-				this._inputView.setState(response.data)
+				this.state = response.data
 				if (response.data !== states.NOTHING) {
-					this.show()
 					this.getDetails()
 				} else {
 					this.hide()
@@ -170,15 +173,22 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 						this._inputView.setUserId(lastActivity.subject_rich[1].user.id)
 						this._inputView.setUserName(lastActivity.subject_rich[1].user.name)
 						this._inputView.setDatetime(lastActivity.datetime)
+						this._inputView.setState(this.state)
+						this.show()
 						return
 					}
 				} catch (error) {
 					console.error(error)
 				}
 			} while (response.data.ocs.data.length === limit)
+
 			this._inputView.setUserId('')
 			this._inputView.setUserName('')
 			this._inputView.setDatetime('')
+			// i don't know how to change props with Vue instance
+			// so it's done with a method changing a data value
+			this._inputView.setState(this.state)
+			this.show()
 		},
 
 		isVisible() {
