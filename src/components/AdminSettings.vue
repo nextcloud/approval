@@ -350,9 +350,6 @@ export default {
 			padding: 0;
 			margin: 0 0 0 5px;
 		}
-		.approval_rule {
-			background: rgba(0, 130, 201, 0.1);
-		}
 		.new-rule-error {
 			margin-left: 10px;
 			padding: 0 5px 0 5px;

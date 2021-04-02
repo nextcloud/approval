@@ -2,8 +2,10 @@
 	<div class="approval_rule">
 		<div class="fields">
 			<div class="tag">
-				<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
-				<span class="field-label main-label">{{ pendingLabel }}</span>
+				<span class="field-label main-label">
+					<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
+					{{ pendingLabel }}
+				</span>
 				<MultiselectTags class="tag-select"
 					:value="value.tagPending"
 					:label="t('approval', 'Select pending tag')"
@@ -11,8 +13,10 @@
 					@input="update('tagPending', $event)" />
 			</div>
 			<div class="users">
-				<span class="icon icon-group" />
-				<span class="field-label">{{ whoLabel }}</span>
+				<span class="field-label">
+					<span class="icon icon-group" />
+					{{ whoLabel }}
+				</span>
 				<div class="approval-user">
 					<Multiselect
 						class="approval-user-input"
@@ -59,8 +63,10 @@
 				</div>
 			</div>
 			<div class="tag">
-				<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
-				<span class="field-label">{{ approvedLabel }}</span>
+				<span class="field-label">
+					<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
+					{{ approvedLabel }}
+				</span>
 				<MultiselectTags class="tag-select"
 					:value="value.tagApproved"
 					:label="t('approval', 'Select approved tag')"
@@ -68,8 +74,10 @@
 					@input="update('tagApproved', $event)" />
 			</div>
 			<div class="tag">
-				<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
-				<span class="field-label">{{ rejectedLabel }}</span>
+				<span class="field-label">
+					<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
+					{{ rejectedLabel }}
+				</span>
 				<MultiselectTags class="tag-select"
 					:value="value.tagRejected"
 					:label="t('approval', 'Select rejected tag')"
@@ -78,10 +86,10 @@
 			</div>
 		</div>
 		<button
-			v-tooltip.top="{ content: deleteRuleTooltip }"
 			class="delete-rule"
 			@click="$emit('delete')">
 			<span :class="'icon ' + deleteIcon" />
+			{{ deleteRuleTooltip }}
 		</button>
 		<div style="clear:both;" />
 	</div>
@@ -121,9 +129,9 @@ export default {
 			tagApprovedIconUrl: generateUrl('/svg/core/actions/tag?color=46ba61'),
 			tagRejectedIconUrl: generateUrl('/svg/core/actions/tag?color=e9322d'),
 			whoLabel: t('approval', 'Who can approve'),
-			pendingLabel: t('approval', 'Pending tag'),
-			approvedLabel: t('approval', 'Approved tag'),
-			rejectedLabel: t('approval', 'Rejected tag'),
+			pendingLabel: t('approval', 'Tag to act on'),
+			approvedLabel: t('approval', 'Tag set on approval'),
+			rejectedLabel: t('approval', 'Tag set on rejection'),
 			deleteRuleTooltip: t('approval', 'Delete this rule'),
 			loadingSuggestions: false,
 			suggestions: [],
@@ -264,10 +272,10 @@ export default {
 <style scoped lang="scss">
 .approval_rule {
 	display: flex;
-	align-items: center;
+	flex-direction: column;
 	border-radius: var(--border-radius-large);
-	background: var(--color-background-dark);
-	padding: 5px 0 5px 0;
+	background: var(--color-background-hover);
+	padding: 16px;
 
 	.fields {
 		display: flex;
@@ -276,8 +284,12 @@ export default {
 		.tag,
 		.users {
 			display: flex;
-			align-items: center;
-			margin: 5px 0 5px 0;
+			flex-direction: column;
+			// align-items: center;
+			margin: 0 0 10px 0;
+			.field-label {
+				margin: 0 0 5px 0;
+			}
 		}
 
 		.field-label {
@@ -295,16 +307,16 @@ export default {
 	}
 
 	.delete-rule {
-		margin: 0 10px 0 10px;
-		width: 36px;
-		height: 36px;
-		padding: 0;
+		width: max-content;
+		color: var(--color-error);
+		border-color: var(--color-error);
 	}
 
 	.icon {
 		width: 16px;
 		height: 16px;
-		margin: 0 15px -3px 15px;
+		margin: 0 5px -3px 5px;
+		display: inline-block;
 	}
 	button .icon {
 		margin: 0;
