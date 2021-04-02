@@ -2,3 +2,7 @@
 .app-sidebar-header__description {
 	flex-direction: column;
 }
+
+#approvalInfoView {
+	width: 100%;
+}

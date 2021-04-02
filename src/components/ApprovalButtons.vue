@@ -1,23 +1,26 @@
 <template>
 	<div class="approval-container">
-		<button v-if="stateApprovable"
-			class="success"
-			@click="onApprove">
-			<span class="icon icon-approve" />
-			{{ approveText }}
-		</button>
-		<button v-if="stateApprovable"
-			class="error"
-			@click="onReject">
-			<span class="icon icon-reject" />
-			{{ rejectText }}
-		</button>
+		<div v-if="stateApprovable"
+			class="buttons">
+			<button
+				class="success"
+				@click="onApprove">
+				<span class="icon icon-approve" />
+				{{ approveText }}
+			</button>
+			<button
+				class="error"
+				@click="onReject">
+				<span class="icon icon-reject" />
+				{{ rejectText }}
+			</button>
+		</div>
 		<span v-if="stateApproved"
 			class="state-label approved-label">
 			<span class="icon icon-approve" />
 			<span v-if="myUserId && myDatetime"
 				class="details">
-				<span>{{ approvedByText }}</span>
+				<b>{{ approvedByText }}</b>
 				<UserBubble
 					class="user-bubble"
 					:user="myUserId"
@@ -32,7 +35,7 @@
 			<span class="icon icon-reject" />
 			<span v-if="myUserId && myDatetime"
 				class="details">
-				<span>{{ rejectedByText }}</span>
+				<b>{{ rejectedByText }}</b>
 				<UserBubble
 					class="user-bubble"
 					:user="myUserId"
@@ -136,8 +139,6 @@ export default {
 			return moment(this.myDatetime).fromNow()
 		},
 		notMe() {
-			console.debug('aaaaaaaaa')
-			console.debug(this.myUserId + ' ::::: ' + getCurrentUser().uid)
 			return this.myUserId !== getCurrentUser().uid
 		},
 	},
@@ -188,9 +189,15 @@ export default {
 	display: flex;
 	margin: 5px 0 5px 0;
 
-	button {
-		margin-top: 0;
-		margin-bottom: 0;
+	.buttons {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		button {
+			margin: 0 5px 0 5px;
+		}
 	}
 
 	.state-label {
@@ -210,7 +217,6 @@ export default {
 	.pending-label,
 	.approved-label,
 	.rejected-label {
-		border: solid 1px var(--color-border-dark);
 		margin: 0 5px 0 5px;
 		padding: 0 3px 0 3px;
 	}
@@ -221,17 +227,24 @@ export default {
 		color: #fff !important;
 	}
 
-	.rejected-label {
+	.rejected-label .icon {
 		background-color: var(--color-error) !important;
 		border-color: var(--color-error) !important;
 		color: #fff !important;
 	}
 
-	.approved-label,
+	.approved-label .icon,
 	button.success {
 		background-color: var(--color-success) !important;
 		border-color: var(--color-success) !important;
 		color: #fff !important;
+	}
+
+	.approved-label .icon,
+	.rejected-label .icon {
+		width: 32px;
+		height: 32px;
+		border-radius: var(--border-radius-pill);
 	}
 
 	.icon-approve,
