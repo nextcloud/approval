@@ -265,9 +265,8 @@ export default {
 .approval_rule {
 	display: flex;
 	align-items: center;
-	// width: 650px;
 	border-radius: var(--border-radius-large);
-	background: rgba(70, 186, 97, 0.1);
+	background: var(--color-background-dark);
 	padding: 5px 0 5px 0;
 
 	.fields {
