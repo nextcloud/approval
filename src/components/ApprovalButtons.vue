@@ -249,11 +249,15 @@ export default {
 		border-radius: var(--border-radius-pill);
 	}
 
-	.icon-pending,
+	.icon-pending {
+		background-image: url('../../img/pending.svg');
+		background-size: 23px;
+		margin-right: 5px;
+	}
 	.icon-approve,
 	.icon-reject {
 		background-image: url('../../img/app.svg');
-		background-size: 16px 16px;
+		background-size: 16px;
 		margin-right: 5px;
 	}
 	.icon-reject {
@@ -262,14 +266,6 @@ export default {
 		-ms-transform: rotate(0deg);
 		-o-transform: rotate(180deg);
 		transform: rotate(180deg);
-		background-position-y: 6px;
-	}
-	.icon-pending {
-		-webkit-transform: rotate(270deg);
-		-moz-transform: rotate(270deg);
-		-ms-transform: rotate(0deg);
-		-o-transform: rotate(270deg);
-		transform: rotate(270deg);
 		background-position-y: 6px;
 	}
 }
