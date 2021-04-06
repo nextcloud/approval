@@ -38,6 +38,7 @@
 			<ApprovalRule
 				v-model="newRule"
 				delete-icon="icon-history"
+				:delete-rule-label="newRuleDeleteLabel"
 				@delete="onNewRuleDelete">
 				<template #extra>
 					<button v-if="newRuleIsValid"
@@ -102,6 +103,7 @@ export default {
 			creatingTag: false,
 			savingRule: false,
 			loadingRules: false,
+			newRuleDeleteLabel: t('approval', 'Cancel rule creation'),
 		}
 	},
 

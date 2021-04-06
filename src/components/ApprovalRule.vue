@@ -89,7 +89,7 @@
 			class="delete-rule"
 			@click="$emit('delete')">
 			<span :class="'icon ' + deleteIcon" />
-			{{ deleteRuleTooltip }}
+			{{ deleteRuleLabel }}
 		</button>
 		<slot name="extra" />
 	</div>
@@ -121,6 +121,10 @@ export default {
 			type: String,
 			default: 'icon-delete',
 		},
+		deleteRuleLabel: {
+			type: String,
+			default: t('approval', 'Delete this rule'),
+		},
 	},
 
 	data() {
@@ -132,7 +136,6 @@ export default {
 			pendingLabel: t('approval', 'Tag to act on'),
 			approvedLabel: t('approval', 'Tag set on approval'),
 			rejectedLabel: t('approval', 'Tag set on rejection'),
-			deleteRuleTooltip: t('approval', 'Delete this rule'),
 			loadingSuggestions: false,
 			suggestions: [],
 			query: '',
