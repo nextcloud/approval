@@ -346,6 +346,7 @@ export default {
 	.approval-rule,
 	.new-rule {
 		margin: 15px 15px 15px 15px;
+		width: min-content;
 	}
 	.new-rule {
 		display: flex;
@@ -360,9 +361,6 @@ export default {
 		.new-rule-ok {
 			width: max-content;
 			margin: 0;
-		}
-		.new-rule-error {
-			width: 250px;
 		}
 		.new-rule-error,
 		.new-rule-ok {
