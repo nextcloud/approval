@@ -266,6 +266,9 @@ export default {
 		-ms-transform: rotate(0deg);
 		-o-transform: rotate(180deg);
 		transform: rotate(180deg);
+		background-position-y: -1px;
+	}
+	.state-label .icon-reject {
 		background-position-y: 6px;
 	}
 }
