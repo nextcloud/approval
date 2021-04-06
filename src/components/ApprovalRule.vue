@@ -123,7 +123,7 @@ export default {
 		},
 		deleteRuleLabel: {
 			type: String,
-			default: t('approval', 'Delete this rule'),
+			default: t('approval', 'Delete rule'),
 		},
 	},
 
@@ -289,7 +289,7 @@ export default {
 			display: flex;
 			flex-direction: column;
 			// align-items: center;
-			margin: 0 0 10px 0;
+			margin: 0 0 16px 0;
 			.field-label {
 				margin: 0 0 5px 0;
 			}

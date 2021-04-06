@@ -148,6 +148,9 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			})
 		},
 
+		/**
+		 * Get who and when
+		 */
 		async getDetails() {
 			const limit = 50
 			let since = 0

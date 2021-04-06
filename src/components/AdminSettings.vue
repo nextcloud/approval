@@ -41,13 +41,14 @@
 				:delete-rule-label="newRuleDeleteLabel"
 				@delete="onNewRuleDelete">
 				<template #extra>
-					<button v-if="newRuleIsValid"
+					<button
 						class="new-rule-ok"
+						:disabled="!newRuleIsValid"
 						@click="onValidateNewRule">
 						<span class="icon icon-checkmark-color" />
 						{{ createTooltip }}
 					</button>
-					<span v-else
+					<span v-if="!newRuleIsValid"
 						class="new-rule-error">
 						{{ invalidRuleMessage }}
 					</span>
@@ -103,7 +104,7 @@ export default {
 			creatingTag: false,
 			savingRule: false,
 			loadingRules: false,
-			newRuleDeleteLabel: t('approval', 'Cancel rule creation'),
+			newRuleDeleteLabel: t('approval', 'Cancel'),
 		}
 	},
 
@@ -137,7 +138,7 @@ export default {
 			return null
 		},
 		createTooltip() {
-			return t('approval', 'Create this rule')
+			return t('approval', 'Create rule')
 		},
 	},
 
@@ -356,19 +357,16 @@ export default {
 			padding: 0;
 			margin: 0 0 0 5px;
 		}
-		.new-rule-error {
-			padding: 0 5px 0 5px;
-			color: white;
-			background-color: var(--color-warning);
-			border-radius: var(--border-radius);
-		}
 		.new-rule-ok {
 			width: max-content;
 			margin: 0;
 		}
+		.new-rule-error {
+			width: 250px;
+		}
 		.new-rule-error,
 		.new-rule-ok {
-			margin-top: 10px;
+			margin-top: 16px;
 		}
 	}
 	.no-rules {
