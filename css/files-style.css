@@ -11,14 +11,14 @@
 /* file actions */
 .approval-inline-state {
 	display: inline-block;
-    position: absolute;
-	right: 12px;
-	bottom: 0px;
-	width: 20px;
-	height: 20px;
+    position: relative;
+	right: -31px;
+	bottom: -20px;
+	width: 15px;
+	height: 15px;
 	padding: 0;
-    opacity: 0.5;
-	z-index: -1;
+    opacity: 0.7;
+	z-index: 5;
 
 	border-radius: var(--border-radius-pill);
 }
@@ -26,7 +26,7 @@
 .icon-approved,
 .icon-rejected {
 	background-image: url('../img/app.svg');
-	background-size: 12px;
+	background-size: 10px;
 	background-position-y: 2px;
 }
 
@@ -45,6 +45,6 @@
 
 .icon-pending {
 	background-image: url('../img/pending.svg');
-	background-size: 16px;
+	background-size: 14px;
 	background-color: var(--color-warning) !important;
 }

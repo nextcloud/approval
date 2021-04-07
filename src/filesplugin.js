@@ -63,7 +63,7 @@ OCA.Files.fileActions.registerAction({
 				} else {
 					actionLink.classList.add('icon-pending')
 				}
-				context.$file.find('a.name>span.fileactions').append(actionLink)
+				context.$file.find('a.name>.thumbnail-wrapper').append(actionLink)
 				return actionLink
 			}
 		} catch (error) {
