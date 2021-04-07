@@ -12,12 +12,12 @@
 .approval-inline-state {
 	display: inline-block;
     position: relative;
-	right: -31px;
-	bottom: -20px;
+	right: -30px;
+	bottom: -15px;
 	width: 15px;
 	height: 15px;
 	padding: 0;
-    opacity: 0.7;
+	opacity: 0.8;
 	z-index: 5;
 
 	border-radius: var(--border-radius-pill);

@@ -20,7 +20,7 @@
 			<span class="icon icon-approve" />
 			<span v-if="myUserId && myDatetime"
 				class="details">
-				<b>{{ approvedByText }}</b>
+				<strong>{{ approvedByText }}</strong>
 				<UserBubble
 					class="user-bubble"
 					:user="myUserId"
@@ -35,7 +35,7 @@
 			<span class="icon icon-reject" />
 			<span v-if="myUserId && myDatetime"
 				class="details">
-				<b>{{ rejectedByText }}</b>
+				<strong>{{ rejectedByText }}</strong>
 				<UserBubble
 					class="user-bubble"
 					:user="myUserId"
@@ -48,7 +48,7 @@
 		<span v-if="statePending"
 			class="state-label pending-label">
 			<span class="icon icon-pending" />
-			<b>{{ pendingText }}</b>
+			<strong>{{ pendingText }}</strong>
 		</span>
 	</div>
 </template>
@@ -211,6 +211,7 @@ export default {
 			margin-left: 2px;
 			.user-bubble {
 				color: var(--color-main-text);
+				height: 26px;
 			}
 		}
 	}

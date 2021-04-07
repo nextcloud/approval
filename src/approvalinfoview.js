@@ -224,7 +224,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		reloadFileList() {
-			const fileList = OCA?.Files?.App?.currentFileList
+			const fileList = OCA?.Files?.App?.fileList
 			fileList?.reload?.() || window.location.reload()
 		},
 		openSidebarOnFile() {
