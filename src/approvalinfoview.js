@@ -70,17 +70,12 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/approve')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} approved!', { name: this.fileName }))
-				// this was required but now we reload the file list and open the sidebar so approval status is reloaded
-				// this.getApprovalStatus()
+				this.getApprovalStatus()
 				// reload system tags after approve
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
-				// i'm pretty sure something likethis can be done but there's a crash in "naturalSortCompare()" when reinserting the line
-				// const tr = OCA.Files.App.currentFileList.findFileEl(this.fileName)
-				// OCA.Files.App.currentFileList.updateRow(tr, this.fileInfo)
-				this.reloadFileList()
-				this.openSidebarOnFile()
+				this.updateFileItem()
 			}).catch((error) => {
 				console.error(error)
 				showError(
@@ -95,13 +90,12 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/reject')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} rejected!', { name: this.fileName }))
-				// this.getApprovalStatus()
+				this.getApprovalStatus()
 				// reload system tags after reject
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
-				this.reloadFileList()
-				this.openSidebarOnFile()
+				this.updateFileItem()
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to reject {name}', { name: this.fileName })
@@ -129,20 +123,24 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				this.tagEventsCaugth = true
 				OCA.SystemTags.View._inputView.on('select', (tag) => {
 					setTimeout(() => {
-						this.getApprovalStatus()
+						this.getApprovalStatus(true)
 					}, 2000)
 				}, this)
 				OCA.SystemTags.View._inputView.on('deselect', (tag) => {
 					setTimeout(() => {
-						this.getApprovalStatus()
+						this.getApprovalStatus(true)
 					}, 2000)
 				}, this)
 			}
 		},
 
-		getApprovalStatus() {
+		getApprovalStatus(reloadFileItem) {
 			const url = generateUrl('/apps/approval/' + this.fileId + '/state')
 			axios.get(url).then((response) => {
+				if (reloadFileItem && this.state !== response.data) {
+					this.updateFileItem()
+				}
+
 				this.state = response.data
 				if (response.data !== states.NOTHING) {
 					this.getDetails()
@@ -229,5 +227,9 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 		openSidebarOnFile() {
 			OCA.Files.Sidebar.open(this.fileInfo.attributes.path + '/' + this.fileInfo.attributes.name)
+		},
+		updateFileItem() {
+			const model = OCA.Files.App.fileList.getModelForFile(this.fileName)
+			model.trigger('change', model)
 		},
 	})
