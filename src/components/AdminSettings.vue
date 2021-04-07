@@ -40,7 +40,7 @@
 				delete-icon="icon-history"
 				:delete-rule-label="newRuleDeleteLabel"
 				@delete="onNewRuleDelete">
-				<template #extra>
+				<template #extra-buttons>
 					<button
 						class="new-rule-ok"
 						:disabled="!newRuleIsValid"
@@ -48,10 +48,12 @@
 						<span class="icon icon-checkmark-color" />
 						{{ createTooltip }}
 					</button>
-					<span v-if="!newRuleIsValid"
+				</template>
+				<template #extra-footer>
+					<p v-if="!newRuleIsValid"
 						class="new-rule-error">
 						{{ invalidRuleMessage }}
-					</span>
+					</p>
 				</template>
 			</ApprovalRule>
 		</div>
@@ -362,8 +364,7 @@ export default {
 			width: max-content;
 			margin: 0;
 		}
-		.new-rule-error,
-		.new-rule-ok {
+		.new-rule-error {
 			margin-top: 16px;
 		}
 	}

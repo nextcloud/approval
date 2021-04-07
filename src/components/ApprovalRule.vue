@@ -85,13 +85,16 @@
 					@input="update('tagRejected', $event)" />
 			</div>
 		</div>
-		<button
-			class="delete-rule"
-			@click="$emit('delete')">
-			<span :class="'icon ' + deleteIcon" />
-			{{ deleteRuleLabel }}
-		</button>
-		<slot name="extra" />
+		<div class="buttons">
+			<button
+				class="delete-rule"
+				@click="$emit('delete')">
+				<span :class="'icon ' + deleteIcon" />
+				{{ deleteRuleLabel }}
+			</button>
+			<slot name="extra-buttons" />
+		</div>
+		<slot name="extra-footer" />
 	</div>
 </template>
 
@@ -274,8 +277,6 @@ export default {
 
 <style scoped lang="scss">
 .approval_rule {
-	display: flex;
-	flex-direction: column;
 	border-radius: var(--border-radius-large);
 	background: var(--color-background-hover);
 	padding: 16px;
