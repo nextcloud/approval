@@ -75,6 +75,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
+				this.reloadFileList()
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to approve {name}', { name: this.fileName })
@@ -93,6 +94,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
+				this.reloadFileList()
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to reject {name}', { name: this.fileName })
@@ -212,5 +214,10 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		remove() {
 			this._inputView.remove()
+		},
+
+		reloadFileList() {
+			const fileList = OCA?.Files?.App?.currentFileList
+			fileList?.reload?.() || window.location.reload()
 		},
 	})
