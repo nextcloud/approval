@@ -70,12 +70,14 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/approve')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} approved!', { name: this.fileName }))
-				this.getApprovalStatus()
+				// this was required but now we reload the file list and open the sidebar so approval status is reloaded
+				// this.getApprovalStatus()
 				// reload system tags after approve
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
 				this.reloadFileList()
+				this.openSidebarOnFile()
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to approve {name}', { name: this.fileName })
@@ -89,12 +91,13 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/reject')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} rejected!', { name: this.fileName }))
-				this.getApprovalStatus()
+				// this.getApprovalStatus()
 				// reload system tags after reject
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
 				this.reloadFileList()
+				this.openSidebarOnFile()
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to reject {name}', { name: this.fileName })
@@ -220,4 +223,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const fileList = OCA?.Files?.App?.currentFileList
 			fileList?.reload?.() || window.location.reload()
 		},
+		openSidebarOnFile() {
+			OCA.Files.Sidebar.open(this.fileInfo.attributes.path + '/' + this.fileInfo.attributes.name)
+		}
 	})
