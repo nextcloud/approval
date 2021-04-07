@@ -76,9 +76,13 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
+				// i'm pretty sure something likethis can be done but there's a crash in "naturalSortCompare()" when reinserting the line
+				// const tr = OCA.Files.App.currentFileList.findFileEl(this.fileName)
+				// OCA.Files.App.currentFileList.updateRow(tr, this.fileInfo)
 				this.reloadFileList()
 				this.openSidebarOnFile()
 			}).catch((error) => {
+				console.error(error)
 				showError(
 					t('approval', 'Failed to approve {name}', { name: this.fileName })
 					+ ': ' + error.response?.request?.responseText
@@ -225,5 +229,5 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 		openSidebarOnFile() {
 			OCA.Files.Sidebar.open(this.fileInfo.attributes.path + '/' + this.fileInfo.attributes.name)
-		}
+		},
 	})
