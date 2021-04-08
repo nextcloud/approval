@@ -17,7 +17,6 @@
 	width: 15px;
 	height: 15px;
 	padding: 0;
-	opacity: 0.8;
 	z-index: 5;
 
 	border-radius: var(--border-radius-pill);
@@ -43,8 +42,16 @@
 	transform: rotate(180deg);
 }
 
+.icon-approvable,
 .icon-pending {
 	background-image: url('../img/pending.svg');
 	background-size: 14px;
+}
+
+.icon-approvable {
+	background-color: #0082c9 !important;
+}
+
+.icon-pending {
 	background-color: var(--color-warning) !important;
 }

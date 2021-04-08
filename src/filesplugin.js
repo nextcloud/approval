@@ -60,8 +60,14 @@ OCA.Files.fileActions.registerAction({
 					actionLink.classList.add('icon-approved')
 				} else if (state === states.REJECTED) {
 					actionLink.classList.add('icon-rejected')
-				} else {
+				} else if (state === states.PENDING) {
 					actionLink.classList.add('icon-pending')
+				} else if (state === states.APPROVABLE) {
+					actionLink.classList.add('icon-approvable')
+					const tw = context.$file.find('a.name>.thumbnail-wrapper')
+					if (tw.length > 0) {
+						tw[0].setAttribute('title', t('approval', 'Pending approval, you are authorized to approve.'))
+					}
 				}
 				context.$file.find('a.name>.thumbnail-wrapper').append(actionLink)
 				return actionLink
