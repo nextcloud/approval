@@ -23,7 +23,6 @@
 
 namespace OCA\Approval\Activity;
 
-use InvalidArgumentException;
 use OCP\Activity\IEvent;
 use OCP\Activity\IManager;
 use OCP\IUserManager;
@@ -34,15 +33,14 @@ use OCP\Files\IRootFolder;
 use OCA\Approval\AppInfo\Application;
 
 class ActivityManager {
-
 	private $manager;
 	private $userId;
 	private $l10n;
 
-	const APPROVAL_OBJECT_NODE = 'approval_node';
+	public const APPROVAL_OBJECT_NODE = 'approval_node';
 
-	const SUBJECT_APPROVED = 'object_approved';
-	const SUBJECT_REJECTED = 'object_rejected';
+	public const SUBJECT_APPROVED = 'object_approved';
+	public const SUBJECT_REJECTED = 'object_rejected';
 
 	public function __construct(IManager $manager,
 								IL10N $l10n,
@@ -180,5 +178,4 @@ class ActivityManager {
 			'node' => $nodeInfo,
 		];
 	}
-
 }

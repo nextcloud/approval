@@ -16,9 +16,6 @@ use OCP\IUserManager;
 use OCP\IConfig;
 use OCP\IL10N;
 use Psr\Log\LoggerInterface;
-use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\RedirectResponse;
-use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\App\IAppManager;
 
 use OCP\IRequest;
@@ -26,10 +23,8 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
 use OCA\Approval\Service\RuleService;
-use OCA\Approval\AppInfo\Application;
 
 class ConfigController extends Controller {
-
 	private $userId;
 	private $config;
 	private $dbtype;

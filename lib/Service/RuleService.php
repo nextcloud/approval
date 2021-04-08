@@ -17,17 +17,14 @@ use Psr\Log\LoggerInterface;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
-use OCA\Approval\AppInfo\Application;
-
 class RuleService {
-
 	private $l10n;
 	private $logger;
 
 	/**
 	 * Service to operate on tags
 	 */
-	public function __construct (string $appName,
+	public function __construct(string $appName,
 								IConfig $config,
 								LoggerInterface $logger,
 								IDBConnection $db,
@@ -111,14 +108,14 @@ class RuleService {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->update('approval_rules');
-			$qb->set('tag_pending', $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT));
-			$qb->set('tag_approved', $qb->createNamedParameter($tagApproved, IQueryBuilder::PARAM_INT));
-			$qb->set('tag_rejected', $qb->createNamedParameter($tagRejected, IQueryBuilder::PARAM_INT));
-			$qb->where(
+		$qb->set('tag_pending', $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT));
+		$qb->set('tag_approved', $qb->createNamedParameter($tagApproved, IQueryBuilder::PARAM_INT));
+		$qb->set('tag_rejected', $qb->createNamedParameter($tagRejected, IQueryBuilder::PARAM_INT));
+		$qb->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-			$req = $qb->execute();
-			$qb = $qb->resetQueryParts();
+		$req = $qb->execute();
+		$qb = $qb->resetQueryParts();
 
 		$rule = $this->getRule($id);
 
@@ -154,8 +151,8 @@ class RuleService {
 					$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 				)
 				->andWhere(
-                    $qb->expr()->eq('user_id', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
-                );
+					$qb->expr()->eq('user_id', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+				);
 			$req = $qb->execute();
 			$qb = $qb->resetQueryParts();
 		}
@@ -201,8 +198,8 @@ class RuleService {
 					$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 				)
 				->andWhere(
-                    $qb->expr()->eq('group_id', $qb->createNamedParameter($gid, IQueryBuilder::PARAM_STR))
-                );
+					$qb->expr()->eq('group_id', $qb->createNamedParameter($gid, IQueryBuilder::PARAM_STR))
+				);
 			$req = $qb->execute();
 			$qb = $qb->resetQueryParts();
 		}
@@ -248,8 +245,8 @@ class RuleService {
 					$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 				)
 				->andWhere(
-                    $qb->expr()->eq('circle_id', $qb->createNamedParameter($gid, IQueryBuilder::PARAM_STR))
-                );
+					$qb->expr()->eq('circle_id', $qb->createNamedParameter($gid, IQueryBuilder::PARAM_STR))
+				);
 			$req = $qb->execute();
 			$qb = $qb->resetQueryParts();
 		}

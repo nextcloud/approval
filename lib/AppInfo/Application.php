@@ -9,13 +9,10 @@
 
 namespace OCA\Approval\AppInfo;
 
-use OCP\IContainer;
-use OCP\IUserSession;
 use OCP\Util;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
 
 use OCP\AppFramework\App;
-use OCP\AppFramework\IAppContainer;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -52,7 +49,7 @@ class Application extends App implements IBootstrap {
 		$server = $container->getServer();
 		$eventDispatcher = $server->getEventDispatcher();
 		// load files plugin script
-		$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function() {
+		$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function () {
 			Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin');
 			Util::addStyle(self::APP_ID, 'files-style');
 		});

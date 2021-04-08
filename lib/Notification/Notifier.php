@@ -11,7 +11,6 @@
 
 namespace OCA\Approval\Notification;
 
-
 use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\IUser;

@@ -23,8 +23,6 @@
 
 namespace OCA\Approval\Activity;
 
-use OCA\Approval\Activity\ActivityManager;
-
 use OCP\Activity\IEvent;
 use OCP\Activity\IProvider;
 use OCP\IConfig;

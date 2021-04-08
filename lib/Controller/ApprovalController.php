@@ -11,14 +11,10 @@
 
 namespace OCA\Approval\Controller;
 
-use OCP\IURLGenerator;
 use OCP\IConfig;
 use OCP\IL10N;
 
-use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\RedirectResponse;
 
-use OCP\AppFramework\Http\ContentSecurityPolicy;
 
 use Psr\Log\LoggerInterface;
 use OCP\IRequest;
@@ -26,10 +22,8 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
 use OCA\Approval\Service\ApprovalService;
-use OCA\Approval\AppInfo\Application;
 
 class ApprovalController extends Controller {
-
 	private $userId;
 	private $config;
 	private $dbconnection;

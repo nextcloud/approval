@@ -23,7 +23,6 @@
 
 namespace OCA\Approval\Activity;
 
-
 use OCP\IL10N;
 
 use OCA\Approval\AppInfo\Application;

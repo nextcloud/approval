@@ -30,7 +30,6 @@ use OCP\Activity\IFilter;
 use OCA\Approval\AppInfo\Application;
 
 class Filter implements IFilter {
-
 	private $l10n;
 	private $urlGenerator;
 
@@ -71,7 +70,7 @@ class Filter implements IFilter {
 	 * @since 11.0.0
 	 */
 	public function getIcon() {
-        return $this->urlGenerator->imagePath(Application::APP_ID, 'app-dark.svg');
+		return $this->urlGenerator->imagePath(Application::APP_ID, 'app-dark.svg');
 	}
 
 	/**

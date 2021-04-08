@@ -10,18 +10,18 @@
  */
 
 return [
-    'routes' => [
-        // Settings
-        ['name' => 'config#getRules', 'url' => '/rules', 'verb' => 'GET'],
-        ['name' => 'config#saveRule', 'url' => '/rule/{id}', 'verb' => 'PUT'],
-        ['name' => 'config#deleteRule', 'url' => '/rule/{id}', 'verb' => 'DELETE'],
-        ['name' => 'config#createRule', 'url' => '/rule', 'verb' => 'POST'],
+	'routes' => [
+		// Settings
+		['name' => 'config#getRules', 'url' => '/rules', 'verb' => 'GET'],
+		['name' => 'config#saveRule', 'url' => '/rule/{id}', 'verb' => 'PUT'],
+		['name' => 'config#deleteRule', 'url' => '/rule/{id}', 'verb' => 'DELETE'],
+		['name' => 'config#createRule', 'url' => '/rule', 'verb' => 'POST'],
 
-        ['name' => 'approval#createTag', 'url' => '/tag', 'verb' => 'POST'],
+		['name' => 'approval#createTag', 'url' => '/tag', 'verb' => 'POST'],
 
-        // Approval actions
-        ['name' => 'approval#getApprovalState', 'url' => '/{fileId}/state', 'verb' => 'GET'],
-        ['name' => 'approval#approve', 'url' => '/{fileId}/approve', 'verb' => 'PUT'],
-        ['name' => 'approval#reject', 'url' => '/{fileId}/reject', 'verb' => 'PUT'],
-    ]
+		// Approval actions
+		['name' => 'approval#getApprovalState', 'url' => '/{fileId}/state', 'verb' => 'GET'],
+		['name' => 'approval#approve', 'url' => '/{fileId}/approve', 'verb' => 'PUT'],
+		['name' => 'approval#reject', 'url' => '/{fileId}/reject', 'verb' => 'PUT'],
+	]
 ];

@@ -30,14 +30,13 @@ use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Activity\ActivityManager;
 
 class ApprovalService {
-
 	private $l10n;
 	private $logger;
 
 	/**
 	 * Service to operate on tags
 	 */
-	public function __construct (string $appName,
+	public function __construct(string $appName,
 								IConfig $config,
 								LoggerInterface $logger,
 								ISystemTagManager $tagManager,

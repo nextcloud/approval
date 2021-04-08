@@ -1,4 +1,5 @@
 <?php
+
 namespace OCA\Approval\Settings;
 
 use OCP\AppFramework\Http\TemplateResponse;
@@ -6,14 +7,12 @@ use OCP\IRequest;
 use OCP\IL10N;
 use OCP\IConfig;
 use OCP\Settings\ISettings;
-use OCP\Util;
 use OCP\IURLGenerator;
 use OCP\IInitialStateService;
 
 use OCA\Approval\AppInfo\Application;
 
 class Admin implements ISettings {
-
 	private $request;
 	private $config;
 	private $dataDirPath;
