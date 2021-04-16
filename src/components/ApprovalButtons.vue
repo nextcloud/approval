@@ -216,13 +216,6 @@ export default {
 		}
 	}
 
-	.pending-label,
-	.approved-label,
-	.rejected-label {
-		margin: 0 5px 0 5px;
-		padding: 0 3px 0 3px;
-	}
-
 	.pending-label .icon {
 		background-color: var(--color-warning) !important;
 		border-color: var(--color-warning) !important;
