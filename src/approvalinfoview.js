@@ -171,7 +171,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					params.append('since', since)
 				}
 				try {
-					response = await axios.get(generateOcsUrl('apps/activity/api/v2/activity') + 'approval' + '?' + params)
+					response = await axios.get(generateOcsUrl('apps/activity/api/v2/activity') + '/approval' + '?' + params)
 					const activities = response.data.ocs.data
 					since = activities.length
 						? activities[activities.length - 1].activity_id
