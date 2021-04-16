@@ -35,3 +35,9 @@ or for production:
 ```
 make build
 ```
+
+## Screenshots
+
+![1](https://github.com/eneiluj/approval/raw/master/img/screenshot_1.jpg)
+![2](https://github.com/eneiluj/approval/raw/master/img/screenshot_2.jpg)
+![3](https://github.com/eneiluj/approval/raw/master/img/screenshot_3.jpg)
