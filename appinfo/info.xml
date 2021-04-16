@@ -15,12 +15,14 @@
 	<category>workflow</category>
 	<website>https://github.com/eneiluj/approval</website>
 	<bugs>https://github.com/eneiluj/approval/issues</bugs>
-	<screenshot>https://github.com/nextcloud/eneiluj/raw/master/img/screenshot1.jpg</screenshot>
+	<screenshot>https://github.com/nextcloud/eneiluj/raw/master/img/screenshot_1.jpg</screenshot>
+	<screenshot>https://github.com/nextcloud/eneiluj/raw/master/img/screenshot_2.jpg</screenshot>
+	<screenshot>https://github.com/nextcloud/eneiluj/raw/master/img/screenshot_3.jpg</screenshot>
 	<dependencies>
 		<database min-version="9.4">pgsql</database>
 		<database>sqlite</database>
 		<database min-version="5.5">mysql</database>
-		<nextcloud min-version="21" max-version="22"/>
+		<nextcloud min-version="22" max-version="22"/>
 	</dependencies>
 	<settings>
 		<admin>OCA\Approval\Settings\Admin</admin>
