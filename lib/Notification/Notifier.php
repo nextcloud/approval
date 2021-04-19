@@ -126,7 +126,7 @@ class Notifier implements INotifier {
 					->setParsedMessage($content)
 					->setLink($linkToFile)
 					->setRichMessage(
-						$notification->getSubject() === 'approved' ? $l->t('{user} approved {node}') : $l->t('{user} rejected {node}'),
+						$notification->getSubject() === 'approved' ? $l->t('{node} was approved by {user}') : $l->t('{node} was rejected by {user}'),
 						[
 							'user' => $richSubjectUser,
 							'node' => $richSubjectNode,
