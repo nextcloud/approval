@@ -5,19 +5,19 @@
 			<button
 				class="success"
 				@click="onApprove">
-				<span class="icon icon-approve" />
+				<span class="icon icon-checkmark-white" />
 				{{ approveText }}
 			</button>
 			<button
 				class="error"
 				@click="onReject">
-				<span class="icon icon-reject" />
+				<span class="icon icon-close-white" />
 				{{ rejectText }}
 			</button>
 		</div>
 		<span v-if="stateApproved"
 			class="state-label approved-label">
-			<span class="icon icon-approve" />
+			<span class="icon icon-checkmark-white" />
 			<span v-if="myUserId && myDatetime"
 				class="details">
 				<strong>{{ approvedByText }}</strong>
@@ -32,7 +32,7 @@
 		</span>
 		<span v-if="stateRejected"
 			class="state-label rejected-label">
-			<span class="icon icon-reject" />
+			<span class="icon icon-close-white" />
 			<span v-if="myUserId && myDatetime"
 				class="details">
 				<strong>{{ rejectedByText }}</strong>
@@ -47,7 +47,7 @@
 		</span>
 		<span v-if="statePending"
 			class="state-label pending-label">
-			<span class="icon icon-pending" />
+			<span class="icon icon-checkmark-white" />
 			<strong>{{ pendingText }}</strong>
 		</span>
 	</div>
@@ -188,16 +188,17 @@ export default {
 <style scoped lang="scss">
 .approval-container {
 	display: flex;
-	margin: 5px 0 5px 0;
+	margin: 5px 0 15px 0;
 
 	.buttons {
 		width: 100%;
 		display: flex;
-		align-items: center;
-		justify-content: center;
+		// align-items: center;
+		// justify-content: center;
 
 		button {
 			margin: 0 5px 0 5px;
+			min-height: 44px;
 		}
 	}
 
@@ -235,6 +236,14 @@ export default {
 		color: #fff !important;
 	}
 
+	button.error,
+	button.success {
+		&:hover,
+		&:focus {
+			border-color: var(--color-main-text) !important;
+		}
+	}
+
 	.pending-label .icon,
 	.approved-label .icon,
 	.rejected-label .icon {
@@ -243,27 +252,9 @@ export default {
 		border-radius: var(--border-radius-pill);
 	}
 
-	.icon-pending {
-		background-image: url('../../img/pending.svg');
-		background-size: 23px;
+	.icon-close-white,
+	.icon-checkmark-white {
 		margin-right: 5px;
-	}
-	.icon-approve,
-	.icon-reject {
-		background-image: url('../../img/app.svg');
-		background-size: 16px;
-		margin-right: 5px;
-	}
-	.icon-reject {
-		-webkit-transform: rotate(180deg);
-		-moz-transform: rotate(180deg);
-		-ms-transform: rotate(0deg);
-		-o-transform: rotate(180deg);
-		transform: rotate(180deg);
-		background-position-y: -1px;
-	}
-	.state-label .icon-reject {
-		background-position-y: 6px;
 	}
 }
 </style>
