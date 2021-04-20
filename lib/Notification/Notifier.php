@@ -118,8 +118,8 @@ class Notifier implements INotifier {
 					? $l->t('%1$s approved %2$s.', [$user->getDisplayName(), $p['fileName']])
 					: $l->t('%1$s rejected %2$s.', [$user->getDisplayName(), $p['fileName']]);
 				$iconUrl = $notification->getSubject() === 'approved'
-					? $this->url->getAbsoluteURL($this->url->imagePath(Application::APP_ID, 'approved.svg'))
-					: $this->url->getAbsoluteURL($this->url->imagePath(Application::APP_ID, 'rejected.svg'));
+					? $this->url->getAbsoluteURL($this->url->imagePath('core', 'actions/checkmark.svg'))
+					: $this->url->getAbsoluteURL($this->url->imagePath('core', 'actions/close.svg'));
 
 				$notification
 					->setParsedSubject($subject)

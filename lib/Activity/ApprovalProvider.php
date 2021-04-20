@@ -181,13 +181,13 @@ class ApprovalProvider implements IProvider {
 		if ($event->getSubject() === ActivityManager::SUBJECT_APPROVED) {
 			$event->setIcon(
 				$this->urlGenerator->getAbsoluteURL(
-					$this->urlGenerator->imagePath(Application::APP_ID, 'approved.svg')
+					$this->urlGenerator->imagePath('core', 'actions/checkmark.svg')
 				)
 			);
 		} elseif ($event->getSubject() === ActivityManager::SUBJECT_REJECTED) {
 			$event->setIcon(
 				$this->urlGenerator->getAbsoluteURL(
-					$this->urlGenerator->imagePath(Application::APP_ID, 'rejected.svg')
+					$this->urlGenerator->imagePath('core', 'actions/close.svg')
 				)
 			);
 		}
