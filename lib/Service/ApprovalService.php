@@ -77,7 +77,7 @@ class ApprovalService {
 		}
 	}
 
-	private function userHasAccessTo(int $fileId, ?string $userId): bool {
+	public function userHasAccessTo(int $fileId, ?string $userId): bool {
 		$user = $this->userManager->get($userId);
 		if ($user instanceof IUser) {
 			$userFolder = $this->root->getUserFolder($userId);
@@ -301,46 +301,58 @@ class ApprovalService {
 		}
 	}
 
-	public function sendRequestNotification(int $fileId, array $tags): void {
+	public function getRuleAuthorizedUserIds(array $rule) : array {
 		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+
+		$ruleUserIds = [];
+		foreach ($rule['who'] as $who) {
+			if (isset($who['userId'])) {
+				if (!in_array($who['userId'], $ruleUserIds)) {
+					$ruleUserIds[] = $who['userId'];
+				}
+			} elseif (isset($who['groupId'])) {
+				if ($this->groupManager->groupExists($who['groupId'])) {
+					$users = $this->groupManager->get($who['groupId'])->getUsers();
+					foreach ($users as $user) {
+						if ($user instanceof IUser && !in_array($user->getUID(), $ruleUserIds)) {
+							$ruleUserIds[] = $user->getUID();
+						}
+					}
+				}
+			} elseif ($circlesEnabled && isset($who['circleId'])) {
+				$circleDetails = null;
+				try {
+					$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($who['circleId']);
+				}
+				catch (\OCA\Circles\Exceptions\CircleDoesNotExistException $e) {
+				}
+				if ($circleDetails) {
+					$circleMembers = $circleDetails->getMembers();
+					if ($circleMembers !== null) {
+						foreach ($circleMembers as $member) {
+							$userId = $member->getUserId();
+							if (!in_array($userId, $ruleUserIds)) {
+								$ruleUserIds[] = $userId;
+							}
+						}
+					}
+				}
+			}
+		}
+		return $ruleUserIds;
+	}
+
+	public function sendRequestNotification(int $fileId, array $tags): void {
 		// find users involved in rules matching tags
 		$rulesUserIds = [];
 		$rules = $this->ruleService->getRules();
 		foreach ($rules as $id => $rule) {
 			// rule matches tags
 			if (in_array($rule['tagPending'], $tags)) {
-				foreach ($rule['who'] as $who) {
-					if (isset($who['userId'])) {
-						if (!in_array($who['userId'], $rulesUserIds)) {
-							$rulesUserIds[] = $who['userId'];
-						}
-					} elseif (isset($who['groupId'])) {
-						if ($this->groupManager->groupExists($who['groupId'])) {
-							$users = $this->groupManager->get($who['groupId'])->getUsers();
-							foreach ($users as $user) {
-								if ($user instanceof IUser && !in_array($user->getUID(), $rulesUserIds)) {
-									$rulesUserIds[] = $user->getUID();
-								}
-							}
-						}
-					} elseif ($circlesEnabled && isset($who['circleId'])) {
-						$circleDetails = null;
-						try {
-							$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($who['circleId']);
-						}
-						catch (\OCA\Circles\Exceptions\CircleDoesNotExistException $e) {
-						}
-						if ($circleDetails) {
-							$circleMembers = $circleDetails->getMembers();
-							if ($circleMembers !== null) {
-								foreach ($circleMembers as $member) {
-									$userId = $member->getUserId();
-									if (!in_array($userId, $rulesUserIds)) {
-										$rulesUserIds[] = $userId;
-									}
-								}
-							}
-						}
+				$thisRuleUserIds = $this->getRuleAuthorizedUserIds($rule);
+				foreach ($thisRuleUserIds as $userId) {
+					if (!in_array($userId, $rulesUserIds)) {
+						$rulesUserIds[] = $userId;
 					}
 				}
 			}
