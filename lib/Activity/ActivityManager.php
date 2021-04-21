@@ -41,6 +41,7 @@ class ActivityManager {
 
 	public const SUBJECT_APPROVED = 'object_approved';
 	public const SUBJECT_REJECTED = 'object_rejected';
+	public const SUBJECT_REQUESTED = 'approval_requested';
 
 	public function __construct(IManager $manager,
 								IL10N $l10n,
@@ -68,6 +69,9 @@ class ActivityManager {
 				break;
 			case self::SUBJECT_REJECTED:
 				$subject = $ownActivity ? $this->l10n->t('You rejected {file}'): $this->l10n->t('{user} rejected {file}');
+				break;
+			case self::SUBJECT_REQUESTED:
+				$subject = $this->l10n->t('Your approval was requested on {file}');
 				break;
 			default:
 				break;
@@ -115,9 +119,9 @@ class ActivityManager {
 			// No need to enhance parameters since entity already contains the required data
 			case self::SUBJECT_APPROVED:
 			case self::SUBJECT_REJECTED:
+			case self::SUBJECT_REQUESTED:
 				$subjectParams = $this->findDetailsForNode($node);
 				$objectName = $node->getName();
-				// $eventType = 'approval_whatever_event';
 				break;
 			default:
 				throw new \Exception('Unknown subject for activity.');
@@ -151,16 +155,27 @@ class ActivityManager {
 		*/
 
 		$userIds = [];
-		$root = $this->root;
-		// then publish for eveyone having access
-		$this->userManager->callForSeenUsers(function (IUser $user) use ($event, $root, $entity, &$userIds) {
-			$userId = $user->getUID();
-			$userFolder = $root->getUserFolder($userId);
-			$found = $userFolder->getById($entity);
-			if (count($found) > 0) {
-				$userIds[] = $userId;
+		if ($subject === self::SUBJECT_REQUESTED) {
+			$ruleUserIds = $additionalParams['users'];
+			foreach ($ruleUserIds as $userId) {
+				$userFolder = $root->getUserFolder($userId);
+				$found = $userFolder->getById($entity);
+				if (count($found) > 0) {
+					$userIds[] = $userId;
+				}
 			}
-		});
+		} else {
+			$root = $this->root;
+			// publish for eveyone having access
+			$this->userManager->callForSeenUsers(function (IUser $user) use ($event, $root, $entity, &$userIds) {
+				$userId = $user->getUID();
+				$userFolder = $root->getUserFolder($userId);
+				$found = $userFolder->getById($entity);
+				if (count($found) > 0) {
+					$userIds[] = $userId;
+				}
+			});
+		}
 
 		foreach ($userIds as $userId) {
 			$event->setAffectedUser($userId);

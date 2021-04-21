@@ -355,6 +355,12 @@ class ApprovalService {
 						$rulesUserIds[] = $userId;
 					}
 				}
+				// create activity (which deals with access checks)
+				$this->activityManager->triggerEvent(
+					ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
+					ActivityManager::SUBJECT_REQUESTED,
+					['users' => $thisRuleUserIds]
+				);
 			}
 		}
 		// only notify users having access to the file

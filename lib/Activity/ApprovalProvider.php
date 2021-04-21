@@ -113,7 +113,9 @@ class ApprovalProvider implements IProvider {
 			$event->setAuthor($author);
 		}
 
-		if ($event->getSubject() === ActivityManager::SUBJECT_APPROVED || $event->getSubject() === ActivityManager::SUBJECT_REJECTED) {
+		if ($event->getSubject() === ActivityManager::SUBJECT_APPROVED
+			|| $event->getSubject() === ActivityManager::SUBJECT_REJECTED
+			|| $event->getSubject() === ActivityManager::SUBJECT_REQUESTED) {
 			if (isset($subjectParams['node']) && $event->getObjectName() === '') {
 				$event->setObject($event->getObjectType(), $event->getObjectId(), $subjectParams['node']['name']);
 			}
