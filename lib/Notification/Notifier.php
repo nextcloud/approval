@@ -115,8 +115,8 @@ class Notifier implements INotifier {
 						? $l->t('A directory was approved')
 						: $l->t('A directory was rejected'));
 				$content = $notification->getSubject() === 'approved'
-					? $l->t('%1$s approved %2$s.', [$user->getDisplayName(), $p['fileName']])
-					: $l->t('%1$s rejected %2$s.', [$user->getDisplayName(), $p['fileName']]);
+					? $l->t('%1$s approved %2$s', [$user->getDisplayName(), $p['fileName']])
+					: $l->t('%1$s rejected %2$s', [$user->getDisplayName(), $p['fileName']]);
 				$iconUrl = $notification->getSubject() === 'approved'
 					? $this->url->getAbsoluteURL($this->url->imagePath('core', 'actions/checkmark.svg'))
 					: $this->url->getAbsoluteURL($this->url->imagePath('core', 'actions/close.svg'));
@@ -134,6 +134,37 @@ class Notifier implements INotifier {
 					)
 					->setIcon($iconUrl);
 			}
+			return $notification;
+
+		case 'request':
+			$p = $notification->getSubjectParameters();
+
+			$linkToFile = $this->url->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileid' => $p['fileId']]);
+			$richSubjectNode = [
+				'type' => 'file',
+				'id' => $p['fileId'],
+				'name' => $p['fileName'],
+				'path' => trim($p['relativePath'], '/'),
+				'link' => $linkToFile,
+			];
+
+			$subject = $l->t('Your approval was requested');
+			$content = $p['type'] === 'file'
+				? $l->t('Your approval was requested for file %1$s', [$p['fileName']])
+				: $l->t('Your approval was requested for directory %1$s', [$p['fileName']]);
+			$iconUrl =$this->url->getAbsoluteURL($this->url->imagePath(Application::APP_ID, 'app-dark.svg'));
+
+			$notification
+				->setParsedSubject($subject)
+				->setParsedMessage($content)
+				->setLink($linkToFile)
+				->setRichMessage(
+					$p['type'] === 'file' ? $l->t('Your approval was requested for file {node}') : $l->t('Your approval was requested for directory {node}'),
+					[
+						'node' => $richSubjectNode,
+					]
+				)
+				->setIcon($iconUrl);
 			return $notification;
 
 		default:

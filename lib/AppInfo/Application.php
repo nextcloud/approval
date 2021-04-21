@@ -9,6 +9,7 @@
 
 namespace OCA\Approval\AppInfo;
 
+use OCP\IConfig;
 use OCP\Util;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
 
@@ -17,7 +18,9 @@ use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\Notification\IManager as INotificationManager;
+use OCP\SystemTag\MapperEvent;
 
+use OCA\Approval\Service\ApprovalService;
 use OCA\Approval\Notification\Notifier;
 
 /**
@@ -44,7 +47,7 @@ class Application extends App implements IBootstrap {
 
 		$container = $this->getContainer();
 		$this->container = $container;
-		$this->config = $container->query(\OCP\IConfig::class);
+		$this->config = $container->query(IConfig::class);
 
 		$server = $container->getServer();
 		$eventDispatcher = $server->getEventDispatcher();
@@ -56,6 +59,14 @@ class Application extends App implements IBootstrap {
 		// notifications
 		$manager = $container->query(INotificationManager::class);
 		$manager->registerNotifierService(Notifier::class);
+
+		// listen to tag assignments
+		$eventDispatcher->addListener(MapperEvent::EVENT_ASSIGN, function (MapperEvent $event) use ($container) {
+			if ($event->getObjectType() === 'files') {
+				$service = $container->query(ApprovalService::class);
+				$service->sendRequestNotification($event->getObjectId(), $event->getTags());
+			}
+		});
 	}
 
 	public function register(IRegistrationContext $context): void {

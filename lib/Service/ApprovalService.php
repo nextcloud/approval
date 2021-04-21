@@ -214,7 +214,7 @@ class ApprovalService {
 						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagApproved']);
 						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
 
-						$this->sendNotification($fileId, $userId, true);
+						$this->sendApprovalNotification($fileId, $userId, true);
 						$this->activityManager->triggerEvent(
 							ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
 							ActivityManager::SUBJECT_APPROVED,
@@ -245,7 +245,7 @@ class ApprovalService {
 						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagRejected']);
 						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
 
-						$this->sendNotification($fileId, $userId, false);
+						$this->sendApprovalNotification($fileId, $userId, false);
 						$this->activityManager->triggerEvent(
 							ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
 							ActivityManager::SUBJECT_REJECTED,
@@ -260,7 +260,7 @@ class ApprovalService {
 		return false;
 	}
 
-	private function sendNotification(int $fileId, ?string $approverId, bool $approved): void {
+	private function sendApprovalNotification(int $fileId, ?string $approverId, bool $approved): void {
 		$paramsByUser = [];
 		$root = $this->root;
 		// notification for eveyone having access except the one approving/rejecting
@@ -291,6 +291,87 @@ class ApprovalService {
 			$notification = $manager->createNotification();
 
 			$subject = $approved ? 'approved' : 'rejected';
+			$notification->setApp(Application::APP_ID)
+				->setUser($userId)
+				->setDateTime(new \DateTime())
+				->setObject('dum', 'dum')
+				->setSubject($subject, $params);
+
+			$manager->notify($notification);
+		}
+	}
+
+	public function sendRequestNotification(int $fileId, array $tags): void {
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+		// find users involved in rules matching tags
+		$rulesUserIds = [];
+		$rules = $this->ruleService->getRules();
+		foreach ($rules as $id => $rule) {
+			// rule matches tags
+			if (in_array($rule['tagPending'], $tags)) {
+				foreach ($rule['who'] as $who) {
+					if (isset($who['userId'])) {
+						if (!in_array($who['userId'], $rulesUserIds)) {
+							$rulesUserIds[] = $who['userId'];
+						}
+					} elseif (isset($who['groupId'])) {
+						if ($this->groupManager->groupExists($who['groupId'])) {
+							$users = $this->groupManager->get($who['groupId'])->getUsers();
+							foreach ($users as $user) {
+								if ($user instanceof IUser && !in_array($user->getUID(), $rulesUserIds)) {
+									$rulesUserIds[] = $user->getUID();
+								}
+							}
+						}
+					} elseif ($circlesEnabled && isset($who['circleId'])) {
+						$circleDetails = null;
+						try {
+							$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($who['circleId']);
+						}
+						catch (\OCA\Circles\Exceptions\CircleDoesNotExistException $e) {
+						}
+						if ($circleDetails) {
+							$circleMembers = $circleDetails->getMembers();
+							if ($circleMembers !== null) {
+								foreach ($circleMembers as $member) {
+									$userId = $member->getUserId();
+									if (!in_array($userId, $rulesUserIds)) {
+										$rulesUserIds[] = $userId;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		// only notify users having access to the file
+		$paramsByUser = [];
+		$root = $this->root;
+		foreach ($rulesUserIds as $userId) {
+			$userFolder = $root->getUserFolder($userId);
+			$found = $userFolder->getById($fileId);
+			if (count($found) > 0) {
+				$node = $found[0];
+				$path = $userFolder->getRelativePath($node->getPath());
+				$type = $node->getType() === FileInfo::TYPE_FILE
+					? 'file'
+					: 'folder';
+				$paramsByUser[$userId] = [
+					'type' => $type,
+					'fileId' => $fileId,
+					'fileName' => $node->getName(),
+					'relativePath' => $path,
+				];
+			}
+		}
+
+		// actually send the notifications
+		foreach ($paramsByUser as $userId => $params) {
+			$manager = $this->notificationManager;
+			$notification = $manager->createNotification();
+
+			$subject = 'request';
 			$notification->setApp(Application::APP_ID)
 				->setUser($userId)
 				->setDateTime(new \DateTime())
