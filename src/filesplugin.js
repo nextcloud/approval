@@ -46,7 +46,7 @@ import axios from '@nextcloud/axios'
 OC.Plugins.register('OCA.Files.FileList', OCA.Approval.FilesPlugin)
 
 OCA.Files.fileActions.registerAction({
-	name: 'LockingInline',
+	name: 'ApprovalStateInline',
 	async render(actionSpec, isDefault, context) {
 		const fileId = context.$file[0].dataset.id
 		const url = generateUrl('/apps/approval/' + fileId + '/state')

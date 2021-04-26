@@ -12,7 +12,7 @@ use OCP\Migration\IOutput;
 /**
  * Auto-generated migration step: Please modify to your needs!
  */
-class Version000003Date20210331142733 extends SimpleMigrationStep {
+class Version000004Date20210331142734 extends SimpleMigrationStep {
 
 	/**
 	 * @param IOutput $output
@@ -54,8 +54,8 @@ class Version000003Date20210331142733 extends SimpleMigrationStep {
 			$table->setPrimaryKey(['id']);
 		}
 
-		if (!$schema->hasTable('approval_rule_users')) {
-			$table = $schema->createTable('approval_rule_users');
+		if (!$schema->hasTable('approval_rule_requesters')) {
+			$table = $schema->createTable('approval_rule_requesters');
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -65,15 +65,19 @@ class Version000003Date20210331142733 extends SimpleMigrationStep {
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('user_id', 'string', [
+			$table->addColumn('entity_type', 'integer', [
+				'notnull' => true,
+				'length' => 4,
+			]);
+			$table->addColumn('entity_id', 'string', [
 				'notnull' => true,
 				'length' => 300,
 			]);
 			$table->setPrimaryKey(['id']);
 		}
 
-		if (!$schema->hasTable('approval_rule_groups')) {
-			$table = $schema->createTable('approval_rule_groups');
+		if (!$schema->hasTable('approval_rule_approvers')) {
+			$table = $schema->createTable('approval_rule_approvers');
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -83,25 +87,11 @@ class Version000003Date20210331142733 extends SimpleMigrationStep {
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('group_id', 'string', [
-				'notnull' => true,
-				'length' => 300,
-			]);
-			$table->setPrimaryKey(['id']);
-		}
-
-		if (!$schema->hasTable('approval_rule_circles')) {
-			$table = $schema->createTable('approval_rule_circles');
-			$table->addColumn('id', 'integer', [
-				'autoincrement' => true,
+			$table->addColumn('entity_type', 'integer', [
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('rule_id', 'integer', [
-				'notnull' => true,
-				'length' => 4,
-			]);
-			$table->addColumn('circle_id', 'string', [
+			$table->addColumn('entity_id', 'string', [
 				'notnull' => true,
 				'length' => 300,
 			]);

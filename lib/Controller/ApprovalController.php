@@ -61,12 +61,22 @@ class ApprovalController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 *
+	 * @return DataResponse
+	 */
+	public function getUserRules(): DataResponse {
+		$rules = $this->approvalService->getUserRules($this->userId);
+		return new DataResponse($rules);
+	}
+
+	/**
 	 * get file tags
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
 	 * @param int $fileId
-	 * @return DataDisplayResponse
+	 * @return DataResponse
 	 */
 	public function getApprovalState(int $fileId): DataResponse {
 		$state = $this->approvalService->getApprovalState($fileId, $this->userId);
@@ -79,7 +89,7 @@ class ApprovalController extends Controller {
 	 * @NoCSRFRequired
 	 *
 	 * @param int $fileId
-	 * @return DataDisplayResponse
+	 * @return DataResponse
 	 */
 	public function approve(int $fileId): DataResponse {
 		$this->approvalService->approve($fileId, $this->userId);
@@ -92,7 +102,7 @@ class ApprovalController extends Controller {
 	 * @NoCSRFRequired
 	 *
 	 * @param int $fileId
-	 * @return DataDisplayResponse
+	 * @return DataResponse
 	 */
 	public function reject(int $fileId): DataResponse {
 		$this->approvalService->reject($fileId, $this->userId);

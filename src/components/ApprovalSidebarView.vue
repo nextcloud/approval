@@ -112,6 +112,7 @@ export default {
 			myUserName: null,
 			myDatetime: null,
 			you: t('approval', 'you'),
+			userRules: [],
 		}
 	},
 
@@ -172,6 +173,9 @@ export default {
 		},
 		setDatetime(datetime) {
 			this.myDatetime = datetime
+		},
+		setUserRules(rules) {
+			this.userRules = rules
 		},
 	},
 }

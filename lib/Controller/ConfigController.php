@@ -57,18 +57,33 @@ class ConfigController extends Controller {
 
 		$rules = $this->ruleService->getRules();
 		foreach ($rules as $id => $rule) {
-			foreach ($rule['who'] as $k => $elem) {
-				if (isset($elem['userId'])) {
-					$user = $this->userManager->get($elem['userId']);
-					$rules[$id]['who'][$k]['displayName'] = $user ? $user->getDisplayName() : $elem['userId'];
-				} elseif (isset($elem['groupId'])) {
-					$rules[$id]['who'][$k]['displayName'] = $elem['groupId'];
-				} elseif (isset($elem['circleId'])) {
+			foreach ($rule['approvers'] as $k => $elem) {
+				if ($elem['type'] === 'user') {
+					$user = $this->userManager->get($elem['entityId']);
+					$rules[$id]['approvers'][$k]['displayName'] = $user ? $user->getDisplayName() : $elem['entityId'];
+				} elseif ($elem['type'] === 'group') {
+					$rules[$id]['approvers'][$k]['displayName'] = $elem['entityId'];
+				} elseif ($elem['type'] === 'circle') {
 					if ($circlesEnabled) {
-						$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($elem['circleId']);
-						$rules[$id]['who'][$k]['displayName'] = $circleDetails->getName();
+						$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($elem['entityId']);
+						$rules[$id]['approvers'][$k]['displayName'] = $circleDetails->getName();
 					} else {
-						unset($rules[$id]['who'][$k]);
+						unset($rules[$id]['approvers'][$k]);
+					}
+				}
+			}
+			foreach ($rule['requesters'] as $k => $elem) {
+				if ($elem['type'] === 'user') {
+					$user = $this->userManager->get($elem['entityId']);
+					$rules[$id]['requesters'][$k]['displayName'] = $user ? $user->getDisplayName() : $elem['entityId'];
+				} elseif ($elem['type'] === 'group') {
+					$rules[$id]['requesters'][$k]['displayName'] = $elem['entityId'];
+				} elseif ($elem['type'] === 'circle') {
+					if ($circlesEnabled) {
+						$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($elem['entityId']);
+						$rules[$id]['requesters'][$k]['displayName'] = $circleDetails->getName();
+					} else {
+						unset($rules[$id]['requesters'][$k]);
 					}
 				}
 			}
@@ -80,8 +95,8 @@ class ConfigController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $who): DataResponse {
-		$result = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $who);
+	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $approvers, array $requesters): DataResponse {
+		$result = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $approvers, $requesters);
 		return isset($result['error'])
 			? new DataResponse($result, 400)
 			: new DataResponse($result['id']);
@@ -91,8 +106,8 @@ class ConfigController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $who): DataResponse {
-		$result = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $who);
+	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $approvers, array $requesters): DataResponse {
+		$result = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $approvers, $requesters);
 		return isset($result['error'])
 			? new DataResponse($result, 400)
 			: new DataResponse($result['id']);

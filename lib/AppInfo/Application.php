@@ -36,6 +36,10 @@ class Application extends App implements IBootstrap {
 	public const STATE_APPROVED = 2;
 	public const STATE_REJECTED = 3;
 	public const STATE_APPROVABLE = 4;
+	// approvers/requesters types
+	public const TYPE_USER = 0;
+	public const TYPE_GROUP = 1;
+	public const TYPE_CIRCLE = 2;
 
 	/**
 	 * Constructor

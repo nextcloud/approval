@@ -119,7 +119,7 @@ export default {
 		},
 		invalidRuleMessage() {
 			const newRule = this.newRule
-			const noMissingField = newRule.tagPending && newRule.tagApproved && newRule.tagRejected && newRule.who.length > 0
+			const noMissingField = newRule.tagPending && newRule.tagApproved && newRule.tagRejected && newRule.approvers.length > 0
 			if (!noMissingField) {
 				return t('approval', 'All fields are required')
 			}
@@ -157,16 +157,18 @@ export default {
 			const url = generateUrl('/apps/approval/rules')
 			axios.get(url).then((response) => {
 				this.rules = response.data
-				// add unique ids to who values
+				// add unique ids to approvers/requesters values
 				for (const id in this.rules) {
-					this.rules[id].who = this.rules[id].who.map(w => {
+					this.rules[id].approvers = this.rules[id].approvers.map(a => {
 						return {
-							...w,
-							trackKey: w.userId
-								? 'user-' + w.userId
-								: w.groupId
-									? 'group-' + w.groupId
-									: 'circle-' + w.circleId,
+							...a,
+							trackKey: a.type + '-' + a.entityId,
+						}
+					})
+					this.rules[id].requesters = this.rules[id].requesters.map(r => {
+						return {
+							...r,
+							trackKey: r.type + '-' + r.entityId,
 						}
 					})
 				}
@@ -182,17 +184,22 @@ export default {
 		},
 		onRuleInput(id, rule) {
 			// save if all values are set
-			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.who.length > 0) {
+			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.approvers.length > 0) {
 				this.savingRule = true
 				const req = {
 					tagPending: rule.tagPending,
 					tagApproved: rule.tagApproved,
 					tagRejected: rule.tagRejected,
-					who: rule.who.map((u) => {
+					approvers: rule.approvers.map((u) => {
 						return {
-							userId: u.userId,
-							groupId: u.groupId,
-							circleId: u.circleId,
+							type: u.type,
+							entityId: u.entityId,
+						}
+					}),
+					requesters: rule.requesters.map((u) => {
+						return {
+							type: u.type,
+							entityId: u.entityId,
 						}
 					}),
 				}
@@ -217,7 +224,8 @@ export default {
 				tagPending: 0,
 				tagApproved: 0,
 				tagRejected: 0,
-				who: [],
+				approvers: [],
+				requesters: [],
 			}
 		},
 		onNewRuleDelete() {
@@ -225,18 +233,23 @@ export default {
 		},
 		onValidateNewRule() {
 			const rule = this.newRule
-			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.who.length > 0) {
+			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.approvers.length > 0) {
 				this.savingRule = true
 				// create
 				const req = {
 					tagPending: rule.tagPending,
 					tagApproved: rule.tagApproved,
 					tagRejected: rule.tagRejected,
-					who: rule.who.map((u) => {
+					approvers: rule.approvers.map((u) => {
 						return {
-							userId: u.userId,
-							groupId: u.groupId,
-							circleId: u.circleId,
+							type: u.type,
+							entityId: u.entityId,
+						}
+					}),
+					requesters: rule.requesters.map((u) => {
+						return {
+							type: u.type,
+							entityId: u.entityId,
 						}
 					}),
 				}
@@ -246,6 +259,8 @@ export default {
 					const id = response.data
 					this.newRule = null
 					this.$set(this.rules, id, rule)
+					console.debug('rules after adding')
+					console.debug(this.rules)
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to create approval rule')

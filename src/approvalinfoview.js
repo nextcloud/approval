@@ -36,6 +36,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		initialize(options) {
 			options = options || {}
 			this.render()
+			this.getUserRules()
 		},
 
 		/**
@@ -152,6 +153,17 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					t('approval', 'Failed to check approval status')
 					+ ': ' + error.response?.request?.responseText
 				)
+			})
+		},
+
+		getUserRules() {
+			const url = generateUrl('/apps/approval/user-rules')
+			axios.get(url).then((response) => {
+				console.debug('rules are')
+				console.debug(response.data)
+				this._inputView.setUserRules(response.data)
+			}).catch((error) => {
+				console.error(error)
 			})
 		},
 

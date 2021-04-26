@@ -77,6 +77,10 @@ class ApprovalService {
 		}
 	}
 
+	public function getUserRules(string $userId): array {
+		return ['aa' => 'bb'];
+	}
+
 	public function userHasAccessTo(int $fileId, ?string $userId): bool {
 		$user = $this->userManager->get($userId);
 		if ($user instanceof IUser) {

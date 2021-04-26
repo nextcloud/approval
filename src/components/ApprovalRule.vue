@@ -14,52 +14,28 @@
 			</div>
 			<div class="users">
 				<span class="field-label">
-					<span class="icon icon-group" />
-					{{ whoLabel }}
+					<span class="icon" :style="'background-image: url(' + groupYellowIconUrl + ');'" />
+					{{ whoRequestLabel }}
 				</span>
 				<div class="approval-user">
-					<Multiselect
+					<MultiselectWho
 						class="approval-user-input"
-						label="displayName"
-						track-by="trackKey"
-						:value="value.who"
-						:multiple="true"
-						:clear-on-select="false"
-						:hide-selected="false"
-						:internal-search="false"
-						:loading="loadingSuggestions"
-						:options="formattedSuggestions"
+						:value="value.requesters"
+						:placeholder="t('welcome', 'Who can request approval?')"
+						@update:value="update('requesters', $event)" />
+				</div>
+			</div>
+			<div class="users">
+				<span class="field-label">
+					<span class="icon" :style="'background-image: url(' + groupGreenIconUrl + ');'" />
+					{{ whoApproveLabel }}
+				</span>
+				<div class="approval-user">
+					<MultiselectWho
+						class="approval-user-input"
+						:value="value.approvers"
 						:placeholder="t('welcome', 'Who can approve?')"
-						:preselect-first="false"
-						:preserve-search="false"
-						:searchable="true"
-						:auto-limit="false"
-						:user-select="true"
-						@search-change="asyncFind"
-						@update:value="update('who', $event)">
-						<template #option="{option}">
-							<Avatar v-if="option.userId"
-								class="approval-avatar-option"
-								:user="option.userId"
-								:show-user-status="false" />
-							<Avatar v-else-if="option.groupId || option.circleId"
-								class="approval-avatar-option"
-								:display-name="option.displayName"
-								:is-no-user="true"
-								:show-user-status="false" />
-							<span class="multiselect-name">
-								{{ option.displayName }}
-							</span>
-							<span v-if="option.icon"
-								:class="{ icon: true, [option.icon]: true, 'multiselect-icon': true }" />
-						</template>
-						<template #noOptions>
-							{{ t('welcome', 'No recommendations. Start typing.') }}
-						</template>
-						<template #noResult>
-							{{ t('welcome', 'No result.') }}
-						</template>
-					</Multiselect>
+						@update:value="update('approvers', $event)" />
 				</div>
 			</div>
 			<div class="tag">
@@ -99,19 +75,16 @@
 </template>
 
 <script>
-import { getCurrentUser } from '@nextcloud/auth'
-import { generateUrl, generateOcsUrl } from '@nextcloud/router'
-import axios from '@nextcloud/axios'
-import Avatar from '@nextcloud/vue/dist/Components/Avatar'
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+import { generateUrl } from '@nextcloud/router'
 import MultiselectTags from '@nextcloud/vue/dist/Components/MultiselectTags'
+
+import MultiselectWho from './MultiselectWho'
 
 export default {
 	name: 'ApprovalRule',
 
 	components: {
-		Avatar,
-		Multiselect,
+		MultiselectWho,
 		MultiselectTags,
 	},
 
@@ -135,99 +108,17 @@ export default {
 			tagPendingIconUrl: generateUrl('/svg/core/actions/tag?color=eca700'),
 			tagApprovedIconUrl: generateUrl('/svg/core/actions/tag?color=46ba61'),
 			tagRejectedIconUrl: generateUrl('/svg/core/actions/tag?color=e9322d'),
-			whoLabel: t('approval', 'Who can approve'),
+			groupGreenIconUrl: generateUrl('/svg/core/actions/group?color=46ba61'),
+			groupYellowIconUrl: generateUrl('/svg/core/actions/group?color=eca700'),
+			whoRequestLabel: t('approval', 'Who can request approval'),
+			whoApproveLabel: t('approval', 'Who can approve'),
 			pendingLabel: t('approval', 'Tag to act on'),
 			approvedLabel: t('approval', 'Tag set on approval'),
 			rejectedLabel: t('approval', 'Tag set on rejection'),
-			loadingSuggestions: false,
-			suggestions: [],
-			query: '',
-			currentUser: getCurrentUser(),
 		}
 	},
 
 	computed: {
-		formattedSuggestions() {
-			// users (avoid selected users)
-			const result = this.suggestions.filter((s) => {
-				return s.source === 'users' && !this.value.who.find(u => u.userId === s.id)
-			}).map((s) => {
-				return {
-					userId: s.id,
-					displayName: s.label,
-					icon: 'icon-user',
-					trackKey: 'user-' + s.id,
-				}
-			})
-
-			// add current user (who is absent from autocomplete suggestions)
-			// if it matches the query
-			if (this.currentUser && this.query) {
-				const lowerCurrent = this.currentUser.displayName.toLowerCase()
-				const lowerQuery = this.query.toLowerCase()
-				// don't add it if it's selected
-				if (lowerCurrent.match(lowerQuery) && !this.value.who.find(u => u.userId === this.currentUser.uid)) {
-					result.push({
-						userId: this.currentUser.uid,
-						displayName: this.currentUser.displayName,
-						icon: 'icon-user',
-						trackKey: 'user-' + this.currentUser.uid,
-					})
-				}
-			}
-
-			// groups (avoid selected ones)
-			const groups = this.suggestions.filter((s) => {
-				return s.source === 'groups' && !this.value.who.find(u => u.groupId === s.id)
-			}).map((s) => {
-				return {
-					groupId: s.id,
-					displayName: s.label,
-					icon: 'icon-group',
-					trackKey: 'group-' + s.id,
-				}
-			})
-			result.push(...groups)
-
-			// circles (avoid selected ones)
-			const circles = this.suggestions.filter((s) => {
-				return s.source === 'circles' && !this.value.who.find(u => u.circleId === s.id)
-			}).map((s) => {
-				return {
-					circleId: s.id,
-					displayName: s.label,
-					icon: 'icon-circle',
-					trackKey: 'circle-' + s.id,
-				}
-			})
-			result.push(...circles)
-
-			// always add selected users/groups at the end
-			result.push(...this.value.who.map((w) => {
-				return w.userId
-					? {
-						userId: w.userId,
-						displayName: w.displayName,
-						icon: 'icon-user',
-						trackKey: 'user-' + w.userId,
-					}
-					: w.groupId
-						? {
-							groupId: w.groupId,
-							displayName: w.displayName,
-							icon: 'icon-group',
-							trackKey: 'group-' + w.groupId,
-						}
-						: {
-							circleId: w.circleId,
-							displayName: w.displayName,
-							icon: 'icon-circle',
-							trackKey: 'circle-' + w.circleId,
-						}
-			}))
-
-			return result
-		},
 	},
 
 	watch: {
@@ -241,35 +132,11 @@ export default {
 			if (value) {
 				const backupRule = {
 					...this.value,
-					who: this.value.who.map(e => e),
+					approvers: this.value.approvers.map(e => e),
+					requesters: this.value.requesters.map(e => e),
 				}
 				this.$emit('input', { ...this.value, [key]: value, backupRule })
 			}
-		},
-		asyncFind(query) {
-			this.query = query
-			if (query === '') {
-				this.suggestions = []
-				return
-			}
-			this.loadingSuggestions = true
-			const url = generateOcsUrl('core/autocomplete/get', 2).replace(/\/$/, '')
-			axios.get(url, {
-				params: {
-					format: 'json',
-					search: query,
-					itemType: ' ',
-					itemId: ' ',
-					// users and groups
-					shareTypes: [0, 1, 7],
-				},
-			}).then((response) => {
-				this.suggestions = response.data.ocs.data
-			}).catch((error) => {
-				console.error(error)
-			}).then(() => {
-				this.loadingSuggestions = false
-			})
 		},
 	},
 }
@@ -298,7 +165,7 @@ export default {
 
 		.field-label {
 			margin-right: 5px;
-			width: 200px;
+			width: 250px;
 		}
 
 		.main-label {
@@ -328,21 +195,6 @@ export default {
 	}
 	.approval-user-input {
 		width: 250px;
-		.multiselect-name {
-			flex-grow: 1;
-			margin-left: 10px;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-		.multiselect-icon {
-			opacity: 0.5;
-		}
-		.icon-circle {
-			background-image: var(--icon-circles-circles-000);
-			background-size: 100% 100%;
-			background-repeat: no-repeat;
-			background-position: center;
-		}
 	}
 }
 </style>

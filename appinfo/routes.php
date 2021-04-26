@@ -20,6 +20,7 @@ return [
 		['name' => 'approval#createTag', 'url' => '/tag', 'verb' => 'POST'],
 
 		// Approval actions
+		['name' => 'approval#getUserRules', 'url' => '/user-rules', 'verb' => 'GET'],
 		['name' => 'approval#getApprovalState', 'url' => '/{fileId}/state', 'verb' => 'GET'],
 		['name' => 'approval#approve', 'url' => '/{fileId}/approve', 'verb' => 'PUT'],
 		['name' => 'approval#reject', 'url' => '/{fileId}/reject', 'verb' => 'PUT'],
