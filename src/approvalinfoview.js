@@ -159,7 +159,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		getUserRules() {
 			const url = generateUrl('/apps/approval/user-rules')
 			axios.get(url).then((response) => {
-				console.debug('rules are')
+				console.debug('user rules are')
 				console.debug(response.data)
 				this._inputView.setUserRules(response.data)
 			}).catch((error) => {

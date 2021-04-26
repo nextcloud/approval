@@ -77,8 +77,18 @@ class ApprovalService {
 		}
 	}
 
+	/**
+	 * Get rules allowing user to request approval
+	 */
 	public function getUserRules(string $userId): array {
-		return ['aa' => 'bb'];
+		$userRules = [];
+		$rules = $this->ruleService->getRules();
+		foreach ($rules as $rule) {
+			if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
+				$userRules[] = $rule;
+			}
+		}
+		return $userRules;
 	}
 
 	public function userHasAccessTo(int $fileId, ?string $userId): bool {
@@ -91,14 +101,14 @@ class ApprovalService {
 		return false;
 	}
 
-	private function userIsAuthorizedByRule(string $userId, array $rule): bool {
+	private function userIsAuthorizedByRule(string $userId, array $rule, string $role = 'approvers'): bool {
 		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
 
 		$user = $this->userManager->get($userId);
 
 		$ruleUserIds = array_map(function ($w) {
 			return $w['entityId'];
-		}, array_filter($rule['approvers'], function ($w) {
+		}, array_filter($rule[$role], function ($w) {
 			return $w['type'] === 'user';
 		}));
 
@@ -109,7 +119,7 @@ class ApprovalService {
 			// if user is member of one rule's group list
 			$ruleGroupIds = array_map(function ($w) {
 				return $w['entityId'];
-			}, array_filter($rule['approvers'], function ($w) {
+			}, array_filter($rule[$role], function ($w) {
 				return $w['type'] === 'group';
 			}));
 			foreach ($ruleGroupIds as $groupId) {
@@ -121,7 +131,7 @@ class ApprovalService {
 			if ($circlesEnabled) {
 				$ruleCircleIds = array_map(function ($w) {
 					return $w['entityId'];
-				}, array_filter($rule['approvers'], function ($w) {
+				}, array_filter($rule[$role], function ($w) {
 					return $w['type'] === 'circle';
 				}));
 				foreach ($ruleCircleIds as $circleId) {
@@ -172,7 +182,7 @@ class ApprovalService {
 		foreach ($rules as $id => $rule) {
 			try {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
-					&& $this->userIsAuthorizedByRule($userId, $rule)) {
+					&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
 					return Application::STATE_APPROVABLE;
 				}
 			} catch (TagNotFoundException $e) {
@@ -214,7 +224,7 @@ class ApprovalService {
 			foreach ($rules as $id => $rule) {
 				try {
 					if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
-						&& $this->userIsAuthorizedByRule($userId, $rule)) {
+						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
 						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagApproved']);
 						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
 
@@ -245,7 +255,7 @@ class ApprovalService {
 			foreach ($rules as $id => $rule) {
 				try {
 					if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
-						&& $this->userIsAuthorizedByRule($userId, $rule)) {
+						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
 						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagRejected']);
 						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
 
