@@ -4,7 +4,7 @@ import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import '@nextcloud/dialogs/styles/toast.scss'
 
-import ApprovalButtons from './components/ApprovalButtons'
+import ApprovalSidebarView from './components/ApprovalSidebarView'
 import { states } from './states'
 
 /**
@@ -47,7 +47,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			}
 			// create and mount the component
 			const mountPoint = document.createElement('div')
-			const View = Vue.extend(ApprovalButtons)
+			const View = Vue.extend(ApprovalSidebarView)
 			this._inputView = new View({
 				propsData: { state: states.NOTHING },
 			}).$mount(mountPoint)
