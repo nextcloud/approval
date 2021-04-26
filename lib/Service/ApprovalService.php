@@ -97,9 +97,9 @@ class ApprovalService {
 		$user = $this->userManager->get($userId);
 
 		$ruleUserIds = array_map(function ($w) {
-			return $w['userId'];
-		}, array_filter($rule['who'], function ($w) {
-			return isset($w['userId']);
+			return $w['entityId'];
+		}, array_filter($rule['approvers'], function ($w) {
+			return $w['type'] === 'user';
 		}));
 
 		// if user is in rule's user list
@@ -108,9 +108,9 @@ class ApprovalService {
 		} else {
 			// if user is member of one rule's group list
 			$ruleGroupIds = array_map(function ($w) {
-				return $w['groupId'];
-			}, array_filter($rule['who'], function ($w) {
-				return isset($w['groupId']);
+				return $w['entityId'];
+			}, array_filter($rule['approvers'], function ($w) {
+				return $w['type'] === 'group';
 			}));
 			foreach ($ruleGroupIds as $groupId) {
 				if ($this->groupManager->groupExists($groupId) && $this->groupManager->get($groupId)->inGroup($user)) {
@@ -120,9 +120,9 @@ class ApprovalService {
 			// if user is member of one rule's circle list
 			if ($circlesEnabled) {
 				$ruleCircleIds = array_map(function ($w) {
-					return $w['circleId'];
-				}, array_filter($rule['who'], function ($w) {
-					return isset($w['circleId']);
+					return $w['entityId'];
+				}, array_filter($rule['approvers'], function ($w) {
+					return $w['type'] === 'circle';
 				}));
 				foreach ($ruleCircleIds as $circleId) {
 					if ($this->isUserInCircle($userId, $circleId)) {
