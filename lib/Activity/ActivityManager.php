@@ -83,7 +83,7 @@ class ActivityManager {
 		try {
 			$event = $this->createEvent($objectType, $entity, $subject, $additionalParams, $author);
 			if ($event !== null) {
-				$this->sendToUsers($event, $entity);
+				$this->sendToUsers($event, $entity, $subject, $additionalParams);
 			}
 		} catch (\Exception $e) {
 			// Ignore exception for undefined activities on update events
@@ -148,13 +148,14 @@ class ActivityManager {
 	 *
 	 * @param IEvent $event
 	 */
-	private function sendToUsers(IEvent $event, $entity) {
+	private function sendToUsers(IEvent $event, $entity, $subject, $additionalParams) {
 		/*
 		switch ($event->getObjectType()) {
 			case self::APPROVAL_OBJECT_NODE:
 		*/
 
 		$userIds = [];
+		$root = $this->root;
 		if ($subject === self::SUBJECT_REQUESTED) {
 			$ruleUserIds = $additionalParams['users'];
 			foreach ($ruleUserIds as $userId) {
@@ -165,7 +166,6 @@ class ActivityManager {
 				}
 			}
 		} else {
-			$root = $this->root;
 			// publish for eveyone having access
 			$this->userManager->callForSeenUsers(function (IUser $user) use ($event, $root, $entity, &$userIds) {
 				$userId = $user->getUID();

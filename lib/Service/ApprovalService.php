@@ -309,24 +309,26 @@ class ApprovalService {
 		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
 
 		$ruleUserIds = [];
-		foreach ($rule['who'] as $who) {
-			if (isset($who['userId'])) {
-				if (!in_array($who['userId'], $ruleUserIds)) {
-					$ruleUserIds[] = $who['userId'];
+		foreach ($rule['approvers'] as $approver) {
+			if ($approver['type'] === 'user') {
+				if (!in_array($approver['entityId'], $ruleUserIds)) {
+					$ruleUserIds[] = $approver['entityId'];
 				}
-			} elseif (isset($who['groupId'])) {
-				if ($this->groupManager->groupExists($who['groupId'])) {
-					$users = $this->groupManager->get($who['groupId'])->getUsers();
+			} elseif ($approver['type'] === 'group') {
+				$groupId = $approver['entityId'];
+				if ($this->groupManager->groupExists($groupId)) {
+					$users = $this->groupManager->get($groupId)->getUsers();
 					foreach ($users as $user) {
 						if ($user instanceof IUser && !in_array($user->getUID(), $ruleUserIds)) {
 							$ruleUserIds[] = $user->getUID();
 						}
 					}
 				}
-			} elseif ($circlesEnabled && isset($who['circleId'])) {
+			} elseif ($circlesEnabled && $approver['type'] === 'circle') {
+				$circleId = $approver['entityId'];
 				$circleDetails = null;
 				try {
-					$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($who['circleId']);
+					$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($circleId);
 				}
 				catch (\OCA\Circles\Exceptions\CircleDoesNotExistException $e) {
 				}
