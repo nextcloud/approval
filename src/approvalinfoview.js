@@ -176,11 +176,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		getApprovalStatus(reloadFileItem) {
-			// reset
-			this._inputView.setUserId('')
-			this._inputView.setUserName('')
-			this._inputView.setDatetime('')
-
 			// get state and details
 			const url = generateUrl('/apps/approval/' + this.fileId + '/state')
 			axios.get(url).then((response) => {
@@ -190,17 +185,24 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 				this.state = response.data.state
 				if (this.state !== states.NOTHING) {
+					// i don't know how to change props with Vue instance
+					// so it's done with a method changing a data value
+					this._inputView.setState(this.state)
 					if (response.data.userId && response.data.userName && response.data.timestamp) {
 						this._inputView.setUserId(response.data.userId ?? '')
 						this._inputView.setUserName(response.data.userName ?? '')
 						this._inputView.setDatetime(response.data.timestamp ?? '')
+					} else {
+						this._inputView.setUserId('')
+						this._inputView.setUserName('')
+						this._inputView.setDatetime('')
 					}
-					// i don't know how to change props with Vue instance
-					// so it's done with a method changing a data value
-					this._inputView.setState(this.state)
 					this.show()
 				} else {
 					this._inputView.setState(states.NOTHING)
+					this._inputView.setUserId('')
+					this._inputView.setUserName('')
+					this._inputView.setDatetime('')
 					if (this.userRules.length === 0) {
 						this.hide()
 					}
@@ -211,6 +213,9 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					+ ': ' + error.response?.request?.responseText
 				)
 				this._inputView.setState(states.NOTHING)
+				this._inputView.setUserId('')
+				this._inputView.setUserName('')
+				this._inputView.setDatetime('')
 			})
 		},
 
