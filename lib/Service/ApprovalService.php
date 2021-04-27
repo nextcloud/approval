@@ -339,6 +339,10 @@ class ApprovalService {
 			}
 			if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
 				$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagPending']);
+
+				// store activity in our tables
+				$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_PENDING);
+
 				return [];
 			} else {
 				return ['error' => 'You are not authorized to request with this rule'];

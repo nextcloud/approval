@@ -82,7 +82,9 @@ class ApprovalController extends Controller {
 	 */
 	public function getApprovalState(int $fileId): DataResponse {
 		$state = $this->approvalService->getApprovalState($fileId, $this->userId);
-		if ($state['state'] === Application::STATE_APPROVED || $state['state'] === Application::STATE_REJECTED) {
+		if ($state['state'] === Application::STATE_APPROVED
+			|| $state['state'] === Application::STATE_REJECTED
+			|| $state['state'] === Application::STATE_PENDING) {
 			// who did that?
 			$activity = $this->ruleService->getLastAction($fileId, $state['ruleId'], $state['state']);
 			if (!is_null($activity)) {

@@ -39,7 +39,17 @@
 		<span v-if="statePending"
 			class="state-label pending-label">
 			<span class="icon icon-checkmark-white" />
-			<strong>{{ pendingText }}</strong>
+			<span v-if="myUserId && myDatetime"
+				class="details">
+				<strong>{{ requestedByText }}</strong>
+				<UserBubble
+					class="user-bubble"
+					:user="myUserId"
+					:display-name="notMe ? myUserName : you"
+					:size="24" />
+				{{ relativeTime }}
+			</span>
+			<span v-else>{{ pendingText }}</span>
 		</span>
 		<span v-if="canRequestApproval">
 			<button @click="showRequestModal">
@@ -95,6 +105,10 @@ export default {
 		rejectedByText: {
 			type: String,
 			default: t('approval', 'Rejected by'),
+		},
+		requestedByText: {
+			type: String,
+			default: t('approval', 'Approval request by'),
 		},
 		pendingText: {
 			type: String,

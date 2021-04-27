@@ -190,7 +190,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 				this.state = response.data.state
 				if (this.state !== states.NOTHING) {
-					if ([states.APPROVED, states.REJECTED].includes(this.state)
+					if ([states.APPROVED, states.REJECTED, states.PENDING].includes(this.state)
 						&& response.data.userId && response.data.userName && response.data.timestamp) {
 						this._inputView.setUserId(response.data.userId ?? '')
 						this._inputView.setUserName(response.data.userName ?? '')
