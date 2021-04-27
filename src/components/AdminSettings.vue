@@ -190,6 +190,7 @@ export default {
 					tagPending: rule.tagPending,
 					tagApproved: rule.tagApproved,
 					tagRejected: rule.tagRejected,
+					description: rule.description,
 					approvers: rule.approvers.map((u) => {
 						return {
 							type: u.type,
@@ -224,6 +225,7 @@ export default {
 				tagPending: 0,
 				tagApproved: 0,
 				tagRejected: 0,
+				description: '',
 				approvers: [],
 				requesters: [],
 			}
@@ -240,6 +242,7 @@ export default {
 					tagPending: rule.tagPending,
 					tagApproved: rule.tagApproved,
 					tagRejected: rule.tagRejected,
+					description: rule.description,
 					approvers: rule.approvers.map((u) => {
 						return {
 							type: u.type,

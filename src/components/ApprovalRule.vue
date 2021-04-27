@@ -60,6 +60,15 @@
 					:multiple="false"
 					@input="update('tagRejected', $event)" />
 			</div>
+			<div class="text">
+				<span class="field-label">
+					<span class="icon icon-details" />
+					{{ descriptionLabel }}
+				</span>
+				<textarea :value="value.description"
+					:placeholder="descriptionPlaceholder"
+					@input="onDescriptionInput" />
+			</div>
 		</div>
 		<div class="buttons">
 			<button
@@ -78,6 +87,7 @@
 import { generateUrl } from '@nextcloud/router'
 import MultiselectTags from '@nextcloud/vue/dist/Components/MultiselectTags'
 
+import { delay } from '../utils'
 import MultiselectWho from './MultiselectWho'
 
 export default {
@@ -115,6 +125,8 @@ export default {
 			pendingLabel: t('approval', 'Tag to act on'),
 			approvedLabel: t('approval', 'Tag set on approval'),
 			rejectedLabel: t('approval', 'Tag set on rejection'),
+			descriptionLabel: t('approval', 'Description'),
+			descriptionPlaceholder: t('approval', 'What is the purpose of this rule?'),
 		}
 	},
 
@@ -128,7 +140,13 @@ export default {
 	},
 
 	methods: {
+		onDescriptionInput(e) {
+			delay(() => {
+				this.update('description', e.target.value)
+			}, 2000)()
+		},
 		update(key, value) {
+			console.debug(value)
 			if (value) {
 				const backupRule = {
 					...this.value,
@@ -153,6 +171,7 @@ export default {
 		flex-direction: column;
 
 		.tag,
+		.text,
 		.users {
 			display: flex;
 			flex-direction: column;
@@ -160,6 +179,12 @@ export default {
 			margin: 0 0 16px 0;
 			.field-label {
 				margin: 0 0 5px 0;
+			}
+		}
+
+		.text {
+			textarea {
+				width: 250px;
 			}
 		}
 

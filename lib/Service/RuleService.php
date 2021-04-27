@@ -108,9 +108,11 @@ class RuleService {
 	 * @param int $tagRejected
 	 * @param array $approvers
 	 * @param array $requesters
-	 * @return null|string Error string
+	 * @param string $description
+	 * @return array Error string or id of saved rule
 	 */
-	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $approvers, array $requesters): array {
+	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected,
+							array $approvers, array $requesters, string $description): array {
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Invalid rule'];
 		}
@@ -124,6 +126,7 @@ class RuleService {
 		$qb->set('tag_pending', $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT));
 		$qb->set('tag_approved', $qb->createNamedParameter($tagApproved, IQueryBuilder::PARAM_INT));
 		$qb->set('tag_rejected', $qb->createNamedParameter($tagRejected, IQueryBuilder::PARAM_INT));
+		$qb->set('description', $qb->createNamedParameter($description, IQueryBuilder::PARAM_STR));
 		$qb->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
@@ -214,7 +217,8 @@ class RuleService {
 	 * @param array $requesters
 	 * @return array id of created rule or error string
 	 */
-	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $approvers, array $requesters): array {
+	public function createRule(int $tagPending, int $tagApproved, int $tagRejected,
+								array $approvers, array $requesters, string $description): array {
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Rule is invalid'];
 		}
@@ -229,6 +233,7 @@ class RuleService {
 				'tag_pending' => $qb->createNamedParameter($tagPending, IQueryBuilder::PARAM_INT),
 				'tag_approved' => $qb->createNamedParameter($tagApproved, IQueryBuilder::PARAM_INT),
 				'tag_rejected' => $qb->createNamedParameter($tagRejected, IQueryBuilder::PARAM_INT),
+				'description' => $qb->createNamedParameter($description, IQueryBuilder::PARAM_STR),
 			]);
 		$req = $qb->execute();
 		$qb = $qb->resetQueryParts();
@@ -315,11 +320,14 @@ class RuleService {
 			$tagPending = (int) $row['tag_pending'];
 			$tagApproved = (int) $row['tag_approved'];
 			$tagRejected = (int) $row['tag_rejected'];
+			$description = $row['description'];
 			$rule = [
 				'tagPending' => $tagPending,
 				'tagApproved' => $tagApproved,
 				'tagRejected' => $tagRejected,
-				'who' => [],
+				'description' => $description,
+				'approvers' => [],
+				'requesters' => [],
 			];
 			break;
 		}
@@ -380,10 +388,12 @@ class RuleService {
 			$tagPending = (int) $row['tag_pending'];
 			$tagApproved = (int) $row['tag_approved'];
 			$tagRejected = (int) $row['tag_rejected'];
+			$description = $row['description'];
 			$rules[$id] = [
 				'tagPending' => $tagPending,
 				'tagApproved' => $tagApproved,
 				'tagRejected' => $tagRejected,
+				'description' => $description,
 				'approvers' => [],
 				'requesters' => [],
 			];

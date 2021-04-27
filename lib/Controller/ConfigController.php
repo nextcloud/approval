@@ -95,8 +95,9 @@ class ConfigController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function createRule(int $tagPending, int $tagApproved, int $tagRejected, array $approvers, array $requesters): DataResponse {
-		$result = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $approvers, $requesters);
+	public function createRule(int $tagPending, int $tagApproved, int $tagRejected,
+								array $approvers, array $requesters, string $description): DataResponse {
+		$result = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $approvers, $requesters, $description);
 		return isset($result['error'])
 			? new DataResponse($result, 400)
 			: new DataResponse($result['id']);
@@ -106,8 +107,9 @@ class ConfigController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected, array $approvers, array $requesters): DataResponse {
-		$result = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $approvers, $requesters);
+	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected,
+							array $approvers, array $requesters, string $description): DataResponse {
+		$result = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $approvers, $requesters, $description);
 		return isset($result['error'])
 			? new DataResponse($result, 400)
 			: new DataResponse($result['id']);
