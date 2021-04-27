@@ -274,6 +274,29 @@ class ApprovalService {
 		return false;
 	}
 
+	/**
+	 * @param int $fileId
+	 * @param int $ruleId
+	 * @return array potential error message
+	 */
+	public function request(int $fileId, int $ruleId, ?string $userId): array {
+		$fileState = $this->getApprovalState($fileId, $userId);
+		if ($fileState === Application::STATE_NOTHING) {
+			$rule = $this->ruleService->getRule($ruleId);
+			if (is_null($rule)) {
+				return ['error' => 'Rule does not exist'];
+			}
+			if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
+				$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagPending']);
+				return [];
+			} else {
+				return ['error' => 'You are not authorized to request with this rule'];
+			}
+		} else {
+			return ['error' => 'File is already pending/approved/rejected'];
+		}
+	}
+
 	private function sendApprovalNotification(int $fileId, ?string $approverId, bool $approved): void {
 		$paramsByUser = [];
 		$root = $this->root;

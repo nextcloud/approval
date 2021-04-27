@@ -322,6 +322,7 @@ class RuleService {
 			$tagRejected = (int) $row['tag_rejected'];
 			$description = $row['description'];
 			$rule = [
+				'id' => $id,
 				'tagPending' => $tagPending,
 				'tagApproved' => $tagApproved,
 				'tagRejected' => $tagRejected,
@@ -390,6 +391,7 @@ class RuleService {
 			$tagRejected = (int) $row['tag_rejected'];
 			$description = $row['description'];
 			$rules[$id] = [
+				'id' => $id,
 				'tagPending' => $tagPending,
 				'tagApproved' => $tagApproved,
 				'tagRejected' => $tagRejected,

@@ -33,6 +33,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		fileId: 0,
 		fileInfo: null,
 
+		userRules: [],
+
 		initialize(options) {
 			options = options || {}
 			this.render()
@@ -61,9 +63,26 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this._inputView.$on('reject', () => {
 				this._onReject()
 			})
+			this._inputView.$on('request', (ruleId) => {
+				this._onRequest(ruleId)
+			})
 
-			this.hide()
 			this._rendered = true
+		},
+
+		getUserRules() {
+			const url = generateUrl('/apps/approval/user-rules')
+			axios.get(url).then((response) => {
+				console.debug('user rules are')
+				console.debug(response.data)
+				this._inputView.setUserRules(response.data)
+				this.userRules = response.data
+				if (this.userRules.length === 0) {
+					this.hide()
+				}
+			}).catch((error) => {
+				console.error(error)
+			})
 		},
 
 		_onApprove() {
@@ -105,8 +124,29 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			})
 		},
 
+		_onRequest(ruleId) {
+			console.debug('request with rule ' + ruleId)
+			const url = generateUrl('/apps/approval/' + this.fileId + '/request/' + ruleId)
+			axios.get(url).then((response) => {
+				showSuccess(t('approval', 'Approval requested for {name}!', { name: this.fileName }))
+				this.getApprovalStatus()
+				// reload system tags after reject
+				if (OCA.SystemTags?.View) {
+					OCA.SystemTags.View.setFileInfo(this.fileInfo)
+				}
+				this.updateFileItem()
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to request approval for {name}', { name: this.fileName })
+					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+				)
+			})
+		},
+
 		setFileInfo(fileInfo) {
-			this.hide()
+			if (this.userRules.length === 0) {
+				this.hide()
+			}
 			// Why is this called twice and fileInfo is not the same on each call?
 			this.fileName = fileInfo.name || fileInfo.attributes?.name || ''
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
@@ -146,24 +186,16 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				if (response.data !== states.NOTHING) {
 					this.getDetails()
 				} else {
-					this.hide()
+					this._inputView.setState(states.NOTHING)
+					if (this.userRules.length === 0) {
+						this.hide()
+					}
 				}
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to check approval status')
 					+ ': ' + error.response?.request?.responseText
 				)
-			})
-		},
-
-		getUserRules() {
-			const url = generateUrl('/apps/approval/user-rules')
-			axios.get(url).then((response) => {
-				console.debug('user rules are')
-				console.debug(response.data)
-				this._inputView.setUserRules(response.data)
-			}).catch((error) => {
-				console.error(error)
 			})
 		},
 

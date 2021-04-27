@@ -41,6 +41,15 @@
 			<span class="icon icon-checkmark-white" />
 			<strong>{{ pendingText }}</strong>
 		</span>
+		<span v-if="canRequestApproval">
+			<button @click="showRequestModal">
+				{{ requestLabel }}
+			</button>
+			<Modal v-if="requestModal" @close="closeRequestModal">
+				<RequestForm :rules="userRules"
+					@request="onRequest" />
+			</Modal>
+		</span>
 	</div>
 </template>
 
@@ -50,13 +59,16 @@ import { states } from '../states'
 import moment from '@nextcloud/moment'
 import { getCurrentUser } from '@nextcloud/auth'
 import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
+import Modal from '@nextcloud/vue/dist/Components/Modal'
+
 import ApprovalButtons from './ApprovalButtons'
+import RequestForm from './RequestForm'
 
 export default {
 	name: 'ApprovalSidebarView',
 
 	components: {
-		UserBubble, ApprovalButtons,
+		UserBubble, Modal, ApprovalButtons, RequestForm,
 	},
 
 	props: {
@@ -113,6 +125,8 @@ export default {
 			myDatetime: null,
 			you: t('approval', 'you'),
 			userRules: [],
+			requestLabel: t('approval', 'Request approval'),
+			requestModal: false,
 		}
 	},
 
@@ -134,6 +148,9 @@ export default {
 		},
 		notMe() {
 			return this.myUserId !== getCurrentUser().uid
+		},
+		canRequestApproval() {
+			return this.myState === states.NOTHING && this.userRules.length > 0
 		},
 	},
 
@@ -176,6 +193,16 @@ export default {
 		},
 		setUserRules(rules) {
 			this.userRules = rules
+		},
+		showRequestModal() {
+			this.requestModal = true
+		},
+		closeRequestModal() {
+			this.requestModal = false
+		},
+		onRequest(ruleId) {
+			this.closeRequestModal()
+			this.$emit('request', ruleId)
 		},
 	},
 }

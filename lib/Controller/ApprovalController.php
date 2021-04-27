@@ -97,7 +97,7 @@ class ApprovalController extends Controller {
 	}
 
 	/**
-	 * Disapprove a file
+	 * Reject a file
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
@@ -107,5 +107,23 @@ class ApprovalController extends Controller {
 	public function reject(int $fileId): DataResponse {
 		$this->approvalService->reject($fileId, $this->userId);
 		return new DataResponse(1);
+	}
+
+	/**
+	 * Request approval for a file
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param int $fileId
+	 * @param int $ruleId
+	 * @return DataResponse
+	 */
+	public function request(int $fileId, int $ruleId): DataResponse {
+		$result = $this->approvalService->request($fileId, $ruleId, $this->userId);
+		if (isset($result['error'])) {
+			return new DataResponse($result, 400);
+		} else {
+			return new DataResponse(1);
+		}
 	}
 }
