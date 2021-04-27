@@ -302,6 +302,13 @@ class RuleService {
 		$req = $qb->execute();
 		$qb = $qb->resetQueryParts();
 
+		$qb->delete('approval_activity')
+			->where(
+				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
+			);
+		$req = $qb->execute();
+		$qb = $qb->resetQueryParts();
+
 		return [];
 	}
 

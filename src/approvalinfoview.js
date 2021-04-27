@@ -180,9 +180,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this._inputView.setUserId('')
 			this._inputView.setUserName('')
 			this._inputView.setDatetime('')
-			// i don't know how to change props with Vue instance
-			// so it's done with a method changing a data value
-			this._inputView.setState(states.NOTHING)
 
 			// get state and details
 			const url = generateUrl('/apps/approval/' + this.fileId + '/state')
@@ -214,6 +211,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					t('approval', 'Failed to check approval status')
 					+ ': ' + error.response?.request?.responseText
 				)
+				this._inputView.setState(states.NOTHING)
 			})
 		},
 
