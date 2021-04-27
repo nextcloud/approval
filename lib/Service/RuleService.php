@@ -24,7 +24,7 @@ class RuleService {
 	private $logger;
 
 	/**
-	 * Service to operate on tags
+	 * Service to manage approval rules
 	 */
 	public function __construct(string $appName,
 								IConfig $config,
@@ -215,6 +215,7 @@ class RuleService {
 	 * @param int $tagRejected
 	 * @param array $approvers
 	 * @param array $requesters
+	 * @param string $description
 	 * @return array id of created rule or error string
 	 */
 	public function createRule(int $tagPending, int $tagApproved, int $tagRejected,
@@ -304,7 +305,7 @@ class RuleService {
 	/**
 	 * Get a rule by id
 	 * @param int $id the rule id
-	 * @return ?array the rule or null if not found
+	 * @return array|null the rule or null if not found
 	 */
 	public function getRule(int $id): ?array {
 		$rule = null;

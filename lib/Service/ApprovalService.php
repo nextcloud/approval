@@ -80,7 +80,7 @@ class ApprovalService {
 	/**
 	 * Get rules allowing user to request approval
 	 */
-	public function getUserRules(string $userId): array {
+	public function getUserRequesterRules(string $userId): array {
 		$userRules = [];
 		$rules = $this->ruleService->getRules();
 		foreach ($rules as $rule) {
@@ -91,6 +91,13 @@ class ApprovalService {
 		return $userRules;
 	}
 
+	/**
+	 * Check if user has access to a given file
+	 *
+	 * @param int $fileId
+	 * @param string|null $userId
+	 * @return bool
+	 */
 	public function userHasAccessTo(int $fileId, ?string $userId): bool {
 		$user = $this->userManager->get($userId);
 		if ($user instanceof IUser) {
@@ -101,6 +108,14 @@ class ApprovalService {
 		return false;
 	}
 
+	/**
+	 * Check if a user is authorized to approve or request by a given rule
+	 *
+	 * @param string $userId
+	 * @param array $rule
+	 * @param string $role
+	 * @return bool
+	 */
 	private function userIsAuthorizedByRule(string $userId, array $rule, string $role = 'approvers'): bool {
 		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
 
@@ -144,6 +159,13 @@ class ApprovalService {
 		return false;
 	}
 
+	/**
+	 * Check if a user is in a given circle
+	 *
+	 * @param string $userId
+	 * @param string $circleId
+	 * @return bool
+	 */
 	private function isUserInCircle(string $userId, string $circleId): bool {
 		$circleDetails = null;
 		try {
@@ -168,8 +190,10 @@ class ApprovalService {
 	}
 
 	/**
+	 * Get approval state of a given file for a given user
 	 * @param int $fileId
-	 * @return bool
+	 * @param string|null $userId
+	 * @return int
 	 */
 	public function getApprovalState(int $fileId, ?string $userId): int {
 		if (is_null($userId) || !$this->userHasAccessTo($fileId, $userId)) {
@@ -213,7 +237,10 @@ class ApprovalService {
 	}
 
 	/**
+	 * Approve a file
+	 *
 	 * @param int $fileId
+	 * @param string|null $userId
 	 * @return bool success
 	 */
 	public function approve(int $fileId, ?string $userId): bool {
@@ -244,7 +271,10 @@ class ApprovalService {
 	}
 
 	/**
+	 * Reject a file
+	 *
 	 * @param int $fileId
+	 * @param string|null $userId
 	 * @return bool success
 	 */
 	public function reject(int $fileId, ?string $userId): bool {
@@ -275,8 +305,11 @@ class ApprovalService {
 	}
 
 	/**
+	 * Request approval with a given rule
+	 *
 	 * @param int $fileId
 	 * @param int $ruleId
+	 * @param string|null $userId
 	 * @return array potential error message
 	 */
 	public function request(int $fileId, int $ruleId, ?string $userId): array {
@@ -297,6 +330,14 @@ class ApprovalService {
 		}
 	}
 
+	/**
+	 * Send approval notifications for a given file to all users having access to it.
+	 *
+	 * @param int $fileId
+	 * @param string|null $approverId
+	 * @param bool $approved
+	 * @return void
+	 */
 	private function sendApprovalNotification(int $fileId, ?string $approverId, bool $approved): void {
 		$paramsByUser = [];
 		$root = $this->root;
@@ -338,11 +379,18 @@ class ApprovalService {
 		}
 	}
 
-	public function getRuleAuthorizedUserIds(array $rule) : array {
+	/**
+	 * Get ids of users authorized to approve or request by a given rule
+	 *
+	 * @param array $rule
+	 * @param string $role
+	 * @return array userId list
+	 */
+	public function getRuleAuthorizedUserIds(array $rule, string $role = 'approvers'): array {
 		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
 
 		$ruleUserIds = [];
-		foreach ($rule['approvers'] as $approver) {
+		foreach ($rule[$role] as $approver) {
 			if ($approver['type'] === 'user') {
 				if (!in_array($approver['entityId'], $ruleUserIds)) {
 					$ruleUserIds[] = $approver['entityId'];
@@ -381,6 +429,14 @@ class ApprovalService {
 		return $ruleUserIds;
 	}
 
+	/**
+	 * Send notifications when a file approval is requested
+	 * Send it to all users who are authrorized to approve it
+	 *
+	 * @param int $fileId
+	 * @param array $tags
+	 * @return void
+	 */
 	public function sendRequestNotification(int $fileId, array $tags): void {
 		// find users involved in rules matching tags
 		$rulesUserIds = [];
@@ -388,7 +444,7 @@ class ApprovalService {
 		foreach ($rules as $id => $rule) {
 			// rule matches tags
 			if (in_array($rule['tagPending'], $tags)) {
-				$thisRuleUserIds = $this->getRuleAuthorizedUserIds($rule);
+				$thisRuleUserIds = $this->getRuleAuthorizedUserIds($rule, 'approvers');
 				foreach ($thisRuleUserIds as $userId) {
 					if (!in_array($userId, $rulesUserIds)) {
 						$rulesUserIds[] = $userId;

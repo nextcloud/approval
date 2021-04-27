@@ -46,7 +46,6 @@ class ApprovalController extends Controller {
 
 	/**
 	 * create a tag
-	 * @NoCSRFRequired
 	 *
 	 * @param string $name of the new tag
 	 * @return DataDisplayResponse
@@ -65,15 +64,14 @@ class ApprovalController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function getUserRules(): DataResponse {
-		$rules = $this->approvalService->getUserRules($this->userId);
+	public function getUserRequesterRules(): DataResponse {
+		$rules = $this->approvalService->getUserRequesterRules($this->userId);
 		return new DataResponse($rules);
 	}
 
 	/**
 	 * get file tags
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param int $fileId
 	 * @return DataResponse
@@ -86,7 +84,6 @@ class ApprovalController extends Controller {
 	/**
 	 * Approve a file
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param int $fileId
 	 * @return DataResponse
@@ -99,7 +96,6 @@ class ApprovalController extends Controller {
 	/**
 	 * Reject a file
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param int $fileId
 	 * @return DataResponse
@@ -112,7 +108,6 @@ class ApprovalController extends Controller {
 	/**
 	 * Request approval for a file
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param int $fileId
 	 * @param int $ruleId
