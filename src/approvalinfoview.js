@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import axios from '@nextcloud/axios'
-import { generateUrl, generateOcsUrl } from '@nextcloud/router'
+import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import '@nextcloud/dialogs/styles/toast.scss'
 
@@ -176,15 +176,33 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		getApprovalStatus(reloadFileItem) {
+			// reset
+			this._inputView.setUserId('')
+			this._inputView.setUserName('')
+			this._inputView.setDatetime('')
+			// i don't know how to change props with Vue instance
+			// so it's done with a method changing a data value
+			this._inputView.setState(states.NOTHING)
+
+			// get state and details
 			const url = generateUrl('/apps/approval/' + this.fileId + '/state')
 			axios.get(url).then((response) => {
-				if (reloadFileItem && this.state !== response.data) {
+				if (reloadFileItem && this.state !== response.data.state) {
 					this.updateFileItem()
 				}
 
-				this.state = response.data
-				if (response.data !== states.NOTHING) {
-					this.getDetails()
+				this.state = response.data.state
+				if (this.state !== states.NOTHING) {
+					if ([states.APPROVED, states.REJECTED].includes(this.state)
+						&& response.data.userId && response.data.userName && response.data.timestamp) {
+						this._inputView.setUserId(response.data.userId ?? '')
+						this._inputView.setUserName(response.data.userName ?? '')
+						this._inputView.setDatetime(response.data.timestamp ?? '')
+					}
+					// i don't know how to change props with Vue instance
+					// so it's done with a method changing a data value
+					this._inputView.setState(this.state)
+					this.show()
 				} else {
 					this._inputView.setState(states.NOTHING)
 					if (this.userRules.length === 0) {
@@ -197,52 +215,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					+ ': ' + error.response?.request?.responseText
 				)
 			})
-		},
-
-		/**
-		 * Get who and when
-		 */
-		async getDetails() {
-			const limit = 50
-			let since = 0
-			let response
-			do {
-				// eslint-disable-next-line
-				const params = new URLSearchParams()
-				params.append('format', 'json')
-				params.append('limit', limit)
-				if (since > 0) {
-					params.append('since', since)
-				}
-				try {
-					response = await axios.get(generateOcsUrl('apps/activity/api/v2/activity') + '/approval' + '?' + params)
-					const activities = response.data.ocs.data
-					since = activities.length
-						? activities[activities.length - 1].activity_id
-						: 0
-					const lastActivity = activities.find((a) => {
-						return a.object_id === this.fileId
-					})
-					if (lastActivity) {
-						this._inputView.setUserId(lastActivity.subject_rich[1].user.id)
-						this._inputView.setUserName(lastActivity.subject_rich[1].user.name)
-						this._inputView.setDatetime(lastActivity.datetime)
-						this._inputView.setState(this.state)
-						this.show()
-						return
-					}
-				} catch (error) {
-					console.error(error)
-				}
-			} while (response.data.ocs.data.length === limit)
-
-			this._inputView.setUserId('')
-			this._inputView.setUserName('')
-			this._inputView.setDatetime('')
-			// i don't know how to change props with Vue instance
-			// so it's done with a method changing a data value
-			this._inputView.setState(this.state)
-			this.show()
 		},
 
 		isVisible() {

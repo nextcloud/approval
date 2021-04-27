@@ -21,7 +21,9 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
+use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Service\ApprovalService;
+use OCA\Approval\Service\RuleService;
 
 class ApprovalController extends Controller {
 	private $userId;
@@ -35,6 +37,7 @@ class ApprovalController extends Controller {
 								IL10N $l10n,
 								LoggerInterface $logger,
 								ApprovalService $approvalService,
+								RuleService $ruleService,
 								?string $userId) {
 		parent::__construct($AppName, $request);
 		$this->userId = $userId;
@@ -42,6 +45,7 @@ class ApprovalController extends Controller {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->approvalService = $approvalService;
+		$this->ruleService = $ruleService;
 	}
 
 	/**
@@ -78,6 +82,15 @@ class ApprovalController extends Controller {
 	 */
 	public function getApprovalState(int $fileId): DataResponse {
 		$state = $this->approvalService->getApprovalState($fileId, $this->userId);
+		if ($state['state'] === Application::STATE_APPROVED || $state['state'] === Application::STATE_REJECTED) {
+			// who did that?
+			$activity = $this->ruleService->getLastAction($fileId, $state['ruleId'], $state['state']);
+			if (!is_null($activity)) {
+				$state['userId'] = $activity['userId'];
+				$state['userName'] = $activity['userName'];
+				$state['timestamp'] = $activity['timestamp'];
+			}
+		}
 		return new DataResponse($state);
 	}
 

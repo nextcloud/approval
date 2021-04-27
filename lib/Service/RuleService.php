@@ -468,6 +468,7 @@ class RuleService {
 	}
 
 	public function getLastAction(int $fileId, int $ruleId, int $newState): ?array {
+		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from('approval_activity')
 			->where(

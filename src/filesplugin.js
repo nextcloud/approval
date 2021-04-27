@@ -52,7 +52,7 @@ OCA.Files.fileActions.registerAction({
 		const url = generateUrl('/apps/approval/' + fileId + '/state')
 		try {
 			const response = await axios.get(url)
-			const state = response.data
+			const state = response.data.state
 			if (state !== states.NOTHING) {
 				const actionLink = document.createElement('span')
 				actionLink.classList.add('approval-inline-state')

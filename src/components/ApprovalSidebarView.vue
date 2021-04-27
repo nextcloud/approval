@@ -144,7 +144,7 @@ export default {
 			return this.myState === states.APPROVABLE
 		},
 		relativeTime() {
-			return moment(this.myDatetime).fromNow()
+			return moment.unix(this.myDatetime).fromNow()
 		},
 		notMe() {
 			return this.myUserId !== getCurrentUser().uid

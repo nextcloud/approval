@@ -193,11 +193,11 @@ class ApprovalService {
 	 * Get approval state of a given file for a given user
 	 * @param int $fileId
 	 * @param string|null $userId
-	 * @return int
+	 * @return array state and rule id
 	 */
-	public function getApprovalState(int $fileId, ?string $userId): int {
+	public function getApprovalState(int $fileId, ?string $userId): array {
 		if (is_null($userId) || !$this->userHasAccessTo($fileId, $userId)) {
-			return Application::STATE_NOTHING;
+			return ['state' => Application::STATE_NOTHING];
 		}
 
 		$rules = $this->ruleService->getRules();
@@ -207,7 +207,10 @@ class ApprovalService {
 			try {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
 					&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
-					return Application::STATE_APPROVABLE;
+					return [
+						'state' => Application::STATE_APPROVABLE,
+						'ruleId' => $id,
+					];
 				}
 			} catch (TagNotFoundException $e) {
 			}
@@ -217,7 +220,10 @@ class ApprovalService {
 		foreach ($rules as $id => $rule) {
 			try {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])) {
-					return Application::STATE_PENDING;
+					return [
+						'state' => Application::STATE_PENDING,
+						'ruleId' => $id,
+					];
 				}
 			} catch (TagNotFoundException $e) {
 			}
@@ -225,15 +231,21 @@ class ApprovalService {
 		foreach ($rules as $id => $rule) {
 			try {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])) {
-					return Application::STATE_APPROVED;
+					return [
+						'state' => Application::STATE_APPROVED,
+						'ruleId' => $id,
+					];
 				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])) {
-					return Application::STATE_REJECTED;
+					return [
+						'state' => Application::STATE_REJECTED,
+						'ruleId' => $id,
+					];
 				}
 			} catch (TagNotFoundException $e) {
 			}
 		}
 
-		return Application::STATE_NOTHING;
+		return ['state' => Application::STATE_NOTHING];
 	}
 
 	/**
@@ -246,7 +258,7 @@ class ApprovalService {
 	public function approve(int $fileId, ?string $userId): bool {
 		$fileState = $this->getApprovalState($fileId, $userId);
 		// if file has pending tag and user is authorized to approve it
-		if ($fileState === Application::STATE_APPROVABLE) {
+		if ($fileState['state'] === Application::STATE_APPROVABLE) {
 			$rules = $this->ruleService->getRules();
 			foreach ($rules as $ruleId => $rule) {
 				try {
@@ -283,7 +295,7 @@ class ApprovalService {
 	public function reject(int $fileId, ?string $userId): bool {
 		$fileState = $this->getApprovalState($fileId, $userId);
 		// if file has pending tag and user is authorized to approve it
-		if ($fileState === Application::STATE_APPROVABLE) {
+		if ($fileState['state'] === Application::STATE_APPROVABLE) {
 			$rules = $this->ruleService->getRules();
 			foreach ($rules as $ruleId => $rule) {
 				try {
@@ -320,7 +332,7 @@ class ApprovalService {
 	 */
 	public function request(int $fileId, int $ruleId, ?string $userId): array {
 		$fileState = $this->getApprovalState($fileId, $userId);
-		if ($fileState === Application::STATE_NOTHING) {
+		if ($fileState['state'] === Application::STATE_NOTHING) {
 			$rule = $this->ruleService->getRule($ruleId);
 			if (is_null($rule)) {
 				return ['error' => 'Rule does not exist'];
