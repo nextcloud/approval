@@ -16,6 +16,7 @@ use OCP\IConfig;
 use Psr\Log\LoggerInterface;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
+use OCP\IUserManager;
 
 use OCA\Approval\AppInfo\Application;
 
@@ -30,12 +31,14 @@ class RuleService {
 								IConfig $config,
 								LoggerInterface $logger,
 								IDBConnection $db,
+								IUserManager $userManager,
 								IL10N $l10n) {
 		$this->appName = $appName;
 		$this->l10n = $l10n;
 		$this->logger = $logger;
 		$this->config = $config;
 		$this->db = $db;
+		$this->userManager = $userManager;
 		$this->strTypeToInt = [
 			'user' => Application::TYPE_USER,
 			'group' => Application::TYPE_GROUP,
@@ -437,5 +440,64 @@ class RuleService {
 		}
 
 		return $rules;
+	}
+
+	public function storeAction(int $fileId, int $ruleId, string $userId, int $newState) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('approval_activity')
+			->where(
+				$qb->expr()->eq('rule_id', $qb->createNamedParameter($ruleId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('file_id', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT))
+			);
+		$req = $qb->execute();
+		$qb = $qb->resetQueryParts();
+
+		$timestamp = (new \DateTime())->getTimestamp();
+		$qb->insert('approval_activity')
+			->values([
+				'file_id' => $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT),
+				'rule_id' => $qb->createNamedParameter($ruleId, IQueryBuilder::PARAM_INT),
+				'user_id' => $qb->createNamedParameter($userId, IQueryBuilder::PARAM_STR),
+				'new_state' => $qb->createNamedParameter($newState, IQueryBuilder::PARAM_INT),
+				'timestamp' => $qb->createNamedParameter($timestamp, IQueryBuilder::PARAM_INT),
+			]);
+		$req = $qb->execute();
+		$qb = $qb->resetQueryParts();
+	}
+
+	public function getLastAction(int $fileId, int $ruleId, int $newState): ?array {
+		$qb->select('*')
+			->from('approval_activity')
+			->where(
+				$qb->expr()->eq('file_id', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('rule_id', $qb->createNamedParameter($ruleId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('new_state', $qb->createNamedParameter($newState, IQueryBuilder::PARAM_INT))
+			);
+		$qb->orderBy('timestamp', 'DESC');
+		$qb->setMaxResults(1);
+		$req = $qb->execute();
+		$activity = null;
+		while ($row = $req->fetch()) {
+			$activity = [
+				'userId' => $row['user_id'],
+				'timestamp' => (int) $row['timestamp'],
+			];
+			break;
+		}
+		$req->closeCursor();
+		$qb = $qb->resetQueryParts();
+
+		if (!is_null($activity)) {
+			// get user display name
+			$user = $this->userManager->get($activity['userId']);
+			$activity['userName'] = $user ? $user->getDisplayName() : $$activity['userId'];
+		}
+		return $activity;
 	}
 }

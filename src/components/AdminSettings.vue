@@ -78,7 +78,6 @@
 </template>
 
 <script>
-import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
@@ -98,7 +97,6 @@ export default {
 
 	data() {
 		return {
-			state: loadState('approval', 'admin-config'),
 			showRules: true,
 			newTagName: '',
 			rules: {},

@@ -248,12 +248,15 @@ class ApprovalService {
 		// if file has pending tag and user is authorized to approve it
 		if ($fileState === Application::STATE_APPROVABLE) {
 			$rules = $this->ruleService->getRules();
-			foreach ($rules as $id => $rule) {
+			foreach ($rules as $ruleId => $rule) {
 				try {
 					if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
 						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
 						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagApproved']);
 						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
+
+						// store activity in our tables
+						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_APPROVED);
 
 						$this->sendApprovalNotification($fileId, $userId, true);
 						$this->activityManager->triggerEvent(
@@ -282,12 +285,15 @@ class ApprovalService {
 		// if file has pending tag and user is authorized to approve it
 		if ($fileState === Application::STATE_APPROVABLE) {
 			$rules = $this->ruleService->getRules();
-			foreach ($rules as $id => $rule) {
+			foreach ($rules as $ruleId => $rule) {
 				try {
 					if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
 						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
 						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagRejected']);
 						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
+
+						// store activity in our tables
+						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_REJECTED);
 
 						$this->sendApprovalNotification($fileId, $userId, false);
 						$this->activityManager->triggerEvent(
