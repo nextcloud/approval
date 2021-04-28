@@ -209,7 +209,7 @@ class ApprovalService {
 					&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
 					return [
 						'state' => Application::STATE_APPROVABLE,
-						'ruleId' => $id,
+						'rule' => $rule,
 					];
 				}
 			} catch (TagNotFoundException $e) {
@@ -222,7 +222,7 @@ class ApprovalService {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])) {
 					return [
 						'state' => Application::STATE_PENDING,
-						'ruleId' => $id,
+						'rule' => $rule,
 					];
 				}
 			} catch (TagNotFoundException $e) {
@@ -233,12 +233,12 @@ class ApprovalService {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])) {
 					return [
 						'state' => Application::STATE_APPROVED,
-						'ruleId' => $id,
+						'rule' => $rule,
 					];
 				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])) {
 					return [
 						'state' => Application::STATE_REJECTED,
-						'ruleId' => $id,
+						'rule' => $rule,
 					];
 				}
 			} catch (TagNotFoundException $e) {

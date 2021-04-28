@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<ol>
+		<ol class="rule-list">
 			<li v-for="r in rules"
 				:key="r.tagPending">
 				{{ r.description }}
@@ -48,5 +48,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// nothing
+.rule-list {
+	list-style: inside none decimal;
+}
 </style>

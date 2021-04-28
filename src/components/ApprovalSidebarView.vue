@@ -51,7 +51,8 @@
 			</span>
 			<span v-else>{{ pendingText }}</span>
 		</span>
-		<span v-if="canRequestApproval">
+		<span v-if="canRequestApproval"
+			class="request-button-wrapper">
 			<button @click="showRequestModal">
 				{{ requestLabel }}
 			</button>
@@ -59,6 +60,13 @@
 				<RequestForm :rules="userRules"
 					@request="onRequest" />
 			</Modal>
+		</span>
+		<span>
+			<button class="icon icon-details info-button" @click="showInfoModal" />
+			<!--Modal v-if="requestModal" @close="closeRequestModal">
+				<RequestForm :rules="userRules"
+					@request="onRequest" />
+			</Modal-->
 		</span>
 	</div>
 </template>
@@ -218,6 +226,8 @@ export default {
 			this.closeRequestModal()
 			this.$emit('request', ruleId)
 		},
+		showInfoModal() {
+		},
 	},
 }
 </script>
@@ -229,7 +239,8 @@ export default {
 
 	.state-label {
 		border-radius: var(--border-radius);
-		height: 34px;
+		height: 44px;
+		width: 100%;
 		display: flex;
 		align-items: center;
 		.details {
@@ -263,6 +274,8 @@ export default {
 	.pending-label .icon,
 	.approved-label .icon,
 	.rejected-label .icon {
+		min-width: 32px;
+		min-height: 32px;
 		width: 32px;
 		height: 32px;
 		border-radius: var(--border-radius-pill);
@@ -271,6 +284,24 @@ export default {
 	.icon-close-white,
 	.icon-checkmark-white {
 		margin-right: 5px;
+	}
+
+	.request-button-wrapper {
+		width: 100%;
+		button {
+			height: 44px;
+		}
+	}
+
+	.info-button {
+		height: 44px;
+		width: 44px;
+		margin: 0;
+		border: none;
+		background-color: transparent;
+		&:hover {
+			background-color: var(--color-background-dark);
+		}
 	}
 }
 </style>
