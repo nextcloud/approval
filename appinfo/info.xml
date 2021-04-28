@@ -26,6 +26,7 @@
 	</dependencies>
 	<settings>
 		<admin>OCA\Approval\Settings\Admin</admin>
+		<admin>OCA\Approval\Settings\AdminFlowLink</admin>
 		<admin-section>OCA\Approval\Settings\AdminSection</admin-section>
 	</settings>
 	<activity>

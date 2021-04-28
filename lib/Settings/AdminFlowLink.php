@@ -12,7 +12,7 @@ use OCP\IInitialStateService;
 
 use OCA\Approval\AppInfo\Application;
 
-class Admin implements ISettings {
+class AdminFlowLink implements ISettings {
 	private $request;
 	private $config;
 	private $dataDirPath;
@@ -39,14 +39,14 @@ class Admin implements ISettings {
 	 * @return TemplateResponse
 	 */
 	public function getForm(): TemplateResponse {
-		return new TemplateResponse(Application::APP_ID, 'adminSettings');
+		return new TemplateResponse(Application::APP_ID, 'flowLink');
 	}
 
 	public function getSection(): string {
-		return Application::ADMIN_SETTINGS_SECTION;
+		return 'workflow';
 	}
 
 	public function getPriority(): int {
-		return 1;
+		return 0;
 	}
 }

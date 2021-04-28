@@ -30,6 +30,7 @@ use OCA\Approval\Notification\Notifier;
  */
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'approval';
+	public const ADMIN_SETTINGS_SECTION = 'approval-rules';
 	// approval states
 	public const STATE_NOTHING = 0;
 	public const STATE_PENDING = 1;
