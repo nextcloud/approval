@@ -131,7 +131,7 @@ class ApprovalController extends Controller {
 		if (isset($result['error'])) {
 			return new DataResponse($result, 400);
 		} else {
-			return new DataResponse(1);
+			return new DataResponse($result);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
-import { showSuccess, showError } from '@nextcloud/dialogs'
+import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
 import '@nextcloud/dialogs/styles/toast.scss'
 
 import ApprovalSidebarView from './components/ApprovalSidebarView'
@@ -129,6 +129,9 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/request/' + ruleId)
 			axios.get(url).then((response) => {
 				showSuccess(t('approval', 'Approval requested for {name}!', { name: this.fileName }))
+				if (response.data.warning) {
+					showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
+				}
 				this.getApprovalStatus()
 				// reload system tags after reject
 				if (OCA.SystemTags?.View) {

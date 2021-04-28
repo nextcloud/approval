@@ -108,7 +108,7 @@ export default {
 		},
 		requestedByText: {
 			type: String,
-			default: t('approval', 'Approval request by'),
+			default: t('approval', 'Approval requested by'),
 		},
 		pendingText: {
 			type: String,

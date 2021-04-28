@@ -343,7 +343,14 @@ class ApprovalService {
 				// store activity in our tables
 				$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_PENDING);
 
-				return [];
+				// check if someone can actually approve
+				$ruleUserIds = $this->getRuleAuthorizedUserIds($rule, 'approvers');
+				foreach ($ruleUserIds as $uid) {
+					if ($this->userHasAccessTo($fileId, $uid)) {
+						return [];
+					}
+				}
+				return ['warning' => 'This element is not shared with any user who is authorized to approve it'];
 			} else {
 				return ['error' => 'You are not authorized to request with this rule'];
 			}
