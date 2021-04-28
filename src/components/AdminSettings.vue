@@ -21,7 +21,8 @@
 				v-model="rules[id]"
 				class="approval-rule"
 				@input="onRuleInput(id, $event)"
-				@delete="onRuleDelete(id)" />
+				@delete="onRuleDelete(id)"
+				@add-tag="onAddTagClick" />
 			<EmptyContent v-if="noRules && !loadingRules"
 				class="no-rules"
 				icon="icon-approval">
@@ -39,7 +40,8 @@
 				v-model="newRule"
 				delete-icon="icon-history"
 				:delete-rule-label="newRuleDeleteLabel"
-				@delete="onNewRuleDelete">
+				@delete="onNewRuleDelete"
+				@add-tag="onAddTagClick">
 				<template #extra-buttons>
 					<button
 						class="new-rule-ok"
@@ -63,6 +65,7 @@
 				{{ t('approval', 'Create new hidden tag') }}
 			</label>
 			<input id="create-tag-input"
+				ref="createTagInput"
 				v-model="newTagName"
 				:placeholder="t('approval', 'New tag name')"
 				type="text"
@@ -312,6 +315,9 @@ export default {
 					this.creatingTag = false
 				})
 			}
+		},
+		onAddTagClick() {
+			this.$refs.createTagInput.focus()
 		},
 	},
 }

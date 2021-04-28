@@ -5,6 +5,11 @@
 				<span class="field-label main-label">
 					<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
 					{{ pendingLabel }}
+					<button v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
+						class="add-tag-button"
+						@click="$emit('add-tag')">
+						<span class="icon icon-add" />
+					</button>
 				</span>
 				<MultiselectTags class="tag-select"
 					:value="value.tagPending"
@@ -42,6 +47,11 @@
 				<span class="field-label">
 					<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
 					{{ approvedLabel }}
+					<button v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
+						class="add-tag-button"
+						@click="$emit('add-tag')">
+						<span class="icon icon-add" />
+					</button>
 				</span>
 				<MultiselectTags class="tag-select"
 					:value="value.tagApproved"
@@ -53,6 +63,11 @@
 				<span class="field-label">
 					<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
 					{{ rejectedLabel }}
+					<button v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
+						class="add-tag-button"
+						@click="$emit('add-tag')">
+						<span class="icon icon-add" />
+					</button>
 				</span>
 				<MultiselectTags class="tag-select"
 					:value="value.tagRejected"
@@ -199,6 +214,19 @@ export default {
 
 		.tag-select {
 			width: 250px;
+		}
+
+		.add-tag-button {
+			margin: 0;
+			height: 26px;
+			min-height: 10px;
+			width: 26px;
+			padding: 0;
+			border: none;
+			background-color: transparent;
+			&:hover {
+				background-color: var(--color-background-darker);
+			}
 		}
 	}
 
