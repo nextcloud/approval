@@ -155,11 +155,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
 			this.fileInfo = fileInfo
 
-			// reset component details
-			this._inputView.setUserId('')
-			this._inputView.setUserName('')
-			this._inputView.setDatetime('')
-
 			this.getApprovalStatus()
 
 			// reload approval status when a tag is added or removed
