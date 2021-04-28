@@ -90,7 +90,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/approve')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} approved!', { name: this.fileName }))
-				this.getApprovalStatus()
+				this.getApprovalState()
 				// reload system tags after approve
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
@@ -110,7 +110,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/reject')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} rejected!', { name: this.fileName }))
-				this.getApprovalStatus()
+				this.getApprovalState()
 				// reload system tags after reject
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
@@ -132,7 +132,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				if (response.data.warning) {
 					showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
 				}
-				this.getApprovalStatus()
+				this.getApprovalState()
 				// reload system tags after reject
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
@@ -155,25 +155,25 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
 			this.fileInfo = fileInfo
 
-			this.getApprovalStatus()
+			this.getApprovalState()
 
 			// reload approval status when a tag is added or removed
 			if (!this.tagEventsCaugth && OCA.SystemTags?.View) {
 				this.tagEventsCaugth = true
 				OCA.SystemTags.View._inputView.on('select', (tag) => {
 					setTimeout(() => {
-						this.getApprovalStatus(true)
+						this.getApprovalState(true)
 					}, 2000)
 				}, this)
 				OCA.SystemTags.View._inputView.on('deselect', (tag) => {
 					setTimeout(() => {
-						this.getApprovalStatus(true)
+						this.getApprovalState(true)
 					}, 2000)
 				}, this)
 			}
 		},
 
-		getApprovalStatus(reloadFileItem) {
+		getApprovalState(reloadFileItem) {
 			// get state and details
 			const url = generateUrl('/apps/approval/' + this.fileId + '/state')
 			axios.get(url).then((response) => {
@@ -186,6 +186,11 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					// i don't know how to change props with Vue instance
 					// so it's done with a method changing a data value
 					this._inputView.setState(this.state)
+					if (response.data.rule) {
+						this._inputView.setRule(response.data.rule)
+					} else {
+						this._inputView.setRule(null)
+					}
 					if (response.data.userId && response.data.userName && response.data.timestamp) {
 						this._inputView.setUserId(response.data.userId ?? '')
 						this._inputView.setUserName(response.data.userName ?? '')
@@ -201,6 +206,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					this._inputView.setUserId('')
 					this._inputView.setUserName('')
 					this._inputView.setDatetime('')
+					this._inputView.setRule(null)
 					if (this.userRules.length === 0) {
 						this.hide()
 					}
@@ -214,6 +220,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				this._inputView.setUserId('')
 				this._inputView.setUserName('')
 				this._inputView.setDatetime('')
+				this._inputView.setRule(null)
 			})
 		},
 

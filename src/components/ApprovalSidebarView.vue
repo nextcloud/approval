@@ -61,12 +61,16 @@
 					@request="onRequest" />
 			</Modal>
 		</span>
-		<span>
+		<span v-if="myRule">
 			<button class="icon icon-details info-button" @click="showInfoModal" />
-			<!--Modal v-if="requestModal" @close="closeRequestModal">
-				<RequestForm :rules="userRules"
-					@request="onRequest" />
-			</Modal-->
+			<Modal v-if="infoModal" @close="closeInfoModal">
+				<p>
+					{{ infoText }}
+				</p>
+				<p>
+					{{ myRule.description }}
+				</p>
+			</Modal>
 		</span>
 	</div>
 </template>
@@ -126,18 +130,6 @@ export default {
 			type: Number,
 			required: true,
 		},
-		userId: {
-			type: String,
-			default: '',
-		},
-		userName: {
-			type: String,
-			default: '',
-		},
-		datetime: {
-			type: String,
-			default: '',
-		},
 	},
 	data() {
 		return {
@@ -145,10 +137,12 @@ export default {
 			myUserId: null,
 			myUserName: null,
 			myDatetime: null,
+			myRule: null,
 			you: t('approval', 'you'),
 			userRules: [],
 			requestLabel: t('approval', 'Request approval'),
 			requestModal: false,
+			infoModal: false,
 		}
 	},
 
@@ -173,6 +167,14 @@ export default {
 		},
 		canRequestApproval() {
 			return this.myState === states.NOTHING && this.userRules.length > 0
+		},
+		infoText() {
+			if (this.myState === states.APPROVABLE) {
+				return t('approval', 'Your approval was requested. The related approval rule description is:')
+			} else if ([states.APPROVED, states.PENDING, states.REJECTED].includes(this.myState)) {
+				return t('approval', 'The related approval rule description is:')
+			}
+			return ''
 		},
 	},
 
@@ -204,6 +206,9 @@ export default {
 		setState(state) {
 			this.myState = state
 		},
+		setRule(rule) {
+			this.myRule = rule
+		},
 		setUserId(userId) {
 			this.myUserId = userId
 		},
@@ -227,6 +232,10 @@ export default {
 			this.$emit('request', ruleId)
 		},
 		showInfoModal() {
+			this.infoModal = true
+		},
+		closeInfoModal() {
+			this.infoModal = false
 		},
 	},
 }
