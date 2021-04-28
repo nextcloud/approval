@@ -133,7 +133,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
 				}
 				this.getApprovalState()
-				// reload system tags after reject
+				// reload system tags after request
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
@@ -149,6 +149,10 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		setFileInfo(fileInfo) {
 			if (this.userRules.length === 0) {
 				this.hide()
+			}
+			// abort if fileId didn't change
+			if (this.fileId === (fileInfo.id || fileInfo.attributes?.id)) {
+				return
 			}
 			// Why is this called twice and fileInfo is not the same on each call?
 			this.fileName = fileInfo.name || fileInfo.attributes?.name || ''
