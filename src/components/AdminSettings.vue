@@ -9,6 +9,12 @@
 			{{ t('approval', 'Each rule specifies who (which users, groups or circles) can act on which pending tag and which approved/rejected tag should then be assigned.') }}
 		</p>
 		<p class="settings-hint">
+			{{ t('approval', 'A list of users/groups/circles who can manually request approval can be optionally defined.') }}
+		</p>
+		<p class="settings-hint">
+			{{ t('approval', 'To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the rules involved.') }}
+		</p>
+		<p class="settings-hint">
 			{{ t('approval', 'You can chain approval rules by using a pending tag as approved/rejected tag in another rule.') }}
 		</p>
 		<p class="settings-hint">

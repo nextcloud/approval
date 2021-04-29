@@ -64,12 +64,15 @@
 		<span v-if="myRule">
 			<button class="icon icon-details info-button" @click="showInfoModal" />
 			<Modal v-if="infoModal" @close="closeInfoModal">
-				<p>
-					{{ infoText }}
-				</p>
-				<p>
-					{{ myRule.description }}
-				</p>
+				<div class="info-modal">
+					<p>
+						{{ infoText }}
+						<br><br>
+					</p>
+					<p>
+						{{ myRule.description }}
+					</p>
+				</div>
 			</Modal>
 		</span>
 	</div>
@@ -312,5 +315,9 @@ export default {
 			background-color: var(--color-background-dark);
 		}
 	}
+}
+
+::v-deep.info-modal {
+	padding: 15px;
 }
 </style>
