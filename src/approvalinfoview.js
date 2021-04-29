@@ -132,19 +132,21 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				if (response.data.warning) {
 					showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
 				}
-				// to make sure we see the freshly created shares
+				// TODO make sure we see the freshly created shares
+				/*
 				if (createShares) {
 					const fileList = OCA?.Files?.App?.currentFileList
 					fileList?.reload?.() || window.location.reload()
 					console.debug(fileList)
 					fileList.showDetailsView(this.fileName, 'sharing')
 				}
+				*/
 				// reload system tags after request
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
 				// if we reload the file item here, it appears twice in file list...
-				this.getApprovalState()
+				this.getApprovalState(true)
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to request approval for {name}', { name: this.fileName })
@@ -263,7 +265,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			OCA.Files.Sidebar.open(this.fileInfo.attributes.path + '/' + this.fileInfo.attributes.name)
 		},
 		updateFileItem() {
-			const model = OCA.Files.App.fileList.getModelForFile(this.fileName)
+			const fileList = OCA?.Files?.App?.currentFileList
+			const model = fileList.getModelForFile(this.fileName)
 			model.trigger('change', model)
 		},
 	})
