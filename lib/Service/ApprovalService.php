@@ -216,7 +216,7 @@ class ApprovalService {
 			}
 		}
 
-		// then check other states
+		// then check pending in priority
 		foreach ($rules as $id => $rule) {
 			try {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])) {
@@ -228,16 +228,24 @@ class ApprovalService {
 			} catch (TagNotFoundException $e) {
 			}
 		}
+		// then rejected
+		foreach ($rules as $id => $rule) {
+			try {
+				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])) {
+					return [
+						'state' => Application::STATE_REJECTED,
+						'rule' => $rule,
+					];
+				}
+			} catch (TagNotFoundException $e) {
+			}
+		}
+		// then approved
 		foreach ($rules as $id => $rule) {
 			try {
 				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])) {
 					return [
 						'state' => Application::STATE_APPROVED,
-						'rule' => $rule,
-					];
-				} elseif ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])) {
-					return [
-						'state' => Application::STATE_REJECTED,
 						'rule' => $rule,
 					];
 				}
