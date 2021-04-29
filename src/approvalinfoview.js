@@ -128,10 +128,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/request/' + ruleId)
 			axios.post(url, req).then((response) => {
-				showSuccess(t('approval', 'Approval requested for {name}!', { name: this.fileName }))
-				if (response.data.warning) {
-					showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
-				}
 				// TODO make sure we see the freshly created shares
 				/*
 				if (createShares) {
@@ -141,6 +137,38 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					fileList.showDetailsView(this.fileName, 'sharing')
 				}
 				*/
+				if (createShares) {
+					this.requestAfterShareCreation(ruleId)
+				} else {
+					showSuccess(t('approval', 'Approval requested for {name}!', { name: this.fileName }))
+					if (response.data.warning) {
+						showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
+					}
+					// reload system tags after request
+					if (OCA.SystemTags?.View) {
+						OCA.SystemTags.View.setFileInfo(this.fileInfo)
+					}
+					// if we reload the file item here, it appears twice in file list...
+					this.getApprovalState(true)
+				}
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to request approval for {name}', { name: this.fileName })
+					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+				)
+			})
+		},
+
+		requestAfterShareCreation(ruleId) {
+			const req = {
+				createShares: false,
+			}
+			const url = generateUrl('/apps/approval/' + this.fileId + '/request/' + ruleId)
+			axios.post(url, req).then((response) => {
+				showSuccess(t('approval', 'Approval requested for {name}!', { name: this.fileName }))
+				if (response.data.warning) {
+					showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
+				}
 				// reload system tags after request
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)

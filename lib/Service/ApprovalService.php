@@ -356,6 +356,8 @@ class ApprovalService {
 			if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
 				if ($createShares) {
 					$this->createShares($fileId, $rule, $userId);
+					// if shares are auto created, request is actually done in a separated request with $createShares === false
+					return [];
 				}
 				$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagPending']);
 
@@ -369,12 +371,7 @@ class ApprovalService {
 						return [];
 					}
 				}
-				// don't warn about nobody having access if element is auto-shared
-				if ($createShares) {
-					return [];
-				} else {
-					return ['warning' => 'This element is not shared with any user who is authorized to approve it'];
-				}
+				return ['warning' => 'This element is not shared with any user who is authorized to approve it'];
 			} else {
 				return ['error' => 'You are not authorized to request with this rule'];
 			}
@@ -444,10 +441,14 @@ class ApprovalService {
 			$share->setLabel($label)
 				->setNote($label);
 			$share = $this->shareManager->updateShare($share);
+			if ($type === IShare::TYPE_USER) {
+				try {
+					$this->shareManager->acceptShare($share, $sharedWith);
+				} catch (GenericShareException | \Exception $e) {
+				}
+			}
 			return true;
-		} catch (GenericShareException $e) {
-			return false;
-		} catch (\Exception $e) {
+		} catch (GenericShareException | \Exception $e) {
 			return false;
 		}
 	}
