@@ -24,6 +24,6 @@ return [
 		['name' => 'approval#getApprovalState', 'url' => '/{fileId}/state', 'verb' => 'GET'],
 		['name' => 'approval#approve', 'url' => '/{fileId}/approve', 'verb' => 'PUT'],
 		['name' => 'approval#reject', 'url' => '/{fileId}/reject', 'verb' => 'PUT'],
-		['name' => 'approval#request', 'url' => '/{fileId}/request/{ruleId}', 'verb' => 'GET'],
+		['name' => 'approval#request', 'url' => '/{fileId}/request/{ruleId}', 'verb' => 'POST'],
 	]
 ];

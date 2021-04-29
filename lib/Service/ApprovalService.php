@@ -26,6 +26,12 @@ use OCP\IGroupManager;
 use OCP\App\IAppManager;
 use OCP\Notification\IManager as INotificationManager;
 
+use OCP\Share\IManager as IShareManager;
+use OCP\Share\IShare;
+use OCP\Share\Exceptions\GenericShareException;
+use OCP\Files\Node;
+use OCP\Constants;
+
 use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Activity\ActivityManager;
 
@@ -48,6 +54,7 @@ class ApprovalService {
 								INotificationManager $notificationManager,
 								RuleService $ruleService,
 								ActivityManager $activityManager,
+								IShareManager $shareManager,
 								IL10N $l10n) {
 		$this->appName = $appName;
 		$this->l10n = $l10n;
@@ -60,6 +67,7 @@ class ApprovalService {
 		$this->notificationManager = $notificationManager;
 		$this->activityManager = $activityManager;
 		$this->tagManager = $tagManager;
+		$this->shareManager = $shareManager;
 		$this->tagObjectMapper = $tagObjectMapper;
 		$this->ruleService = $ruleService;
 	}
@@ -338,7 +346,7 @@ class ApprovalService {
 	 * @param string|null $userId
 	 * @return array potential error message
 	 */
-	public function request(int $fileId, int $ruleId, ?string $userId): array {
+	public function request(int $fileId, int $ruleId, ?string $userId, bool $createShares): array {
 		$fileState = $this->getApprovalState($fileId, $userId);
 		if ($fileState['state'] === Application::STATE_NOTHING) {
 			$rule = $this->ruleService->getRule($ruleId);
@@ -346,6 +354,9 @@ class ApprovalService {
 				return ['error' => 'Rule does not exist'];
 			}
 			if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
+				if ($createShares) {
+					$this->createShares($fileId, $rule, $userId);
+				}
 				$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagPending']);
 
 				// store activity in our tables
@@ -358,12 +369,86 @@ class ApprovalService {
 						return [];
 					}
 				}
-				return ['warning' => 'This element is not shared with any user who is authorized to approve it'];
+				// don't warn about nobody having access if element is auto-shared
+				if ($createShares) {
+					return [];
+				} else {
+					return ['warning' => 'This element is not shared with any user who is authorized to approve it'];
+				}
 			} else {
 				return ['error' => 'You are not authorized to request with this rule'];
 			}
 		} else {
 			return ['error' => 'File is already pending/approved/rejected'];
+		}
+	}
+
+	/**
+	 * Share file with everybody who can approve with given rule and have no access yet
+	 */
+	private function createShares(int $fileId, array $rule, string $userId): array {
+		$createdShares = [];
+		// get node
+		$userFolder = $this->root->getUserFolder($userId);
+		$found = $userFolder->getById($fileId);
+		if (count($found) > 0) {
+			$node = $found[0];
+		} else {
+			return [];
+		}
+		$label = $this->l10n->t('Approval share');
+
+		foreach ($rule['approvers'] as $approver) {
+			if ($approver['type'] === 'user' && !$this->userHasAccessTo($fileId, $approver['entityId'])) {
+				// create user share
+				if ($this->createShare($node, IShare::TYPE_USER, $approver['entityId'], $userId, $label)) {
+					$createdShares[] = $approver;
+				}
+			}
+		}
+		if ($this->shareManager->allowGroupSharing()) {
+			foreach ($rule['approvers'] as $approver) {
+				if ($approver['type'] === 'group') {
+					if ($this->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $userId, $label)) {
+						$createdShares[] = $approver;
+					}
+				}
+			}
+		}
+
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+		if ($circlesEnabled) {
+			foreach ($rule['approvers'] as $approver) {
+				if ($approver['type'] === 'circle') {
+					if ($this->createShare($node, IShare::TYPE_CIRCLE, $approver['entityId'], $userId, $label)) {
+						$createdShares[] = $approver;
+					}
+				}
+			}
+		}
+
+		return $createdShares;
+	}
+
+	private function createShare(Node $node, int $type, string $sharedWith, string $sharedBy, string $label): bool {
+		$share = $this->shareManager->newShare();
+		$share->setNode($node)
+			->setPermissions(Constants::PERMISSION_READ)
+			->setSharedWith($sharedWith)
+			->setShareType($type)
+			->setSharedBy($sharedBy)
+			->setExpirationDate(null);
+
+		try {
+			$share = $this->shareManager->createShare($share);
+			$share->setLabel($label)
+				->setNote($label);
+			$share = $this->shareManager->updateShare($share);
+			return true;
+		} catch (GenericShareException $e) {
+			return false;
+		} catch (\Exception $e) {
+			return false;
 		}
 	}
 

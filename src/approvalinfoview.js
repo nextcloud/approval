@@ -63,8 +63,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this._inputView.$on('reject', () => {
 				this._onReject()
 			})
-			this._inputView.$on('request', (ruleId) => {
-				this._onRequest(ruleId)
+			this._inputView.$on('request', (ruleId, createShares) => {
+				this._onRequest(ruleId, createShares)
 			})
 
 			this._rendered = true
@@ -124,10 +124,12 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			})
 		},
 
-		_onRequest(ruleId) {
-			console.debug('request with rule ' + ruleId)
+		_onRequest(ruleId, createShares) {
+			const req = {
+				createShares,
+			}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/request/' + ruleId)
-			axios.get(url).then((response) => {
+			axios.post(url, req).then((response) => {
 				showSuccess(t('approval', 'Approval requested for {name}!', { name: this.fileName }))
 				if (response.data.warning) {
 					showWarning(t('approval', 'Warning') + ': ' + response.data.warning)

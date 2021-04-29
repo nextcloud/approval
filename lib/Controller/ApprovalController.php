@@ -126,8 +126,8 @@ class ApprovalController extends Controller {
 	 * @param int $ruleId
 	 * @return DataResponse
 	 */
-	public function request(int $fileId, int $ruleId): DataResponse {
-		$result = $this->approvalService->request($fileId, $ruleId, $this->userId);
+	public function request(int $fileId, int $ruleId, bool $createShares): DataResponse {
+		$result = $this->approvalService->request($fileId, $ruleId, $this->userId, $createShares);
 		if (isset($result['error'])) {
 			return new DataResponse($result, 400);
 		} else {

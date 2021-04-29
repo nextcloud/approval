@@ -58,6 +58,7 @@
 			</button>
 			<Modal v-if="requestModal" @close="closeRequestModal">
 				<RequestForm :rules="userRules"
+					class="info-modal"
 					@request="onRequest" />
 			</Modal>
 		</span>
@@ -230,9 +231,9 @@ export default {
 		closeRequestModal() {
 			this.requestModal = false
 		},
-		onRequest(ruleId) {
+		onRequest(ruleId, createShares) {
 			this.closeRequestModal()
-			this.$emit('request', ruleId)
+			this.$emit('request', ruleId, createShares)
 		},
 		showInfoModal() {
 			this.infoModal = true
