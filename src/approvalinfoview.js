@@ -196,7 +196,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
 			this.fileInfo = fileInfo
 
-			this.getApprovalState()
+			this.getApprovalState(true)
 
 			// reload approval status when a tag is added or removed
 			if (!this.tagEventsCaugth && OCA.SystemTags?.View) {
