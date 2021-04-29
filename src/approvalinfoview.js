@@ -128,22 +128,48 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/request/' + ruleId)
 			axios.post(url, req).then((response) => {
+				// we need to create shares and assign tags in different request to make sure
+				// file is accessible to users when tag event is caught
+				if (createShares) {
+					this.requestAfterShareCreation(ruleId)
+				} else {
+					showSuccess(t('approval', 'Approval requested for {name}!', { name: this.fileName }))
+					if (response.data.warning) {
+						showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
+					}
+					// reload system tags after request
+					if (OCA.SystemTags?.View) {
+						OCA.SystemTags.View.setFileInfo(this.fileInfo)
+					}
+					// if we reload the file item and the file list, it appears twice in the file list...
+					this.getApprovalState(true)
+				}
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to request approval for {name}', { name: this.fileName })
+					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+				)
+			})
+		},
+
+		requestAfterShareCreation(ruleId) {
+			const req = {
+				createShares: false,
+			}
+			const url = generateUrl('/apps/approval/' + this.fileId + '/request/' + ruleId)
+			axios.post(url, req).then((response) => {
 				showSuccess(t('approval', 'Approval requested for {name}!', { name: this.fileName }))
 				if (response.data.warning) {
 					showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
 				}
 				// to make sure we see the freshly created shares
-				if (createShares) {
-					const fileList = OCA?.Files?.App?.currentFileList
-					fileList?.reload?.() || window.location.reload()
-					console.debug(fileList)
-					fileList.showDetailsView(this.fileName, 'sharing')
-				}
+				const fileList = OCA?.Files?.App?.currentFileList
+				fileList?.reload?.()
+				fileList.showDetailsView(this.fileName, 'sharing')
 				// reload system tags after request
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
-				// if we reload the file item here, it appears twice in file list...
 				this.getApprovalState()
 			}).catch((error) => {
 				showError(

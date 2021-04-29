@@ -356,6 +356,7 @@ class ApprovalService {
 			if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
 				if ($createShares) {
 					$this->createShares($fileId, $rule, $userId);
+					return [];
 				}
 				$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagPending']);
 
