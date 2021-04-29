@@ -90,12 +90,11 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/approve')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} approved!', { name: this.fileName }))
-				this.getApprovalState()
+				this.getApprovalState(true)
 				// reload system tags after approve
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
-				this.updateFileItem()
 			}).catch((error) => {
 				console.error(error)
 				showError(
@@ -110,12 +109,11 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/reject')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} rejected!', { name: this.fileName }))
-				this.getApprovalState()
+				this.getApprovalState(true)
 				// reload system tags after reject
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
-				this.updateFileItem()
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to reject {name}', { name: this.fileName })
@@ -134,12 +132,19 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				if (response.data.warning) {
 					showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
 				}
-				this.getApprovalState()
+				// to make sure we see the freshly created shares
+				if (createShares) {
+					const fileList = OCA?.Files?.App?.currentFileList
+					fileList?.reload?.() || window.location.reload()
+					console.debug(fileList)
+					fileList.showDetailsView(this.fileName, 'sharing')
+				}
 				// reload system tags after request
 				if (OCA.SystemTags?.View) {
 					OCA.SystemTags.View.setFileInfo(this.fileInfo)
 				}
-				this.updateFileItem()
+				// if we reload the file item here, it appears twice in file list...
+				this.getApprovalState()
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to request approval for {name}', { name: this.fileName })
