@@ -123,7 +123,8 @@ class ApprovalProvider implements IProvider {
 			$userFolder = $this->root->getUserFolder($this->userId);
 			$found = $userFolder->getById($event->getObjectId());
 			if (count($found) === 0) {
-				return null;
+				// this avoids the event if user does not have access anymore
+				return $event;
 			}
 			$node = $found[0];
 			$path = $userFolder->getRelativePath($node->getPath());
