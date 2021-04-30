@@ -42,6 +42,7 @@ class ActivityManager {
 	public const SUBJECT_APPROVED = 'object_approved';
 	public const SUBJECT_REJECTED = 'object_rejected';
 	public const SUBJECT_REQUESTED = 'approval_requested';
+	public const SUBJECT_REQUESTED_ORIGIN = 'approval_requested_origin';
 
 	public function __construct(IManager $manager,
 								IL10N $l10n,
@@ -72,6 +73,9 @@ class ActivityManager {
 				break;
 			case self::SUBJECT_REQUESTED:
 				$subject = $this->l10n->t('Your approval was requested on {file}');
+				break;
+			case self::SUBJECT_REQUESTED_ORIGIN:
+				$subject = $this->l10n->t('You requested approval on {file}');
 				break;
 			default:
 				break;
@@ -120,6 +124,7 @@ class ActivityManager {
 			case self::SUBJECT_APPROVED:
 			case self::SUBJECT_REJECTED:
 			case self::SUBJECT_REQUESTED:
+			case self::SUBJECT_REQUESTED_ORIGIN:
 				$subjectParams = $this->findDetailsForNode($node);
 				$objectName = $node->getName();
 				break;
@@ -165,6 +170,8 @@ class ActivityManager {
 					$userIds[] = $userId;
 				}
 			}
+		} elseif ($subject === self::SUBJECT_REQUESTED_ORIGIN) {
+			$userIds[] = $additionalParams['origin_user_id'];
 		} else {
 			// publish for eveyone having access
 			$this->userManager->callForSeenUsers(function (IUser $user) use ($event, $root, $entity, &$userIds) {

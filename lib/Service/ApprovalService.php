@@ -363,6 +363,12 @@ class ApprovalService {
 
 				// store activity in our tables
 				$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_PENDING);
+				// still produce an activity entry
+				$this->activityManager->triggerEvent(
+					ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
+					ActivityManager::SUBJECT_REQUESTED_ORIGIN,
+					['origin_user_id' => $userId]
+				);
 
 				// check if someone can actually approve
 				$ruleUserIds = $this->getRuleAuthorizedUserIds($rule, 'approvers');
