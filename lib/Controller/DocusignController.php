@@ -62,7 +62,7 @@ class DocusignController extends Controller {
 			if ($values['docusign_token'] && $values['docusign_token'] !== '') {
 				// $result = $this->storeUserInfo($values['token']);
 			} else {
-				$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_id');
+				$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_email');
 				$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_name');
 				$this->config->deleteAppValue(Application::APP_ID, 'docusign_token');
 				$this->config->deleteAppValue(Application::APP_ID, 'docusign_refresh_token');
@@ -106,7 +106,7 @@ class DocusignController extends Controller {
 				$refreshToken = $result['refresh_token'];
 				$this->config->setAppValue(Application::APP_ID, 'docusign_refresh_token', $refreshToken);
 				// get user info
-				// $this->storeUserInfo($accessToken);
+				$this->storeUserInfo($accessToken);
 				return new RedirectResponse(
 					$this->urlGenerator->linkToRoute('settings.AdminSettings.index', ['section' => Application::ADMIN_SETTINGS_SECTION]) .
 					'?docusignToken=success'
@@ -120,5 +120,28 @@ class DocusignController extends Controller {
 			$this->urlGenerator->linkToRoute('settings.AdminSettings.index', ['section' => Application::ADMIN_SETTINGS_SECTION]) .
 			'?docusignToken=error&message=' . urlencode($result)
 		);
+	}
+
+	/**
+	 * @param string $accessToken
+	 * @return array
+	 */
+	private function storeUserInfo(string $accessToken): array {
+		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token', '');
+		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
+
+		$url = 'https://account-d.docusign.com/oauth/userinfo';
+
+		$info = $this->docusignAPIService->apiRequest($url, $accessToken, $refreshToken, $clientID, $clientSecret, $this->userId, '');
+		if (isset($info['name'], $info['email'])) {
+			$this->config->setAppValue(Application::APP_ID, 'docusign_user_name', $info['name']);
+			$this->config->setAppValue(Application::APP_ID, 'docusign_user_email', $info['email']);
+			return ['docusign_user_name' => $info['name']];
+		} else {
+			$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_name');
+			$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_email');
+			return $info;
+		}
 	}
 }

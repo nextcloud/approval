@@ -48,7 +48,7 @@
 		<div v-if="connected" class="grid-form">
 			<label class="docusign-connected">
 				<a class="icon icon-checkmark-color" />
-				{{ t('approval', 'Connected as {user}', { user: state.user_name }) }}
+				{{ t('approval', 'Connected as {user} ({email})', { user: state.docusign_user_name, email: state.docusign_user_email }) }}
 			</label>
 			<button id="docusign-rm-cred" @click="onLogoutClick">
 				<span class="icon icon-close" />

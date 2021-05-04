@@ -42,11 +42,15 @@ class Admin implements ISettings {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
 		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
+		$userName = $this->config->getAppValue(Application::APP_ID, 'docusign_user_name', '');
+		$userEmail = $this->config->getAppValue(Application::APP_ID, 'docusign_user_email', '');
 
 		$adminConfig = [
 			'docusign_client_id' => $clientID,
 			'docusign_client_secret' => $clientSecret,
 			'docusign_token' => $token,
+			'docusign_user_name' => $userName,
+			'docusign_user_email' => $userEmail,
 		];
 		$this->initialStateService->provideInitialState($this->appName, 'docusign-config', $adminConfig);
 		return new TemplateResponse(Application::APP_ID, 'adminSettings');
