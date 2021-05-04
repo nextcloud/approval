@@ -83,6 +83,7 @@
 				{{ t('approval', 'Create') }}
 			</button>
 		</div>
+		<DocuSignSettings />
 	</div>
 </template>
 
@@ -94,12 +95,13 @@ import '@nextcloud/dialogs/styles/toast.scss'
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
 
 import ApprovalRule from './ApprovalRule'
+import DocuSignSettings from './DocuSignSettings'
 
 export default {
 	name: 'AdminSettings',
 
 	components: {
-		ApprovalRule, EmptyContent,
+		ApprovalRule, EmptyContent, DocuSignSettings,
 	},
 
 	props: [],

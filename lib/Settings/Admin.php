@@ -39,6 +39,16 @@ class Admin implements ISettings {
 	 * @return TemplateResponse
 	 */
 	public function getForm(): TemplateResponse {
+		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
+		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
+
+		$adminConfig = [
+			'docusign_client_id' => $clientID,
+			'docusign_client_secret' => $clientSecret,
+			'docusign_token' => $token,
+		];
+		$this->initialStateService->provideInitialState($this->appName, 'docusign-config', $adminConfig);
 		return new TemplateResponse(Application::APP_ID, 'adminSettings');
 	}
 

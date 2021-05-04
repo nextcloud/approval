@@ -17,6 +17,10 @@ return [
 		['name' => 'config#deleteRule', 'url' => '/rule/{id}', 'verb' => 'DELETE'],
 		['name' => 'config#createRule', 'url' => '/rule', 'verb' => 'POST'],
 
+		// DocuSign
+		['name' => 'docusign#setDocusignConfig', 'url' => '/docusign-config', 'verb' => 'PUT'],
+		['name' => 'docusign#oauthRedirect', 'url' => '/docusign/oauth-redirect', 'verb' => 'GET'],
+
 		['name' => 'approval#createTag', 'url' => '/tag', 'verb' => 'POST'],
 
 		// Approval actions
