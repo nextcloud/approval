@@ -6,8 +6,8 @@
 			:reject-text="rejectText"
 			@approve="$emit('approve')"
 			@reject="$emit('reject')" />
-		<button v-if="stateApprovable && docusignConnected"
-			:class="{ loading: signLoading }"
+		<button v-if="stateApprovable && docusignConnected && isPdf"
+			:class="{ loading: signLoading, signButton: true }"
 			@click="onSignClick">
 			{{ signButtonText }}
 		</button>
@@ -155,6 +155,7 @@ export default {
 			docusignConnected: false,
 			signLoading: false,
 			signButtonText: t('approval', 'Sign with DocuSign'),
+			isPdf: false,
 		}
 	},
 
@@ -237,6 +238,9 @@ export default {
 			this.docusignConnected = isConnected
 			this.signLoading = false
 		},
+		setIsPdf(isPdf) {
+			this.isPdf = isPdf
+		},
 		showRequestModal() {
 			this.requestModal = true
 		},
@@ -265,6 +269,12 @@ export default {
 .approval-container {
 	display: flex;
 	margin: 5px 0 15px 0;
+
+	.signButton {
+		min-height: 44px;
+		height: 44px;
+		margin: 0;
+	}
 
 	.state-label {
 		border-radius: var(--border-radius);

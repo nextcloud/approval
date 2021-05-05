@@ -225,6 +225,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
 			this.fileInfo = fileInfo
 
+			this._inputView.setIsPdf(fileInfo.mimetype === 'application/pdf')
 			this._inputView.setDocusignConnected(this.docusignConnected)
 
 			this.getApprovalState(true)
