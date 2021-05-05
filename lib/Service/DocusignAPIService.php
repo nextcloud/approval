@@ -16,11 +16,13 @@ use Psr\Log\LoggerInterface;
 use OCP\IConfig;
 use OCP\IUserManager;
 use OCP\IUser;
+use OCP\Files\File;
 use OCP\Http\Client\IClientService;
 use OCP\Notification\IManager as INotificationManager;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\ConnectException;
+use OCP\Files\IRootFolder;
 
 use OCA\Approval\AppInfo\Application;
 
@@ -37,16 +39,81 @@ class DocusignAPIService {
 								LoggerInterface $logger,
 								IL10N $l10n,
 								IConfig $config,
+								IRootFolder $root,
 								INotificationManager $notificationManager,
 								IClientService $clientService) {
 		$this->appName = $appName;
 		$this->l10n = $l10n;
 		$this->logger = $logger;
 		$this->config = $config;
+		$this->root = $root;
 		$this->userManager = $userManager;
 		$this->clientService = $clientService;
 		$this->notificationManager = $notificationManager;
 		$this->client = $clientService->newClient();
+	}
+
+	public function emailSign(string $accessToken, string $refreshToken, string $clientID, string $clientSecret,
+							string $baseURI, string $accountId,
+							?File $file,
+							string $signerEmail, string $signerName, string $ccEmail, string $ccName): array {
+		if (is_null($file)) {
+			$userFolder = $this->root->getUserFolder('julien');
+			$found = $userFolder->getById(2232);
+			if (count($found) > 0) {
+				$file = $found[0];
+			}
+		}
+		$docB64 = base64_encode($file->getContent());
+		$enveloppe = [
+			'emailSubject' => 'Please sign this document set',
+			'documents' => [
+				[
+					'documentBase64' => $docB64,
+					'name' => 'DOCU name',
+					'fileExtension' => 'pdf',
+					'documentId' => '1'
+				],
+			],
+			'recipients' => [
+				'carbonCopies' => [
+					[
+						'email' => $ccEmail,
+						'name' => $ccName,
+						'recipientId' => '2',
+						'routingOrder' => '2',
+					],
+				],
+				'signers' => [
+					[
+						'email' => $signerEmail,
+						'name' => $signerName,
+						'recipientId' => '1',
+						'routingOrder' => '1',
+						'tabs' => [
+							'signHereTabs' => [
+								[
+									'anchorString' => '**signature_1**',
+									'anchorUnits' => 'pixels',
+									'anchorXOffset' => '20',
+									'anchorYOffset' => '10',
+								],
+								[
+									'anchorString' => '/sn1/',
+									'anchorUnits' => 'pixels',
+									'anchorXOffset' => '20',
+									'anchorYOffset' => '10',
+								],
+							],
+						],
+					],
+				],
+			],
+			'status' => 'sent',
+		];
+		$endPoint = '/restapi/v2.1/accounts/' . $accountId .'/envelopes';
+		$info = $this->apiRequest($baseURI, $accessToken, $refreshToken, $clientID, $clientSecret, $endPoint, $enveloppe, 'POST');
+		return $info;
 	}
 
 	/**
@@ -62,17 +129,15 @@ class DocusignAPIService {
 	 * @return array
 	 */
 	public function apiRequest(?string $url, string $accessToken, string $refreshToken,
-							string $clientID, string $clientSecret, string $userId,
-							string $endPoint, array $params = [], string $method = 'GET'): array {
+							string $clientID, string $clientSecret,
+							string $endPoint = '', array $params = [], string $method = 'GET'): array {
 		try {
-			if (is_null($url)) {
-				$url = 'https://plop.org';
-			}
 			$url = $url . $endPoint;
 			$options = [
 				'headers' => [
 					'Authorization'  => 'Bearer ' . $accessToken,
 					'User-Agent' => 'Nextcloud DocuSign integration',
+					'Content-Type' => 'application/json',
 				]
 			];
 
@@ -91,7 +156,7 @@ class DocusignAPIService {
 					$paramsContent .= http_build_query($params);
 					$url .= '?' . $paramsContent;
 				} else {
-					$options['body'] = $params;
+					$options['body'] = json_encode($params);
 				}
 			}
 
@@ -132,7 +197,7 @@ class DocusignAPIService {
 					$this->config->setAppValue(Application::APP_ID, 'docusign_token', $accessToken);
 					// retry the request with new access token
 					return $this->request(
-						$url, $accessToken, $refreshToken, $clientID, $clientSecret, $userId, $endPoint, $params, $method
+						$url, $accessToken, $refreshToken, $clientID, $clientSecret, $endPoint, $params, $method
 					);
 				}
 			}
