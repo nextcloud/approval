@@ -53,17 +53,39 @@ class DocusignAPIService {
 		$this->client = $clientService->newClient();
 	}
 
-	public function emailSign(string $accessToken, string $refreshToken, string $clientID, string $clientSecret,
-							string $baseURI, string $accountId,
-							?File $file,
-							string $signerEmail, string $signerName, string $ccEmail, string $ccName): array {
-		if (is_null($file)) {
-			$userFolder = $this->root->getUserFolder('julien');
-			$found = $userFolder->getById(2232);
-			if (count($found) > 0) {
-				$file = $found[0];
-			}
+	public function emailSign(int $fileId, string $signerUserId, string $ccUserId): array {
+		$found = $this->root->getById($fileId);
+		if (count($found) > 0) {
+			$file = $found[0];
+		} else {
+			return ['error' => 'File not found'];
 		}
+
+		$accessToken = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
+		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token', '');
+		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
+		$accountId = $this->config->getAppValue(Application::APP_ID, 'docusign_user_account_id', '');
+		$baseURI = $this->config->getAppValue(Application::APP_ID, 'docusign_user_base_uri', '');
+
+		$signerUser = $this->userManager->get($signerUserId);
+		$ccUser = $this->userManager->get($ccUserId);
+		if ($signerUser === null || $ccUser === null) {
+			return ['error' => 'Users not found'];
+		}
+		$signerName = $signerUser->getDisplayName();
+		$signerEmail = $signerUser->getEMailAddress();
+		$ccName = $ccUser->getDisplayName();
+		$ccEmail = $ccUser->getEMailAddress();
+
+		return $this->emailSignRequest($accessToken, $refreshToken, $clientID, $clientSecret,
+			$baseURI, $accountId, $file, $signerEmail, $signerName, $ccEmail, $ccName);
+	}
+
+	public function emailSignRequest(string $accessToken, string $refreshToken, string $clientID, string $clientSecret,
+							string $baseURI, string $accountId,
+							File $file,
+							string $signerEmail, string $signerName, string $ccEmail, string $ccName): array {
 		$docB64 = base64_encode($file->getContent());
 		$enveloppe = [
 			'emailSubject' => 'Please sign this document set',

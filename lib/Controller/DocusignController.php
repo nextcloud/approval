@@ -149,12 +149,7 @@ class DocusignController extends Controller {
 			$this->config->setAppValue(Application::APP_ID, 'docusign_user_account_id', $accountId);
 			$this->config->setAppValue(Application::APP_ID, 'docusign_user_base_uri', $baseURI);
 			// TEST
-			$signerEmail = 'ju+signer@cassio.pe';
-			$signerName = 'Ju le signeur';
-			$ccEmail = 'eneiluj+cc@posteo.net';
-			$ccName = 'ene le CC';
-			$resp = $this->docusignAPIService->emailSign($accessToken, $refreshToken, $clientID, $clientSecret, $baseURI, $accountId, null,
-				$signerEmail, $signerName, $ccEmail, $ccName);
+			$this->docusignAPIService->emailSign(2232, 'julien', 'toto');
 			return ['docusign_user_name' => $info['name']];
 		} else {
 			$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_name');
