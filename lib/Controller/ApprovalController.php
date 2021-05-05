@@ -84,7 +84,8 @@ class ApprovalController extends Controller {
 		$state = $this->approvalService->getApprovalState($fileId, $this->userId);
 		if ($state['state'] !== Application::STATE_NOTHING) {
 			// who did that?
-			$activity = $this->ruleService->getLastAction($fileId, $state['rule']['id'], $state['state']);
+			$stateToLookFor = $state['state'] === Application::STATE_APPROVABLE ? Application::STATE_PENDING : $state['state'];
+			$activity = $this->ruleService->getLastAction($fileId, $state['rule']['id'], $stateToLookFor);
 			if (!is_null($activity)) {
 				$state['userId'] = $activity['userId'];
 				$state['userName'] = $activity['userName'];

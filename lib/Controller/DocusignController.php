@@ -50,6 +50,7 @@ class DocusignController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
 	 *
 	 * @return DataResponse
 	 */
@@ -62,10 +63,11 @@ class DocusignController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
 	 *
 	 * @return DataResponse
 	 */
-	public function sign(int $fileId): DataResponse {
+	public function sign(int $fileId, ?string $requesterUserId = null): DataResponse {
 		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
 		$isConnected = ($token !== '');
 		if (!$isConnected) {
@@ -74,8 +76,12 @@ class DocusignController extends Controller {
 		if (!$this->approvalService->userHasAccessTo($fileId, $this->userId)) {
 			return new DataResponse(['error' => 'You don\'t have access to this file'], 401);
 		}
-		$signResult = $this->docusignAPIService->emailSign($fileId, $this->userId);
-		return new DataResponse($signResult);
+		$signResult = $this->docusignAPIService->emailSign($fileId, $this->userId, $requesterUserId);
+		if (isset($signResult['error'])) {
+			return new DataResponse($signResult, 401);
+		} else {
+			return new DataResponse($signResult);
+		}
 	}
 
 	/**

@@ -28,6 +28,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		_inputView: null,
 		state: states.NOTHING,
+		requesterUserId: null,
 
 		fileName: '',
 		fileId: 0,
@@ -196,7 +197,9 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		_onSign() {
-			const req = {}
+			const req = {
+				requesterUserId: this.requesterUserId,
+			}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/sign')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} signature requested via DocuSign!', { name: this.fileName }))
@@ -262,10 +265,12 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					}
 					if (response.data.userId && response.data.userName && response.data.timestamp) {
 						this._inputView.setUserId(response.data.userId ?? '')
+						this.requesterUserId = response.data.userId ?? ''
 						this._inputView.setUserName(response.data.userName ?? '')
 						this._inputView.setDatetime(response.data.timestamp ?? '')
 					} else {
 						this._inputView.setUserId('')
+						this.requesterUserId = null
 						this._inputView.setUserName('')
 						this._inputView.setDatetime('')
 					}
@@ -273,6 +278,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				} else {
 					this._inputView.setState(states.NOTHING)
 					this._inputView.setUserId('')
+					this.requesterUserId = null
 					this._inputView.setUserName('')
 					this._inputView.setDatetime('')
 					this._inputView.setRule(null)
@@ -287,6 +293,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				)
 				this._inputView.setState(states.NOTHING)
 				this._inputView.setUserId('')
+				this.requesterUserId = null
 				this._inputView.setUserName('')
 				this._inputView.setDatetime('')
 				this._inputView.setRule(null)
