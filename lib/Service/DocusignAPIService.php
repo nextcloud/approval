@@ -53,7 +53,7 @@ class DocusignAPIService {
 		$this->client = $clientService->newClient();
 	}
 
-	public function emailSign(int $fileId, string $signerUserId, string $ccUserId): array {
+	public function emailSign(int $fileId, string $signerUserId, ?string $ccUserId = null): array {
 		$found = $this->root->getById($fileId);
 		if (count($found) > 0) {
 			$file = $found[0];
@@ -69,43 +69,47 @@ class DocusignAPIService {
 		$baseURI = $this->config->getAppValue(Application::APP_ID, 'docusign_user_base_uri', '');
 
 		$signerUser = $this->userManager->get($signerUserId);
-		$ccUser = $this->userManager->get($ccUserId);
-		if ($signerUser === null || $ccUser === null) {
-			return ['error' => 'Users not found'];
+		if ($signerUser === null) {
+			return ['error' => 'Signer user not found'];
 		}
 		$signerName = $signerUser->getDisplayName();
 		$signerEmail = $signerUser->getEMailAddress();
-		$ccName = $ccUser->getDisplayName();
-		$ccEmail = $ccUser->getEMailAddress();
+
+		$ccEmail = null;
+		$ccName = null;
+		if (!is_null($ccUserId)) {
+			$ccUser = $this->userManager->get($ccUserId);
+			if ($ccUser === null) {
+				return ['error' => 'CC user not found'];
+			}
+			$ccName = $ccUser->getDisplayName();
+			$ccEmail = $ccUser->getEMailAddress();
+		}
 
 		return $this->emailSignRequest($accessToken, $refreshToken, $clientID, $clientSecret,
-			$baseURI, $accountId, $file, $signerEmail, $signerName, $ccEmail, $ccName);
+			$baseURI, $accountId, $file,
+			$signerUserId, $signerEmail, $signerName,
+			$ccUserId, $ccEmail, $ccName);
 	}
 
 	public function emailSignRequest(string $accessToken, string $refreshToken, string $clientID, string $clientSecret,
 							string $baseURI, string $accountId,
 							File $file,
-							string $signerEmail, string $signerName, string $ccEmail, string $ccName): array {
+							string $signerUserId, string $signerEmail, string $signerName,
+							?string $ccUserId, ?string $ccEmail, ?string $ccName): array {
 		$docB64 = base64_encode($file->getContent());
 		$enveloppe = [
-			'emailSubject' => 'Please sign this document set',
+			'emailSubject' => $this->l10n->t('Signature of %s', $file->getName()),
 			'documents' => [
 				[
 					'documentBase64' => $docB64,
-					'name' => 'DOCU name',
+					'name' => $file->getName(),
 					'fileExtension' => 'pdf',
-					'documentId' => '1'
+					'documentId' => $file->getId(),
 				],
 			],
 			'recipients' => [
-				'carbonCopies' => [
-					[
-						'email' => $ccEmail,
-						'name' => $ccName,
-						'recipientId' => '2',
-						'routingOrder' => '2',
-					],
-				],
+				'carbonCopies' => [],
 				'signers' => [
 					[
 						'email' => $signerEmail,
@@ -133,6 +137,17 @@ class DocusignAPIService {
 			],
 			'status' => 'sent',
 		];
+
+		// CC is optional
+		if ($ccUserId && $ccName && $ccEmail) {
+			$enveloppe['recipients']['carbonCopies'][] = [
+				'email' => $ccEmail,
+				'name' => $ccName,
+				'recipientId' => '2',
+				'routingOrder' => '2',
+			];
+		}
+
 		$endPoint = '/restapi/v2.1/accounts/' . $accountId .'/envelopes';
 		$info = $this->apiRequest($baseURI, $accessToken, $refreshToken, $clientID, $clientSecret, $endPoint, $enveloppe, 'POST');
 		return $info;

@@ -150,6 +150,7 @@ class DocusignController extends Controller {
 			$this->config->setAppValue(Application::APP_ID, 'docusign_user_base_uri', $baseURI);
 			// TEST
 			$this->docusignAPIService->emailSign(2232, 'julien', 'toto');
+			// $this->docusignAPIService->emailSign(2232, 'julien');
 			return ['docusign_user_name' => $info['name']];
 		} else {
 			$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_name');
