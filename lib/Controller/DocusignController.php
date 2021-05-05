@@ -22,6 +22,7 @@ use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Controller;
 
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\Service\ApprovalService;
 use OCA\Approval\Service\DocusignAPIService;
 
 class DocusignController extends Controller {
@@ -36,6 +37,7 @@ class DocusignController extends Controller {
 								IURLGenerator $urlGenerator,
 								LoggerInterface $logger,
 								DocusignAPIService $docusignAPIService,
+								ApprovalService $approvalService,
 								?string $userId) {
 		parent::__construct($AppName, $request);
 		$this->l = $l;
@@ -44,6 +46,36 @@ class DocusignController extends Controller {
 		$this->logger = $logger;
 		$this->urlGenerator = $urlGenerator;
 		$this->docusignAPIService = $docusignAPIService;
+		$this->approvalService = $approvalService;
+	}
+
+	/**
+	 *
+	 * @return DataResponse
+	 */
+	public function getDocusignInfo(): DataResponse {
+		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
+		$isConnected = ($token !== '');
+		return new DataResponse([
+			'connected' => $isConnected,
+		]);
+	}
+
+	/**
+	 *
+	 * @return DataResponse
+	 */
+	public function sign(int $fileId): DataResponse {
+		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
+		$isConnected = ($token !== '');
+		if (!$isConnected) {
+			return new DataResponse(['error' => 'DocuSign admin connected account is not configured'], 401);
+		}
+		if (!$this->approvalService->userHasAccessTo($fileId, $this->userId)) {
+			return new DataResponse(['error' => 'You don\'t have access to this file'], 401);
+		}
+		$signResult = $this->docusignAPIService->emailSign($fileId, $this->userId);
+		return new DataResponse($signResult);
 	}
 
 	/**
@@ -149,7 +181,7 @@ class DocusignController extends Controller {
 			$this->config->setAppValue(Application::APP_ID, 'docusign_user_account_id', $accountId);
 			$this->config->setAppValue(Application::APP_ID, 'docusign_user_base_uri', $baseURI);
 			// TEST
-			$this->docusignAPIService->emailSign(2232, 'julien', 'toto');
+			// $this->docusignAPIService->emailSign(2232, 'julien', 'toto');
 			// $this->docusignAPIService->emailSign(2232, 'julien');
 			return ['docusign_user_name' => $info['name']];
 		} else {

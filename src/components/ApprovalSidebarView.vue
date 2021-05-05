@@ -6,6 +6,11 @@
 			:reject-text="rejectText"
 			@approve="$emit('approve')"
 			@reject="$emit('reject')" />
+		<button v-if="stateApprovable && docusignConnected"
+			:class="{ loading: signLoading }"
+			@click="onSignClick">
+			{{ signButtonText }}
+		</button>
 		<span v-if="stateApproved"
 			class="state-label approved-label">
 			<span class="icon icon-checkmark-white" />
@@ -147,6 +152,9 @@ export default {
 			requestLabel: t('approval', 'Request approval'),
 			requestModal: false,
 			infoModal: false,
+			docusignConnected: false,
+			signLoading: false,
+			signButtonText: t('approval', 'Sign with DocuSign'),
 		}
 	},
 
@@ -225,6 +233,10 @@ export default {
 		setUserRules(rules) {
 			this.userRules = rules
 		},
+		setDocusignConnected(isConnected) {
+			this.docusignConnected = isConnected
+			this.signLoading = false
+		},
 		showRequestModal() {
 			this.requestModal = true
 		},
@@ -240,6 +252,10 @@ export default {
 		},
 		closeInfoModal() {
 			this.infoModal = false
+		},
+		onSignClick() {
+			this.signLoading = true
+			this.$emit('sign')
 		},
 	},
 }

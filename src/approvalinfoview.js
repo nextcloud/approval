@@ -39,6 +39,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			options = options || {}
 			this.render()
 			this.getUserRequesterRules()
+			this.getDocusignInfo()
 		},
 
 		/**
@@ -66,6 +67,9 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this._inputView.$on('request', (ruleId, createShares) => {
 				this._onRequest(ruleId, createShares)
 			})
+			this._inputView.$on('sign', () => {
+				this._onSign()
+			})
 
 			this._rendered = true
 		},
@@ -73,13 +77,21 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		getUserRequesterRules() {
 			const url = generateUrl('/apps/approval/user-requester-rules')
 			axios.get(url).then((response) => {
-				console.debug('user rules are')
-				console.debug(response.data)
 				this._inputView.setUserRules(response.data)
 				this.userRules = response.data
 				if (this.userRules.length === 0) {
 					this.hide()
 				}
+			}).catch((error) => {
+				console.error(error)
+			})
+		},
+
+		getDocusignInfo() {
+			const url = generateUrl('/apps/approval/docusign/info')
+			axios.get(url).then((response) => {
+				this._inputView.setDocusignConnected(response.data.connected)
+				this.docusignConnected = response.data.connected
 			}).catch((error) => {
 				console.error(error)
 			})
@@ -183,6 +195,20 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			})
 		},
 
+		_onSign() {
+			const req = {}
+			const url = generateUrl('/apps/approval/' + this.fileId + '/sign')
+			axios.put(url, req).then((response) => {
+				showSuccess(t('approval', '{name} signature requested via DocuSign!', { name: this.fileName }))
+				this._inputView.setDocusignConnected(false)
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to request signature')
+					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+				)
+			})
+		},
+
 		setFileInfo(fileInfo) {
 			if (this.userRules.length === 0) {
 				this.hide()
@@ -195,6 +221,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this.fileName = fileInfo.name || fileInfo.attributes?.name || ''
 			this.fileId = fileInfo.id || fileInfo.attributes?.id || 0
 			this.fileInfo = fileInfo
+
+			this._inputView.setDocusignConnected(this.docusignConnected)
 
 			this.getApprovalState(true)
 

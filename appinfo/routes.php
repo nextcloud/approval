@@ -19,7 +19,9 @@ return [
 
 		// DocuSign
 		['name' => 'docusign#setDocusignConfig', 'url' => '/docusign-config', 'verb' => 'PUT'],
+		['name' => 'docusign#getDocusignInfo', 'url' => '/docusign/info', 'verb' => 'GET'],
 		['name' => 'docusign#oauthRedirect', 'url' => '/docusign/oauth-redirect', 'verb' => 'GET'],
+		['name' => 'docusign#sign', 'url' => '/{fileId}/sign', 'verb' => 'PUT'],
 
 		['name' => 'approval#createTag', 'url' => '/tag', 'verb' => 'POST'],
 
