@@ -179,38 +179,44 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.grid-form label {
-	line-height: 38px;
-}
-
-.grid-form input {
-	width: 100%;
-}
-
-.grid-form {
-	max-width: 500px;
-	display: grid;
-	grid-template: 1fr / 1fr 1fr;
-	margin-left: 30px;
-}
-
 #docusign_prefs {
 	padding-left: 0;
+
+	#docusign-rm-cred {
+		height: 44px;
+		min-height: 44px;
+	}
+
+	.grid-form {
+		max-width: 500px;
+		display: grid;
+		grid-template: 1fr / 1fr 1fr;
+		margin-left: 30px;
+
+		label {
+			line-height: 38px;
+		}
+
+		input {
+			width: 100%;
+		}
+
+		.icon {
+			margin-bottom: -3px;
+		}
+	}
+
 	.icon {
 		display: inline-block;
 		width: 32px;
 	}
 
-	.grid-form .icon {
-		margin-bottom: -3px;
+	.icon-docusign {
+		background-image: url(./../../img/app-dark.svg);
+		background-size: 23px 23px;
+		height: 23px;
+		margin-bottom: -4px;
 	}
-}
-
-.icon-docusign {
-	background-image: url(./../../img/app-dark.svg);
-	background-size: 23px 23px;
-	height: 23px;
-	margin-bottom: -4px;
 }
 
 body.theme--dark .icon-docusign {
