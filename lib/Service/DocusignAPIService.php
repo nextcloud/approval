@@ -233,6 +233,15 @@ class DocusignAPIService {
 				if (isset($result['access_token'])) {
 					$accessToken = $result['access_token'];
 					$this->config->setAppValue(Application::APP_ID, 'docusign_token', $accessToken);
+					// is there a new refresh token?
+					if (isset($result['refresh_token'])) {
+						$refreshToken = $result['refresh_token'];
+						$this->config->setAppValue(Application::APP_ID, 'docusign_refresh_token', $refreshToken);
+					}
+					// store new expiration time
+					if (isset($result['expires_in'])) {
+						$this->config->setAppValue(Application::APP_ID, 'docusign_token_expires_in', $result['expires_in']);
+					}
 					// retry the request with new access token
 					return $this->apiRequest(
 						$url, $accessToken, $refreshToken, $clientID, $clientSecret, $endPoint, $params, $method

@@ -146,6 +146,9 @@ class DocusignController extends Controller {
 				$this->config->setAppValue(Application::APP_ID, 'token_type', 'oauth');
 				$refreshToken = $result['refresh_token'];
 				$this->config->setAppValue(Application::APP_ID, 'docusign_refresh_token', $refreshToken);
+				if (isset($result['expires_in'])) {
+					$this->config->setAppValue(Application::APP_ID, 'docusign_token_expires_in', $result['expires_in']);
+				}
 				// get user info
 				$this->storeUserInfo($accessToken);
 				return new RedirectResponse(
