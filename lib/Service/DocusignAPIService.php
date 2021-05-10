@@ -223,7 +223,8 @@ class DocusignAPIService {
 				// $this->logger->info('Trying to REFRESH the access token', ['app' => $this->appName]);
 				$this->logger->warning('Trying to REFRESH the DocuSign access token', ['app' => $this->appName]);
 				// try to refresh the token
-				$result = $this->requestOAuthAccessToken($zammadUrl, [
+				$docusignTokenUrl = Application::DOCUSIGN_TOKEN_REQUEST_URL;
+				$result = $this->requestOAuthAccessToken($docusignTokenUrl, $clientID, $clientSecret, [
 					'client_id' => $clientID,
 					'client_secret' => $clientSecret,
 					'grant_type' => 'refresh_token',
@@ -233,7 +234,7 @@ class DocusignAPIService {
 					$accessToken = $result['access_token'];
 					$this->config->setAppValue(Application::APP_ID, 'docusign_token', $accessToken);
 					// retry the request with new access token
-					return $this->request(
+					return $this->apiRequest(
 						$url, $accessToken, $refreshToken, $clientID, $clientSecret, $endPoint, $params, $method
 					);
 				}

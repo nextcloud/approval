@@ -41,6 +41,8 @@ class Application extends App implements IBootstrap {
 	public const TYPE_USER = 0;
 	public const TYPE_GROUP = 1;
 	public const TYPE_CIRCLE = 2;
+	// docusign
+	public const DOCUSIGN_TOKEN_REQUEST_URL = 'https://account-d.docusign.com/oauth/token';
 
 	/**
 	 * Constructor

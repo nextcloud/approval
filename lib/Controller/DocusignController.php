@@ -132,7 +132,7 @@ class DocusignController extends Controller {
 
 		if ($clientID && $clientSecret && $configState !== '' && $configState === $state) {
 			$redirect_uri = $this->config->getAppValue(Application::APP_ID, 'docusign_redirect_uri', '');
-			$docusignTokenUrl = 'https://account-d.docusign.com/oauth/token';
+			$docusignTokenUrl = Application::DOCUSIGN_TOKEN_REQUEST_URL;
 			$result = $this->docusignAPIService->requestOAuthAccessToken($docusignTokenUrl, $clientID, $clientSecret, [
 				'code' => $code,
 				// 'redirect_uri' => $redirect_uri,
