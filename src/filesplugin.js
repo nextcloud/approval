@@ -53,6 +53,12 @@ import axios from '@nextcloud/axios'
 			fileList.fileActions.registerAction({
 				name: 'ApprovalStateInline',
 				render: async(actionSpec, isDefault, context) => {
+					// just in case, remove existing
+					const existingActionLink = context.$file.find('.approval-inline-state')
+					if (existingActionLink) {
+						existingActionLink.remove()
+					}
+
 					const fileId = context.$file[0].dataset.id
 					const state = await this.getState(fileId)
 					if (state !== states.NOTHING) {
