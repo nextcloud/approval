@@ -405,13 +405,13 @@ export default {
 }
 
 .icon-approval {
-	background-image: url(./../../img/app-dark.svg);
+	background-image: url('../../img/app-dark.svg');
 	background-size: 23px 23px;
 	height: 23px;
 	margin-bottom: -4px;
 }
 
 body.theme--dark .icon-approval {
-	background-image: url(./../../img/app.svg);
+	background-image: url('../../img/app.svg');
 }
 </style>

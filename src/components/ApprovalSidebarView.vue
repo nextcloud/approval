@@ -59,6 +59,7 @@
 		<span v-if="canRequestApproval"
 			class="request-button-wrapper">
 			<button @click="showRequestModal">
+				<span class="icon icon-approval" />
 				{{ requestLabel }}
 			</button>
 			<Modal v-if="requestModal" @close="closeRequestModal">
@@ -350,5 +351,16 @@ export default {
 
 ::v-deep.info-modal {
 	padding: 15px;
+}
+
+.icon-approval {
+	background-image: url('../../img/app-dark.svg');
+	background-size: 16px 16px;
+	height: 16px;
+	margin-right: 5px;
+}
+
+body.theme--dark .icon-approval {
+	background-image: url('../../img/app.svg');
 }
 </style>
