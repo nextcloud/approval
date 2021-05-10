@@ -203,6 +203,9 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateUrl('/apps/approval/' + this.fileId + '/sign')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} signature requested via DocuSign!', { name: this.fileName }))
+				if (!this.requesterUserId) {
+					showWarning(t('approval', 'The user who requested this approval was not found, remember to send or share the signed document yourself'))
+				}
 				this._inputView.setDocusignConnected(false)
 			}).catch((error) => {
 				showError(

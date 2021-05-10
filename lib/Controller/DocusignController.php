@@ -69,7 +69,9 @@ class DocusignController extends Controller {
 	 */
 	public function sign(int $fileId, ?string $requesterUserId = null): DataResponse {
 		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
-		$isConnected = ($token !== '');
+		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
+		$isConnected = ($token !== '' && $clientID !== '' && $clientSecret !== '');
 		if (!$isConnected) {
 			return new DataResponse(['error' => 'DocuSign admin connected account is not configured'], 401);
 		}
