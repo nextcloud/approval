@@ -184,7 +184,7 @@ class ApprovalProvider implements IProvider {
 		);
 		if ($event->getSubject() === ActivityManager::SUBJECT_APPROVED) {
 			$event->setIcon(
-				$this->urlGenerator->getAbsoluteURL('/index.php/svg/core/actions/checkmark?color=2AB4FF')
+				$this->urlGenerator->getAbsoluteURL('/index.php/svg/core/actions/checkmark?color=46BA61')
 			);
 		} elseif ($event->getSubject() === ActivityManager::SUBJECT_REJECTED) {
 			$event->setIcon(
