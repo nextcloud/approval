@@ -6,11 +6,6 @@
 			:reject-text="rejectText"
 			@approve="$emit('approve')"
 			@reject="$emit('reject')" />
-		<button v-if="stateApprovable && docusignConnected && isPdf"
-			:class="{ loading: signLoading, signButton: true }"
-			@click="onSignClick">
-			{{ signButtonText }}
-		</button>
 		<span v-if="stateApproved"
 			class="state-label approved-label">
 			<span class="icon icon-checkmark-white" />
@@ -26,6 +21,11 @@
 			</span>
 			<span v-else>{{ approvedText }}</span>
 		</span>
+		<button v-if="isSignable"
+			:class="{ loading: signLoading, signButton: true }"
+			@click="onSignClick">
+			{{ signButtonText }}
+		</button>
 		<span v-if="stateRejected"
 			class="state-label rejected-label">
 			<span class="icon icon-close-white" />
@@ -193,6 +193,10 @@ export default {
 				return t('approval', 'The related approval rule description is:')
 			}
 			return ''
+		},
+		isSignable() {
+			const iApproved = this.stateApproved && !this.notMe
+			return (this.stateApprovable || iApproved) && this.docusignConnected && this.isPdf
 		},
 	},
 
