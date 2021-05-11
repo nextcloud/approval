@@ -154,7 +154,7 @@ class DocusignAPIService {
 	}
 
 	/**
-	 * @param string $url
+	 * @param string $baseUrl
 	 * @param string $accessToken
 	 * @param string $authType
 	 * @param string $refreshToken
@@ -165,11 +165,11 @@ class DocusignAPIService {
 	 * @param string $method
 	 * @return array
 	 */
-	public function apiRequest(?string $url, string $accessToken, string $refreshToken,
+	public function apiRequest(?string $baseUrl, string $accessToken, string $refreshToken,
 							string $clientID, string $clientSecret,
 							string $endPoint = '', array $params = [], string $method = 'GET'): array {
 		try {
-			$url = $url . $endPoint;
+			$url = $baseUrl . $endPoint;
 			$options = [
 				'headers' => [
 					'Authorization'  => 'Bearer ' . $accessToken,
@@ -244,7 +244,7 @@ class DocusignAPIService {
 					}
 					// retry the request with new access token
 					return $this->apiRequest(
-						$url, $accessToken, $refreshToken, $clientID, $clientSecret, $endPoint, $params, $method
+						$baseUrl, $accessToken, $refreshToken, $clientID, $clientSecret, $endPoint, $params, $method
 					);
 				}
 			}
