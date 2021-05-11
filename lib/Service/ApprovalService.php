@@ -32,6 +32,10 @@ use OCP\Share\Exceptions\GenericShareException;
 use OCP\Files\Node;
 use OCP\Constants;
 
+use OCA\DAV\Connector\Sabre\Node as SabreNode;
+use Sabre\DAV\INode;
+use Sabre\DAV\PropFind;
+
 use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Activity\ActivityManager;
 
@@ -622,5 +626,29 @@ class ApprovalService {
 
 			$manager->notify($notification);
 		}
+	}
+
+	public function propFind(PropFind $propFind, INode $node) {
+		if (!$node instanceof SabreNode) {
+			return;
+		}
+		$nodeId = $node->getId();
+		// get state
+		$state = $this->getApprovalState($nodeId, $this->userId);
+
+		$propFind->handle(
+			Application::DAV_PROPERTY_APPROVAL_STATE, function() use ($nodeId, $state) {
+				error_log('HANDLE DAV_PROPERTY_APPROVAL_STATE for file '.$nodeId.' USER iS '.$this->userId);
+				return $state['state'];
+			}
+		);
+	}
+
+	/**
+	 * This is only called in Application::registerHooks()
+	 * and is only usefull to propFind method
+	 */
+	public function setUserId(string $userId): void {
+		$this->userId = $userId;
 	}
 }

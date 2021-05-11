@@ -19,6 +19,11 @@ use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\Notification\IManager as INotificationManager;
 use OCP\SystemTag\MapperEvent;
+use OCP\IServerContainer;
+use OCP\IUserSession;
+use OCP\IUser;
+use OCP\SabrePluginEvent;
+use Closure;
 
 use OCA\Approval\Service\ApprovalService;
 use OCA\Approval\Notification\Notifier;
@@ -43,6 +48,8 @@ class Application extends App implements IBootstrap {
 	public const TYPE_CIRCLE = 2;
 	// docusign
 	public const DOCUSIGN_TOKEN_REQUEST_URL = 'https://account-d.docusign.com/oauth/token';
+	// DAV
+	public const DAV_PROPERTY_APPROVAL_STATE = '{http://nextcloud.org/ns}approval-state';
 
 	/**
 	 * Constructor
@@ -80,5 +87,26 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function boot(IBootContext $context): void {
+		$context->injectFn(Closure::fromCallable([$this, 'registerHooks']));
+	}
+
+	/**
+	 * @param IServerContainer $container
+	 */
+	public function registerHooks(IServerContainer $container) {
+		$eventDispatcher = \OC::$server->getEventDispatcher();
+
+		$this->userSession = $container->get(IUserSession::class);
+		$this->approvalService = $container->get(ApprovalService::class);
+		if ($this->userSession->getUser() instanceof IUser) {
+			$this->approvalService->setUserId($this->userSession->getUser()->getUID());
+		}
+
+		$eventDispatcher->addListener(
+			'OCA\DAV\Connector\Sabre::addPlugin', function(SabrePluginEvent $e) {
+				$server = $e->getServer();
+				$server->on('propFind', [$this->approvalService, 'propFind']);
+			}
+		);
 	}
 }

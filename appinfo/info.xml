@@ -8,6 +8,10 @@
 	<licence>agpl</licence>
 	<author>Julien Veyssier</author>
 	<namespace>Approval</namespace>
+	<types>
+		<filesystem/>
+		<dav/>
+	</types>
 	<documentation>
 		<developer>https://github.com/eneiluj/approval</developer>
 	</documentation>
