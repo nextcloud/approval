@@ -48,3 +48,11 @@
 .icon-pending {
 	background-color: #eca70066 !important;
 }
+
+/* for file actions */
+.icon-approval {
+	background-image: url('../img/app-dark.svg');
+}
+body.theme--dark .icon-approval {
+	background-image: url('../img/app.svg');
+}

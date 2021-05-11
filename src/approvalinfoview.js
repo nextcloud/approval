@@ -317,8 +317,12 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const fileList = OCA?.Files?.App?.fileList
 			fileList?.reload?.() || window.location.reload()
 		},
-		openSidebarOnFile() {
-			OCA.Files.Sidebar.open(this.fileInfo.attributes.path + '/' + this.fileInfo.attributes.name)
+		openSidebarOnFile(path = null, name = null) {
+			if (path && name) {
+				OCA.Files.Sidebar.open(path + '/' + name)
+			} else {
+				OCA.Files.Sidebar.open(this.fileInfo.attributes.path + '/' + this.fileInfo.attributes.name)
+			}
 		},
 		updateFileItem(newState) {
 			const fileList = OCA?.Files?.App?.currentFileList

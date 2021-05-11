@@ -111,7 +111,7 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 			})
 
 			fileList.fileActions.registerAction({
-				name: 'approve',
+				name: 'approval-approve',
 				displayName: (context) => {
 					if (context && context.$file) {
 						const state = context.$file.data('approvalState')
@@ -136,7 +136,7 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 			})
 
 			fileList.fileActions.registerAction({
-				name: 'reject',
+				name: 'approval-reject',
 				displayName: (context) => {
 					if (context && context.$file) {
 						const state = context.$file.data('approvalState')
@@ -158,6 +158,31 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 				},
 				permissions: OC.PERMISSION_READ,
 				actionHandler: this.reject,
+			})
+
+			fileList.fileActions.registerAction({
+				name: 'approval-request',
+				displayName: (context) => {
+					if (context && context.$file) {
+						const state = context.$file.data('approvalState')
+						if (state === states.NOTHING && OCA.Approval.userRules && OCA.Approval.userRules.length > 0) {
+							return t('approval', 'Request approval')
+						}
+					}
+					return ''
+				},
+				mime: 'all',
+				order: -139,
+				iconClass: (fileName, context) => {
+					if (context && context.$file) {
+						const state = context.$file.data('approvalState')
+						if (state === states.NOTHING && OCA.Approval.userRules && OCA.Approval.userRules.length > 0) {
+							return 'icon-approval'
+						}
+					}
+				},
+				permissions: OC.PERMISSION_READ,
+				actionHandler: this.request,
 			})
 		},
 
@@ -201,8 +226,20 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 				)
 			})
 		},
+
+		request: (fileName, context) => {
+			// console.debug(context)
+			OCA.Approval.View.openSidebarOnFile(context.dir, fileName)
+		},
 	}
 
 })()
 
 OC.Plugins.register('OCA.Files.FileList', OCA.Approval.FilesPlugin)
+
+const url = generateUrl('/apps/approval/user-requester-rules')
+axios.get(url).then((response) => {
+	OCA.Approval.userRules = response.data
+}).catch((error) => {
+	console.error(error)
+})
