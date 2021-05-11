@@ -104,10 +104,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} approved!', { name: this.fileName }))
 				this.getApprovalState(true)
-				// reload system tags after approve
-				if (OCA.SystemTags?.View) {
-					OCA.SystemTags.View.setFileInfo(this.fileInfo)
-				}
+				this.reloadTags()
 			}).catch((error) => {
 				console.error(error)
 				showError(
@@ -123,10 +120,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', '{name} rejected!', { name: this.fileName }))
 				this.getApprovalState(true)
-				// reload system tags after reject
-				if (OCA.SystemTags?.View) {
-					OCA.SystemTags.View.setFileInfo(this.fileInfo)
-				}
+				this.reloadTags()
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to reject {name}', { name: this.fileName })
@@ -157,10 +151,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					if (response.data.warning) {
 						showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
 					}
-					// reload system tags after request
-					if (OCA.SystemTags?.View) {
-						OCA.SystemTags.View.setFileInfo(this.fileInfo)
-					}
+					this.reloadTags()
 					// if we reload the file item here, it appears twice in file list...
 					this.getApprovalState(true)
 				}
@@ -182,10 +173,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				if (response.data.warning) {
 					showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
 				}
-				// reload system tags after request
-				if (OCA.SystemTags?.View) {
-					OCA.SystemTags.View.setFileInfo(this.fileInfo)
-				}
+				this.reloadTags()
 				// if we reload the file item here, it appears twice in file list...
 				this.getApprovalState(true)
 			}).catch((error) => {
@@ -250,11 +238,12 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		getApprovalState(reloadFileItem) {
+			console.debug('getApprovalState of ' + this.fileName)
 			// get state and details
 			const url = generateUrl('/apps/approval/' + this.fileId + '/state')
 			axios.get(url).then((response) => {
 				if (reloadFileItem && this.state !== response.data.state) {
-					this.updateFileItem()
+					this.updateFileItem(response.data.state)
 				}
 
 				this.state = response.data.state
@@ -331,9 +320,17 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		openSidebarOnFile() {
 			OCA.Files.Sidebar.open(this.fileInfo.attributes.path + '/' + this.fileInfo.attributes.name)
 		},
-		updateFileItem() {
+		updateFileItem(newState) {
 			const fileList = OCA?.Files?.App?.currentFileList
 			const model = fileList.getModelForFile(this.fileName)
-			model.trigger('change', model)
+			// this was used when row rendering was getting the state
+			// model.trigger('change', model)
+			// but now we pass it directly to the model and it re-renders
+			model.set('approvalState', newState)
+		},
+		reloadTags() {
+			if (OCA.SystemTags?.View) {
+				OCA.SystemTags.View.setFileInfo(this.fileInfo)
+			}
 		},
 	})

@@ -10,6 +10,10 @@
 import { ApprovalInfoView } from './approvalinfoview'
 import { states } from './states'
 
+import axios from '@nextcloud/axios'
+import { generateUrl } from '@nextcloud/router'
+import { showSuccess, showError } from '@nextcloud/dialogs'
+
 (function() {
 	if (!OCA.Approval) {
 		/**
@@ -61,9 +65,6 @@ import { states } from './states'
 			fileList._createRow = function(fileData) {
 				const $tr = oldCreateRow.apply(this, arguments)
 				$tr.attr('data-approval-state', fileData.approvalState)
-				if (fileData.approvalState !== states.NOTHING) {
-					// $tr.attr('data-lock-owner', fileData.lockOwner)
-				}
 				return $tr
 			}
 
@@ -75,9 +76,6 @@ import { states } from './states'
 					if (existingActionLink) {
 						existingActionLink.remove()
 					}
-
-					console.debug('stststsstststs')
-					console.debug(context.$file.data('approvalState'))
 
 					const state = context.$file.data('approvalState')
 					if (state !== states.NOTHING) {
@@ -110,6 +108,97 @@ import { states } from './states'
 				type: OCA.Files.FileActions.TYPE_INLINE,
 				permissions: OC.PERMISSION_READ,
 				actionHandler: null,
+			})
+
+			fileList.fileActions.registerAction({
+				name: 'approve',
+				displayName: (context) => {
+					if (context && context.$file) {
+						const state = context.$file.data('approvalState')
+						if (state === states.APPROVABLE) {
+							return t('approval', 'Approve')
+						}
+					}
+					return ''
+				},
+				mime: 'all',
+				order: -139,
+				iconClass: (fileName, context) => {
+					if (context && context.$file) {
+						const state = context.$file.data('approvalState')
+						if (state === states.APPROVABLE) {
+							return 'icon-checkmark'
+						}
+					}
+				},
+				permissions: OC.PERMISSION_READ,
+				actionHandler: this.approve,
+			})
+
+			fileList.fileActions.registerAction({
+				name: 'reject',
+				displayName: (context) => {
+					if (context && context.$file) {
+						const state = context.$file.data('approvalState')
+						if (state === states.APPROVABLE) {
+							return t('approval', 'Reject')
+						}
+					}
+					return ''
+				},
+				mime: 'all',
+				order: -139,
+				iconClass: (fileName, context) => {
+					if (context && context.$file) {
+						const state = context.$file.data('approvalState')
+						if (state === states.APPROVABLE) {
+							return 'icon-close'
+						}
+					}
+				},
+				permissions: OC.PERMISSION_READ,
+				actionHandler: this.reject,
+			})
+		},
+
+		approve: (fileName, context) => {
+			const fileId = context.$file.data('id')
+			// const state = context.$file.data('approvalState')
+			const model = context.fileList.getModelForFile(fileName)
+
+			const req = {}
+			const url = generateUrl('/apps/approval/' + fileId + '/approve')
+			axios.put(url, req).then((response) => {
+				showSuccess(t('approval', '{name} approved!', { name: fileName }))
+				model.set('approvalState', states.APPROVED)
+				OCA.Approval.View.getApprovalState(false)
+				OCA.Approval.View.reloadTags()
+			}).catch((error) => {
+				console.error(error)
+				showError(
+					t('approval', 'Failed to approve {name}', { name: fileName })
+					+ ': ' + error.response?.request?.responseText
+				)
+			})
+		},
+
+		reject: (fileName, context) => {
+			const fileId = context.$file.data('id')
+			// const state = context.$file.data('approvalState')
+			const model = context.fileList.getModelForFile(fileName)
+
+			const req = {}
+			const url = generateUrl('/apps/approval/' + fileId + '/reject')
+			axios.put(url, req).then((response) => {
+				showSuccess(t('approval', '{name} rejected!', { name: fileName }))
+				model.set('approvalState', states.REJECTED)
+				OCA.Approval.View.getApprovalState(false)
+				OCA.Approval.View.reloadTags()
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to reject {name}', { name: fileName })
+					+ ': ' + error.response?.request?.responseText
+				)
 			})
 		},
 	}

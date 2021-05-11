@@ -638,7 +638,7 @@ class ApprovalService {
 
 		$propFind->handle(
 			Application::DAV_PROPERTY_APPROVAL_STATE, function() use ($nodeId, $state) {
-				error_log('HANDLE DAV_PROPERTY_APPROVAL_STATE for file '.$nodeId.' USER iS '.$this->userId);
+				// error_log('HANDLE DAV_PROPERTY_APPROVAL_STATE for file '.$nodeId.' USER iS '.$this->userId);
 				return $state['state'];
 			}
 		);
