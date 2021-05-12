@@ -1,20 +1,29 @@
 <template>
 	<div>
-		<input
-			id="create-share-input"
-			v-model="createShares"
-			type="checkbox"
-			class="checkbox">
-		<label for="create-share-input">{{ createShareLabel }}</label>
-		<ol class="rule-list">
+		<h2>
+			{{ title }}
+		</h2>
+		<ul class="rule-list">
 			<li v-for="r in rules"
 				:key="r.tagPending">
-				{{ r.description }}
-				<button @click="$emit('request', r.id, createShares)">
+				<input :id="'rule-' + r.tagPending"
+					v-model="selectedRule"
+					name="approval-rule"
+					:value="r.tagPending"
+					type="radio">
+				<label :for="'rule-' + r.tagPending">
+					{{ r.description }}
+				</label>
+				<button v-if="selectedRule === r.tagPending"
+					@click="$emit('request', r.id, true)">
 					{{ requestLabel }}
 				</button>
 			</li>
-		</ol>
+		</ul>
+		<p class="settings-hint">
+			<span class="icon icon-info" />
+			{{ createShareHint }}
+		</p>
 	</div>
 </template>
 
@@ -35,9 +44,11 @@ export default {
 
 	data() {
 		return {
-			requestLabel: t('approval', 'Request'),
+			selectedRule: null,
+			title: t('approval', 'Select approval rule'),
+			requestLabel: t('approval', 'Request approval'),
 			createShares: false,
-			createShareLabel: t('approval', 'Automatically share with everybody allowed to approve'),
+			createShareHint: t('approval', 'File will be automatically shared with everybody allowed to approve.'),
 		}
 	},
 
@@ -57,6 +68,20 @@ export default {
 
 <style scoped lang="scss">
 .rule-list {
-	list-style: inside none decimal;
+	// list-style: inside none decimal;
+	li {
+		display: flex;
+		align-items: center;
+	}
+	button {
+		margin-left: 10px;
+	}
+}
+
+.settings-hint {
+	margin-top: 15px;
+	.icon {
+		display: inline-block;
+	}
 }
 </style>
