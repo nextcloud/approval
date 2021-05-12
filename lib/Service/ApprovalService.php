@@ -95,9 +95,58 @@ class ApprovalService {
 	public function getUserRequesterRules(string $userId): array {
 		$userRules = [];
 		$rules = $this->ruleService->getRules();
+
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+		$userNames = [];
+		$circleNames = [];
 		foreach ($rules as $rule) {
 			if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
 				$userRules[] = $rule;
+				// get all entity ids
+				foreach ($rule['approvers'] as $k => $elem) {
+					if ($elem['type'] === 'user') {
+						$userNames[$elem['entityId']] = null;
+					} elseif ($elem['type'] === 'circle' && $circlesEnabled) {
+						$circleNames[$elem['entityId']] = null;
+					}
+				}
+				foreach ($rule['requester'] as $k => $elem) {
+					if ($elem['type'] === 'user') {
+						$userNames[$elem['entityId']] = null;
+					} elseif ($elem['type'] === 'circle' && $circlesEnabled) {
+						$circleNames[$elem['entityId']] = null;
+					}
+				}
+			}
+		}
+		// get display names
+		foreach ($userNames as $k => $v) {
+			$user = $this->userManager->get($k);
+			$userNames[$k] = $user ? $user->getDisplayName() : $k;
+		}
+		foreach ($circleNames as $k => $v) {
+			$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($k);
+			$circleNames[$k] = $circleDetails->getName();
+		}
+		// affect names
+		foreach ($userRules as $ruleIndex => $rule) {
+			foreach ($rule['approvers'] as $approverIndex => $elem) {
+				if ($elem['type'] === 'user') {
+					$userRules[$ruleIndex]['approvers'][$approverIndex]['displayName'] = $userNames[$elem['entityId']];
+				} elseif ($elem['type'] === 'group') {
+					$userRules[$ruleIndex]['approvers'][$approverIndex]['displayName'] = $elem['entityId'];
+				} elseif ($elem['type'] === 'circle' && $circlesEnabled) {
+					$userRules[$ruleIndex]['approvers'][$approverIndex]['displayName'] = $circleNames[$elem['entityId']];
+				}
+			}
+			foreach ($rule['requesters'] as $requesterIndex => $elem) {
+				if ($elem['type'] === 'user') {
+					$userRules[$ruleIndex]['requesters'][$requesterIndex]['displayName'] = $userNames[$elem['entityId']];
+				} elseif ($elem['type'] === 'group') {
+					$userRules[$ruleIndex]['requesters'][$requesterIndex]['displayName'] = $elem['entityId'];
+				} elseif ($elem['type'] === 'circle' && $circlesEnabled) {
+					$userRules[$ruleIndex]['requesters'][$requesterIndex]['displayName'] = $circleNames[$elem['entityId']];
+				}
 			}
 		}
 		return $userRules;

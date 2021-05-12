@@ -355,6 +355,7 @@ export default {
 
 ::v-deep.info-modal {
 	padding: 15px;
+	max-width: 600px;
 }
 
 .icon-approval {
