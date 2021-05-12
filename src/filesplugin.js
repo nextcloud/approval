@@ -184,6 +184,31 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 				permissions: OC.PERMISSION_READ,
 				actionHandler: this.request,
 			})
+
+			fileList.fileActions.registerAction({
+				name: 'approval-pending-info',
+				displayName: (context) => {
+					if (context && context.$file) {
+						const state = context.$file.data('approvalState')
+						if (state === states.PENDING) {
+							return t('approval', 'Show approval details')
+						}
+					}
+					return ''
+				},
+				mime: 'all',
+				order: -139,
+				iconClass: (fileName, context) => {
+					if (context && context.$file) {
+						const state = context.$file.data('approvalState')
+						if (state === states.PENDING) {
+							return 'icon-approval'
+						}
+					}
+				},
+				permissions: OC.PERMISSION_READ,
+				actionHandler: this.showPendingInfo,
+			})
 		},
 
 		approve: (fileName, context) => {
@@ -228,7 +253,10 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 		},
 
 		request: (fileName, context) => {
-			// console.debug(context)
+			OCA.Approval.View.openSidebarOnFile(context.dir, fileName)
+		},
+
+		showPendingInfo: (fileName, context) => {
 			OCA.Approval.View.openSidebarOnFile(context.dir, fileName)
 		},
 	}
