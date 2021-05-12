@@ -152,7 +152,7 @@ class Notifier implements INotifier {
 			$content = $p['type'] === 'file'
 				? $l->t('Your approval was requested for file %1$s', [$p['fileName']])
 				: $l->t('Your approval was requested for directory %1$s', [$p['fileName']]);
-			$iconUrl =$this->url->getAbsoluteURL($this->url->imagePath(Application::APP_ID, 'app-dark.svg'));
+			$iconUrl = $this->url->getAbsoluteURL('/index.php/svg/core/actions/more?color=000000');
 
 			$notification
 				->setParsedSubject($subject)

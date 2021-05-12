@@ -190,6 +190,10 @@ class ApprovalProvider implements IProvider {
 			$event->setIcon(
 				$this->urlGenerator->getAbsoluteURL('/index.php/svg/core/actions/close?color=E9322D')
 			);
+		} elseif ($event->getSubject() === ActivityManager::SUBJECT_REQUESTED || $event->getSubject() === ActivityManager::SUBJECT_REQUESTED_ORIGIN) {
+			$event->setIcon(
+				$this->urlGenerator->getAbsoluteURL('/index.php/svg/core/actions/more?color=000000')
+			);
 		}
 		return $event;
 	}

@@ -89,10 +89,10 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 							actionLink.classList.add('icon-close-white')
 						} else if (state === states.PENDING) {
 							actionLink.classList.add('icon-pending')
-							actionLink.classList.add('icon-checkmark-white')
+							actionLink.classList.add('icon-more-white')
 						} else if (state === states.APPROVABLE) {
 							actionLink.classList.add('icon-approvable')
-							actionLink.classList.add('icon-checkmark-white')
+							actionLink.classList.add('icon-more-white')
 							const tw = context.$file.find('a.name>.thumbnail-wrapper')
 							if (tw.length > 0) {
 								tw[0].setAttribute('title', t('approval', 'Pending approval, you are authorized to approve.'))
