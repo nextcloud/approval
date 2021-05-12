@@ -2,27 +2,28 @@
 	<div>
 		<h2>
 			{{ title }}
+			<button v-if="selectedRule"
+				class="primary"
+				@click="$emit('request', selectedRule, true)">
+				<span class="icon icon-checkmark" />
+				{{ requestLabel }}
+			</button>
 		</h2>
 		<ul class="rule-list">
 			<li v-for="r in rules"
-				:key="r.tagPending"
-				:class="{ 'rule-selected': selectedRule === r.tagPending }">
+				:key="r.id"
+				:class="{ 'rule-selected': selectedRule === r.id }">
 				<div>
-					<input :id="'rule-' + r.tagPending"
+					<input :id="'rule-' + r.id"
 						v-model="selectedRule"
 						name="approval-rule"
-						:value="r.tagPending"
+						:value="r.id"
 						type="radio">
-					<label :for="'rule-' + r.tagPending">
+					<label :for="'rule-' + r.id">
 						{{ r.description }}
 					</label>
-					<button v-if="selectedRule === r.tagPending"
-						@click="$emit('request', r.id, true)">
-						<span class="icon icon-checkmark" />
-						{{ requestLabel }}
-					</button>
 				</div>
-				<div v-if="selectedRule === r.tagPending"
+				<div v-if="selectedRule === r.id"
 					class="approvers">
 					<label>
 						{{ approversLabel }}
@@ -99,6 +100,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+h2 {
+	height: 40px;
+	line-height: 40px;
+	button {
+		float: right;
+	}
+}
+
 .rule-list {
 	li {
 		display: flex;
@@ -123,9 +132,6 @@ export default {
 				}
 			}
 		}
-	}
-	button {
-		margin-left: 10px;
 	}
 }
 
