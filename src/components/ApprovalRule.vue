@@ -1,8 +1,18 @@
 <template>
 	<div class="approval_rule">
 		<div class="fields">
-			<div class="tag">
+			<div class="text">
 				<span class="field-label main-label">
+					<span class="icon icon-checkmark" />
+					{{ descriptionLabel }}
+				</span>
+				<input type="text"
+					:value="value.description"
+					:placeholder="descriptionPlaceholder"
+					@input="onDescriptionInput">
+			</div>
+			<div class="tag">
+				<span class="field-label">
 					<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
 					{{ pendingLabel }}
 					<button v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
@@ -75,15 +85,6 @@
 					:multiple="false"
 					@input="update('tagRejected', $event)" />
 			</div>
-			<div class="text">
-				<span class="field-label">
-					<span class="icon icon-details" />
-					{{ descriptionLabel }}
-				</span>
-				<textarea :value="value.description"
-					:placeholder="descriptionPlaceholder"
-					@input="onDescriptionInput" />
-			</div>
 		</div>
 		<div class="buttons">
 			<button
@@ -140,7 +141,7 @@ export default {
 			pendingLabel: t('approval', 'Tag to act on'),
 			approvedLabel: t('approval', 'Tag set on approval'),
 			rejectedLabel: t('approval', 'Tag set on rejection'),
-			descriptionLabel: t('approval', 'Description'),
+			descriptionLabel: t('approval', 'Rule title'),
 			descriptionPlaceholder: t('approval', 'What is the purpose of this rule?'),
 		}
 	},
@@ -198,7 +199,7 @@ export default {
 		}
 
 		.text {
-			textarea {
+			input {
 				width: 250px;
 			}
 		}

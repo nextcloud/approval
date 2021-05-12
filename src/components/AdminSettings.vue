@@ -34,6 +34,30 @@
 				icon="icon-approval">
 				{{ t('approval', 'No rules yet') }}
 			</EmptyContent>
+			<div v-if="newRule" class="new-rule">
+				<ApprovalRule
+					v-model="newRule"
+					delete-icon="icon-history"
+					:delete-rule-label="newRuleDeleteLabel"
+					@delete="onNewRuleDelete"
+					@add-tag="onAddTagClick">
+					<template #extra-buttons>
+						<button
+							class="new-rule-ok"
+							:disabled="!newRuleIsValid"
+							@click="onValidateNewRule">
+							<span class="icon icon-checkmark-color" />
+							{{ createTooltip }}
+						</button>
+					</template>
+					<template #extra-footer>
+						<p v-if="!newRuleIsValid"
+							class="new-rule-error">
+							{{ invalidRuleMessage }}
+						</p>
+					</template>
+				</ApprovalRule>
+			</div>
 		</div>
 		<button :class="{ 'add-rule': true, loading: savingRule }"
 			:disabled="savingRule"
@@ -41,30 +65,6 @@
 			<span class="icon icon-add" />
 			{{ t('approval', 'New rule') }}
 		</button>
-		<div v-if="newRule && showRules" class="new-rule">
-			<ApprovalRule
-				v-model="newRule"
-				delete-icon="icon-history"
-				:delete-rule-label="newRuleDeleteLabel"
-				@delete="onNewRuleDelete"
-				@add-tag="onAddTagClick">
-				<template #extra-buttons>
-					<button
-						class="new-rule-ok"
-						:disabled="!newRuleIsValid"
-						@click="onValidateNewRule">
-						<span class="icon icon-checkmark-color" />
-						{{ createTooltip }}
-					</button>
-				</template>
-				<template #extra-footer>
-					<p v-if="!newRuleIsValid"
-						class="new-rule-error">
-						{{ invalidRuleMessage }}
-					</p>
-				</template>
-			</ApprovalRule>
-		</div>
 		<div class="create-tag">
 			<label for="create-tag-input">
 				<span class="icon icon-tag" />
@@ -379,6 +379,7 @@ export default {
 	.new-rule {
 		margin: 15px 15px 15px 15px;
 		width: min-content;
+		height: min-content;
 	}
 	.new-rule {
 		display: flex;
