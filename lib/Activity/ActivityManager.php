@@ -42,6 +42,7 @@ class ActivityManager {
 	public const SUBJECT_APPROVED = 'object_approved';
 	public const SUBJECT_REJECTED = 'object_rejected';
 	public const SUBJECT_REQUESTED = 'approval_requested';
+	public const SUBJECT_MANUALLY_REQUESTED = 'approval_manually_requested';
 	public const SUBJECT_REQUESTED_ORIGIN = 'approval_requested_origin';
 
 	public function __construct(IManager $manager,
@@ -73,6 +74,9 @@ class ActivityManager {
 				break;
 			case self::SUBJECT_REQUESTED:
 				$subject = $this->l10n->t('Your approval was requested on {file}');
+				break;
+			case self::SUBJECT_MANUALLY_REQUESTED:
+				$subject = $this->l10n->t('Your approval was requested on {file} by {who}');
 				break;
 			case self::SUBJECT_REQUESTED_ORIGIN:
 				$subject = $this->l10n->t('You requested approval on {file}');
@@ -124,6 +128,7 @@ class ActivityManager {
 			case self::SUBJECT_APPROVED:
 			case self::SUBJECT_REJECTED:
 			case self::SUBJECT_REQUESTED:
+			case self::SUBJECT_MANUALLY_REQUESTED:
 			case self::SUBJECT_REQUESTED_ORIGIN:
 				$subjectParams = $this->findDetailsForNode($node);
 				$objectName = $node->getName();
@@ -161,7 +166,7 @@ class ActivityManager {
 
 		$userIds = [];
 		$root = $this->root;
-		if ($subject === self::SUBJECT_REQUESTED) {
+		if ($subject === self::SUBJECT_REQUESTED || $subject === self::SUBJECT_MANUALLY_REQUESTED) {
 			$ruleUserIds = $additionalParams['users'];
 			foreach ($ruleUserIds as $userId) {
 				$userFolder = $root->getUserFolder($userId);

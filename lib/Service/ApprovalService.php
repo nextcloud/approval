@@ -420,7 +420,20 @@ class ApprovalService {
 				$this->activityManager->triggerEvent(
 					ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
 					ActivityManager::SUBJECT_REQUESTED_ORIGIN,
-					['origin_user_id' => $userId]
+					['origin_user_id' => $userId],
+				);
+				$rulesUserIds = [];
+				$thisRuleUserIds = $this->getRuleAuthorizedUserIds($rule, 'approvers');
+				foreach ($thisRuleUserIds as $uid) {
+					if (!in_array($uid, $rulesUserIds)) {
+						$rulesUserIds[] = $uid;
+					}
+				}
+				// create activity (which deals with access checks)
+				$this->activityManager->triggerEvent(
+					ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
+					ActivityManager::SUBJECT_MANUALLY_REQUESTED,
+					['users' => $thisRuleUserIds, 'who' => $userId],
 				);
 
 				// check if someone can actually approve
@@ -613,7 +626,7 @@ class ApprovalService {
 
 	/**
 	 * Send notifications when a file approval is requested
-	 * Send it to all users who are authrorized to approve it
+	 * Send it to all users who are authorized to approve it
 	 *
 	 * @param int $fileId
 	 * @param array $tags
@@ -636,7 +649,7 @@ class ApprovalService {
 				$this->activityManager->triggerEvent(
 					ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
 					ActivityManager::SUBJECT_REQUESTED,
-					['users' => $thisRuleUserIds]
+					['users' => $thisRuleUserIds],
 				);
 			}
 		}

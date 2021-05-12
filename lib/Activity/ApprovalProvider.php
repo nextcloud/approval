@@ -116,6 +116,7 @@ class ApprovalProvider implements IProvider {
 		if ($event->getSubject() === ActivityManager::SUBJECT_APPROVED
 			|| $event->getSubject() === ActivityManager::SUBJECT_REJECTED
 			|| $event->getSubject() === ActivityManager::SUBJECT_REQUESTED
+			|| $event->getSubject() === ActivityManager::SUBJECT_MANUALLY_REQUESTED
 			|| $event->getSubject() === ActivityManager::SUBJECT_REQUESTED_ORIGIN) {
 			if (isset($subjectParams['node']) && $event->getObjectName() === '') {
 				$event->setObject($event->getObjectType(), $event->getObjectId(), $subjectParams['node']['name']);
@@ -142,6 +143,9 @@ class ApprovalProvider implements IProvider {
 				'path' => $path,
 			];
 			$params['file'] = $file;
+		}
+		if ($event->getSubject() === ActivityManager::SUBJECT_MANUALLY_REQUESTED) {
+			$params = $this->parseParamForWho($subjectParams, $params);
 		}
 
 		$event->setLink($subjectIdentifier);
@@ -190,11 +194,25 @@ class ApprovalProvider implements IProvider {
 			$event->setIcon(
 				$this->urlGenerator->getAbsoluteURL('/index.php/svg/core/actions/close?color=E9322D')
 			);
-		} elseif ($event->getSubject() === ActivityManager::SUBJECT_REQUESTED || $event->getSubject() === ActivityManager::SUBJECT_REQUESTED_ORIGIN) {
+		} elseif ($event->getSubject() === ActivityManager::SUBJECT_REQUESTED
+			|| $event->getSubject() === ActivityManager::SUBJECT_MANUALLY_REQUESTED
+			|| $event->getSubject() === ActivityManager::SUBJECT_REQUESTED_ORIGIN) {
 			$event->setIcon(
 				$this->urlGenerator->getAbsoluteURL('/index.php/svg/core/actions/more?color=000000')
 			);
 		}
 		return $event;
+	}
+
+	private function parseParamForWho($subjectParams, $params) {
+		if (array_key_exists('who', $subjectParams)) {
+			$user = $this->userManager->get($subjectParams['who']);
+			$params['who'] = [
+				'type' => 'user',
+				'id' => $subjectParams['who'],
+				'name' => $user !== null ? $user->getDisplayName() : $subjectParams['who']
+			];
+		}
+		return $params;
 	}
 }
