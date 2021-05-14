@@ -110,7 +110,7 @@ class ApprovalService {
 						$circleNames[$elem['entityId']] = null;
 					}
 				}
-				foreach ($rule['requester'] as $k => $elem) {
+				foreach ($rule['requesters'] as $k => $elem) {
 					if ($elem['type'] === 'user') {
 						$userNames[$elem['entityId']] = null;
 					} elseif ($elem['type'] === 'circle' && $circlesEnabled) {
@@ -412,28 +412,16 @@ class ApprovalService {
 					// if shares are auto created, request is actually done in a separated request with $createShares === false
 					return [];
 				}
-				$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagPending']);
-
 				// store activity in our tables
 				$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_PENDING);
-				// still produce an activity entry
+
+				$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagPending']);
+
+				// still produce an activity entry for the user who requests
 				$this->activityManager->triggerEvent(
 					ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
 					ActivityManager::SUBJECT_REQUESTED_ORIGIN,
 					['origin_user_id' => $userId],
-				);
-				$rulesUserIds = [];
-				$thisRuleUserIds = $this->getRuleAuthorizedUserIds($rule, 'approvers');
-				foreach ($thisRuleUserIds as $uid) {
-					if (!in_array($uid, $rulesUserIds)) {
-						$rulesUserIds[] = $uid;
-					}
-				}
-				// create activity (which deals with access checks)
-				$this->activityManager->triggerEvent(
-					ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
-					ActivityManager::SUBJECT_MANUALLY_REQUESTED,
-					['users' => $thisRuleUserIds, 'who' => $userId],
 				);
 
 				// check if someone can actually approve
@@ -624,6 +612,26 @@ class ApprovalService {
 		return $ruleUserIds;
 	}
 
+	public function handleTagAssignmentEvent(int $fileId, array $tags): void {
+		// which rule is involved?
+		$ruleInvolded = null;
+		$rules = $this->ruleService->getRules();
+		foreach ($rules as $id => $rule) {
+			// rule matches tags
+			if (in_array($rule['tagPending'], $tags)) {
+				$ruleInvolded = $rule;
+				break;
+			}
+		}
+		if (is_null($ruleInvolded)) {
+			return;
+		}
+		// search our activities to see if we know who made the request
+		$activity = $this->ruleService->getLastAction($fileId, $ruleInvolded['id'], Application::STATE_PENDING);
+		$requestUserId = is_null($activity) ? null : $activity['userId'];
+		$this->sendRequestNotification($fileId, $ruleInvolded, $requestUserId);
+	}
+
 	/**
 	 * Send notifications when a file approval is requested
 	 * Send it to all users who are authorized to approve it
@@ -632,26 +640,28 @@ class ApprovalService {
 	 * @param array $tags
 	 * @return void
 	 */
-	public function sendRequestNotification(int $fileId, array $tags): void {
+	public function sendRequestNotification(int $fileId, array $rule, ?string $requestUserId = null): void {
 		// find users involved in rules matching tags
 		$rulesUserIds = [];
-		$rules = $this->ruleService->getRules();
-		foreach ($rules as $id => $rule) {
-			// rule matches tags
-			if (in_array($rule['tagPending'], $tags)) {
-				$thisRuleUserIds = $this->getRuleAuthorizedUserIds($rule, 'approvers');
-				foreach ($thisRuleUserIds as $userId) {
-					if (!in_array($userId, $rulesUserIds)) {
-						$rulesUserIds[] = $userId;
-					}
-				}
-				// create activity (which deals with access checks)
-				$this->activityManager->triggerEvent(
-					ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
-					ActivityManager::SUBJECT_REQUESTED,
-					['users' => $thisRuleUserIds],
-				);
+		$thisRuleUserIds = $this->getRuleAuthorizedUserIds($rule, 'approvers');
+		foreach ($thisRuleUserIds as $userId) {
+			if (!in_array($userId, $rulesUserIds)) {
+				$rulesUserIds[] = $userId;
 			}
+		}
+		// create activity (which deals with access checks)
+		if (is_null($requestUserId)) {
+			$this->activityManager->triggerEvent(
+				ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
+				ActivityManager::SUBJECT_REQUESTED,
+				['users' => $thisRuleUserIds],
+			);
+		} else {
+			$this->activityManager->triggerEvent(
+				ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
+				ActivityManager::SUBJECT_MANUALLY_REQUESTED,
+				['users' => $thisRuleUserIds, 'who' => $requestUserId],
+			);
 		}
 		// only notify users having access to the file
 		$paramsByUser = [];
@@ -679,7 +689,12 @@ class ApprovalService {
 			$manager = $this->notificationManager;
 			$notification = $manager->createNotification();
 
-			$subject = 'request';
+			if (is_null($requestUserId)) {
+				$subject = 'request';
+			} else {
+				$subject = 'manual_request';
+				$params['requesterId'] = $requestUserId;
+			}
 			$notification->setApp(Application::APP_ID)
 				->setUser($userId)
 				->setDateTime(new \DateTime())

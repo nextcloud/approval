@@ -78,7 +78,7 @@ class Application extends App implements IBootstrap {
 		$eventDispatcher->addListener(MapperEvent::EVENT_ASSIGN, function (MapperEvent $event) use ($container) {
 			if ($event->getObjectType() === 'files') {
 				$service = $container->query(ApprovalService::class);
-				$service->sendRequestNotification($event->getObjectId(), $event->getTags());
+				$service->handleTagAssignmentEvent($event->getObjectId(), $event->getTags());
 			}
 		});
 	}

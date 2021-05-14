@@ -167,6 +167,49 @@ class Notifier implements INotifier {
 				->setIcon($iconUrl);
 			return $notification;
 
+		case 'manual_request':
+			$p = $notification->getSubjectParameters();
+
+			$user = $this->userManager->get($p['requesterId']);
+			if ($user instanceof IUser) {
+				$richSubjectUser = [
+					'type' => 'user',
+					'id' => $p['requesterId'],
+					'name' => $user->getDisplayName(),
+				];
+
+				$linkToFile = $this->url->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileid' => $p['fileId']]);
+				$richSubjectNode = [
+					'type' => 'file',
+					'id' => $p['fileId'],
+					'name' => $p['fileName'],
+					'path' => trim($p['relativePath'], '/'),
+					'link' => $linkToFile,
+				];
+
+				$subject = $l->t('Your approval was requested');
+				$content = $p['type'] === 'file'
+					? $l->t('Your approval was requested by %2$s for file %1$s', [$p['fileName'], $user->getDisplayName()])
+					: $l->t('Your approval was requested by %2$s for directory %1$s', [$p['fileName'], $user->getDisplayName()]);
+				$iconUrl = $this->url->getAbsoluteURL('/index.php/svg/core/actions/more?color=000000');
+
+				$notification
+					->setParsedSubject($subject)
+					->setParsedMessage($content)
+					->setLink($linkToFile)
+					->setRichMessage(
+						$p['type'] === 'file'
+							? $l->t('Your approval was requested by {user} for file {node}')
+							: $l->t('Your approval was requested by {user} for directory {node}'),
+						[
+							'node' => $richSubjectNode,
+							'user' => $richSubjectUser,
+						]
+					)
+					->setIcon($iconUrl);
+			}
+			return $notification;
+
 		default:
 			// Unknown subject => Unknown notification => throw
 			throw new \InvalidArgumentException();
