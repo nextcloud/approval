@@ -58,7 +58,8 @@
 		</span>
 		<span v-if="canRequestApproval"
 			class="request-button-wrapper">
-			<button @click="showRequestModal">
+			<button :class="{ loading: requesting }"
+				@click="showRequestModal">
 				<span class="icon icon-approval" />
 				{{ requestLabel }}
 			</button>
@@ -147,6 +148,7 @@ export default {
 			userRules: [],
 			requestLabel: t('approval', 'Request approval'),
 			requestModal: false,
+			requesting: false,
 			docusignConnected: false,
 			signLoading: false,
 			signButtonText: t('approval', 'Sign with DocuSign'),
@@ -253,6 +255,10 @@ export default {
 		onRequest(ruleId, createShares) {
 			this.closeRequestModal()
 			this.$emit('request', ruleId, createShares)
+			this.requesting = true
+		},
+		setRequesting(val) {
+			this.requesting = val
 		},
 		onSignClick() {
 			this.signLoading = true

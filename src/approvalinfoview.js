@@ -160,6 +160,10 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					t('approval', 'Failed to request approval for {name}', { name: this.fileName })
 					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
+			}).then(() => {
+				if (!createShares) {
+					this._inputView.setRequesting(false)
+				}
 			})
 		},
 
@@ -181,6 +185,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					t('approval', 'Failed to request approval for {name}', { name: this.fileName })
 					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
+			}).then(() => {
+				this._inputView.setRequesting(false)
 			})
 		},
 
