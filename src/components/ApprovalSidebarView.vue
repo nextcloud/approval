@@ -69,18 +69,9 @@
 			</Modal>
 		</span>
 		<span v-if="myRule">
-			<button class="icon icon-details info-button" @click="showInfoModal" />
-			<Modal v-if="infoModal" @close="closeInfoModal">
-				<div class="info-modal">
-					<p>
-						{{ infoText }}
-						<br><br>
-					</p>
-					<p>
-						{{ myRule.description }}
-					</p>
-				</div>
-			</Modal>
+			<button
+				v-tooltip.bottom="{ content: infoText + ' ' + myRule.description }"
+				class="icon icon-details info-button" />
 		</span>
 	</div>
 </template>
@@ -95,6 +86,10 @@ import Modal from '@nextcloud/vue/dist/Components/Modal'
 
 import ApprovalButtons from './ApprovalButtons'
 import RequestForm from './RequestForm'
+
+import Vue from 'vue'
+import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
+Vue.directive('tooltip', Tooltip)
 
 export default {
 	name: 'ApprovalSidebarView',
@@ -152,7 +147,6 @@ export default {
 			userRules: [],
 			requestLabel: t('approval', 'Request approval'),
 			requestModal: false,
-			infoModal: false,
 			docusignConnected: false,
 			signLoading: false,
 			signButtonText: t('approval', 'Sign with DocuSign'),
@@ -185,12 +179,12 @@ export default {
 		infoText() {
 			if (this.myState === states.APPROVABLE) {
 				if (this.myUserName) {
-					return t('approval', 'Your approval was requested by {name}. The related approval rule description is:', { name: this.myUserName })
+					return t('approval', 'Your approval was requested by {name}. The related approval rule is:', { name: this.myUserName })
 				} else {
-					return t('approval', 'Your approval was requested. The related approval rule description is:')
+					return t('approval', 'Your approval was requested. The related approval rule is:')
 				}
 			} else if ([states.APPROVED, states.PENDING, states.REJECTED].includes(this.myState)) {
-				return t('approval', 'The related approval rule description is:')
+				return t('approval', 'The related approval rule is:')
 			}
 			return ''
 		},
@@ -259,12 +253,6 @@ export default {
 		onRequest(ruleId, createShares) {
 			this.closeRequestModal()
 			this.$emit('request', ruleId, createShares)
-		},
-		showInfoModal() {
-			this.infoModal = true
-		},
-		closeInfoModal() {
-			this.infoModal = false
 		},
 		onSignClick() {
 			this.signLoading = true
