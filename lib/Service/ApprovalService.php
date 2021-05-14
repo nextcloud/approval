@@ -494,19 +494,26 @@ class ApprovalService {
 			->setSharedWith($sharedWith)
 			->setShareType($type)
 			->setSharedBy($sharedBy)
+			->setMailSend(false)
 			->setExpirationDate(null);
 
 		try {
 			$share = $this->shareManager->createShare($share);
 			$share->setLabel($label)
-				->setNote($label);
+				->setNote($label)
+				->setMailSend(false)
+				->setStatus(IShare::STATUS_ACCEPTED);
 			$share = $this->shareManager->updateShare($share);
-			if ($type === IShare::TYPE_USER) {
-				try {
-					$this->shareManager->acceptShare($share, $sharedWith);
-				} catch (GenericShareException | \Exception $e) {
-				}
-			}
+			//// this was done instead of ->setStatus() but it does not seem to work all the time
+			// if ($type === IShare::TYPE_USER) {
+			// 	try {
+			// 		$this->shareManager->acceptShare($share, $sharedWith);
+			// 	} catch (GenericShareException $e) {
+			// 		$this->logger->warning('Approval GenericShareException error : '.$e->getMessage(), ['app' => $this->appName]);
+			// 	} catch (\Throwable | \Exception $e) {
+			// 		$this->logger->warning('Approval sharing error : '.$e->getMessage(), ['app' => $this->appName]);
+			// 	}
+			// }
 			return true;
 		} catch (GenericShareException | \Exception $e) {
 			return false;
