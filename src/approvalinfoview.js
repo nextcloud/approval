@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { getCurrentUser } from '@nextcloud/auth'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
@@ -41,6 +42,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this.render()
 			this.getUserRequesterRules()
 			this.getDocusignInfo()
+			this.getLibresignInfo()
 		},
 
 		/**
@@ -68,8 +70,11 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this._inputView.$on('request', (ruleId, createShares) => {
 				this._onRequest(ruleId, createShares)
 			})
-			this._inputView.$on('sign', () => {
-				this._onSign()
+			this._inputView.$on('sign-docusign', () => {
+				this._onSignDocusign()
+			})
+			this._inputView.$on('sign-libresign', () => {
+				this._onSignLibresign()
 			})
 
 			this._rendered = true
@@ -93,6 +98,17 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			axios.get(url).then((response) => {
 				this._inputView.setDocusignConnected(response.data.connected)
 				this.docusignConnected = response.data.connected
+			}).catch((error) => {
+				console.error(error)
+			})
+		},
+
+		getLibresignInfo() {
+			const url = generateUrl('/apps/approval/libresign/info')
+			axios.get(url).then((response) => {
+				this._inputView.setLibresignEnabled(response.data.enabled)
+				this.libresignEnabled = response.data.libresignEnabled
+				this.currentUserEmail = response.data.currentUserEmail
 			}).catch((error) => {
 				console.error(error)
 			})
@@ -190,7 +206,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			})
 		},
 
-		_onSign() {
+		_onSignDocusign() {
 			const req = {
 				requesterUserId: this.requesterUserId,
 			}
@@ -203,9 +219,33 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				this._inputView.setDocusignConnected(false)
 			}).catch((error) => {
 				showError(
-					t('approval', 'Failed to request signature')
+					t('approval', 'Failed to request signature with DocuSign')
 					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
+			})
+		},
+
+		_onSignLibresign() {
+			const url = generateUrl('/apps/libresign/api/0.1/webhook/register')
+			const req = {
+				file: {
+					fileId: this.fileId,
+				},
+				name: this.fileName.replace(/\.pdf/g, '').replace(/\./g, ''),
+				users: [{
+					email: this.currentUserEmail,
+					description: t('approval', 'Approval signature'),
+					name: getCurrentUser().displayName,
+				}],
+			}
+			axios.post(url, req).then((response) => {
+				console.debug('RESPONSE !!!!!!!!!!!!!!!!!!!!')
+				console.debug(response)
+				showSuccess(t('approval', '{name} signature requested via LibreSign!', { name: this.fileName }))
+				this._inputView.setLibresignEnabled(false)
+			}).catch((error) => {
+				console.debug('errrrrrrrrrrrrrrrrr')
+				console.debug(error)
 			})
 		},
 
@@ -224,6 +264,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 			this._inputView.setIsPdf(fileInfo.mimetype === 'application/pdf')
 			this._inputView.setDocusignConnected(this.docusignConnected)
+			this._inputView.setLibresignEnabled(this.libresignEnabled)
 
 			this.getApprovalState(true)
 

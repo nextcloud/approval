@@ -21,10 +21,15 @@
 			</span>
 			<span v-else>{{ approvedText }}</span>
 		</span>
-		<button v-if="isSignable"
-			:class="{ loading: signLoading, signButton: true }"
-			@click="onSignClick">
-			{{ signButtonText }}
+		<button v-if="isSignableDocuSign"
+			:class="{ loading: docusignLoading, signButton: true }"
+			@click="onSignDocuSignClick">
+			{{ docusignButtonText }}
+		</button>
+		<button v-if="isSignableLibreSign"
+			:class="{ loading: libresignLoading, signButton: true }"
+			@click="onSignLibreSignClick">
+			{{ libresignButtonText }}
 		</button>
 		<span v-if="stateRejected"
 			class="state-label rejected-label">
@@ -150,8 +155,12 @@ export default {
 			requestModal: false,
 			requesting: false,
 			docusignConnected: false,
-			signLoading: false,
-			signButtonText: t('approval', 'Sign with DocuSign'),
+			docusignLoading: false,
+			docusignButtonText: t('approval', 'Sign with DocuSign'),
+			// TODO set to false and pass it somehow
+			libresignEnabled: true,
+			libresignLoading: false,
+			libresignButtonText: t('approval', 'Sign with LibreSign'),
 			isPdf: false,
 		}
 	},
@@ -190,9 +199,13 @@ export default {
 			}
 			return ''
 		},
-		isSignable() {
+		isSignableDocuSign() {
 			const iApproved = this.stateApproved && !this.notMe
 			return (this.stateApprovable || iApproved) && this.docusignConnected && this.isPdf
+		},
+		isSignableLibreSign() {
+			const iApproved = this.stateApproved && !this.notMe
+			return (this.stateApprovable || iApproved) && this.libresignEnabled && this.isPdf
 		},
 	},
 
@@ -241,7 +254,11 @@ export default {
 		},
 		setDocusignConnected(isConnected) {
 			this.docusignConnected = isConnected
-			this.signLoading = false
+			this.docusignLoading = false
+		},
+		setLibresignEnabled(isEnabled) {
+			this.libresignEnabled = isEnabled
+			this.libresignLoading = false
 		},
 		setIsPdf(isPdf) {
 			this.isPdf = isPdf
@@ -260,9 +277,13 @@ export default {
 		setRequesting(val) {
 			this.requesting = val
 		},
-		onSignClick() {
-			this.signLoading = true
-			this.$emit('sign')
+		onSignDocuSignClick() {
+			this.docusignLoading = true
+			this.$emit('sign-docusign')
+		},
+		onSignLibreSignClick() {
+			this.libresignLoading = true
+			this.$emit('sign-libresign')
 		},
 	},
 }

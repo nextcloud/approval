@@ -22,6 +22,8 @@ return [
 		['name' => 'docusign#getDocusignInfo', 'url' => '/docusign/info', 'verb' => 'GET'],
 		['name' => 'docusign#oauthRedirect', 'url' => '/docusign/oauth-redirect', 'verb' => 'GET'],
 		['name' => 'docusign#sign', 'url' => '/{fileId}/sign', 'verb' => 'PUT'],
+		// LibreSign
+		['name' => 'config#getLibresignInfo', 'url' => '/libresign/info', 'verb' => 'GET'],
 
 		['name' => 'approval#createTag', 'url' => '/tag', 'verb' => 'POST'],
 

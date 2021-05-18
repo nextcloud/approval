@@ -12,6 +12,7 @@
 namespace OCA\Approval\Controller;
 
 use OCP\IUserManager;
+use OCP\IUser;
 
 use OCP\IConfig;
 use OCP\IL10N;
@@ -124,5 +125,23 @@ class ConfigController extends Controller {
 		return isset($result['error'])
 			? new DataResponse($result, 400)
 			: new DataResponse();
+	}
+
+	/**
+	 *
+	 * @return DataResponse
+	 */
+	public function getLibresignInfo(): DataResponse {
+		$libresignEnabled = $this->appManager->isEnabledForUser('libresign');
+
+		$currentUserEmail = '';
+		$user = $this->userManager->get($this->userId);
+		if ($user instanceof IUser) {
+			$currentUserEmail = $user->getEMailAddress();
+		}
+		return new DataResponse([
+			'libresignEnabled' => $libresignEnabled,
+			'currentUserEmail' => $currentUserEmail,
+		]);
 	}
 }
