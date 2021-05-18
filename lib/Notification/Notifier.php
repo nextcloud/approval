@@ -126,7 +126,7 @@ class Notifier implements INotifier {
 					->setParsedMessage($content)
 					->setLink($linkToFile)
 					->setRichMessage(
-						$notification->getSubject() === 'approved' ? $l->t('{node} was approved by {user}') : $l->t('{node} was rejected by {user}'),
+						$notification->getSubject() === 'approved' ? $l->t('{user} approved {node}') : $l->t('{user} rejected {node}'),
 						[
 							'user' => $richSubjectUser,
 							'node' => $richSubjectNode,
@@ -159,7 +159,7 @@ class Notifier implements INotifier {
 				->setParsedMessage($content)
 				->setLink($linkToFile)
 				->setRichMessage(
-					$p['type'] === 'file' ? $l->t('Your approval was requested for file {node}') : $l->t('Your approval was requested for directory {node}'),
+					$l->t('{node}'),
 					[
 						'node' => $richSubjectNode,
 					]
@@ -188,9 +188,7 @@ class Notifier implements INotifier {
 				];
 
 				$subject = $l->t('Your approval was requested');
-				$content = $p['type'] === 'file'
-					? $l->t('Your approval was requested by %2$s for file %1$s', [$p['fileName'], $user->getDisplayName()])
-					: $l->t('Your approval was requested by %2$s for directory %1$s', [$p['fileName'], $user->getDisplayName()]);
+				$content = $l->t('%2$s requested your approval for %1$s', [$p['fileName'], $user->getDisplayName()]);
 				$iconUrl = $this->url->getAbsoluteURL('/index.php/svg/core/actions/more?color=000000');
 
 				$notification
@@ -198,9 +196,7 @@ class Notifier implements INotifier {
 					->setParsedMessage($content)
 					->setLink($linkToFile)
 					->setRichMessage(
-						$p['type'] === 'file'
-							? $l->t('Your approval was requested by {user} for file {node}')
-							: $l->t('Your approval was requested by {user} for directory {node}'),
+						$l->t('{user} requested your approval for {node}'),
 						[
 							'node' => $richSubjectNode,
 							'user' => $richSubjectUser,

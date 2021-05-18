@@ -64,8 +64,11 @@ export default {
 	// justify-content: center;
 
 	button {
-		margin: 0 5px 0 5px;
+		margin: 0 4px 0 4px;
 		min-height: 44px;
+		&:first-child {
+			margin-left: 0;
+		}
 		&.success {
 			background-color: var(--color-success) !important;
 			border-color: var(--color-success) !important;
@@ -78,6 +81,9 @@ export default {
 			&:focus {
 				border-color: var(--color-main-text) !important;
 			}
+		}
+		.icon {
+			opacity: 1;
 		}
 	}
 }

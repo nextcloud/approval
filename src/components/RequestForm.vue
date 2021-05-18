@@ -1,29 +1,28 @@
 <template>
-	<div>
+	<div class="request-modal">
 		<h2>
 			{{ title }}
-			<button v-if="selectedRule"
-				class="primary"
-				@click="$emit('request', selectedRule, true)">
-				<span class="icon icon-checkmark" />
-				{{ requestLabel }}
-			</button>
 		</h2>
+		<p class="settings-hint">
+			{{ createShareHint }}
+		</p>
 		<ul class="rule-list">
 			<li v-for="r in rules"
 				:key="r.id"
-				:class="{ 'rule-selected': selectedRule === r.id }">
+				:class="{ 'rule-selected': selectedRule === r.id }"
+				@click="selectedRule = r.id">
 				<div>
 					<input :id="'rule-' + r.id"
 						v-model="selectedRule"
 						name="approval-rule"
 						:value="r.id"
 						type="radio">
-					<label :for="'rule-' + r.id">
+					<label class="rule-title"
+						:for="'rule-' + r.id">
 						{{ r.description }}
 					</label>
 				</div>
-				<div v-if="selectedRule === r.id"
+				<div
 					class="approvers">
 					<label>
 						{{ approversLabel }}
@@ -40,10 +39,20 @@
 				</div>
 			</li>
 		</ul>
-		<p class="settings-hint">
-			<span class="icon icon-info" />
-			{{ createShareHint }}
-		</p>
+		<div class="footer">
+			<button
+				class="cancel"
+				@click="$emit('cancel')">
+				{{ cancelLabel }}
+			</button>
+			<button
+				class="primary"
+				:disabled="!selectedRule"
+				@click="$emit('request', selectedRule, true)">
+				<span class="icon icon-checkmark-white" />
+				{{ requestLabel }}
+			</button>
+		</div>
 	</div>
 </template>
 
@@ -69,9 +78,10 @@ export default {
 			selectedRule: null,
 			title: t('approval', 'Select approval rule'),
 			requestLabel: t('approval', 'Request approval'),
+			cancelLabel: t('approval', 'Cancel'),
 			createShares: false,
 			createShareHint: t('approval', 'File will be automatically shared with everybody allowed to approve.'),
-			approversLabel: t('approval', 'File can be approved by'),
+			approversLabel: t('approval', 'Can be approved by'),
 		}
 	},
 
@@ -82,8 +92,9 @@ export default {
 	},
 
 	mounted() {
-		console.debug('this.rules')
-		console.debug(this.rules)
+		if (this.rules && this.rules.length === 1) {
+			this.selectedRule = this.rules[0].id
+		}
 	},
 
 	methods: {
@@ -100,45 +111,65 @@ export default {
 </script>
 
 <style scoped lang="scss">
-h2 {
-	height: 40px;
-	line-height: 40px;
-	button {
-		float: right;
+.request-modal {
+	h2 {
+		height: 40px;
+		line-height: 40px;
 	}
-}
 
-.rule-list {
-	li {
-		display: flex;
-		flex-direction: column;
-		padding: 0 0 0 10px;
-
-		&.rule-selected {
-			background-color: var(--color-background-hover);
-			border-radius: var(--border-radius-large);
-			padding: 10px;
-		}
-		>div {
+	.rule-list {
+		li {
 			display: flex;
-			align-items: center;
-			flex-wrap: wrap;
-			&.approvers {
-				margin: 10px 0 10px 20px;
-				.user-bubble {
-					color: var(--color-main-text);
-					height: 24px;
-					margin: 0 2px 0 2px;
+			flex-direction: column;
+			padding: 0 8px 0 12px;
+			* {
+				cursor: pointer;
+			}
+
+			label {
+				margin-left: 4px;
+				&.rule-title {
+					font-weight: bold;
+				}
+			}
+
+			&:hover,
+			&.rule-selected {
+				background-color: var(--color-background-hover);
+				border-radius: var(--border-radius-large);
+			}
+			>div {
+				display: flex;
+				align-items: center;
+				flex-wrap: wrap;
+				&.approvers {
+					margin: 0 0 10px 20px;
+					.user-bubble {
+						color: var(--color-main-text);
+						height: 24px;
+						margin: 0 2px 0 2px;
+					}
 				}
 			}
 		}
 	}
-}
 
-.settings-hint {
-	margin-top: 15px;
-	.icon {
-		display: inline-block;
+	.settings-hint {
+		margin: 0 0 12px 0;
+		color: var(--color-text-maxcontrast);
+		.icon {
+			display: inline-block;
+		}
+	}
+
+	.footer {
+		margin-top: 12px;
+		.primary {
+			float: right;
+		}
+		.icon {
+			opacity: 1;
+		}
 	}
 }
 </style>

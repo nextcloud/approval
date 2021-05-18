@@ -71,7 +71,8 @@
 			<Modal v-if="requestModal" @close="closeRequestModal">
 				<RequestForm :rules="userRules"
 					class="info-modal"
-					@request="onRequest" />
+					@request="onRequest"
+					@cancel="requestModal = false" />
 			</Modal>
 		</span>
 		<span v-if="myRule">
@@ -297,7 +298,7 @@ export default {
 	.signButton {
 		min-height: 44px;
 		height: 44px;
-		margin: 0;
+		margin: 0 4px 0 4px;
 	}
 
 	.state-label {
