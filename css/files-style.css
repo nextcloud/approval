@@ -12,19 +12,33 @@
 .approval-inline-state {
 	display: inline-block;
     position: relative;
-	right: -30px;
-	bottom: -15px;
-	width: 15px;
-	height: 15px;
+	right: -29px;
+	bottom: -16px;
+	width: 19px;
+	height: 19px;
 	padding: 0;
 	z-index: 5;
 
 	border-radius: var(--border-radius-pill);
+	border: 2px solid var(--color-main-background);
+}
+#filestable tr:hover .approval-inline-state,
+#filestable tr:focus .approval-inline-state,
+#filestable tr.selected .approval-inline-state,
+#filestable tr:active .approval-inline-state {
+	border: 2px solid var(--color-background-hover);
+}
+#filestable.view-grid .approval-inline-state {
+	right: 24px;
+	bottom: 16px;
+	position: absolute;
 }
 
 .icon-approved,
-.icon-rejected {
-	background-size: 10px;
+.icon-rejected,
+.icon-approvable,
+.icon-pending {
+	background-size: 11px;
 }
 
 .icon-approved {
@@ -37,13 +51,7 @@
 
 .icon-approvable,
 .icon-pending {
-	background-size: 10px;
-}
-
-.icon-approvable,
-.icon-pending {
 	background-color: var(--color-text-maxcontrast) !important;
-	/* border: 1px solid var(--color-main-text); */
 }
 
 /* for file actions */

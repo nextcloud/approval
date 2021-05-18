@@ -131,11 +131,11 @@ export default {
 
 	data() {
 		return {
-			tagPendingIconUrl: generateUrl('/svg/core/actions/tag?color=eca700'),
+			tagPendingIconUrl: generateUrl('/svg/core/actions/tag?color=767676'),
 			tagApprovedIconUrl: generateUrl('/svg/core/actions/tag?color=46ba61'),
 			tagRejectedIconUrl: generateUrl('/svg/core/actions/tag?color=e9322d'),
 			groupGreenIconUrl: generateUrl('/svg/core/actions/group?color=46ba61'),
-			groupYellowIconUrl: generateUrl('/svg/core/actions/group?color=eca700'),
+			groupYellowIconUrl: generateUrl('/svg/core/actions/group?color=767676'),
 			whoRequestLabel: t('approval', 'Who can request approval'),
 			whoApproveLabel: t('approval', 'Who can approve'),
 			pendingLabel: t('approval', 'Tag to act on'),

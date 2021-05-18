@@ -308,11 +308,10 @@ export default {
 		display: flex;
 		align-items: center;
 		.details {
-			height: 24px;
 			margin-left: 2px;
 			.user-bubble {
 				color: var(--color-main-text);
-				height: 26px;
+				height: 28px;
 			}
 		}
 	}
