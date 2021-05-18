@@ -33,9 +33,7 @@
 						:user="approver.type === 'user' ? approver.entityId : undefined"
 						:display-name="approver.displayName"
 						:avatar-image="getAvatarImageClass(approver)"
-						:size="24">
-						{{ approver.displayName }}
-					</UserBubble>
+						:size="24" />
 				</div>
 			</li>
 		</ul>
@@ -122,12 +120,13 @@ export default {
 			display: flex;
 			flex-direction: column;
 			padding: 0 8px 0 12px;
+			margin-bottom: 4px;
 			* {
 				cursor: pointer;
 			}
 
 			label {
-				margin-left: 4px;
+				margin-left: 8px;
 				&.rule-title {
 					font-weight: bold;
 				}
@@ -143,19 +142,22 @@ export default {
 				align-items: center;
 				flex-wrap: wrap;
 				&.approvers {
-					margin: 0 0 10px 20px;
+					margin: -4px 0 10px 20px;
 					.user-bubble {
 						color: var(--color-main-text);
-						height: 24px;
-						margin: 0 2px 0 2px;
+						height: 28px;
+						margin: 4px 0 0 4px;
 					}
 				}
+			}
+			input[type=radio] {
+				margin-bottom: 0px;
 			}
 		}
 	}
 
 	.settings-hint {
-		margin: 0 0 12px 0;
+		margin: 0 0 16px 0;
 		color: var(--color-text-maxcontrast);
 		.icon {
 			display: inline-block;
@@ -163,7 +165,7 @@ export default {
 	}
 
 	.footer {
-		margin-top: 12px;
+		margin-top: 16px;
 		.primary {
 			float: right;
 		}

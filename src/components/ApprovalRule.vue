@@ -6,7 +6,8 @@
 					<span class="icon icon-checkmark" />
 					{{ descriptionLabel }}
 				</span>
-				<input type="text"
+				<input ref="title"
+					type="text"
 					:value="value.description"
 					:placeholder="descriptionPlaceholder"
 					@input="onDescriptionInput">
@@ -90,7 +91,7 @@
 			<button
 				class="delete-rule"
 				@click="$emit('delete')">
-				<span :class="'icon ' + deleteIcon" />
+				<span :class="{ icon: deleteIcon !== '', [deleteIcon]: true }" />
 				{{ deleteRuleLabel }}
 			</button>
 			<slot name="extra-buttons" />
@@ -121,11 +122,15 @@ export default {
 		},
 		deleteIcon: {
 			type: String,
-			default: 'icon-delete',
+			default: '',
 		},
 		deleteRuleLabel: {
 			type: String,
 			default: t('approval', 'Delete rule'),
+		},
+		focus: {
+			type: Boolean,
+			default: false,
 		},
 	},
 
@@ -153,6 +158,9 @@ export default {
 	},
 
 	mounted() {
+		if (this.focus) {
+			this.$refs.title.focus()
+		}
 	},
 
 	methods: {

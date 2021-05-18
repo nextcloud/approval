@@ -26,6 +26,7 @@
 				:key="id"
 				v-model="rules[id]"
 				class="approval-rule"
+				delete-icon="icon-delete"
 				@input="onRuleInput(id, $event)"
 				@delete="onRuleDelete(id)"
 				@add-tag="onAddTagClick" />
@@ -37,8 +38,8 @@
 			<div v-if="newRule" class="new-rule">
 				<ApprovalRule
 					v-model="newRule"
-					delete-icon="icon-history"
 					:delete-rule-label="newRuleDeleteLabel"
+					:focus="true"
 					@delete="onNewRuleDelete"
 					@add-tag="onAddTagClick">
 					<template #extra-buttons>
@@ -397,6 +398,7 @@ export default {
 		}
 		.new-rule-error {
 			margin-top: 16px;
+			color: var(--color-text-maxcontrast);
 		}
 	}
 	.no-rules {

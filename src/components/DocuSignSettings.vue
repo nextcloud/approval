@@ -211,6 +211,10 @@ export default {
 		width: 32px;
 	}
 
+	button .icon {
+		margin: 0 !important;
+	}
+
 	.icon-docusign {
 		background-image: url('../../img/app-dark.svg');
 		background-size: 23px 23px;
