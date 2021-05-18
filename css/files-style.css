@@ -61,3 +61,7 @@
 body.theme--dark .icon-approval {
 	background-image: url('../img/app.svg');
 }
+/* request modal */
+.modal-container {
+	display: flex !important;
+}
