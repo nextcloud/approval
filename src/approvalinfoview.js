@@ -244,8 +244,10 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				showSuccess(t('approval', '{name} signature requested via LibreSign!', { name: this.fileName }))
 				this._inputView.setLibresignEnabled(false)
 			}).catch((error) => {
-				console.debug('errrrrrrrrrrrrrrrrr')
-				console.debug(error)
+				console.error(error)
+				showError(error.response?.data?.message ?? t('approval', 'Impossible to sign this document'))
+			}).then(() => {
+				this._inputView.setLibresignEnabled(true)
 			})
 		},
 
