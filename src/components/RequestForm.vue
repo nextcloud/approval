@@ -28,7 +28,7 @@
 						{{ approversLabel }}
 					</label>
 					<UserBubble v-for="approver in r.approvers"
-						:key="approver.entityId"
+						:key="approver.type + '-' + approver.entityId"
 						class="user-bubble"
 						:user="approver.type === 'user' ? approver.entityId : undefined"
 						:display-name="approver.displayName"
