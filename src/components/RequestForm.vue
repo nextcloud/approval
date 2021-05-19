@@ -9,32 +9,31 @@
 		<ul class="rule-list">
 			<li v-for="r in rules"
 				:key="r.id"
-				:class="{ 'rule-selected': selectedRule === r.id }"
-				@click="selectedRule = r.id">
-				<div>
-					<input :id="'rule-' + r.id"
-						v-model="selectedRule"
-						name="approval-rule"
-						:value="r.id"
-						type="radio">
-					<label class="rule-title"
-						:for="'rule-' + r.id">
-						{{ r.description }}
-					</label>
-				</div>
-				<div
-					class="approvers">
-					<label>
-						{{ approversLabel }}
-					</label>
-					<UserBubble v-for="approver in r.approvers"
-						:key="approver.type + '-' + approver.entityId"
-						class="user-bubble"
-						:user="approver.type === 'user' ? approver.entityId : undefined"
-						:display-name="approver.displayName"
-						:avatar-image="getAvatarImageClass(approver)"
-						:size="24" />
-				</div>
+				:class="{ 'rule-selected': selectedRule === r.id }">
+				<label :for="'rule-' + r.id">
+					<div>
+						<input :id="'rule-' + r.id"
+							v-model="selectedRule"
+							name="approval-rule"
+							:value="r.id"
+							type="radio">
+						<label class="rule-title">
+							{{ r.description }}
+						</label>
+					</div>
+					<div class="approvers">
+						<label>
+							{{ approversLabel }}
+						</label>
+						<UserBubble v-for="approver in r.approvers"
+							:key="approver.type + '-' + approver.entityId"
+							class="user-bubble"
+							:user="approver.type === 'user' ? approver.entityId : undefined"
+							:display-name="approver.displayName"
+							:avatar-image="getAvatarImageClass(approver)"
+							:size="24" />
+					</div>
+				</label>
 			</li>
 		</ul>
 		<div class="footer">
@@ -125,11 +124,12 @@ export default {
 				cursor: pointer;
 			}
 
-			label {
+			.approvers label,
+			.rule-title {
 				margin-left: 8px;
-				&.rule-title {
-					font-weight: bold;
-				}
+			}
+			.rule-title {
+				font-weight: bold;
 			}
 
 			&:hover,
@@ -137,7 +137,7 @@ export default {
 				background-color: var(--color-background-hover);
 				border-radius: var(--border-radius-large);
 			}
-			>div {
+			>label div {
 				display: flex;
 				align-items: center;
 				flex-wrap: wrap;
