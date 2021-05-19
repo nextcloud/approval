@@ -1,88 +1,90 @@
 <template>
-	<div id="approval_prefs" class="section">
-		<h2>
-			<span class="icon icon-approval" />
-			{{ t('approval', 'Approval rules') }}
-		</h2>
-		<br>
-		<p class="settings-hint">
-			{{ t('approval', 'Each rule specifies who (which users, groups or circles) can act on which pending tag and which approved/rejected tag should then be assigned.') }}
-		</p>
-		<p class="settings-hint">
-			{{ t('approval', 'A list of users/groups/circles who can manually request approval can be optionally defined.') }}
-		</p>
-		<p class="settings-hint">
-			{{ t('approval', 'To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the rules involved.') }}
-		</p>
-		<p class="settings-hint">
-			{{ t('approval', 'You can chain approval rules by using a pending tag as approved/rejected tag in another rule.') }}
-		</p>
-		<p class="settings-hint">
-			{{ t('approval', 'All tags must be different in a rule. A pending tag can only be used in one rule.') }}
-		</p>
-		<div v-if="showRules"
-			class="rules">
-			<ApprovalRule v-for="(rule, id) in rules"
-				:key="id"
-				v-model="rules[id]"
-				class="approval-rule"
-				delete-icon="icon-delete"
-				@input="onRuleInput(id, $event)"
-				@delete="onRuleDelete(id)"
-				@add-tag="onAddTagClick" />
-			<EmptyContent v-if="noRules && !loadingRules"
-				class="no-rules"
-				icon="icon-approval">
-				{{ t('approval', 'No rules yet') }}
-			</EmptyContent>
-			<div v-if="newRule" class="new-rule">
-				<ApprovalRule
-					v-model="newRule"
-					:delete-rule-label="newRuleDeleteLabel"
-					:focus="true"
-					@delete="onNewRuleDelete"
-					@add-tag="onAddTagClick">
-					<template #extra-buttons>
-						<button
-							class="new-rule-ok"
-							:disabled="!newRuleIsValid"
-							@click="onValidateNewRule">
-							<span class="icon icon-checkmark-color" />
-							{{ createTooltip }}
-						</button>
-					</template>
-					<template #extra-footer>
-						<p v-if="!newRuleIsValid"
-							class="new-rule-error">
-							{{ invalidRuleMessage }}
-						</p>
-					</template>
-				</ApprovalRule>
+	<div>
+		<div id="approval_prefs" class="section">
+			<h2>
+				<span class="icon icon-approval" />
+				{{ t('approval', 'Approval rules') }}
+			</h2>
+			<br>
+			<p class="settings-hint">
+				{{ t('approval', 'Each rule specifies who (which users, groups or circles) can act on which pending tag and which approved/rejected tag should then be assigned.') }}
+			</p>
+			<p class="settings-hint">
+				{{ t('approval', 'A list of users/groups/circles who can manually request approval can be optionally defined.') }}
+			</p>
+			<p class="settings-hint">
+				{{ t('approval', 'To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the rules involved.') }}
+			</p>
+			<p class="settings-hint">
+				{{ t('approval', 'You can chain approval rules by using a pending tag as approved/rejected tag in another rule.') }}
+			</p>
+			<p class="settings-hint">
+				{{ t('approval', 'All tags must be different in a rule. A pending tag can only be used in one rule.') }}
+			</p>
+			<div v-if="showRules"
+				class="rules">
+				<ApprovalRule v-for="(rule, id) in rules"
+					:key="id"
+					v-model="rules[id]"
+					class="approval-rule"
+					delete-icon="icon-delete"
+					@input="onRuleInput(id, $event)"
+					@delete="onRuleDelete(id)"
+					@add-tag="onAddTagClick" />
+				<EmptyContent v-if="noRules && !loadingRules"
+					class="no-rules"
+					icon="icon-approval">
+					{{ t('approval', 'No rules yet') }}
+				</EmptyContent>
+				<div v-if="newRule" class="new-rule">
+					<ApprovalRule
+						v-model="newRule"
+						:delete-rule-label="newRuleDeleteLabel"
+						:focus="true"
+						@delete="onNewRuleDelete"
+						@add-tag="onAddTagClick">
+						<template #extra-buttons>
+							<button
+								class="new-rule-ok"
+								:disabled="!newRuleIsValid"
+								@click="onValidateNewRule">
+								<span class="icon icon-checkmark-color" />
+								{{ createTooltip }}
+							</button>
+						</template>
+						<template #extra-footer>
+							<p v-if="!newRuleIsValid"
+								class="new-rule-error">
+								{{ invalidRuleMessage }}
+							</p>
+						</template>
+					</ApprovalRule>
+				</div>
 			</div>
-		</div>
-		<button :class="{ 'add-rule': true, loading: savingRule }"
-			:disabled="savingRule"
-			@click="onAddRule">
-			<span class="icon icon-add" />
-			{{ t('approval', 'New rule') }}
-		</button>
-		<div class="create-tag">
-			<label for="create-tag-input">
-				<span class="icon icon-tag" />
-				{{ t('approval', 'Create new hidden tag') }}
-			</label>
-			<input id="create-tag-input"
-				ref="createTagInput"
-				v-model="newTagName"
-				:placeholder="t('approval', 'New tag name')"
-				type="text"
-				@keyup.enter="onCreateTag">
-			<button :class="{ loading: creatingTag }"
-				:disabled="creatingTag"
-				@click="onCreateTag">
+			<button :class="{ 'add-rule': true, loading: savingRule }"
+				:disabled="savingRule"
+				@click="onAddRule">
 				<span class="icon icon-add" />
-				{{ t('approval', 'Create') }}
+				{{ t('approval', 'New rule') }}
 			</button>
+			<div class="create-tag">
+				<label for="create-tag-input">
+					<span class="icon icon-tag" />
+					{{ t('approval', 'Create new hidden tag') }}
+				</label>
+				<input id="create-tag-input"
+					ref="createTagInput"
+					v-model="newTagName"
+					:placeholder="t('approval', 'New tag name')"
+					type="text"
+					@keyup.enter="onCreateTag">
+				<button :class="{ loading: creatingTag }"
+					:disabled="creatingTag"
+					@click="onCreateTag">
+					<span class="icon icon-add" />
+					{{ t('approval', 'Create') }}
+				</button>
+			</div>
 		</div>
 		<DocuSignSettings />
 	</div>

@@ -1,7 +1,6 @@
 <template>
 	<div id="docusign_prefs" class="section">
 		<h2>
-			<a class="icon icon-password" />
 			{{ t('approval', 'DocuSign integration') }}
 		</h2>
 		<p v-if="!connected"
@@ -45,12 +44,12 @@
 			<span class="icon icon-external" />
 			{{ t('approval', 'Connect to DocuSign') }}
 		</button>
-		<div v-if="connected" class="grid-form">
-			<label class="docusign-connected">
+		<div v-if="connected">
+			<p class="docusign-connected">
 				<a class="icon icon-checkmark-color" />
 				{{ t('approval', 'Connected as {user} ({email})', { user: state.docusign_user_name, email: state.docusign_user_email }) }}
-			</label>
-			<button id="docusign-rm-cred" @click="onLogoutClick">
+			</p>
+			<button class="docusign-rm-cred" @click="onLogoutClick">
 				<span class="icon icon-close" />
 				{{ t('approval', 'Disconnect from DocuSign') }}
 			</button>
@@ -180,30 +179,14 @@ export default {
 
 <style scoped lang="scss">
 #docusign_prefs {
-	padding-left: 0;
-
-	#docusign-rm-cred {
+	.docusign-rm-cred {
 		height: 44px;
 		min-height: 44px;
+		margin-top: 12px;
 	}
 
-	.grid-form {
-		max-width: 500px;
-		display: grid;
-		grid-template: 1fr / 1fr 1fr;
-		margin-left: 30px;
-
-		label {
-			line-height: 38px;
-		}
-
-		input {
-			width: 100%;
-		}
-
-		.icon {
-			margin-bottom: -3px;
-		}
+	p .icon {
+		margin-bottom: -3px;
 	}
 
 	.icon {
