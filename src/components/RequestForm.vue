@@ -17,14 +17,14 @@
 							name="approval-rule"
 							:value="r.id"
 							type="radio">
-						<label class="rule-title">
+						<span class="rule-title">
 							{{ r.description }}
-						</label>
+						</span>
 					</div>
 					<div class="approvers">
-						<label>
+						<span>
 							{{ approversLabel }}
-						</label>
+						</span>
 						<UserBubble v-for="approver in r.approvers"
 							:key="approver.type + '-' + approver.entityId"
 							class="user-bubble"
