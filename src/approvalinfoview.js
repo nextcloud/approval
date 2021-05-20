@@ -40,7 +40,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		initialize(options) {
 			options = options || {}
 			this.render()
-			this.getUserRequesterRules()
 			this.getDocusignInfo()
 			this.getLibresignInfo()
 		},
@@ -82,15 +81,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		getUserRequesterRules() {
 			const url = generateUrl('/apps/approval/user-requester-rules')
-			axios.get(url).then((response) => {
-				this._inputView.setUserRules(response.data)
-				this.userRules = response.data
-				if (this.userRules.length === 0) {
-					this.hide()
-				}
-			}).catch((error) => {
-				console.error(error)
-			})
+			return axios.get(url)
 		},
 
 		getDocusignInfo() {
@@ -239,8 +230,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				}],
 			}
 			axios.post(url, req).then((response) => {
-				console.debug('RESPONSE !!!!!!!!!!!!!!!!!!!!')
-				console.debug(response)
 				showSuccess(t('approval', '{name} signature requested via LibreSign!', { name: this.fileName }))
 				this._inputView.setLibresignEnabled(false)
 			}).catch((error) => {
@@ -252,9 +241,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		setFileInfo(fileInfo) {
-			if (this.userRules.length === 0) {
-				this.hide()
-			}
 			// abort if fileId didn't change
 			if (this.fileId === (fileInfo.id || fileInfo.attributes?.id)) {
 				return
@@ -268,7 +254,15 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this._inputView.setDocusignConnected(this.docusignConnected)
 			this._inputView.setLibresignEnabled(this.libresignEnabled)
 
-			this.getApprovalState(true)
+			// refresh requester rules info each time we get an approval state
+			this.getUserRequesterRules().then((response) => {
+				this._inputView.setUserRules(response.data)
+				this.userRules = response.data
+			}).catch((error) => {
+				console.error(error)
+			}).then(() => {
+				this.getApprovalState(true)
+			})
 
 			// reload approval status when a tag is added or removed
 			if (!this.tagEventsCaugth && OCA.SystemTags?.View) {
@@ -326,6 +320,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					this._inputView.setRule(null)
 					if (this.userRules.length === 0) {
 						this.hide()
+					} else {
+						this.show()
 					}
 				}
 			}).catch((error) => {
