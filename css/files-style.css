@@ -33,6 +33,30 @@
 	bottom: 16px;
 	position: absolute;
 }
+/* weird stuff: empty/invalid images still have "data-has-preview=true" so this is overriden */
+#filestable.view-grid tr[data-mime="image/jpeg"] .approval-inline-state,
+#filestable.view-grid tr[data-mime="image/png"] .approval-inline-state {
+	right: 16px;
+	bottom: 24px;
+}
+#filestable.view-grid tr[data-has-preview=true] .approval-inline-state {
+	right: 12px;
+	bottom: 12px;
+}
+#filestable.view-grid tr[data-type=dir] .approval-inline-state,
+#filestable.view-grid tr[data-mime^="video/"] .approval-inline-state,
+#filestable.view-grid tr[data-mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"] .approval-inline-state {
+	right: 16px;
+	bottom: 24px;
+}
+#filestable.view-grid tr[data-mime="text/calendar"] .approval-inline-state {
+	right: 16px;
+	bottom: 16px;
+}
+#filestable.view-grid tr[data-mime="application/vnd.oasis.opendocument.spreadsheet"] .approval-inline-state {
+	right: 24px;
+	bottom: 16px;
+}
 
 .icon-approved,
 .icon-rejected,
