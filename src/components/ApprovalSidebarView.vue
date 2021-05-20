@@ -266,6 +266,7 @@ export default {
 		},
 		showRequestModal() {
 			this.requestModal = true
+			this.$emit('open-request')
 		},
 		closeRequestModal() {
 			this.requestModal = false

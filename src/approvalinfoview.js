@@ -66,6 +66,15 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this._inputView.$on('reject', () => {
 				this._onReject()
 			})
+			this._inputView.$on('open-request', () => {
+				// refresh request rules when opening request modal
+				this.getUserRequesterRules().then((response) => {
+					this._inputView.setUserRules(response.data)
+					this.userRules = response.data
+				}).catch((error) => {
+					console.error(error)
+				})
+			})
 			this._inputView.$on('request', (ruleId, createShares) => {
 				this._onRequest(ruleId, createShares)
 			})
