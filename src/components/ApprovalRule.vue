@@ -126,7 +126,7 @@ export default {
 		},
 		deleteRuleLabel: {
 			type: String,
-			default: t('approval', 'Delete rule'),
+			default: t('approval', 'Delete workflow'),
 		},
 		focus: {
 			type: Boolean,
@@ -146,8 +146,8 @@ export default {
 			pendingLabel: t('approval', 'Tag to act on'),
 			approvedLabel: t('approval', 'Tag set on approval'),
 			rejectedLabel: t('approval', 'Tag set on rejection'),
-			descriptionLabel: t('approval', 'Rule title'),
-			descriptionPlaceholder: t('approval', 'What is the purpose of this rule?'),
+			descriptionLabel: t('approval', 'Workflow title'),
+			descriptionPlaceholder: t('approval', 'What is the purpose of this workflow?'),
 		}
 	},
 

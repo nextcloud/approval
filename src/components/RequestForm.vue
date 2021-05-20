@@ -73,7 +73,7 @@ export default {
 	data() {
 		return {
 			selectedRule: null,
-			title: t('approval', 'Select approval rule'),
+			title: t('approval', 'Select approval workflow'),
 			requestLabel: t('approval', 'Request approval'),
 			cancelLabel: t('approval', 'Cancel'),
 			createShares: false,

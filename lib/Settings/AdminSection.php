@@ -40,7 +40,7 @@ class AdminSection implements IIconSection {
 	 * @return string
 	 */
 	public function getName(): string {
-		return $this->l->t('Approval rules');
+		return $this->l->t('Approval workflows');
 	}
 
 	/**

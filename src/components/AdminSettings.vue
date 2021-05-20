@@ -3,23 +3,23 @@
 		<div id="approval_prefs" class="section">
 			<h2>
 				<span class="icon icon-approval" />
-				{{ t('approval', 'Approval rules') }}
+				{{ t('approval', 'Approval workflows') }}
 			</h2>
 			<br>
 			<p class="settings-hint">
-				{{ t('approval', 'Each rule specifies who (which users, groups or circles) can act on which pending tag and which approved/rejected tag should then be assigned.') }}
+				{{ t('approval', 'Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned.') }}
 			</p>
 			<p class="settings-hint">
 				{{ t('approval', 'A list of users/groups/circles who can manually request approval can be optionally defined.') }}
 			</p>
 			<p class="settings-hint">
-				{{ t('approval', 'To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the rules involved.') }}
+				{{ t('approval', 'To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved.') }}
 			</p>
 			<p class="settings-hint">
-				{{ t('approval', 'You can chain approval rules by using a pending tag as approved/rejected tag in another rule.') }}
+				{{ t('approval', 'You can chain approval workflows by using a pending tag as approved/rejected tag in another workflow.') }}
 			</p>
 			<p class="settings-hint">
-				{{ t('approval', 'All tags must be different in a rule. A pending tag can only be used in one rule.') }}
+				{{ t('approval', 'All tags must be different in a workflow. A pending tag can only be used in one workflow.') }}
 			</p>
 			<div v-if="showRules"
 				class="rules">
@@ -34,7 +34,7 @@
 				<EmptyContent v-if="noRules && !loadingRules"
 					class="no-rules"
 					icon="icon-approval">
-					{{ t('approval', 'No rules yet') }}
+					{{ t('approval', 'No workflow yet') }}
 				</EmptyContent>
 				<div v-if="newRule" class="new-rule">
 					<ApprovalRule
@@ -65,7 +65,7 @@
 				:disabled="savingRule"
 				@click="onAddRule">
 				<span class="icon icon-add" />
-				{{ t('approval', 'New rule') }}
+				{{ t('approval', 'New workflow') }}
 			</button>
 			<div class="create-tag">
 				<label for="create-tag-input">
@@ -146,13 +146,13 @@ export default {
 				return this.rules[id].tagPending === newRule.tagPending
 			})
 			if (conflictingRule) {
-				return t('approval', 'Pending tag is already used in another rule')
+				return t('approval', 'Pending tag is already used in another workflow')
 			}
 
 			return null
 		},
 		createTooltip() {
-			return t('approval', 'Create rule')
+			return t('approval', 'Create workflow')
 		},
 	},
 
@@ -186,7 +186,7 @@ export default {
 				}
 			}).catch((error) => {
 				showError(
-					t('approval', 'Failed to get approval rules')
+					t('approval', 'Failed to get approval workflows')
 					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
 				console.debug(error)
@@ -218,10 +218,10 @@ export default {
 				}
 				const url = generateUrl('/apps/approval/rule/' + id)
 				axios.put(url, req).then((response) => {
-					showSuccess(t('approval', 'Approval rule saved'))
+					showSuccess(t('approval', 'Approval workflow saved'))
 				}).catch((error) => {
 					showError(
-						t('approval', 'Failed to save approval rule')
+						t('approval', 'Failed to save approval workflow')
 						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 					)
 					console.error(error)
@@ -270,15 +270,13 @@ export default {
 				}
 				const url = generateUrl('/apps/approval/rule')
 				axios.post(url, req).then((response) => {
-					showSuccess(t('approval', 'New approval rule created'))
+					showSuccess(t('approval', 'New approval workflow created'))
 					const id = response.data
 					this.newRule = null
 					this.$set(this.rules, id, rule)
-					console.debug('rules after adding')
-					console.debug(this.rules)
 				}).catch((error) => {
 					showError(
-						t('approval', 'Failed to create approval rule')
+						t('approval', 'Failed to create approval workflow')
 						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 					)
 					console.debug(error)
@@ -290,11 +288,11 @@ export default {
 		onRuleDelete(id) {
 			const url = generateUrl('/apps/approval/rule/' + id)
 			axios.delete(url).then((response) => {
-				showSuccess(t('approval', 'Approval rule deleted'))
+				showSuccess(t('approval', 'Approval workflow deleted'))
 				this.$delete(this.rules, id)
 			}).catch((error) => {
 				showError(
-					t('approval', 'Failed to delete approval rule')
+					t('approval', 'Failed to delete approval workflow')
 					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
 				console.debug(error)

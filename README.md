@@ -1,29 +1,38 @@
 # Files approval
 
-👍 Approve or reject files/folders with hidden tags.
+✔ Approve or reject files/folders.
 
-In the files sidebar, authorized users will see approval buttons for files with pending approval.
-All users having access to the file/folder will see if a file approval is pending or if it has been approved or rejected.
+This app is integrated in the files list (Files app).
+
+Admins can define approval workflows: who can request, who can approve/reject.
+Users can then request approval. Authorized users will be able to approve or reject.
+
+Files can optionally be signed with DocuSign or LibreSign.
 
 ## Settings
 
-There is an Approval section in Flow admin settings where you can add rules defining who can approve what.
-A rule is composed with:
-* A list of authorized users, groups and circles
-* A pending tag: the tag meaning elements can be approved or rejected
+There is an Approval admin settings section where you define workflows.
+
+Workflow definition:
+
+* A workflow title
+* A list of users, groups and circles who can request approval
+* A list of users, groups and circles who can approve or reject
+* A pending tag: the tag meaning approval was requested and elements can be approved or rejected
 * An approved tag: the assigned tag when elements get approved
 * A rejected tag: the assigned tag when elements get rejected
 
-A pending tag can only be used in one approval rule.
-Rules can be chained. For example, if the approved tag of a rule A is used as the pending tag of another rule B,
-then once a file is approved by the first rule, it becomes pending for the second one.
+A pending tag can only be used in one approval workflow.
+Workflows can be chained. For example, if the approved tag of a workflow A is used as the pending tag of another workflow B,
+then once a file is approved by the workflow A, it becomes pending for the B one.
 
 ## Tag assignment
 
-There are two ways to assign a hidden tag to a file/folder:
+There are 3 ways to assign a hidden tag to a file/folder:
 
-* Admin can see and use hidden tags like classic tags. So they can be manually assigned.
-* Via the Files Automated Tagging App.
+* Click the "Request approval" button in Files sidebar
+* Admins can see and use hidden tags like classic tags. So they can be manually assigned.
+* Via the [Files Automated Tagging](https://github.com/nextcloud/files_automatedtagging) App
 
 ## Build
 
