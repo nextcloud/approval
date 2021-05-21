@@ -14,6 +14,7 @@ namespace OCA\Approval\Notification;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\IUser;
+use OCP\IConfig;
 use OCP\L10N\IFactory;
 use OCP\Notification\IManager as INotificationManager;
 use OCP\Notification\INotification;
@@ -44,11 +45,15 @@ class Notifier implements INotifier {
 	public function __construct(IFactory $factory,
 								IUserManager $userManager,
 								INotificationManager $notificationManager,
-								IURLGenerator $urlGenerator) {
+								IURLGenerator $urlGenerator,
+								IConfig $config,
+								?string $userId) {
 		$this->factory = $factory;
 		$this->userManager = $userManager;
 		$this->notificationManager = $notificationManager;
 		$this->url = $urlGenerator;
+		$this->userId = $userId;
+		$this->config = $config;
 	}
 
 	/**
@@ -117,9 +122,17 @@ class Notifier implements INotifier {
 				$content = $notification->getSubject() === 'approved'
 					? $l->t('%1$s approved %2$s', [$user->getDisplayName(), $p['fileName']])
 					: $l->t('%1$s rejected %2$s', [$user->getDisplayName(), $p['fileName']]);
+
+				$theme = $this->config->getUserValue($this->userId, 'accessibility', 'theme', '');
+				$green = ($theme === 'dark')
+				  ? 'E9322D'
+				  : '46BA61';
+				$red = ($theme === 'dark')
+				  ? '46BA61'
+				  : 'E9322D';
 				$iconUrl = $notification->getSubject() === 'approved'
-					? $this->url->getAbsoluteURL('/index.php/svg/core/actions/checkmark?color=46BA61')
-					: $this->url->getAbsoluteURL('/index.php/svg/core/actions/close?color=E9322D');
+					? $this->url->getAbsoluteURL('/index.php/svg/core/actions/checkmark?color=' . $green)
+					: $this->url->getAbsoluteURL('/index.php/svg/core/actions/close?color=' . $red);
 
 				$notification
 					->setParsedSubject($subject)
