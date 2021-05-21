@@ -3,45 +3,53 @@
 		<h2>
 			{{ t('approval', 'DocuSign integration') }}
 		</h2>
+		<p class="settings-hint">
+			{{ t('approval', 'DocuSign is an electronic signature solution.') }}
+			<a href="https://www.docusign.com/" class="external">
+				<span class="icon icon-external" />
+				https://www.docusign.com
+			</a>
+		</p>
 		<p v-if="!connected"
 			class="settings-hint">
+			<br>
 			{{ t('approval', 'If you want to use DocuSign, create an application in your DocuSign \'My Apps & Keys\' developer account settings and put the client ID (integration key) and secret below.') }}
-			<br><br>
-			<span class="icon icon-details" />
+			<br>
 			{{ t('approval', 'Make sure you set a "Redirect URI" to') }}
 			<b> {{ redirect_uri }} </b>
 		</p>
 		<div v-if="!connected"
 			class="grid-form">
-			<label for="docusign-client-id">
-				<a class="icon icon-category-auth" />
-				{{ t('approval', 'Client ID (aka integration key)') }}
-			</label>
-			<input id="docusign-client-id"
-				v-model="state.docusign_client_id"
-				type="password"
-				:readonly="readonly"
-				:placeholder="t('approval', 'Client ID of your application')"
-				@focus="readonly = false"
-				@input="onFieldInput">
-			<label for="docusign-client-secret">
-				<a class="icon icon-category-auth" />
-				{{ t('approval', 'Application secret key') }}
-			</label>
-			<input id="docusign-client-secret"
-				v-model="state.docusign_client_secret"
-				type="password"
-				:readonly="readonly"
-				:placeholder="t('approval', 'Secret key of your application')"
-				@focus="readonly = false"
-				@input="onFieldInput">
+			<p>
+				<label for="docusign-client-id">
+					{{ t('approval', 'Client ID (aka integration key)') }}
+				</label>
+				<input id="docusign-client-id"
+					v-model="state.docusign_client_id"
+					type="password"
+					:readonly="readonly"
+					:placeholder="t('approval', 'Client ID of your application')"
+					@focus="readonly = false"
+					@input="onFieldInput">
+			</p>
+			<p>
+				<label for="docusign-client-secret">
+					{{ t('approval', 'Application secret key') }}
+				</label>
+				<input id="docusign-client-secret"
+					v-model="state.docusign_client_secret"
+					type="password"
+					:readonly="readonly"
+					:placeholder="t('approval', 'Secret key of your application')"
+					@focus="readonly = false"
+					@input="onFieldInput">
+			</p>
 		</div>
 		<button v-if="oAuthConfigured && !connected"
 			id="docusign-oauth-connect"
 			:disabled="loading === true"
 			:class="{ loading }"
 			@click="onOAuthClick">
-			<span class="icon icon-external" />
 			{{ t('approval', 'Connect to DocuSign') }}
 		</button>
 		<div v-if="connected">
@@ -192,6 +200,10 @@ export default {
 	.icon {
 		display: inline-block;
 		width: 32px;
+	}
+
+	.settings-hint .icon {
+		width: 16px;
 	}
 
 	button .icon {
