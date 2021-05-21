@@ -231,7 +231,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				file: {
 					fileId: this.fileId,
 				},
-				name: this.fileName.replace(/\.pdf/g, '').replace(/\./g, ''),
+				name: this.fileName.replace(/\.pdf/g, '').replace(/[^a-zA-Z0-9\-_]/g, '-'),
 				users: [{
 					email: this.currentUserEmail,
 					description: t('approval', 'Approval signature'),
