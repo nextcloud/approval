@@ -6,36 +6,35 @@
 		<p class="settings-hint">
 			{{ createShareHint }}
 		</p>
-		<ul class="rule-list">
-			<li v-for="r in rules"
+		<fieldset class="rule-list">
+			<label v-for="r in rules"
 				:key="r.id"
-				:class="{ 'rule-selected': selectedRule === r.id }">
-				<label :for="'rule-' + r.id">
-					<div>
-						<input :id="'rule-' + r.id"
-							v-model="selectedRule"
-							name="approval-rule"
-							:value="r.id"
-							type="radio">
-						<span class="rule-title">
-							{{ r.description }}
-						</span>
-					</div>
-					<div class="approvers">
-						<span>
-							{{ approversLabel }}
-						</span>
-						<UserBubble v-for="approver in r.approvers"
-							:key="approver.type + '-' + approver.entityId"
-							class="user-bubble"
-							:user="approver.type === 'user' ? approver.entityId : undefined"
-							:display-name="approver.displayName"
-							:avatar-image="getAvatarImageClass(approver)"
-							:size="24" />
-					</div>
-				</label>
-			</li>
-		</ul>
+				:class="{ 'rule-selected': selectedRule === r.id }"
+				:for="'rule-' + r.id">
+				<div>
+					<input :id="'rule-' + r.id"
+						v-model="selectedRule"
+						name="approval-rule"
+						:value="r.id"
+						type="radio">
+					<span class="rule-title">
+						{{ r.description }}
+					</span>
+				</div>
+				<div class="approvers">
+					<span>
+						{{ approversLabel }}
+					</span>
+					<UserBubble v-for="approver in r.approvers"
+						:key="approver.type + '-' + approver.entityId"
+						class="user-bubble"
+						:user="approver.type === 'user' ? approver.entityId : undefined"
+						:display-name="approver.displayName"
+						:avatar-image="getAvatarImageClass(approver)"
+						:size="24" />
+				</div>
+			</label>
+		</fieldset>
 		<div class="footer">
 			<button
 				class="cancel"
@@ -109,40 +108,36 @@ export default {
 
 <style scoped lang="scss">
 .request-modal {
-	h2 {
-		height: 40px;
-		line-height: 40px;
-	}
-
 	.rule-list {
-		li {
-			display: flex;
-			flex-direction: column;
+		display: flex;
+		flex-direction: column;
+		* {
+			cursor: pointer;
+		}
+
+		.approvers label,
+		.rule-title {
+			margin-left: 8px;
+		}
+		.rule-title {
+			font-weight: bold;
+		}
+
+		>label {
 			padding: 0 8px 0 12px;
 			margin-bottom: 4px;
-			* {
-				cursor: pointer;
-			}
-
-			.approvers label,
-			.rule-title {
-				margin-left: 8px;
-			}
-			.rule-title {
-				font-weight: bold;
-			}
-
+			&:focus,
 			&:hover,
 			&.rule-selected {
 				background-color: var(--color-background-hover);
 				border-radius: var(--border-radius-large);
 			}
-			>label div {
+			div {
 				display: flex;
 				align-items: center;
-				flex-wrap: wrap;
 				&.approvers {
-					margin: -4px 0 10px 20px;
+					flex-wrap: wrap;
+					margin: -4px 0 10px 24px;
 					.user-bubble {
 						color: var(--color-main-text);
 						height: 28px;
@@ -150,9 +145,9 @@ export default {
 					}
 				}
 			}
-			input[type=radio] {
-				margin-bottom: 0px;
-			}
+		}
+		input[type=radio] {
+			margin: 0;
 		}
 	}
 

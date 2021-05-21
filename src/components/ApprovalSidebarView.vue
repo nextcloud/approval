@@ -68,7 +68,9 @@
 				<span class="icon icon-approval" />
 				{{ requestLabel }}
 			</button>
-			<Modal v-if="requestModal" @close="closeRequestModal">
+			<Modal v-if="requestModal"
+				size="large"
+				@close="closeRequestModal">
 				<RequestForm :rules="userRules"
 					class="info-modal"
 					@request="onRequest"

@@ -22,6 +22,9 @@
 	border-radius: var(--border-radius-pill);
 	border: 2px solid var(--color-main-background);
 }
+#filestable tr.highlighted .approval-inline-state {
+	border: 2px solid var(--color-primary-light);
+}
 #filestable tr:hover .approval-inline-state,
 #filestable tr:focus .approval-inline-state,
 #filestable tr.selected .approval-inline-state,

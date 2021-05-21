@@ -118,7 +118,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const req = {}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/approve')
 			axios.put(url, req).then((response) => {
-				showSuccess(t('approval', '{name} approved!', { name: this.fileName }))
+				showSuccess(t('approval', 'approved {name}', { name: this.fileName }))
 				this.getApprovalState(true)
 				this.reloadTags()
 			}).catch((error) => {
@@ -134,7 +134,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const req = {}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/reject')
 			axios.put(url, req).then((response) => {
-				showSuccess(t('approval', '{name} rejected!', { name: this.fileName }))
+				showSuccess(t('approval', 'Rejected {name}', { name: this.fileName }))
 				this.getApprovalState(true)
 				this.reloadTags()
 			}).catch((error) => {
@@ -163,7 +163,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				if (createShares) {
 					this.requestAfterShareCreation(ruleId)
 				} else {
-					showSuccess(t('approval', 'Approval requested for {name}!', { name: this.fileName }))
+					showSuccess(t('approval', 'Approval requested for {name}', { name: this.fileName }))
 					if (response.data.warning) {
 						showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
 					}
