@@ -5,7 +5,7 @@
 		</h2>
 		<p class="settings-hint">
 			{{ t('approval', 'DocuSign is an electronic signature solution.') }}
-			<a href="https://www.docusign.com/" class="external">
+			<a href="https://www.docusign.com/" class="external" target="_blank">
 				<span class="icon icon-external" />
 				https://www.docusign.com
 			</a>
