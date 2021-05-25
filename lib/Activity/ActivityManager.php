@@ -37,7 +37,7 @@ class ActivityManager {
 	private $userId;
 	private $l10n;
 
-	public const APPROVAL_OBJECT_NODE = 'approval_node';
+	public const APPROVAL_OBJECT_NODE = 'files';
 
 	public const SUBJECT_APPROVED = 'object_approved';
 	public const SUBJECT_REJECTED = 'object_rejected';
