@@ -44,8 +44,8 @@ jobs:
           echo "##[set-output name=app_id;]$APP_ID"
           echo "###### copy certificate"
           mkdir -p ~/.nextcloud/certificates
-          #echo "$APP_CRT" > ~/.nextcloud/certificates/${APP_ID}.crt
-          #echo "$APP_KEY" > ~/.nextcloud/certificates/${APP_ID}.key
+          echo "$APP_CRT" > ~/.nextcloud/certificates/${APP_ID}.crt
+          echo "$APP_KEY" > ~/.nextcloud/certificates/${APP_ID}.key
           echo "###### install dependencies"
           export DEBIAN_FRONTEND=noninteractive
           sudo apt update -y
@@ -66,9 +66,9 @@ jobs:
           version=${tag/v/}
           webserveruser=runner occ_dir=~/html/nextcloud version=$version make appstore
           echo "##[set-output name=version;]$version"
-        #env:
-        #  APP_CRT: ${{ secrets.APP_CRT }}
-        #  APP_KEY: ${{ secrets.APP_KEY }}
+        env:
+          APP_CRT: ${{ secrets.APP_CRT }}
+          APP_KEY: ${{ secrets.APP_KEY }}
 
       - name: Create Release
         if: ${{ startsWith( steps.tag.outputs.currenttag , 'v' ) }}
@@ -94,24 +94,24 @@ jobs:
           asset_name: ${{ steps.build_release.outputs.app_id }}-${{ steps.build_release.outputs.version }}.tar.gz
           asset_content_type: application/gzip
 
-      #- name: Publish to appstore
-      #  if: ${{ startsWith( steps.tag.outputs.currenttag , 'v' ) }}
-      #  id: publish
-      #  run: |
-      #    SIGNATURE=$(cat /tmp/build/sign.txt | tr -d '\n')
-      #    VERSION=${{ steps.build_release.outputs.version }}
-      #    DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v${VERSION}/${APP_ID}-${VERSION}.tar.gz
-      #    curl -X POST -H "Authorization: Token $APPSTORE_TOKEN" https://apps.nextcloud.com/api/v1/apps/releases -H "Content-Type: application/json" -d '{"download":"'${DOWNLOAD_URL}'", "signature": "'${SIGNATURE}'"}'
-      #  env:
-      #    APPSTORE_TOKEN: ${{ secrets.APPSTORE_TOKEN }}
+      - name: Publish to appstore
+        if: ${{ startsWith( steps.tag.outputs.currenttag , 'v' ) }}
+        id: publish
+        run: |
+          SIGNATURE=$(cat /tmp/build/sign.txt | tr -d '\n')
+          VERSION=${{ steps.build_release.outputs.version }}
+          DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v${VERSION}/${APP_ID}-${VERSION}.tar.gz
+          curl -X POST -H "Authorization: Token $APPSTORE_TOKEN" https://apps.nextcloud.com/api/v1/apps/releases -H "Content-Type: application/json" -d '{"download":"'${DOWNLOAD_URL}'", "signature": "'${SIGNATURE}'"}'
+        env:
+          APPSTORE_TOKEN: ${{ secrets.APPSTORE_TOKEN }}
 
-      #- name: Publish nightly release to appstore
-      #  if: ${{ startsWith( steps.tag.outputs.currenttag , 'v' ) && endsWith( steps.tag.outputs.currenttag , 'nightly' ) }}
-      #  id: nightly
-      #  run: |
-      #    SIGNATURE=$(cat /tmp/build/sign.txt | tr -d '\n')
-      #    VERSION=${{ steps.build_release.outputs.version }}
-      #    DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v${VERSION}/${APP_ID}-${VERSION}.tar.gz
-      #    curl -X POST -H "Authorization: Token $APPSTORE_TOKEN" https://apps.nextcloud.com/api/v1/apps/releases -H "Content-Type: application/json" -d '{"download":"'${DOWNLOAD_URL}'", "signature": "'${SIGNATURE}'", "nightly": true}'
-      #  env:
-      #    APPSTORE_TOKEN: ${{ secrets.APPSTORE_TOKEN }}
+      - name: Publish nightly release to appstore
+        if: ${{ startsWith( steps.tag.outputs.currenttag , 'v' ) && endsWith( steps.tag.outputs.currenttag , 'nightly' ) }}
+        id: nightly
+        run: |
+          SIGNATURE=$(cat /tmp/build/sign.txt | tr -d '\n')
+          VERSION=${{ steps.build_release.outputs.version }}
+          DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v${VERSION}/${APP_ID}-${VERSION}.tar.gz
+          curl -X POST -H "Authorization: Token $APPSTORE_TOKEN" https://apps.nextcloud.com/api/v1/apps/releases -H "Content-Type: application/json" -d '{"download":"'${DOWNLOAD_URL}'", "signature": "'${SIGNATURE}'", "nightly": true}'
+        env:
+          APPSTORE_TOKEN: ${{ secrets.APPSTORE_TOKEN }}
