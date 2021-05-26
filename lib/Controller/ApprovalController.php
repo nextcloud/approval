@@ -52,7 +52,7 @@ class ApprovalController extends Controller {
 	 * create a tag
 	 *
 	 * @param string $name of the new tag
-	 * @return DataDisplayResponse
+	 * @return DataResponse
 	 */
 	public function createTag(string $name): DataResponse {
 		$result = $this->approvalService->createTag($name);
@@ -125,6 +125,7 @@ class ApprovalController extends Controller {
 	 *
 	 * @param int $fileId
 	 * @param int $ruleId
+	 * @param bool $createShares
 	 * @return DataResponse
 	 */
 	public function request(int $fileId, int $ruleId, bool $createShares): DataResponse {

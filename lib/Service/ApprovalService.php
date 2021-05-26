@@ -91,6 +91,9 @@ class ApprovalService {
 
 	/**
 	 * Get rules allowing user to request approval
+	 *
+	 * @param string $userId
+	 * @return array
 	 */
 	public function getUserRequesterRules(string $userId): array {
 		$userRules = [];
@@ -397,6 +400,7 @@ class ApprovalService {
 	 * @param int $fileId
 	 * @param int $ruleId
 	 * @param string|null $userId
+	 * @param bool $createShares
 	 * @return array potential error message
 	 */
 	public function request(int $fileId, int $ruleId, ?string $userId, bool $createShares): array {
@@ -442,6 +446,11 @@ class ApprovalService {
 
 	/**
 	 * Share file with everybody who can approve with given rule and have no access yet
+	 *
+	 * @param int $fileId
+	 * @param int $ruleId
+	 * @param string $userId
+	 * @return array list of created shares
 	 */
 	private function createShares(int $fileId, array $rule, string $userId): array {
 		$createdShares = [];
@@ -487,6 +496,16 @@ class ApprovalService {
 		return $createdShares;
 	}
 
+	/**
+	 * Create one share
+	 *
+	 * @param Node $node
+	 * @param int $type
+	 * @param string $sharedWith
+	 * @param string $sharedBy
+	 * @param string $label
+	 * @return bool success
+	 */
 	private function createShare(Node $node, int $type, string $sharedWith, string $sharedBy, string $label): bool {
 		$share = $this->shareManager->newShare();
 		$share->setNode($node)
@@ -619,6 +638,13 @@ class ApprovalService {
 		return $ruleUserIds;
 	}
 
+	/**
+	 * Called when a tag is assigned
+	 *
+	 * @param int $fileId
+	 * @param array $tags
+	 * @return void
+	 */
 	public function handleTagAssignmentEvent(int $fileId, array $tags): void {
 		// which rule is involved?
 		$ruleInvolded = null;
@@ -644,7 +670,8 @@ class ApprovalService {
 	 * Send it to all users who are authorized to approve it
 	 *
 	 * @param int $fileId
-	 * @param array $tags
+	 * @param array $rule
+	 * @param string|null $requestUserId
 	 * @return void
 	 */
 	public function sendRequestNotification(int $fileId, array $rule, ?string $requestUserId = null): void {
@@ -712,7 +739,14 @@ class ApprovalService {
 		}
 	}
 
-	public function propFind(PropFind $propFind, INode $node) {
+	/**
+	 * Get approval state as a WebDav attribute
+	 *
+	 * @param PropFind $propFind
+	 * @param INode $node
+	 * @return void
+	 */
+	public function propFind(PropFind $propFind, INode $node): void {
 		if (!$node instanceof SabreNode) {
 			return;
 		}
@@ -722,7 +756,6 @@ class ApprovalService {
 
 		$propFind->handle(
 			Application::DAV_PROPERTY_APPROVAL_STATE, function() use ($nodeId, $state) {
-				// error_log('HANDLE DAV_PROPERTY_APPROVAL_STATE for file '.$nodeId.' USER iS '.$this->userId);
 				return $state['state'];
 			}
 		);
@@ -731,6 +764,9 @@ class ApprovalService {
 	/**
 	 * This is only called in Application::registerHooks()
 	 * and is only usefull to propFind method
+	 *
+	 * @param string $userId
+	 * @return void
 	 */
 	public function setUserId(string $userId): void {
 		$this->userId = $userId;

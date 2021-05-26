@@ -53,6 +53,14 @@ class DocusignAPIService {
 		$this->client = $clientService->newClient();
 	}
 
+	/**
+	 * Start the DocuSign email signature flow
+	 *
+	 * @param int $fileId
+	 * @param string $signerUserId
+	 * @param string|null $ccUserId
+	 * @return array result or error
+	 */
 	public function emailSign(int $fileId, string $signerUserId, ?string $ccUserId = null): array {
 		$found = $this->root->getById($fileId);
 		if (count($found) > 0) {
@@ -92,6 +100,24 @@ class DocusignAPIService {
 			$ccUserId, $ccEmail, $ccName);
 	}
 
+	/**
+	 * Build and sent the enveloppe to DocuSign
+	 *
+	 * @param string $accessToken
+	 * @param string $refreshToken
+	 * @param string $clientID
+	 * @param string $clientSecret
+	 * @param string $baseURI
+	 * @param string $accountId
+	 * @param File $file
+	 * @param string $signerUserId
+	 * @param string $signerEmail
+	 * @param string $signerName
+	 * @param string|null $ccUserId
+	 * @param string|null $ccEmail
+	 * @param string|null $ccName
+	 * @return array request result
+	 */
 	public function emailSignRequest(string $accessToken, string $refreshToken, string $clientID, string $clientSecret,
 							string $baseURI, string $accountId,
 							File $file,
@@ -257,6 +283,8 @@ class DocusignAPIService {
 
 	/**
 	 * @param string $url
+	 * @param string $clientId
+	 * @param string $clientSecret
 	 * @param array $params
 	 * @param string $method
 	 * @return array

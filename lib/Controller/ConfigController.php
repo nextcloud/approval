@@ -93,7 +93,12 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 *
+	 * @param int $tagPending
+	 * @param int $tagApproved
+	 * @param int $tagRejected
+	 * @param array $approvers
+	 * @param array $requesters
+	 * @param string $description
 	 * @return DataResponse
 	 */
 	public function createRule(int $tagPending, int $tagApproved, int $tagRejected,
@@ -105,7 +110,13 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 *
+	 * @param int $id
+	 * @param int $tagPending
+	 * @param int $tagApproved
+	 * @param int $tagRejected
+	 * @param array $approvers
+	 * @param array $requesters
+	 * @param string $description
 	 * @return DataResponse
 	 */
 	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected,
@@ -117,7 +128,7 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 *
+	 * @param int $id
 	 * @return DataResponse
 	 */
 	public function deleteRule(int $id): DataResponse {

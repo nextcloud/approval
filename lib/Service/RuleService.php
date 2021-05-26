@@ -105,7 +105,7 @@ class RuleService {
 	/**
 	 * Save the rule to DB if it has no conflict with others
 	 *
-	 * @param ?int $id rule id
+	 * @param int $id rule id
 	 * @param int $tagPending
 	 * @param int $tagApproved
 	 * @param int $tagRejected
@@ -449,7 +449,16 @@ class RuleService {
 		return $rules;
 	}
 
-	public function storeAction(int $fileId, int $ruleId, string $userId, int $newState) {
+	/**
+	 * Store approval action
+	 *
+	 * @param int $fileId
+	 * @param int $ruleId
+	 * @param string $userId
+	 * @param int $newState
+	 * @return void
+	 */
+	public function storeAction(int $fileId, int $ruleId, string $userId, int $newState): void {
 		$qb = $this->db->getQueryBuilder();
 		$qb->delete('approval_activity')
 			->where(
@@ -474,6 +483,14 @@ class RuleService {
 		$qb = $qb->resetQueryParts();
 	}
 
+	/**
+	 * Get last action that brought a file to a given state
+	 *
+	 * @param int $fileId
+	 * @param int $ruleId
+	 * @param int $newState
+	 * @return array|null
+	 */
 	public function getLastAction(int $fileId, int $ruleId, int $newState): ?array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')

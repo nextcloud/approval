@@ -175,7 +175,7 @@ class DocusignController extends Controller {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
 
-		$url = 'https://account-d.docusign.com/oauth/userinfo';
+		$url = Application::DOCUSIGN_USER_INFO_REQUEST_URL;
 
 		$info = $this->docusignAPIService->apiRequest($url, $accessToken, $refreshToken, $clientID, $clientSecret);
 		if (isset($info['name'], $info['email'], $info['accounts']) && is_array($info['accounts']) && count($info['accounts']) > 0) {
@@ -191,9 +191,6 @@ class DocusignController extends Controller {
 			}
 			$this->config->setAppValue(Application::APP_ID, 'docusign_user_account_id', $accountId);
 			$this->config->setAppValue(Application::APP_ID, 'docusign_user_base_uri', $baseURI);
-			// TEST
-			// $this->docusignAPIService->emailSign(2232, 'julien', 'toto');
-			// $this->docusignAPIService->emailSign(2232, 'julien');
 			return ['docusign_user_name' => $info['name']];
 		} else {
 			$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_name');
