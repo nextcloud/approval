@@ -19,7 +19,9 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 		/**
 		 * @namespace
 		 */
-		OCA.Approval = {}
+		OCA.Approval = {
+			requestOnFileChange: false,
+		}
 	}
 
 	OC.Files.Client.PROPERTY_APPROVAL_STATE = '{' + OC.Files.Client.NS_NEXTCLOUD + '}approval-state'
@@ -253,6 +255,7 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 		},
 
 		request: (fileName, context) => {
+			OCA.Approval.requestOnFileChange = true
 			OCA.Approval.View.openSidebarOnFile(context.dir, fileName)
 		},
 

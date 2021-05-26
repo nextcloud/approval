@@ -250,6 +250,11 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		setFileInfo(fileInfo) {
+			// trick to open request modal with file action
+			if (OCA.Approval.requestOnFileChange) {
+				OCA.Approval.requestOnFileChange = false
+				this._inputView.showRequestModal()
+			}
 			// abort if fileId didn't change
 			if (this.fileId === (fileInfo.id || fileInfo.attributes?.id)) {
 				return
