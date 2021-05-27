@@ -57,11 +57,12 @@ class DocusignAPIService {
 	 * Start the DocuSign email signature flow
 	 *
 	 * @param int $fileId
-	 * @param string $signerUserId
-	 * @param string|null $ccUserId
+	 * @param string $ccUserId
+	 * @param string|null $targetEmail
+	 * @param string|null $targetUserId
 	 * @return array result or error
 	 */
-	public function emailSign(int $fileId, string $signerUserId, ?string $ccUserId = null): array {
+	public function emailSignStandalone(int $fileId, string $ccUserId, ?string $targetEmail = null, ?string $targetUserId): array {
 		$found = $this->root->getById($fileId);
 		if (count($found) > 0) {
 			$file = $found[0];
@@ -69,12 +70,50 @@ class DocusignAPIService {
 			return ['error' => 'File not found'];
 		}
 
-		$accessToken = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
-		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token', '');
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
-		$accountId = $this->config->getAppValue(Application::APP_ID, 'docusign_user_account_id', '');
-		$baseURI = $this->config->getAppValue(Application::APP_ID, 'docusign_user_base_uri', '');
+		if (!is_null($targetUserId)) {
+			$targetUser = $this->userManager->get($targetUserId);
+			if ($targetUser === null) {
+				return ['error' => 'Target user not found'];
+			}
+			$signerName = $targetUser->getDisplayName();
+			$signerEmail = $targetUser->getEMailAddress();
+		} elseif (!is_null($targetEmail)) {
+			$signerName = $targetEmail;
+			$signerEmail = $targetEmail;
+		} else {
+			return ['error' => 'No target user or email'];
+		}
+
+		// cc user is the one who requested the signature
+		$ccUser = $this->userManager->get($ccUserId);
+		if ($ccUser === null) {
+			return ['error' => 'CC user not found'];
+		}
+		$ccName = $ccUser->getDisplayName();
+		$ccEmail = $ccUser->getEMailAddress();
+
+		return $this->emailSignRequest(
+			$file,
+			$signerEmail, $signerName,
+			$ccEmail, $ccName
+		);
+	}
+
+	/**
+	 * Start the DocuSign email signature flow
+	 *
+	 * @param int $fileId
+	 * @param string $signerUserId
+	 * @param string|null $ccUserId
+	 * @return array result or error
+	 */
+	public function emailSignByApprover(int $fileId, string $signerUserId, ?string $ccUserId = null): array {
+		$found = $this->root->getById($fileId);
+		if (count($found) > 0) {
+			$file = $found[0];
+		} else {
+			return ['error' => 'File not found'];
+		}
 
 		$signerUser = $this->userManager->get($signerUserId);
 		if ($signerUser === null) {
@@ -94,10 +133,11 @@ class DocusignAPIService {
 			$ccEmail = $ccUser->getEMailAddress();
 		}
 
-		return $this->emailSignRequest($accessToken, $refreshToken, $clientID, $clientSecret,
-			$baseURI, $accountId, $file,
-			$signerUserId, $signerEmail, $signerName,
-			$ccUserId, $ccEmail, $ccName);
+		return $this->emailSignRequest(
+			$file,
+			$signerEmail, $signerName,
+			$ccEmail, $ccName
+		);
 	}
 
 	/**
@@ -110,19 +150,22 @@ class DocusignAPIService {
 	 * @param string $baseURI
 	 * @param string $accountId
 	 * @param File $file
-	 * @param string $signerUserId
 	 * @param string $signerEmail
 	 * @param string $signerName
-	 * @param string|null $ccUserId
 	 * @param string|null $ccEmail
 	 * @param string|null $ccName
 	 * @return array request result
 	 */
-	public function emailSignRequest(string $accessToken, string $refreshToken, string $clientID, string $clientSecret,
-							string $baseURI, string $accountId,
-							File $file,
-							string $signerUserId, string $signerEmail, string $signerName,
-							?string $ccUserId, ?string $ccEmail, ?string $ccName): array {
+	public function emailSignRequest(File $file,
+									string $signerEmail, string $signerName,
+									?string $ccEmail, ?string $ccName): array {
+		$accessToken = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
+		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token', '');
+		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
+		$accountId = $this->config->getAppValue(Application::APP_ID, 'docusign_user_account_id', '');
+		$baseURI = $this->config->getAppValue(Application::APP_ID, 'docusign_user_base_uri', '');
+
 		$docB64 = base64_encode($file->getContent());
 		$enveloppe = [
 			'emailSubject' => $this->l10n->t('Signature of %s', $file->getName()),
@@ -165,7 +208,7 @@ class DocusignAPIService {
 		];
 
 		// CC is optional
-		if ($ccUserId && $ccName && $ccEmail) {
+		if ($ccName && $ccEmail) {
 			$enveloppe['recipients']['carbonCopies'][] = [
 				'email' => $ccEmail,
 				'name' => $ccName,

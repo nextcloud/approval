@@ -67,7 +67,7 @@ class DocusignController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function sign(int $fileId, ?string $requesterUserId = null): DataResponse {
+	public function signByApprover(int $fileId, ?string $requesterUserId = null): DataResponse {
 		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
@@ -78,7 +78,31 @@ class DocusignController extends Controller {
 		if (!$this->approvalService->userHasAccessTo($fileId, $this->userId)) {
 			return new DataResponse(['error' => 'You don\'t have access to this file'], 401);
 		}
-		$signResult = $this->docusignAPIService->emailSign($fileId, $this->userId, $requesterUserId);
+		$signResult = $this->docusignAPIService->emailSignByApprover($fileId, $this->userId, $requesterUserId);
+		if (isset($signResult['error'])) {
+			return new DataResponse($signResult, 401);
+		} else {
+			return new DataResponse($signResult);
+		}
+	}
+
+	/**
+	 * @NoAdminRequired
+	 *
+	 * @return DataResponse
+	 */
+	public function signStandalone(int $fileId, ?string $targetEmail = null, ?string $targetUserId): DataResponse {
+		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
+		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
+		$isConnected = ($token !== '' && $clientID !== '' && $clientSecret !== '');
+		if (!$isConnected) {
+			return new DataResponse(['error' => 'DocuSign admin connected account is not configured'], 401);
+		}
+		if (!$this->approvalService->userHasAccessTo($fileId, $this->userId)) {
+			return new DataResponse(['error' => 'You don\'t have access to this file'], 401);
+		}
+		$signResult = $this->docusignAPIService->emailSignStandalone($fileId, $this->userId, $targetEmail, $targetUserId);
 		if (isset($signResult['error'])) {
 			return new DataResponse($signResult, 401);
 		} else {

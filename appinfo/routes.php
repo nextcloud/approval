@@ -21,7 +21,8 @@ return [
 		['name' => 'docusign#setDocusignConfig', 'url' => '/docusign-config', 'verb' => 'PUT'],
 		['name' => 'docusign#getDocusignInfo', 'url' => '/docusign/info', 'verb' => 'GET'],
 		['name' => 'docusign#oauthRedirect', 'url' => '/docusign/oauth-redirect', 'verb' => 'GET'],
-		['name' => 'docusign#sign', 'url' => '/{fileId}/sign', 'verb' => 'PUT'],
+		['name' => 'docusign#signByApprover', 'url' => '/{fileId}/approval-sign', 'verb' => 'PUT'],
+		['name' => 'docusign#signStandalone', 'url' => '/{fileId}/standalone-sign', 'verb' => 'PUT'],
 		// LibreSign
 		['name' => 'config#getLibresignInfo', 'url' => '/libresign/info', 'verb' => 'GET'],
 
