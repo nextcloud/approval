@@ -8,11 +8,15 @@
  *
  */
 import { ApprovalInfoView } from './approvalinfoview'
+import DocuSignModal from './components/DocuSignModal'
 import { states } from './states'
 
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
+
+import Vue from 'vue'
+import './bootstrap'
 
 (function() {
 	if (!OCA.Approval) {
@@ -48,8 +52,6 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 			fileList._getWebdavProperties = function() {
 				const props = oldGetWebdavProperties.apply(this, arguments)
 				props.push(OC.Files.Client.PROPERTY_APPROVAL_STATE)
-				console.debug('_getWebdavProperties')
-				console.debug(props)
 				return props
 			}
 
@@ -211,6 +213,25 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 				permissions: OC.PERMISSION_READ,
 				actionHandler: this.showPendingInfo,
 			})
+
+			fileList.fileActions.registerAction({
+				name: 'approval-sign-docusign',
+				displayName: (context) => {
+					if (context && context.$file && OCA.Approval.docusignConnected) {
+						return t('approval', 'Sign with DocuSign')
+					}
+					return ''
+				},
+				mime: 'application/pdf',
+				order: -139,
+				iconClass: (fileName, context) => {
+					if (context && context.$file && OCA.Approval.docusignConnected) {
+						return 'icon-rename'
+					}
+				},
+				permissions: OC.PERMISSION_READ,
+				actionHandler: this.signDocuSign,
+			})
 		},
 
 		approve: (fileName, context) => {
@@ -259,6 +280,12 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 			OCA.Approval.View.openSidebarOnFile(context.dir, fileName)
 		},
 
+		signDocuSign: (fileName, context) => {
+			const fileId = context.$file.data('id')
+			OCA.Approval.DocuSignModalVue.$children[0].setFileId(fileId)
+			OCA.Approval.DocuSignModalVue.$children[0].showModal()
+		},
+
 		showPendingInfo: (fileName, context) => {
 			OCA.Approval.View.openSidebarOnFile(context.dir, fileName)
 		},
@@ -268,6 +295,28 @@ import { showSuccess, showError } from '@nextcloud/dialogs'
 
 OC.Plugins.register('OCA.Files.FileList', OCA.Approval.FilesPlugin)
 
+// signature modal
+const modalId = 'docusignModal'
+const modalElement = document.createElement('div')
+modalElement.id = modalId
+document.body.append(modalElement)
+
+OCA.Approval.DocuSignModalVue = new Vue({
+	el: modalElement,
+	render: h => {
+		return h(DocuSignModal)
+	},
+})
+
+// is DocuSign configured?
+const urlDs = generateUrl('/apps/approval/docusign/info')
+axios.get(urlDs).then((response) => {
+	OCA.Approval.docusignConnected = response.data.connected
+}).catch((error) => {
+	console.error(error)
+})
+
+// on page load: get rules with current user as able to request
 const url = generateUrl('/apps/approval/user-requester-rules')
 axios.get(url).then((response) => {
 	OCA.Approval.userRules = response.data
