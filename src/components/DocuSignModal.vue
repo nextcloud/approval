@@ -26,7 +26,7 @@
 					:placeholder="t('approval', 'Coma separated email addresses')"
 					type="text">
 				<p class="settings-hint">
-					{{ t('approval', 'Recipients will receive an email from DocuSign with a link to sign the document. You will be informed by email when the document has been signed.') }}
+					{{ t('approval', 'Recipients will receive an email from DocuSign with a link to sign the document. You will be informed by email when the document has been signed by all recipients.') }}
 				</p>
 				<div class="docusign-footer">
 					<button

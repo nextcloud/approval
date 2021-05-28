@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 0.0.9 – 2021-05-28
+### Added
+- ability to request signature via DocuSign for all PDF files
+
 ## 0.0.8 – 2021-05-25
 ### Added
 * the app
