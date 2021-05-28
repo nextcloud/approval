@@ -65,6 +65,8 @@ class DocusignController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 *
+	 * @param int $fileId
+	 * @param string|null $requesterUserId
 	 * @return DataResponse
 	 */
 	public function signByApprover(int $fileId, ?string $requesterUserId = null): DataResponse {
@@ -89,9 +91,11 @@ class DocusignController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 *
+	 * @param string|null $targetEmail
+	 * @param string|null $targetUserId
 	 * @return DataResponse
 	 */
-	public function signStandalone(int $fileId, ?string $targetEmail = null, ?string $targetUserId): DataResponse {
+	public function signStandalone(int $fileId, ?string $targetEmail = null, ?string $targetUserId = null): DataResponse {
 		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');

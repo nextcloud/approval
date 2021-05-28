@@ -62,7 +62,7 @@ class DocusignAPIService {
 	 * @param string|null $targetUserId
 	 * @return array result or error
 	 */
-	public function emailSignStandalone(int $fileId, string $ccUserId, ?string $targetEmail = null, ?string $targetUserId): array {
+	public function emailSignStandalone(int $fileId, string $ccUserId, ?string $targetEmail = null, ?string $targetUserId = null): array {
 		$found = $this->root->getById($fileId);
 		if (count($found) > 0) {
 			$file = $found[0];
@@ -91,6 +91,11 @@ class DocusignAPIService {
 		}
 		$ccName = $ccUser->getDisplayName();
 		$ccEmail = $ccUser->getEMailAddress();
+		// no CC if CC email is the same as target one
+		if ($ccEmail === $targetEmail) {
+			$ccEmail = null;
+			$ccName = null;
+		}
 
 		return $this->emailSignRequest(
 			$file,
