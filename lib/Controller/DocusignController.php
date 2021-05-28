@@ -91,11 +91,11 @@ class DocusignController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 *
-	 * @param string|null $targetEmail
-	 * @param string|null $targetUserId
+	 * @param array $targetEmails
+	 * @param array $targetUserIds
 	 * @return DataResponse
 	 */
-	public function signStandalone(int $fileId, ?string $targetEmail = null, ?string $targetUserId = null): DataResponse {
+	public function signStandalone(int $fileId, array $targetEmails = [], array $targetUserIds = []): DataResponse {
 		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
@@ -106,7 +106,7 @@ class DocusignController extends Controller {
 		if (!$this->approvalService->userHasAccessTo($fileId, $this->userId)) {
 			return new DataResponse(['error' => 'You don\'t have access to this file'], 401);
 		}
-		$signResult = $this->docusignAPIService->emailSignStandalone($fileId, $this->userId, $targetEmail, $targetUserId);
+		$signResult = $this->docusignAPIService->emailSignStandalone($fileId, $this->userId, $targetEmails, $targetUserIds);
 		if (isset($signResult['error'])) {
 			return new DataResponse($signResult, 401);
 		} else {

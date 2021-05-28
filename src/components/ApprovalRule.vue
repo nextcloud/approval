@@ -37,7 +37,7 @@
 					<MultiselectWho
 						class="approval-user-input"
 						:value="value.requesters"
-						:placeholder="t('welcome', 'Who can request approval?')"
+						:placeholder="t('approval', 'Who can request approval?')"
 						@update:value="update('requesters', $event)" />
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 					<MultiselectWho
 						class="approval-user-input"
 						:value="value.approvers"
-						:placeholder="t('welcome', 'Who can approve?')"
+						:placeholder="t('approval', 'Who can approve?')"
 						@update:value="update('approvers', $event)" />
 				</div>
 			</div>

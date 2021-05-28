@@ -58,11 +58,11 @@ class DocusignAPIService {
 	 *
 	 * @param int $fileId
 	 * @param string $ccUserId
-	 * @param string|null $targetEmail
-	 * @param string|null $targetUserId
+	 * @param array $targetEmails
+	 * @param array $targetUserIds
 	 * @return array result or error
 	 */
-	public function emailSignStandalone(int $fileId, string $ccUserId, ?string $targetEmail = null, ?string $targetUserId = null): array {
+	public function emailSignStandalone(int $fileId, string $ccUserId, array $targetEmails = [], array $targetUserIds = []): array {
 		$found = $this->root->getById($fileId);
 		if (count($found) > 0) {
 			$file = $found[0];
@@ -70,18 +70,23 @@ class DocusignAPIService {
 			return ['error' => 'File not found'];
 		}
 
-		if (!is_null($targetUserId)) {
+		$signers = [];
+
+		foreach ($targetEmails as $targetEmail) {
+			$signers[] = [
+				'name' => $targetEmail,
+				'email' => $targetEmail,
+			];
+		}
+
+		foreach ($targetUserIds as $targetUserId) {
 			$targetUser = $this->userManager->get($targetUserId);
-			if ($targetUser === null) {
-				return ['error' => 'Target user not found'];
+			if ($targetUser !== null) {
+				$signers[] = [
+					'name' => $targetUser->getDisplayName(),
+					'email' => $targetUser->getEMailAddress(),
+				];
 			}
-			$signerName = $targetUser->getDisplayName();
-			$signerEmail = $targetUser->getEMailAddress();
-		} elseif (!is_null($targetEmail)) {
-			$signerName = $targetEmail;
-			$signerEmail = $targetEmail;
-		} else {
-			return ['error' => 'No target user or email'];
 		}
 
 		// cc user is the one who requested the signature
@@ -91,15 +96,10 @@ class DocusignAPIService {
 		}
 		$ccName = $ccUser->getDisplayName();
 		$ccEmail = $ccUser->getEMailAddress();
-		// no CC if CC email is the same as target one
-		if ($ccEmail === $targetEmail) {
-			$ccEmail = null;
-			$ccName = null;
-		}
 
 		return $this->emailSignRequest(
 			$file,
-			$signerEmail, $signerName,
+			$signers,
 			$ccEmail, $ccName
 		);
 	}
@@ -124,8 +124,10 @@ class DocusignAPIService {
 		if ($signerUser === null) {
 			return ['error' => 'Signer user not found'];
 		}
-		$signerName = $signerUser->getDisplayName();
-		$signerEmail = $signerUser->getEMailAddress();
+		$signer = [
+			'email' => $signerUser->getEMailAddress(),
+			'name' => $signerUser->getDisplayName(),
+		];
 
 		$ccEmail = null;
 		$ccName = null;
@@ -140,7 +142,7 @@ class DocusignAPIService {
 
 		return $this->emailSignRequest(
 			$file,
-			$signerEmail, $signerName,
+			[$signer],
 			$ccEmail, $ccName
 		);
 	}
@@ -155,14 +157,13 @@ class DocusignAPIService {
 	 * @param string $baseURI
 	 * @param string $accountId
 	 * @param File $file
-	 * @param string $signerEmail
-	 * @param string $signerName
+	 * @param array $signers
 	 * @param string|null $ccEmail
 	 * @param string|null $ccName
 	 * @return array request result
 	 */
 	public function emailSignRequest(File $file,
-									string $signerEmail, string $signerName,
+									array $signers,
 									?string $ccEmail, ?string $ccName): array {
 		$accessToken = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
 		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token', '');
@@ -184,41 +185,44 @@ class DocusignAPIService {
 			],
 			'recipients' => [
 				'carbonCopies' => [],
-				'signers' => [
-					[
-						'email' => $signerEmail,
-						'name' => $signerName,
-						'recipientId' => '1',
-						'routingOrder' => '1',
-						'tabs' => [
-							'signHereTabs' => [
-								[
-									'anchorString' => '**signature_1**',
-									'anchorUnits' => 'pixels',
-									'anchorXOffset' => '20',
-									'anchorYOffset' => '10',
-								],
-								[
-									'anchorString' => '/sn1/',
-									'anchorUnits' => 'pixels',
-									'anchorXOffset' => '20',
-									'anchorYOffset' => '10',
-								],
-							],
-						],
-					],
-				],
+				'signers' => [],
 			],
 			'status' => 'sent',
 		];
+
+		// signers
+		foreach ($signers as $k => $signer) {
+			$enveloppe['recipients']['signers'][] = [
+				'email' => $signer['email'],
+				'name' => $signer['name'],
+				'recipientId' => intval($k) + 1,
+				'routingOrder' => '1',
+				'tabs' => [
+					'signHereTabs' => [
+						[
+							'anchorString' => '**signature_1**',
+							'anchorUnits' => 'pixels',
+							'anchorXOffset' => '20',
+							'anchorYOffset' => '10',
+						],
+						[
+							'anchorString' => '/sn1/',
+							'anchorUnits' => 'pixels',
+							'anchorXOffset' => '20',
+							'anchorYOffset' => '10',
+						],
+					],
+				],
+			];
+		}
 
 		// CC is optional
 		if ($ccName && $ccEmail) {
 			$enveloppe['recipients']['carbonCopies'][] = [
 				'email' => $ccEmail,
 				'name' => $ccName,
-				'recipientId' => '2',
-				'routingOrder' => '2',
+				'recipientId' => '99',
+				'routingOrder' => '99',
 			];
 		}
 
@@ -322,8 +326,12 @@ class DocusignAPIService {
 					);
 				}
 			}
+			// parse response
 			$this->logger->warning('DocuSign API error : '.$e->getMessage(), ['app' => $this->appName]);
-			return ['error' => $e->getMessage()];
+			return [
+				'error' => $e->getMessage(),
+				'response' => json_decode($body, true),
+			];
 		} catch (ConnectException $e) {
 			return ['error' => $e->getMessage()];
 		}

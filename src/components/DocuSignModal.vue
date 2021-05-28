@@ -9,42 +9,24 @@
 				</h2>
 				<span class="field-label">
 					<span class="icon icon-user" />
-					{{ t('approval', 'User') }}
+					{{ t('approval', 'Users') }}
 				</span>
-				<Multiselect
-					v-model="user"
+				<MultiselectWho
 					class="userInput"
-					label="displayName"
-					track-by="multiselectKey"
+					:value="selectedUsers"
 					:max-height="200"
-					:disabled="email !== ''"
-					:placeholder="t('approval', 'Choose a Nextcloud user')"
-					:options="formattedSuggestions"
-					:user-select="true"
-					:internal-search="true"
-					@search-change="asyncFind">
-					<template #option="{option}">
-						<Avatar
-							class="approval-avatar-option"
-							:user="option.entityId"
-							:show-user-status="false" />
-						<span class="multiselect-name">
-							{{ option.displayName }}
-						</span>
-						<span
-							class="icon icon-user multiselect-icon" />
-					</template>
-				</Multiselect>
+					:types="[0]"
+					:placeholder="t('approval', 'Choose Nextcloud users')"
+					@update:value="updateSelectedUsers($event)" />
 				<span class="field-label">
 					<span class="icon icon-mail" />
-					{{ t('approval', 'Email address') }}
+					{{ t('approval', 'Email addresses (coma separated)') }}
 				</span>
-				<input v-model="email"
-					:disabled="user !== null"
-					:placeholder="t('approval', 'or an email address')"
+				<input v-model="emails"
+					:placeholder="t('approval', 'Coma separated email addresses')"
 					type="text">
 				<p class="settings-hint">
-					{{ t('approval', 'The target person will receive an email from DocuSign with a link to sign the document. You will be informed by email when the document has been signed.') }}
+					{{ t('approval', 'Recipients will receive an email from DocuSign with a link to sign the document. You will be informed by email when the document has been signed.') }}
 				</p>
 				<div class="docusign-footer">
 					<button
@@ -65,12 +47,10 @@
 
 <script>
 import axios from '@nextcloud/axios'
-// import { delay } from '../utils'
-
 import Modal from '@nextcloud/vue/dist/Components/Modal'
-import Avatar from '@nextcloud/vue/dist/Components/Avatar'
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-import { generateUrl, generateOcsUrl } from '@nextcloud/router'
+
+import MultiselectWho from './MultiselectWho'
+import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import '@nextcloud/dialogs/styles/toast.scss'
 
@@ -78,9 +58,8 @@ export default {
 	name: 'DocuSignModal',
 
 	components: {
-		Avatar,
 		Modal,
-		Multiselect,
+		MultiselectWho,
 	},
 
 	props: [],
@@ -90,29 +69,18 @@ export default {
 			show: false,
 			loading: false,
 			fileId: 0,
-			email: '',
-			user: null,
-			suggestions: [],
+			emails: '',
+			selectedUsers: [],
 		}
 	},
 
 	computed: {
-		formattedSuggestions() {
-			return this.suggestions.map((s) => {
-				return {
-					entityId: s.id,
-					type: 'user',
-					displayName: s.label,
-					icon: 'icon-user',
-					multiselectKey: 'user-' + s.id,
-				}
-			})
-		},
 		emailIsValid() {
-			return /^\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/.test(this.email)
+			return /^\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+(?:,\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+)*$/
+				.test(this.emails.replace(/\s*,\s*/g, ','))
 		},
 		canValidate() {
-			return this.user || this.emailIsValid
+			return this.selectedUsers.length > 0 || this.emailIsValid
 		},
 	},
 
@@ -127,52 +95,32 @@ export default {
 			this.show = true
 		},
 		closeRequestModal() {
-			this.user = null
-			this.email = ''
+			this.selectedUsers = []
+			this.emails = ''
 			this.show = false
 		},
 		setFileId(fileId) {
 			this.fileId = fileId
 		},
-		asyncFind(query) {
-			this.query = query
-			if (query === '') {
-				this.suggestions = []
-				return
-			}
-			this.loadingSuggestions = true
-			const url = generateOcsUrl('core/autocomplete/get', 2).replace(/\/$/, '')
-			axios.get(url, {
-				params: {
-					format: 'json',
-					search: query,
-					itemType: ' ',
-					itemId: ' ',
-					// users
-					shareTypes: [0],
-				},
-			}).then((response) => {
-				this.suggestions = response.data.ocs.data
-			}).catch((error) => {
-				console.error(error)
-			}).then(() => {
-				this.loadingSuggestions = false
-			})
+		updateSelectedUsers(newValue) {
+			this.selectedUsers = newValue
+			console.debug(this.selectedUsers)
 		},
 		onSignClick() {
 			this.loading = true
 			const req = {
-				targetUserId: this.user?.entityId,
-				targetEmail: this.email ? this.email : undefined,
+				targetUserIds: this.selectedUsers.map((u) => { return u.entityId }),
+				targetEmails: this.emails ? this.emails.replace(/\s*,\s*/g, ',').split(',') : undefined,
 			}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/standalone-sign')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'Signature requested via DocuSign!'))
 				this.closeRequestModal()
 			}).catch((error) => {
+				console.debug(error.response)
 				showError(
 					t('approval', 'Failed to request signature with DocuSign')
-					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.data?.response?.message ?? error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
 			}).then(() => {
 				this.loading = false
@@ -196,15 +144,6 @@ export default {
 
 	.userInput {
 		width: 100%;
-		.multiselect-name {
-			flex-grow: 1;
-			margin-left: 10px;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-		.multiselect-icon {
-			opacity: 0.5;
-		}
 	}
 
 	.settings-hint {

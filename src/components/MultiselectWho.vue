@@ -16,6 +16,7 @@
 		:searchable="true"
 		:auto-limit="false"
 		:user-select="true"
+		v-bind="$attrs"
 		@search-change="asyncFind"
 		@update:value="$emit('update:value', $event)">
 		<template #option="{option}">
@@ -62,6 +63,11 @@ export default {
 		value: {
 			type: Array,
 			required: true,
+		},
+		types: {
+			type: Array,
+			// users, groups and circles
+			default: () => [0, 1, 7],
 		},
 		placeholder: {
 			type: String,
@@ -165,9 +171,6 @@ export default {
 						}
 			}))
 
-			console.debug('suggestions')
-			console.debug(result)
-
 			return result
 		},
 	},
@@ -193,8 +196,7 @@ export default {
 					search: query,
 					itemType: ' ',
 					itemId: ' ',
-					// users, groups and circles
-					shareTypes: [0, 1, 7],
+					shareTypes: this.types,
 				},
 			}).then((response) => {
 				this.suggestions = response.data.ocs.data
