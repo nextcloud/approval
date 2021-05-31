@@ -15,35 +15,33 @@
 			<br>
 			{{ t('approval', 'If you want to use DocuSign, create an application in your DocuSign \'My Apps & Keys\' developer account settings and put the client ID (integration key) and secret below.') }}
 			<br>
-			{{ t('approval', 'Make sure you set a "Redirect URI" to') }}
+			{{ t('approval', 'Make sure you set this "Redirect URI":') }}
 			<b> {{ redirect_uri }} </b>
+			<br>
+			{{ t('approval', 'If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used.') }}
 		</p>
 		<div v-if="!connected"
-			class="grid-form">
-			<p>
-				<label for="docusign-client-id">
-					{{ t('approval', 'Client ID (aka integration key)') }}
-				</label>
-				<input id="docusign-client-id"
-					v-model="state.docusign_client_id"
-					type="password"
-					:readonly="readonly"
-					:placeholder="t('approval', 'Client ID of your application')"
-					@focus="readonly = false"
-					@input="onFieldInput">
-			</p>
-			<p>
-				<label for="docusign-client-secret">
-					{{ t('approval', 'Application secret key') }}
-				</label>
-				<input id="docusign-client-secret"
-					v-model="state.docusign_client_secret"
-					type="password"
-					:readonly="readonly"
-					:placeholder="t('approval', 'Secret key of your application')"
-					@focus="readonly = false"
-					@input="onFieldInput">
-			</p>
+			class="form">
+			<label for="docusign-client-id">
+				{{ t('approval', 'Client ID (aka integration key)') }}
+			</label>
+			<input id="docusign-client-id"
+				v-model="state.docusign_client_id"
+				type="password"
+				:readonly="readonly"
+				:placeholder="t('approval', 'Client ID of your application')"
+				@focus="readonly = false"
+				@input="onFieldInput">
+			<label for="docusign-client-secret">
+				{{ t('approval', 'Application secret key') }}
+			</label>
+			<input id="docusign-client-secret"
+				v-model="state.docusign_client_secret"
+				type="password"
+				:readonly="readonly"
+				:placeholder="t('approval', 'Secret key of your application')"
+				@focus="readonly = false"
+				@input="onFieldInput">
 		</div>
 		<button v-if="oAuthConfigured && !connected"
 			id="docusign-oauth-connect"
@@ -86,6 +84,7 @@ export default {
 			state: loadState('approval', 'docusign-config'),
 			// to prevent some browsers to fill fields with remembered passwords
 			readonly: true,
+			loading: false,
 			redirect_uri: window.location.protocol + '//' + window.location.host + generateUrl('/apps/approval/docusign/oauth-redirect'),
 		}
 	},
@@ -116,6 +115,7 @@ export default {
 
 	methods: {
 		onFieldInput() {
+			this.loading = true
 			delay(() => {
 				this.saveOptions({
 					docusign_client_id: this.state.docusign_client_id,
@@ -139,6 +139,7 @@ export default {
 					)
 				})
 				.then(() => {
+					this.loading = false
 				})
 		},
 		onOAuthClick() {
@@ -215,6 +216,17 @@ export default {
 		background-size: 23px 23px;
 		height: 23px;
 		margin-bottom: -4px;
+	}
+
+	.form {
+		display: flex;
+		flex-direction: column;
+		label {
+			line-height: 32px;
+		}
+		input {
+			width: 250px;
+		}
 	}
 }
 

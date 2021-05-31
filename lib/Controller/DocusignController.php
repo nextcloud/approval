@@ -224,6 +224,7 @@ class DocusignController extends Controller {
 			$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_name');
 			$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_email');
 			$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_account_id');
+			$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_base_uri');
 			return $info;
 		}
 	}
