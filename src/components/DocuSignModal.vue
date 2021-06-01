@@ -9,22 +9,16 @@
 				</h2>
 				<span class="field-label">
 					<span class="icon icon-user" />
-					{{ t('approval', 'Users') }}
+					{{ t('approval', 'Users or email addresses') }}
 				</span>
 				<MultiselectWho
 					class="userInput"
-					:value="selectedUsers"
+					:value="selectedItems"
 					:max-height="200"
 					:types="[0]"
+					:enable-emails="true"
 					:placeholder="t('approval', 'Choose Nextcloud users')"
-					@update:value="updateSelectedUsers($event)" />
-				<span class="field-label">
-					<span class="icon icon-mail" />
-					{{ t('approval', 'Email addresses (coma separated)') }}
-				</span>
-				<input v-model="emails"
-					:placeholder="t('approval', 'Coma separated email addresses')"
-					type="text">
+					@update:value="updateSelectedItems($event)" />
 				<p class="settings-hint">
 					{{ t('approval', 'Recipients will receive an email from DocuSign with a link to sign the document. You will be informed by email when the document has been signed by all recipients.') }}
 				</p>
@@ -69,18 +63,13 @@ export default {
 			show: false,
 			loading: false,
 			fileId: 0,
-			emails: '',
-			selectedUsers: [],
+			selectedItems: [],
 		}
 	},
 
 	computed: {
-		emailIsValid() {
-			return /^\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+(?:,\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+)*$/
-				.test(this.emails.replace(/\s*,\s*/g, ','))
-		},
 		canValidate() {
-			return this.selectedUsers.length > 0 || this.emailIsValid
+			return this.selectedItems.length > 0
 		},
 	},
 
@@ -95,22 +84,24 @@ export default {
 			this.show = true
 		},
 		closeRequestModal() {
-			this.selectedUsers = []
-			this.emails = ''
+			this.selectedItems = []
 			this.show = false
 		},
 		setFileId(fileId) {
 			this.fileId = fileId
 		},
-		updateSelectedUsers(newValue) {
-			this.selectedUsers = newValue
-			console.debug(this.selectedUsers)
+		updateSelectedItems(newValue) {
+			this.selectedItems = newValue
+			console.debug(this.selectedItems)
 		},
 		onSignClick() {
 			this.loading = true
+
+			const targetUserIds = this.selectedItems.filter((i) => { return i.type === 'user' }).map((i) => { return i.entityId })
+			const targetEmails = this.selectedItems.filter((i) => { return i.type === 'email' }).map((i) => { return i.email })
 			const req = {
-				targetUserIds: this.selectedUsers.map((u) => { return u.entityId }),
-				targetEmails: this.emails ? this.emails.replace(/\s*,\s*/g, ',').split(',') : undefined,
+				targetUserIds,
+				targetEmails,
 			}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/standalone-sign')
 			axios.put(url, req).then((response) => {

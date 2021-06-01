@@ -24,10 +24,11 @@
 				class="approval-avatar-option"
 				:user="option.entityId"
 				:show-user-status="false" />
-			<Avatar v-else-if="['group', 'circle'].includes(option.type)"
+			<Avatar v-else-if="['group', 'circle', 'email'].includes(option.type)"
 				class="approval-avatar-option"
 				:display-name="option.displayName"
 				:is-no-user="true"
+				:disable-tooltip="true"
 				:show-user-status="false" />
 			<span class="multiselect-name">
 				{{ option.displayName }}
@@ -73,6 +74,10 @@ export default {
 			type: String,
 			default: t('approval', 'Who?'),
 		},
+		enableEmails: {
+			type: Boolean,
+			default: false,
+		},
 	},
 
 	data() {
@@ -98,6 +103,21 @@ export default {
 					trackKey: 'user-' + s.id,
 				}
 			})
+
+			// email suggestion
+			const cleanQuery = this.query.replace(/\s+/g, '')
+			if (this.enableEmails
+				&& /^\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/.test(cleanQuery)
+				&& !this.value.find(i => i.type === 'email' && i.email === cleanQuery)
+			) {
+				result.push({
+					type: 'email',
+					displayName: cleanQuery,
+					email: cleanQuery,
+					icon: 'icon-mail',
+					trackKey: 'email-' + cleanQuery,
+				})
+			}
 
 			// add current user (who is absent from autocomplete suggestions)
 			// if it matches the query
@@ -144,7 +164,7 @@ export default {
 			})
 			result.push(...circles)
 
-			// always add selected users/groups/circles at the end
+			// always add selected users/groups/circles/emails at the end
 			result.push(...this.value.map((w) => {
 				return w.type === 'user'
 					? {
@@ -162,13 +182,21 @@ export default {
 							icon: 'icon-group',
 							trackKey: 'group-' + w.entityId,
 						}
-						: {
-							entityId: w.entityId,
-							type: 'circle',
-							displayName: w.displayName,
-							icon: 'icon-circle',
-							trackKey: 'circle-' + w.entityId,
-						}
+						: w.type === 'circle'
+							? {
+								entityId: w.entityId,
+								type: 'circle',
+								displayName: w.displayName,
+								icon: 'icon-circle',
+								trackKey: 'circle-' + w.entityId,
+							}
+							: {
+								type: 'email',
+								displayName: w.displayName,
+								email: w.email,
+								icon: 'icon-mail',
+								trackKey: 'email-' + w.email,
+							}
 			}))
 
 			return result
