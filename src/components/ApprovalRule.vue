@@ -231,6 +231,7 @@ export default {
 			min-height: 10px;
 			width: 26px;
 			padding: 0;
+			float: right;
 			border: none;
 			background-color: transparent;
 			&:hover {

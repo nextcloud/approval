@@ -462,7 +462,7 @@ class ApprovalService {
 		} else {
 			return [];
 		}
-		$label = $this->l10n->t('Approval share');
+		$label = $this->l10n->t('Please check my approval request');
 
 		foreach ($rule['approvers'] as $approver) {
 			if ($approver['type'] === 'user' && !$this->userHasAccessTo($fileId, $approver['entityId'])) {

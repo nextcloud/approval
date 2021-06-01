@@ -212,16 +212,17 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/approval-sign')
 			axios.put(url, req).then((response) => {
-				showSuccess(t('approval', '{name} signature requested via DocuSign!', { name: this.fileName }))
+				showSuccess(t('approval', 'You will receive an email from DocuSign to confirm your signature'))
 				if (!this.requesterUserId) {
 					showWarning(t('approval', 'The user who requested this approval was not found, remember to send or share the signed document yourself'))
 				}
-				this._inputView.setDocusignConnected(false)
+				this._inputView.setDocusignRequested(true)
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to request signature with DocuSign')
 					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
+				console.error(error)
 			})
 		},
 
@@ -266,6 +267,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 			this._inputView.setIsPdf(fileInfo.mimetype === 'application/pdf')
 			this._inputView.setDocusignConnected(this.docusignConnected)
+			this._inputView.setDocusignRequested(false)
 			this._inputView.setLibresignEnabled(this.libresignEnabled)
 
 			// refresh requester rules info each time we get an approval state

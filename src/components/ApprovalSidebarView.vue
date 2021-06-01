@@ -23,6 +23,7 @@
 		</span>
 		<button v-if="isSignableDocuSign"
 			:class="{ loading: docusignLoading, signButton: true }"
+			:disabled="docusignRequested"
 			@click="onSignDocuSignClick">
 			{{ docusignButtonText }}
 		</button>
@@ -158,6 +159,7 @@ export default {
 			requestModal: false,
 			requesting: false,
 			docusignConnected: false,
+			docusignRequested: false,
 			docusignLoading: false,
 			docusignButtonText: t('approval', 'Sign with DocuSign'),
 			// TODO set to false and pass it somehow
@@ -257,6 +259,10 @@ export default {
 		},
 		setDocusignConnected(isConnected) {
 			this.docusignConnected = isConnected
+			this.docusignLoading = false
+		},
+		setDocusignRequested(requested) {
+			this.docusignRequested = requested
 			this.docusignLoading = false
 		},
 		setLibresignEnabled(isEnabled) {
