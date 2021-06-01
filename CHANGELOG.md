@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.0 – 2021-06-01
+### Changed
+* address design review feedback
+
 ## 0.0.9 – 2021-05-28
 ### Added
-- ability to request signature via DocuSign for all PDF files
+* ability to request signature via DocuSign for all PDF files
 
 ## 0.0.8 – 2021-05-25
 ### Added
