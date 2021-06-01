@@ -17,7 +17,7 @@
 					:max-height="200"
 					:types="[0]"
 					:enable-emails="true"
-					:placeholder="t('approval', 'Choose Nextcloud users')"
+					:placeholder="t('approval', 'Nextcloud users or email addresses')"
 					@update:value="updateSelectedItems($event)" />
 				<p class="settings-hint">
 					{{ t('approval', 'Recipients will receive an email from DocuSign with a link to sign the document. You will be informed by email when the document has been signed by all recipients.') }}
@@ -105,7 +105,7 @@ export default {
 			}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/standalone-sign')
 			axios.put(url, req).then((response) => {
-				showSuccess(t('approval', 'Signature requested via DocuSign!'))
+				showSuccess(t('approval', 'Recipients will receive an email from DocuSign to confirm their signature'))
 				this.closeRequestModal()
 			}).catch((error) => {
 				console.debug(error.response)
@@ -135,6 +135,7 @@ export default {
 
 	.userInput {
 		width: 100%;
+		margin: 0 0 28px 0;
 	}
 
 	.settings-hint {
@@ -157,6 +158,7 @@ export default {
 	display: flex;
 	align-items: center;
 	height: 36px;
+	margin: 8px 0 0 0;
 	.icon {
 		width: 32px;
 	}
