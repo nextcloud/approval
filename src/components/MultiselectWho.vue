@@ -5,7 +5,7 @@
 		track-by="trackKey"
 		:value="value"
 		:multiple="true"
-		:clear-on-select="false"
+		:clear-on-select="queryIsEmail"
 		:hide-selected="false"
 		:internal-search="false"
 		:loading="loadingSuggestions"
@@ -90,6 +90,10 @@ export default {
 	},
 
 	computed: {
+		queryIsEmail() {
+			const cleanQuery = this.query.replace(/\s+/g, '')
+			return /^\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/.test(cleanQuery)
+		},
 		formattedSuggestions() {
 			// users suggestions (avoid selected users)
 			const result = this.suggestions.filter((s) => {
