@@ -72,10 +72,16 @@
 			<Modal v-if="requestModal"
 				size="large"
 				@close="closeRequestModal">
-				<RequestForm :rules="userRules"
-					class="info-modal"
-					@request="onRequest"
-					@cancel="requestModal = false" />
+				<FilePicker
+					:loading-directory="true"
+					:dark-mode="true"
+					:current-path="'/plop/lala'"
+					:current-elements="currentElements"
+					:connected="true"
+					:mode="'getFilesPath'"
+					:multiple-download="true"
+					:quota="{}"
+					@close="closeRequestModal" />
 			</Modal>
 		</span>
 		<span v-if="myRule">
@@ -95,7 +101,8 @@ import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 
 import ApprovalButtons from './ApprovalButtons'
-import RequestForm from './RequestForm'
+
+import FilePicker from 'nextcloud-webdav-filepicker/src/components/FilePicker'
 
 import Vue from 'vue'
 import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
@@ -105,7 +112,7 @@ export default {
 	name: 'ApprovalSidebarView',
 
 	components: {
-		UserBubble, Modal, ApprovalButtons, RequestForm,
+		UserBubble, Modal, ApprovalButtons, FilePicker,
 	},
 
 	props: {
@@ -167,6 +174,63 @@ export default {
 			libresignLoading: false,
 			libresignButtonText: t('approval', 'Sign with LibreSign'),
 			isPdf: false,
+			currentElements: [
+				{
+					type: 'directory',
+					basename: 'plop',
+					size: 0,
+					lastmod_ts: 1234567888,
+				},
+				{
+					type: 'file',
+					basename: 'rere.txt',
+					size: 380,
+					mime: 'text/csv',
+					lastmod_ts: 1234569888,
+				},
+				{
+					type: 'file',
+					basename: 'VV.txt',
+					size: 1380,
+					mime: 'text/plop',
+					lastmod_ts: 1234569888,
+				},
+				{
+					type: 'file',
+					basename: 'VV.txt',
+					size: 1380,
+					mime: 'text/csv',
+					lastmod_ts: 1234569888,
+				},
+				{
+					type: 'file',
+					basename: 'VV.txt',
+					size: 1380,
+					mime: 'image/png',
+					lastmod_ts: 1234569888,
+				},
+				{
+					type: 'file',
+					basename: 'VV.txt',
+					size: 1380,
+					mime: 'text/calendar',
+					lastmod_ts: 1234569888,
+				},
+				{
+					type: 'file',
+					basename: 'VV.txt',
+					size: 1380,
+					mime: 'audio/plop',
+					lastmod_ts: 1234569888,
+				},
+				{
+					type: 'file',
+					basename: 'VV.txt',
+					size: 1380,
+					mime: 'application/gpx',
+					lastmod_ts: 1234569888,
+				},
+			],
 		}
 	},
 
