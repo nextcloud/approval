@@ -73,8 +73,7 @@
 				size="large"
 				@close="closeRequestModal">
 				<FilePicker
-					:loading-directory="true"
-					:dark-mode="true"
+					:loading-directory="false"
 					:current-path="'/plop/lala'"
 					:current-elements="currentElements"
 					:connected="true"
@@ -102,7 +101,7 @@ import Modal from '@nextcloud/vue/dist/Components/Modal'
 
 import ApprovalButtons from './ApprovalButtons'
 
-import FilePicker from 'nextcloud-webdav-filepicker/src/components/FilePicker'
+import FilePicker from 'nextcloud-webdav-filepicker/js/Components/FilePicker'
 
 import Vue from 'vue'
 import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
@@ -178,19 +177,22 @@ export default {
 				{
 					type: 'directory',
 					basename: 'plop',
+					filename: '/plop/lala/plop',
 					size: 0,
 					lastmod_ts: 1234567888,
 				},
 				{
 					type: 'file',
 					basename: 'rere.txt',
+					filename: '/plop/lala/rere.txt',
 					size: 380,
 					mime: 'text/csv',
 					lastmod_ts: 1234569888,
 				},
 				{
 					type: 'file',
-					basename: 'VV.txt',
+					basename: 'V.txt',
+					filename: '/plop/lala/V.txt',
 					size: 1380,
 					mime: 'text/plop',
 					lastmod_ts: 1234569888,
@@ -198,34 +200,39 @@ export default {
 				{
 					type: 'file',
 					basename: 'VV.txt',
+					filename: '/plop/lala/VV.txt',
 					size: 1380,
 					mime: 'text/csv',
 					lastmod_ts: 1234569888,
 				},
 				{
 					type: 'file',
-					basename: 'VV.txt',
+					basename: 'VVV.txt',
+					filename: '/plop/lala/VVV.txt',
 					size: 1380,
 					mime: 'image/png',
 					lastmod_ts: 1234569888,
 				},
 				{
 					type: 'file',
-					basename: 'VV.txt',
+					basename: 'VVVV.txt',
+					filename: '/plop/lala/VVVV.txt',
 					size: 1380,
 					mime: 'text/calendar',
 					lastmod_ts: 1234569888,
 				},
 				{
 					type: 'file',
-					basename: 'VV.txt',
+					basename: 'VVVVV.txt',
+					filename: '/plop/lala/VVVVV.txt',
 					size: 1380,
 					mime: 'audio/plop',
 					lastmod_ts: 1234569888,
 				},
 				{
 					type: 'file',
-					basename: 'VV.txt',
+					basename: 'V6.txt',
+					filename: '/plop/lala/V6.txt',
 					size: 1380,
 					mime: 'application/gpx',
 					lastmod_ts: 1234569888,
