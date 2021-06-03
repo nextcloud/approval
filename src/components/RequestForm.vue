@@ -148,6 +148,9 @@ export default {
 		}
 		input[type=radio] {
 			margin: 0;
+			&:focus {
+				// no way to make it look different
+			}
 		}
 	}
 
