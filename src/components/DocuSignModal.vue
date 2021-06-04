@@ -11,6 +11,7 @@
 					{{ t('approval', 'Users or email addresses') }}
 				</span>
 				<MultiselectWho
+					ref="multiselect"
 					class="userInput"
 					:value="selectedItems"
 					:max-height="200"
@@ -81,6 +82,10 @@ export default {
 	methods: {
 		showModal() {
 			this.show = true
+			// once the modal is opened, focus on the multiselect input
+			this.$nextTick(() => {
+				this.$refs.multiselect.$el.querySelector('input').focus()
+			})
 		},
 		closeRequestModal() {
 			this.selectedItems = []
