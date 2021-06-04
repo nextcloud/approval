@@ -5,7 +5,7 @@
 		track-by="trackKey"
 		:value="value"
 		:multiple="true"
-		:clear-on-select="queryIsEmail"
+		:clear-on-select="true"
 		:hide-selected="false"
 		:internal-search="false"
 		:loading="loadingSuggestions"
