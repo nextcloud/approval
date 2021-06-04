@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.0 – 2021-06-04
+### Changed
+* clear multiselect after selection
+* address another design review feedback
+* autofocus on multiselect when opening signature request modal
+
 ## 1.0.0 – 2021-06-01
 ### Changed
 * address design review feedback
