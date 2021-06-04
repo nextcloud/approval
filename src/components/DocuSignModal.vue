@@ -8,7 +8,6 @@
 					{{ t('approval', 'Request a signature via DocuSign') }}
 				</h2>
 				<span class="field-label">
-					<span class="icon icon-user" />
 					{{ t('approval', 'Users or email addresses') }}
 				</span>
 				<MultiselectWho
@@ -105,7 +104,7 @@ export default {
 			}
 			const url = generateUrl('/apps/approval/' + this.fileId + '/standalone-sign')
 			axios.put(url, req).then((response) => {
-				showSuccess(t('approval', 'Recipients will receive an email from DocuSign to confirm their signature'))
+				showSuccess(t('approval', 'Recipients will receive an email from DocuSign to sign the document'))
 				this.closeRequestModal()
 			}).catch((error) => {
 				console.debug(error.response)

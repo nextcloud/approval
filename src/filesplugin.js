@@ -218,7 +218,7 @@ import './bootstrap'
 				name: 'approval-sign-docusign',
 				displayName: (context) => {
 					if (context && context.$file && OCA.Approval.docusignConnected) {
-						return t('approval', 'Request signature (DocuSign)')
+						return t('approval', 'Request signature')
 					}
 					return ''
 				},
