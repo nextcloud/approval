@@ -172,4 +172,13 @@ export default {
 		}
 	}
 }
+
+::v-deep .user-bubble {
+	.icon-circle {
+		background-image: var(--icon-circles-circles-000);
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+}
 </style>
