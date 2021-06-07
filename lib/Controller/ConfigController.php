@@ -55,6 +55,10 @@ class ConfigController extends Controller {
 	 */
 	public function getRules(): DataResponse {
 		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+		if ($circlesEnabled) {
+			$circlesManager = \OC::$server->get(\OCA\Circles\CirclesManager::class);
+			$circlesManager->startSuperSession();
+		}
 
 		$rules = $this->ruleService->getRules();
 		foreach ($rules as $id => $rule) {
@@ -66,8 +70,11 @@ class ConfigController extends Controller {
 					$rules[$id]['approvers'][$k]['displayName'] = $elem['entityId'];
 				} elseif ($elem['type'] === 'circle') {
 					if ($circlesEnabled) {
-						$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($elem['entityId']);
-						$rules[$id]['approvers'][$k]['displayName'] = $circleDetails->getName();
+						try {
+							$circle = $circlesManager->getCircle($elem['entityId']);
+							$rules[$id]['approvers'][$k]['displayName'] = $circle->getDisplayName();
+						} catch (\OCA\Circles\Exceptions\CircleNotFoundException $e) {
+						}
 					} else {
 						unset($rules[$id]['approvers'][$k]);
 					}
@@ -81,13 +88,19 @@ class ConfigController extends Controller {
 					$rules[$id]['requesters'][$k]['displayName'] = $elem['entityId'];
 				} elseif ($elem['type'] === 'circle') {
 					if ($circlesEnabled) {
-						$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($elem['entityId']);
-						$rules[$id]['requesters'][$k]['displayName'] = $circleDetails->getName();
+						try {
+							$circle = $circlesManager->getCircle($elem['entityId']);
+							$rules[$id]['requesters'][$k]['displayName'] = $circle->getDisplayName();
+						} catch (\OCA\Circles\Exceptions\CircleNotFoundException $e) {
+						}
 					} else {
 						unset($rules[$id]['requesters'][$k]);
 					}
 				}
 			}
+		}
+		if ($circlesEnabled) {
+			$circlesManager->stopSession();
 		}
 		return new DataResponse($rules);
 	}

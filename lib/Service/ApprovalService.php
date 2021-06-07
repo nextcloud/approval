@@ -127,9 +127,17 @@ class ApprovalService {
 			$user = $this->userManager->get($k);
 			$userNames[$k] = $user ? $user->getDisplayName() : $k;
 		}
-		foreach ($circleNames as $k => $v) {
-			$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($k);
-			$circleNames[$k] = $circleDetails->getName();
+		if ($circlesEnabled) {
+			$circlesManager = \OC::$server->get(\OCA\Circles\CirclesManager::class);
+			$circlesManager->startSuperSession();
+			foreach ($circleNames as $k => $v) {
+				try {
+					$circle = $circlesManager->getCircle($k);
+					$circleNames[$k] = $circle->getDisplayName();
+				} catch (\OCA\Circles\Exceptions\CircleNotFoundException $e) {
+				}
+			}
+			$circlesManager->stopSession();
 		}
 		// affect names
 		foreach ($userRules as $ruleIndex => $rule) {
@@ -231,25 +239,31 @@ class ApprovalService {
 	 * @return bool
 	 */
 	private function isUserInCircle(string $userId, string $circleId): bool {
-		$circleDetails = null;
+		$circlesManager = \OC::$server->get(\OCA\Circles\CirclesManager::class);
+		$circlesManager->startSuperSession();
 		try {
-			$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($circleId);
-		} catch (\OCA\Circles\Exceptions\CircleDoesNotExistException $e) {
+			$circle = $circlesManager->getCircle($circleId);
+		} catch (\OCA\Circles\Exceptions\CircleNotFoundException $e) {
+			$circlesManager->stopSession();
 			return false;
 		}
 		// is the circle owner
-		if ($circleDetails->getOwner()->getUserId() === $userId) {
+		$owner = $circle->getOwner();
+		// the owner is also a member so this might be useless...
+		if ($owner->getUserType() === 1 && $owner->getUserId() === $userId) {
+			$circlesManager->stopSession();
 			return true;
 		} else {
-			if ($circleDetails->getMembers() !== null) {
-				foreach ($circleDetails->getMembers() as $m) {
-					// is member of this circle
-					if ($m->getUserId() === $userId) {
-						return true;
-					}
+			$members = $circle->getMembers();
+			foreach ($members as $m) {
+				// is member of this circle
+				if ($m->getUserType() === 1 && $m->getUserId() === $userId) {
+					$circlesManager->stopSession();
+					return true;
 				}
 			}
 		}
+		$circlesManager->stopSession();
 		return false;
 	}
 
@@ -597,6 +611,10 @@ class ApprovalService {
 	 */
 	public function getRuleAuthorizedUserIds(array $rule, string $role = 'approvers'): array {
 		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+		if ($circlesEnabled) {
+			$circlesManager = \OC::$server->get(\OCA\Circles\CirclesManager::class);
+			$circlesManager->startSuperSession();
+		}
 
 		$ruleUserIds = [];
 		foreach ($rule[$role] as $approver) {
@@ -616,24 +634,26 @@ class ApprovalService {
 				}
 			} elseif ($circlesEnabled && $approver['type'] === 'circle') {
 				$circleId = $approver['entityId'];
-				$circleDetails = null;
 				try {
-					$circleDetails = \OCA\Circles\Api\v1\Circles::detailsCircle($circleId);
-				}
-				catch (\OCA\Circles\Exceptions\CircleDoesNotExistException $e) {
-				}
-				if ($circleDetails) {
-					$circleMembers = $circleDetails->getMembers();
-					if ($circleMembers !== null) {
-						foreach ($circleMembers as $member) {
-							$userId = $member->getUserId();
-							if (!in_array($userId, $ruleUserIds)) {
-								$ruleUserIds[] = $userId;
-							}
+					$circle = $circlesManager->getCircle($circleId);
+					$circleMembers = $circle->getMembers();
+					foreach ($circleMembers as $member) {
+						// only consider users
+						if ($member->getUserType() !== 1) {
+							continue;
+						}
+						$memberUserId = $member->getUserId();
+						if (!in_array($memberUserId, $ruleUserIds)) {
+							$ruleUserIds[] = $memberUserId;
 						}
 					}
+				} catch (\OCA\Circles\Exceptions\CircleNotFoundException $e) {
 				}
 			}
+		}
+
+		if ($circlesEnabled) {
+			$circlesManager->stopSession();
 		}
 		return $ruleUserIds;
 	}
