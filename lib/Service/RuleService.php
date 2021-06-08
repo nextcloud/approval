@@ -353,35 +353,8 @@ class RuleService {
 			return $rule;
 		}
 
-		$qb->select('*')
-			->from('approval_rule_approvers')
-			->where(
-				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
-			);
-		$req = $qb->execute();
-		while ($row = $req->fetch()) {
-			$rule['approvers'][] = [
-				'entityId' => $row['entity_id'],
-				'type' => $this->intTypeToStr[$row['entity_type']],
-			];
-		}
-		$req->closeCursor();
-		$qb = $qb->resetQueryParts();
-
-		$qb->select('*')
-			->from('approval_rule_requesters')
-			->where(
-				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
-			);
-		$req = $qb->execute();
-		while ($row = $req->fetch()) {
-			$rule['requesters'][] = [
-				'entityId' => $row['entity_id'],
-				'type' => $this->intTypeToStr[$row['entity_type']],
-			];
-		}
-		$req->closeCursor();
-		$qb = $qb->resetQueryParts();
+		$rule['approvers'] = $this->getRuleEntities($id, 'approvers');
+		$rule['requesters'] = $this->getRuleEntities($id, 'requesters');
 
 		return $rule;
 	}
@@ -392,7 +365,6 @@ class RuleService {
 	 * @return array
 	 */
 	public function getRules(): array {
-		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
 		$rules = [];
 		$qb = $this->db->getQueryBuilder();
 
@@ -419,44 +391,43 @@ class RuleService {
 		$qb = $qb->resetQueryParts();
 
 		foreach ($rules as $id => $rule) {
-			$qb->select('*')
-				->from('approval_rule_approvers')
-				->where(
-					$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
-				);
-			$req = $qb->execute();
-			while ($row = $req->fetch()) {
-				$type = (int)$row['entity_type'];
-				if ($type !== Application::TYPE_CIRCLE || $circlesEnabled) {
-					$rules[$id]['approvers'][] = [
-						'entityId' => $row['entity_id'],
-						'type' => $this->intTypeToStr[$type],
-					];
-				}
-			}
-			$req->closeCursor();
-			$qb = $qb->resetQueryParts();
-
-			$qb->select('*')
-				->from('approval_rule_requesters')
-				->where(
-					$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
-				);
-			$req = $qb->execute();
-			while ($row = $req->fetch()) {
-				$type = (int)$row['entity_type'];
-				if ($type !== Application::TYPE_CIRCLE || $circlesEnabled) {
-					$rules[$id]['requesters'][] = [
-						'entityId' => $row['entity_id'],
-						'type' => $this->intTypeToStr[$type],
-					];
-				}
-			}
-			$req->closeCursor();
-			$qb = $qb->resetQueryParts();
+			$rules[$id]['approvers'] = $this->getRuleEntities($id, 'approvers');
+			$rules[$id]['requesters'] = $this->getRuleEntities($id, 'requesters');
 		}
 
 		return $rules;
+	}
+
+	/**
+	 * Get entities associated to a rule (approvers or requesters)
+	 *
+	 * @param int $ruleId
+	 * @param string $role 'approvers' or 'requesters'
+	 * @return array
+	 */
+	private function getRuleEntities(int $ruleId, string $role): array {
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+		$entities = [];
+
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*')
+			->from('approval_rule_' . $role)
+			->where(
+				$qb->expr()->eq('rule_id', $qb->createNamedParameter($ruleId, IQueryBuilder::PARAM_INT))
+			);
+		$req = $qb->execute();
+		while ($row = $req->fetch()) {
+			$type = (int)$row['entity_type'];
+			if ($type !== Application::TYPE_CIRCLE || $circlesEnabled) {
+				$entities[] = [
+					'entityId' => $row['entity_id'],
+					'type' => $this->intTypeToStr[$type],
+				];
+			}
+		}
+		$req->closeCursor();
+		$qb = $qb->resetQueryParts();
+		return $entities;
 	}
 
 	/**
