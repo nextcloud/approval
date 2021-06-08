@@ -22,6 +22,7 @@ use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Controller;
 
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\Service\UtilsService;
 use OCA\Approval\Service\ApprovalService;
 use OCA\Approval\Service\DocusignAPIService;
 
@@ -38,6 +39,7 @@ class DocusignController extends Controller {
 								LoggerInterface $logger,
 								DocusignAPIService $docusignAPIService,
 								ApprovalService $approvalService,
+								UtilsService $utilsService,
 								?string $userId) {
 		parent::__construct($AppName, $request);
 		$this->l = $l;
@@ -47,6 +49,7 @@ class DocusignController extends Controller {
 		$this->urlGenerator = $urlGenerator;
 		$this->docusignAPIService = $docusignAPIService;
 		$this->approvalService = $approvalService;
+		$this->utilsService = $utilsService;
 	}
 
 	/**
@@ -77,7 +80,7 @@ class DocusignController extends Controller {
 		if (!$isConnected) {
 			return new DataResponse(['error' => 'DocuSign admin connected account is not configured'], 401);
 		}
-		if (!$this->approvalService->userHasAccessTo($fileId, $this->userId)) {
+		if (!$this->utilsService->userHasAccessTo($fileId, $this->userId)) {
 			return new DataResponse(['error' => 'You don\'t have access to this file'], 401);
 		}
 		$signResult = $this->docusignAPIService->emailSignByApprover($fileId, $this->userId, $requesterUserId);
@@ -103,7 +106,7 @@ class DocusignController extends Controller {
 		if (!$isConnected) {
 			return new DataResponse(['error' => 'DocuSign admin connected account is not configured'], 401);
 		}
-		if (!$this->approvalService->userHasAccessTo($fileId, $this->userId)) {
+		if (!$this->utilsService->userHasAccessTo($fileId, $this->userId)) {
 			return new DataResponse(['error' => 'You don\'t have access to this file'], 401);
 		}
 		$signResult = $this->docusignAPIService->emailSignStandalone($fileId, $this->userId, $targetEmails, $targetUserIds);

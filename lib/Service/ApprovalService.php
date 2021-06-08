@@ -14,10 +14,8 @@ namespace OCA\Approval\Service;
 use OCP\IL10N;
 use OCP\IConfig;
 use Psr\Log\LoggerInterface;
-use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\ISystemTagObjectMapper;
 use OCP\SystemTag\TagNotFoundException;
-use OCP\SystemTag\TagAlreadyExistsException;
 use OCP\Files\IRootFolder;
 use OCP\Files\FileInfo;
 use OCP\IUserManager;
@@ -28,15 +26,13 @@ use OCP\Notification\IManager as INotificationManager;
 
 use OCP\Share\IManager as IShareManager;
 use OCP\Share\IShare;
-use OCP\Share\Exceptions\GenericShareException;
-use OCP\Files\Node;
-use OCP\Constants;
 
 use OCA\DAV\Connector\Sabre\Node as SabreNode;
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\Service\UtilsService;
 use OCA\Approval\Activity\ActivityManager;
 
 class ApprovalService {
@@ -49,7 +45,6 @@ class ApprovalService {
 	public function __construct(string $appName,
 								IConfig $config,
 								LoggerInterface $logger,
-								ISystemTagManager $tagManager,
 								ISystemTagObjectMapper $tagObjectMapper,
 								IRootFolder $root,
 								IUserManager $userManager,
@@ -58,6 +53,7 @@ class ApprovalService {
 								INotificationManager $notificationManager,
 								RuleService $ruleService,
 								ActivityManager $activityManager,
+								UtilsService $utilsService,
 								IShareManager $shareManager,
 								IL10N $l10n) {
 		$this->appName = $appName;
@@ -70,23 +66,10 @@ class ApprovalService {
 		$this->appManager = $appManager;
 		$this->notificationManager = $notificationManager;
 		$this->activityManager = $activityManager;
-		$this->tagManager = $tagManager;
 		$this->shareManager = $shareManager;
 		$this->tagObjectMapper = $tagObjectMapper;
 		$this->ruleService = $ruleService;
-	}
-
-	/**
-	 * @param string $name of the new tag
-	 * @return array
-	 */
-	public function createTag(string $name): array {
-		try {
-			$this->tagManager->createTag($name, false, false);
-			return [];
-		} catch (TagAlreadyExistsException $e) {
-			return ['error' => 'Tag already exists'];
-		}
+		$this->utilsService = $utilsService;
 	}
 
 	/**
@@ -164,23 +147,6 @@ class ApprovalService {
 	}
 
 	/**
-	 * Check if user has access to a given file
-	 *
-	 * @param int $fileId
-	 * @param string|null $userId
-	 * @return bool
-	 */
-	public function userHasAccessTo(int $fileId, ?string $userId): bool {
-		$user = $this->userManager->get($userId);
-		if ($user instanceof IUser) {
-			$userFolder = $this->root->getUserFolder($userId);
-			$found = $userFolder->getById($fileId);
-			return count($found) > 0;
-		}
-		return false;
-	}
-
-	/**
 	 * Check if a user is authorized to approve or request by a given rule
 	 *
 	 * @param string $userId
@@ -222,48 +188,12 @@ class ApprovalService {
 					return $w['type'] === 'circle';
 				}));
 				foreach ($ruleCircleIds as $circleId) {
-					if ($this->isUserInCircle($userId, $circleId)) {
+					if ($this->utilsService->isUserInCircle($userId, $circleId)) {
 						return true;
 					}
 				}
 			}
 		}
-		return false;
-	}
-
-	/**
-	 * Check if a user is in a given circle
-	 *
-	 * @param string $userId
-	 * @param string $circleId
-	 * @return bool
-	 */
-	private function isUserInCircle(string $userId, string $circleId): bool {
-		$circlesManager = \OC::$server->get(\OCA\Circles\CirclesManager::class);
-		$circlesManager->startSuperSession();
-		try {
-			$circle = $circlesManager->getCircle($circleId);
-		} catch (\OCA\Circles\Exceptions\CircleNotFoundException $e) {
-			$circlesManager->stopSession();
-			return false;
-		}
-		// is the circle owner
-		$owner = $circle->getOwner();
-		// the owner is also a member so this might be useless...
-		if ($owner->getUserType() === 1 && $owner->getUserId() === $userId) {
-			$circlesManager->stopSession();
-			return true;
-		} else {
-			$members = $circle->getMembers();
-			foreach ($members as $m) {
-				// is member of this circle
-				if ($m->getUserType() === 1 && $m->getUserId() === $userId) {
-					$circlesManager->stopSession();
-					return true;
-				}
-			}
-		}
-		$circlesManager->stopSession();
 		return false;
 	}
 
@@ -274,7 +204,7 @@ class ApprovalService {
 	 * @return array state and rule id
 	 */
 	public function getApprovalState(int $fileId, ?string $userId): array {
-		if (is_null($userId) || !$this->userHasAccessTo($fileId, $userId)) {
+		if (is_null($userId) || !$this->utilsService->userHasAccessTo($fileId, $userId)) {
 			return ['state' => Application::STATE_NOTHING];
 		}
 
@@ -426,7 +356,7 @@ class ApprovalService {
 			}
 			if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
 				if ($createShares) {
-					$this->createShares($fileId, $rule, $userId);
+					$this->shareWithApprovers($fileId, $rule, $userId);
 					// if shares are auto created, request is actually done in a separated request with $createShares === false
 					return [];
 				}
@@ -445,7 +375,7 @@ class ApprovalService {
 				// check if someone can actually approve
 				$ruleUserIds = $this->getRuleAuthorizedUserIds($rule, 'approvers');
 				foreach ($ruleUserIds as $uid) {
-					if ($this->userHasAccessTo($fileId, $uid)) {
+					if ($this->utilsService->userHasAccessTo($fileId, $uid)) {
 						return [];
 					}
 				}
@@ -466,7 +396,7 @@ class ApprovalService {
 	 * @param string $userId
 	 * @return array list of created shares
 	 */
-	private function createShares(int $fileId, array $rule, string $userId): array {
+	private function shareWithApprovers(int $fileId, array $rule, string $userId): array {
 		$createdShares = [];
 		// get node
 		$userFolder = $this->root->getUserFolder($userId);
@@ -479,9 +409,9 @@ class ApprovalService {
 		$label = $this->l10n->t('Please check my approval request');
 
 		foreach ($rule['approvers'] as $approver) {
-			if ($approver['type'] === 'user' && !$this->userHasAccessTo($fileId, $approver['entityId'])) {
+			if ($approver['type'] === 'user' && !$this->utilsService->userHasAccessTo($fileId, $approver['entityId'])) {
 				// create user share
-				if ($this->createShare($node, IShare::TYPE_USER, $approver['entityId'], $userId, $label)) {
+				if ($this->utilsService->createShare($node, IShare::TYPE_USER, $approver['entityId'], $userId, $label)) {
 					$createdShares[] = $approver;
 				}
 			}
@@ -489,7 +419,7 @@ class ApprovalService {
 		if ($this->shareManager->allowGroupSharing()) {
 			foreach ($rule['approvers'] as $approver) {
 				if ($approver['type'] === 'group') {
-					if ($this->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $userId, $label)) {
+					if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $userId, $label)) {
 						$createdShares[] = $approver;
 					}
 				}
@@ -500,7 +430,7 @@ class ApprovalService {
 		if ($circlesEnabled) {
 			foreach ($rule['approvers'] as $approver) {
 				if ($approver['type'] === 'circle') {
-					if ($this->createShare($node, IShare::TYPE_CIRCLE, $approver['entityId'], $userId, $label)) {
+					if ($this->utilsService->createShare($node, IShare::TYPE_CIRCLE, $approver['entityId'], $userId, $label)) {
 						$createdShares[] = $approver;
 					}
 				}
@@ -508,49 +438,6 @@ class ApprovalService {
 		}
 
 		return $createdShares;
-	}
-
-	/**
-	 * Create one share
-	 *
-	 * @param Node $node
-	 * @param int $type
-	 * @param string $sharedWith
-	 * @param string $sharedBy
-	 * @param string $label
-	 * @return bool success
-	 */
-	private function createShare(Node $node, int $type, string $sharedWith, string $sharedBy, string $label): bool {
-		$share = $this->shareManager->newShare();
-		$share->setNode($node)
-			->setPermissions(Constants::PERMISSION_READ)
-			->setSharedWith($sharedWith)
-			->setShareType($type)
-			->setSharedBy($sharedBy)
-			->setMailSend(false)
-			->setExpirationDate(null);
-
-		try {
-			$share = $this->shareManager->createShare($share);
-			$share->setLabel($label)
-				->setNote($label)
-				->setMailSend(false)
-				->setStatus(IShare::STATUS_ACCEPTED);
-			$share = $this->shareManager->updateShare($share);
-			//// this was done instead of ->setStatus() but it does not seem to work all the time
-			// if ($type === IShare::TYPE_USER) {
-			// 	try {
-			// 		$this->shareManager->acceptShare($share, $sharedWith);
-			// 	} catch (GenericShareException $e) {
-			// 		$this->logger->warning('Approval GenericShareException error : '.$e->getMessage(), ['app' => $this->appName]);
-			// 	} catch (\Throwable | \Exception $e) {
-			// 		$this->logger->warning('Approval sharing error : '.$e->getMessage(), ['app' => $this->appName]);
-			// 	}
-			// }
-			return true;
-		} catch (GenericShareException | \Exception $e) {
-			return false;
-		}
 	}
 
 	/**

@@ -22,6 +22,7 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\Service\UtilsService;
 use OCA\Approval\Service\ApprovalService;
 use OCA\Approval\Service\RuleService;
 
@@ -36,6 +37,7 @@ class ApprovalController extends Controller {
 								IConfig $config,
 								IL10N $l10n,
 								LoggerInterface $logger,
+								UtilsService $utilsService,
 								ApprovalService $approvalService,
 								RuleService $ruleService,
 								?string $userId) {
@@ -44,6 +46,7 @@ class ApprovalController extends Controller {
 		$this->l10n = $l10n;
 		$this->config = $config;
 		$this->logger = $logger;
+		$this->utilsService = $utilsService;
 		$this->approvalService = $approvalService;
 		$this->ruleService = $ruleService;
 	}
@@ -55,7 +58,7 @@ class ApprovalController extends Controller {
 	 * @return DataResponse
 	 */
 	public function createTag(string $name): DataResponse {
-		$result = $this->approvalService->createTag($name);
+		$result = $this->utilsService->createTag($name);
 		if (isset($result['error'])) {
 			return new DataResponse($result, 400);
 		} else {
