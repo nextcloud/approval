@@ -28,9 +28,7 @@ use OCP\Activity\IProvider;
 use OCP\IConfig;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
-use OCP\IL10N;
 use OCP\Files\IRootFolder;
-use OCP\Files\FileInfo;
 
 use OCA\Approval\AppInfo\Application;
 
@@ -44,8 +42,6 @@ class ApprovalProvider implements IProvider {
 	private $activityManager;
 	/** @var IUserManager */
 	private $userManager;
-	/** @var IL10N */
-	private $l10n;
 	/** @var IConfig */
 	private $config;
 
@@ -53,14 +49,12 @@ class ApprovalProvider implements IProvider {
 								IRootFolder $root,
 								ActivityManager $activityManager,
 								IUserManager $userManager,
-								IL10N $l10n,
 								IConfig $config,
 								?string $userId) {
 		$this->userId = $userId;
 		$this->urlGenerator = $urlGenerator;
 		$this->activityManager = $activityManager;
 		$this->userManager = $userManager;
-		$this->l10n = $l10n;
 		$this->root = $root;
 		$this->config = $config;
 	}

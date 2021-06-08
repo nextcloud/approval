@@ -11,9 +11,6 @@
 
 namespace OCA\Approval\Service;
 
-use OCP\IL10N;
-use OCP\IConfig;
-use Psr\Log\LoggerInterface;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\IUserManager;
@@ -22,23 +19,15 @@ use OCP\App\IAppManager;
 use OCA\Approval\AppInfo\Application;
 
 class RuleService {
-	private $l10n;
-	private $logger;
 
 	/**
 	 * Service to manage approval rules
 	 */
 	public function __construct(string $appName,
-								IConfig $config,
-								LoggerInterface $logger,
 								IDBConnection $db,
 								IUserManager $userManager,
-								IAppManager $appManager,
-								IL10N $l10n) {
+								IAppManager $appManager) {
 		$this->appName = $appName;
-		$this->l10n = $l10n;
-		$this->logger = $logger;
-		$this->config = $config;
 		$this->db = $db;
 		$this->userManager = $userManager;
 		$this->appManager = $appManager;

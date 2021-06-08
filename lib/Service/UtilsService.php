@@ -11,14 +11,8 @@
 
 namespace OCA\Approval\Service;
 
-use OCP\IL10N;
-use OCP\IConfig;
-use Psr\Log\LoggerInterface;
-use OCP\DB\QueryBuilder\IQueryBuilder;
-use OCP\IDBConnection;
 use OCP\IUserManager;
 use OCP\IUser;
-use OCP\App\IAppManager;
 use OCP\Files\IRootFolder;
 
 use OCP\SystemTag\ISystemTagManager;
@@ -29,32 +23,17 @@ use OCP\Share\IShare;
 use OCP\Share\Exceptions\GenericShareException;
 use OCP\Constants;
 
-use OCA\Approval\AppInfo\Application;
-
 class UtilsService {
-	private $l10n;
-	private $logger;
-
 	/**
 	 * Service providing storage, circles and tags tools
 	 */
 	public function __construct(string $appName,
-								IConfig $config,
-								LoggerInterface $logger,
-								IDBConnection $db,
 								IUserManager $userManager,
-								IAppManager $appManager,
 								IShareManager $shareManager,
 								IRootFolder $root,
-								ISystemTagManager $tagManager,
-								IL10N $l10n) {
+								ISystemTagManager $tagManager) {
 		$this->appName = $appName;
-		$this->l10n = $l10n;
-		$this->logger = $logger;
-		$this->config = $config;
-		$this->db = $db;
 		$this->userManager = $userManager;
-		$this->appManager = $appManager;
 		$this->shareManager = $shareManager;
 		$this->root = $root;
 		$this->tagManager = $tagManager;

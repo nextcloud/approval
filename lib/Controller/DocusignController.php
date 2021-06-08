@@ -13,7 +13,6 @@ namespace OCA\Approval\Controller;
 
 use OCP\IConfig;
 use OCP\IL10N;
-use Psr\Log\LoggerInterface;
 use OCP\IURLGenerator;
 
 use OCP\IRequest;
@@ -23,32 +22,26 @@ use OCP\AppFramework\Controller;
 
 use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Service\UtilsService;
-use OCA\Approval\Service\ApprovalService;
 use OCA\Approval\Service\DocusignAPIService;
 
 class DocusignController extends Controller {
 	private $userId;
 	private $config;
-	private $dbtype;
 
 	public function __construct($AppName,
 								IRequest $request,
 								IConfig $config,
 								IL10N $l,
 								IURLGenerator $urlGenerator,
-								LoggerInterface $logger,
 								DocusignAPIService $docusignAPIService,
-								ApprovalService $approvalService,
 								UtilsService $utilsService,
 								?string $userId) {
 		parent::__construct($AppName, $request);
 		$this->l = $l;
 		$this->userId = $userId;
 		$this->config = $config;
-		$this->logger = $logger;
 		$this->urlGenerator = $urlGenerator;
 		$this->docusignAPIService = $docusignAPIService;
-		$this->approvalService = $approvalService;
 		$this->utilsService = $utilsService;
 	}
 

@@ -11,12 +11,6 @@
 
 namespace OCA\Approval\Controller;
 
-use OCP\IConfig;
-use OCP\IL10N;
-
-
-
-use Psr\Log\LoggerInterface;
 use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
@@ -28,24 +22,15 @@ use OCA\Approval\Service\RuleService;
 
 class ApprovalController extends Controller {
 	private $userId;
-	private $config;
-	private $dbconnection;
-	private $dbtype;
 
 	public function __construct($AppName,
 								IRequest $request,
-								IConfig $config,
-								IL10N $l10n,
-								LoggerInterface $logger,
 								UtilsService $utilsService,
 								ApprovalService $approvalService,
 								RuleService $ruleService,
 								?string $userId) {
 		parent::__construct($AppName, $request);
 		$this->userId = $userId;
-		$this->l10n = $l10n;
-		$this->config = $config;
-		$this->logger = $logger;
 		$this->utilsService = $utilsService;
 		$this->approvalService = $approvalService;
 		$this->ruleService = $ruleService;

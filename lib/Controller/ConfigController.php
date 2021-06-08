@@ -14,9 +14,7 @@ namespace OCA\Approval\Controller;
 use OCP\IUserManager;
 use OCP\IUser;
 
-use OCP\IConfig;
 use OCP\IL10N;
-use Psr\Log\LoggerInterface;
 use OCP\App\IAppManager;
 
 use OCP\IRequest;
@@ -27,23 +25,17 @@ use OCA\Approval\Service\RuleService;
 
 class ConfigController extends Controller {
 	private $userId;
-	private $config;
-	private $dbtype;
 
 	public function __construct($AppName,
 								IRequest $request,
-								IConfig $config,
 								IUserManager $userManager,
 								IAppManager $appManager,
 								IL10N $l,
-								LoggerInterface $logger,
 								RuleService $ruleService,
 								?string $userId) {
 		parent::__construct($AppName, $request);
 		$this->l = $l;
 		$this->userId = $userId;
-		$this->config = $config;
-		$this->logger = $logger;
 		$this->userManager = $userManager;
 		$this->appManager = $appManager;
 		$this->ruleService = $ruleService;

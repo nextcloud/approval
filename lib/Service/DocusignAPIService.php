@@ -15,10 +15,8 @@ use OCP\IL10N;
 use Psr\Log\LoggerInterface;
 use OCP\IConfig;
 use OCP\IUserManager;
-use OCP\IUser;
 use OCP\Files\File;
 use OCP\Http\Client\IClientService;
-use OCP\Notification\IManager as INotificationManager;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\ConnectException;
@@ -40,7 +38,6 @@ class DocusignAPIService {
 								IL10N $l10n,
 								IConfig $config,
 								IRootFolder $root,
-								INotificationManager $notificationManager,
 								IClientService $clientService) {
 		$this->appName = $appName;
 		$this->l10n = $l10n;
@@ -49,7 +46,6 @@ class DocusignAPIService {
 		$this->root = $root;
 		$this->userManager = $userManager;
 		$this->clientService = $clientService;
-		$this->notificationManager = $notificationManager;
 		$this->client = $clientService->newClient();
 	}
 

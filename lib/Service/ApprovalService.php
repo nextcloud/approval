@@ -12,8 +12,6 @@
 namespace OCA\Approval\Service;
 
 use OCP\IL10N;
-use OCP\IConfig;
-use Psr\Log\LoggerInterface;
 use OCP\SystemTag\ISystemTagObjectMapper;
 use OCP\SystemTag\TagNotFoundException;
 use OCP\Files\IRootFolder;
@@ -37,14 +35,11 @@ use OCA\Approval\Activity\ActivityManager;
 
 class ApprovalService {
 	private $l10n;
-	private $logger;
 
 	/**
 	 * Service to operate on tags
 	 */
 	public function __construct(string $appName,
-								IConfig $config,
-								LoggerInterface $logger,
 								ISystemTagObjectMapper $tagObjectMapper,
 								IRootFolder $root,
 								IUserManager $userManager,
@@ -58,8 +53,6 @@ class ApprovalService {
 								IL10N $l10n) {
 		$this->appName = $appName;
 		$this->l10n = $l10n;
-		$this->logger = $logger;
-		$this->config = $config;
 		$this->root = $root;
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;

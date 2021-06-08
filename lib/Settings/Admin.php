@@ -3,35 +3,22 @@
 namespace OCA\Approval\Settings;
 
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\IRequest;
-use OCP\IL10N;
 use OCP\IConfig;
 use OCP\Settings\ISettings;
-use OCP\IURLGenerator;
 use OCP\IInitialStateService;
 
 use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Service\DocusignAPIService;
 
 class Admin implements ISettings {
-	private $request;
 	private $config;
-	private $dataDirPath;
-	private $urlGenerator;
-	private $l;
 
 	public function __construct(string $appName,
-								IL10N $l,
-								IRequest $request,
 								IConfig $config,
-								IURLGenerator $urlGenerator,
 								IInitialStateService $initialStateService,
 								DocusignAPIService $docusignAPIService,
-								$userId) {
+								?string $userId) {
 		$this->appName = $appName;
-		$this->urlGenerator = $urlGenerator;
-		$this->request = $request;
-		$this->l = $l;
 		$this->config = $config;
 		$this->initialStateService = $initialStateService;
 		$this->docusignAPIService = $docusignAPIService;
