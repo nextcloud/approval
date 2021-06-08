@@ -17,6 +17,7 @@ use Psr\Log\LoggerInterface;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\IUserManager;
+use OCP\App\IAppManager;
 
 use OCA\Approval\AppInfo\Application;
 
@@ -32,6 +33,7 @@ class RuleService {
 								LoggerInterface $logger,
 								IDBConnection $db,
 								IUserManager $userManager,
+								IAppManager $appManager,
 								IL10N $l10n) {
 		$this->appName = $appName;
 		$this->l10n = $l10n;
@@ -39,6 +41,7 @@ class RuleService {
 		$this->config = $config;
 		$this->db = $db;
 		$this->userManager = $userManager;
+		$this->appManager = $appManager;
 		$this->strTypeToInt = [
 			'user' => Application::TYPE_USER,
 			'group' => Application::TYPE_GROUP,
@@ -389,6 +392,7 @@ class RuleService {
 	 * @return array
 	 */
 	public function getRules(): array {
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
 		$rules = [];
 		$qb = $this->db->getQueryBuilder();
 
@@ -422,10 +426,13 @@ class RuleService {
 				);
 			$req = $qb->execute();
 			while ($row = $req->fetch()) {
-				$rules[$id]['approvers'][] = [
-					'entityId' => $row['entity_id'],
-					'type' => $this->intTypeToStr[$row['entity_type']],
-				];
+				$type = (int)$row['entity_type'];
+				if ($type !== Application::TYPE_CIRCLE || $circlesEnabled) {
+					$rules[$id]['approvers'][] = [
+						'entityId' => $row['entity_id'],
+						'type' => $this->intTypeToStr[$type],
+					];
+				}
 			}
 			$req->closeCursor();
 			$qb = $qb->resetQueryParts();
@@ -437,10 +444,13 @@ class RuleService {
 				);
 			$req = $qb->execute();
 			while ($row = $req->fetch()) {
-				$rules[$id]['requesters'][] = [
-					'entityId' => $row['entity_id'],
-					'type' => $this->intTypeToStr[$row['entity_type']],
-				];
+				$type = (int)$row['entity_type'];
+				if ($type !== Application::TYPE_CIRCLE || $circlesEnabled) {
+					$rules[$id]['requesters'][] = [
+						'entityId' => $row['entity_id'],
+						'type' => $this->intTypeToStr[$type],
+					];
+				}
 			}
 			$req->closeCursor();
 			$qb = $qb->resetQueryParts();
