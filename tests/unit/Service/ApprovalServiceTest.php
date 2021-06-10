@@ -33,47 +33,90 @@ use OCP\App\IAppManager;
 use OCP\Notification\IManager as INotificationManager;
 use OCP\Share\IManager as IShareManager;
 
+use OCP\IDBConnection;
+use OCP\SystemTag\ISystemTagManager;
+
+use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Activity\ActivityManager;
 
 use ChristophWurst\Nextcloud\Testing\TestCase;
 
 class ApprovalServiceTest extends TestCase {
-	private $service;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->tagObjectMapper = $this->createMock(ISystemTagObjectMapper::class);
-		$this->root = $this->createMock(IRootFolder::class);
-		$this->userManager = $this->createMock(IUserManager::class);
-		$this->groupManager = $this->createMock(IGroupManager::class);
-		$this->appManager = $this->createMock(IAppManager::class);
+		$this->app = new Application();
+		$this->container = $this->app->getContainer();
+		$c = $this->container;
 
-		$this->notificationManager = $this->createMock(INotificationManager::class);
-		$this->ruleService = $this->createMock(RuleService::class);
-		$this->utilsService = $this->createMock(UtilsService::class);
-		$this->activityManager = $this->createMock(ActivityManager::class);
-		$this->shareManager = $this->createMock(IShareManager::class);
-
-		$this->l10n = $this->createMock(IL10N::class);
-		$this->service = new ApprovalService(
+		$this->utilsService = new UtilsService(
 			'approval',
-			$this->tagObjectMapper,
-			$this->root,
-			$this->userManager,
-			$this->groupManager,
-			$this->appManager,
-			$this->notificationManager,
-			$this->ruleService,
-			$this->activityManager,
-			$this->utilsService,
-			$this->shareManager,
-			$this->l10n
+			$c->get(IUserManager::class),
+			$c->get(IShareManager::class),
+			$c->get(IRootFolder::class),
+			$c->get(ISystemTagManager::class),
 		);
+		$this->ruleService = new RuleService(
+			'approval',
+			$c->get(IDBConnection::class),
+			$c->get(IUserManager::class),
+			$c->get(IAppManager::class),
+		);
+		$this->approvalService = new ApprovalService(
+			'approval',
+			$c->get(ISystemTagObjectMapper::class),
+			$c->get(IRootFolder::class),
+			$c->get(IUserManager::class),
+			$c->get(IGroupManager::class),
+			$c->get(IAppManager::class),
+			$c->get(INotificationManager::class),
+			$this->ruleService,
+			$c->get(ActivityManager::class),
+			$this->utilsService,
+			$c->get(IShareManager::class),
+			$c->get(IL10N::class),
+		);
+
+		// add some tags
+		$r = $this->utilsService->createTag('pending1');
+		$this->idTagPending1 = $r['id'];
+		$r = $this->utilsService->createTag('approved1');
+		$this->idTagApproved1 = $r['id'];
+		$r = $this->utilsService->createTag('rejected1');
+		$this->idTagRejected1 = $r['id'];
+
+		// add a rule
+		$approvers = [
+			[
+				'entityId' => 'mrstest',
+				'type' => 'user',
+			],
+		];
+		$requesters = [
+			[
+				'entityId' => 'mrstest',
+				'type' => 'user',
+			],
+		];
+		$r = $this->ruleService->createRule(
+			$this->idTagPending1, $this->idTagApproved1, $this->idTagRejected1,
+			$approvers, $requesters, 'desc1'
+		);
+		$this->idRule1 = $r['id'];
+	}
+
+	protected function tearDown(): void {
+		$this->utilsService->deleteTag($this->idTagPending1);
+		$this->utilsService->deleteTag($this->idTagApproved1);
+		$this->utilsService->deleteTag($this->idTagRejected1);
+
+		$this->ruleService->deleteRule($this->idRule1);
 	}
 
 	public function testGetRequesterRules() {
-		$result = $this->service->getUserRequesterRules('mrstest');
-		$this->assertEmpty($result);
+		$result = $this->approvalService->getUserRequesterRules('mrstest');
+		// $this->assertEmpty($result);
+		$this->assertEquals(count($result), 1);
 	}
 }

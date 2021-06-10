@@ -17,6 +17,7 @@ use OCP\Files\IRootFolder;
 
 use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\TagAlreadyExistsException;
+use OCP\SystemTag\TagNotFoundException;
 use OCP\Files\Node;
 use OCP\Share\IManager as IShareManager;
 use OCP\Share\IShare;
@@ -141,10 +142,23 @@ class UtilsService {
 	 */
 	public function createTag(string $name): array {
 		try {
-			$this->tagManager->createTag($name, false, false);
-			return [];
+			$tag = $this->tagManager->createTag($name, false, false);
+			return ['id' => $tag->getId()];
 		} catch (TagAlreadyExistsException $e) {
 			return ['error' => 'Tag already exists'];
+		}
+	}
+
+	/**
+	 * @param string $id of the tag to delete
+	 * @return array
+	 */
+	public function deleteTag(int $id): array {
+		try {
+			$this->tagManager->deleteTags($id);
+			return ['success' => true];
+		} catch (TagNotFoundException $e) {
+			return ['error' => 'Tag not found'];
 		}
 	}
 }
