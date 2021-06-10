@@ -172,7 +172,7 @@ class Notifier implements INotifier {
 				->setParsedMessage($content)
 				->setLink($linkToFile)
 				->setRichMessage(
-					$l->t('{node}'),
+					'{node}',
 					[
 						'node' => $richSubjectNode,
 					]
