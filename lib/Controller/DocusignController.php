@@ -180,7 +180,7 @@ class DocusignController extends Controller {
 					'?docusignToken=success'
 				);
 			}
-			$result = $this->l->t('Error getting OAuth access token.') . ' ' . $result['error'];
+			$result = $this->l->t('Error getting OAuth access token') . ' ' . $result['error'];
 		} else {
 			$result = $this->l->t('Error during OAuth exchanges');
 		}

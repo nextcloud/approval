@@ -195,9 +195,10 @@ export default {
 		infoText() {
 			if (this.myState === states.APPROVABLE) {
 				if (this.myUserName) {
-					return t('approval', 'Your approval was requested by {name}. The related approval workflow is:', { name: this.myUserName })
+					return t('approval', 'Your approval was requested by {name}.', { name: this.myUserName }) + ' '
+						+ t('approval', 'The related approval workflow is:')
 				} else {
-					return t('approval', 'Your approval was requested. The related approval workflow is:')
+					return t('approval', 'Your approval was requested.') + ' ' + t('approval', 'The related approval workflow is:')
 				}
 			} else if ([states.APPROVED, states.PENDING, states.REJECTED].includes(this.myState)) {
 				return t('approval', 'The related approval workflow is:')
