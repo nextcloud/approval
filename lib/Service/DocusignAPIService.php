@@ -294,7 +294,6 @@ class DocusignAPIService {
 			// refresh token if it's invalid and we are using oauth
 			// response can be : 'OAuth2 token is expired!', 'Invalid token!' or 'Not authorized'
 			if ($response->getStatusCode() === 401) {
-				// $this->logger->info('Trying to REFRESH the access token', ['app' => $this->appName]);
 				$this->logger->warning('Trying to REFRESH the DocuSign access token', ['app' => $this->appName]);
 				// try to refresh the token
 				$docusignTokenUrl = Application::DOCUSIGN_TOKEN_REQUEST_URL;
@@ -347,7 +346,7 @@ class DocusignAPIService {
 			$b64Credentials = base64_encode($clientId . ':' . $clientSecret);
 			$options = [
 				'headers' => [
-					'User-Agent'  => 'Nextcloud DocuSign integration',
+					'User-Agent' => 'Nextcloud DocuSign integration',
 					'Authorization' => 'Basic ' . $b64Credentials,
 				],
 			];

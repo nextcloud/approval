@@ -11,6 +11,7 @@ namespace OCA\Approval\AppInfo;
 
 use OCP\IConfig;
 use OCP\Util;
+use OCP\EventDispatcher\IEventDispatcher;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
 
 use OCP\AppFramework\App;
@@ -62,23 +63,22 @@ class Application extends App implements IBootstrap {
 
 		$container = $this->getContainer();
 		$this->container = $container;
-		$this->config = $container->query(IConfig::class);
+		$this->config = $container->get(IConfig::class);
 
-		$server = $container->getServer();
-		$eventDispatcher = $server->getEventDispatcher();
+		$eventDispatcher = $container->get(IEventDispatcher::class);
 		// load files plugin script
 		$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function () {
 			Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin');
 			Util::addStyle(self::APP_ID, 'files-style');
 		});
 		// notifications
-		$manager = $container->query(INotificationManager::class);
+		$manager = $container->get(INotificationManager::class);
 		$manager->registerNotifierService(Notifier::class);
 
 		// listen to tag assignments
 		$eventDispatcher->addListener(MapperEvent::EVENT_ASSIGN, function (MapperEvent $event) use ($container) {
 			if ($event->getObjectType() === 'files') {
-				$service = $container->query(ApprovalService::class);
+				$service = $container->get(ApprovalService::class);
 				$service->handleTagAssignmentEvent($event->getObjectId(), $event->getTags());
 			}
 		});
@@ -95,7 +95,7 @@ class Application extends App implements IBootstrap {
 	 * @param IServerContainer $container
 	 */
 	public function registerHooks(IServerContainer $container) {
-		$eventDispatcher = \OC::$server->getEventDispatcher();
+		$eventDispatcher = $container->get(IEventDispatcher::class);
 
 		$this->userSession = $container->get(IUserSession::class);
 		$this->approvalService = $container->get(ApprovalService::class);

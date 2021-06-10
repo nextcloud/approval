@@ -29,6 +29,7 @@ use OCP\IUserManager;
 use OCP\IL10N;
 use OCP\IUser;
 use OCP\Files\IRootFolder;
+use Psr\Log\LoggerInterface;
 
 use OCA\Approval\AppInfo\Application;
 
@@ -49,12 +50,14 @@ class ActivityManager {
 								IL10N $l10n,
 								IRootFolder $root,
 								IUserManager $userManager,
+								LoggerInterface $logger,
 								?string $userId) {
 		$this->manager = $manager;
 		$this->l10n = $l10n;
 		$this->root = $root;
 		$this->userId = $userId;
 		$this->userManager = $userManager;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -109,7 +112,7 @@ class ActivityManager {
 	private function createEvent($objectType, $entity, $subject, $additionalParams = [], $author = null) {
 		$found = $this->root->getById($entity);
 		if (count($found) === 0) {
-			\OC::$server->getLogger()->error('Could not create activity entry for ' . $entity . '. Node not found.', ['app' => Application::APP_ID]);
+			$this->logger->error('Could not create activity entry for ' . $entity . '. Node not found.', ['app' => Application::APP_ID]);
 			return null;
 		} else {
 			$node = $found[0];
