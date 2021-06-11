@@ -75,6 +75,10 @@ class ApprovalServiceTest extends TestCase {
 	 * @var int
 	 */
 	private $idRule1;
+	/**
+	 * @var ISystemTagObjectMapper
+	 */
+	private $tagObjectMapper;
 
 	public static function setUpBeforeClass(): void {
 		$app = new Application();
@@ -102,6 +106,7 @@ class ApprovalServiceTest extends TestCase {
 		$app = new Application();
 		$c = $app->getContainer();
 		$this->root = $c->get(IRootFolder::class);
+		$this->tagObjectMapper = $c->get(ISystemTagObjectMapper::class);
 
 		$this->utilsService = new UtilsService(
 			'approval',
@@ -140,21 +145,22 @@ class ApprovalServiceTest extends TestCase {
 		$this->idTagRejected1 = $r['id'];
 
 		// add a rule
-		$approvers = [
+		$this->approvers1 = [
 			[
 				'entityId' => 'user1',
 				'type' => 'user',
 			],
 		];
-		$requesters = [
+		$this->requesters1 = [
 			[
 				'entityId' => 'user1',
 				'type' => 'user',
 			],
 		];
+		$this->description1 = 'desc1';
 		$r = $this->ruleService->createRule(
 			$this->idTagPending1, $this->idTagApproved1, $this->idTagRejected1,
-			$approvers, $requesters, 'desc1'
+			$this->approvers1, $this->requesters1, $this->description1
 		);
 		$this->idRule1 = $r['id'];
 	}
@@ -184,21 +190,22 @@ class ApprovalServiceTest extends TestCase {
 		$idTagRejected2 = $r['id'];
 
 		// add a rule
-		$approvers = [
+		$this->approvers2 = [
 			[
 				'entityId' => 'user2',
 				'type' => 'user',
 			],
 		];
-		$requesters = [
+		$this->requesters2 = [
 			[
 				'entityId' => 'user2',
 				'type' => 'user',
 			],
 		];
+		$this->description2 = 'desc2';
 		$r = $this->ruleService->createRule(
 			$idTagPending2, $idTagApproved2, $idTagRejected2,
-			$approvers, $requesters, 'desc2'
+			$this->approvers2, $this->requesters2, $this->description2
 		);
 		$this->idRule2 = $r['id'];
 
@@ -250,6 +257,26 @@ class ApprovalServiceTest extends TestCase {
 
 		$state = $this->approvalService->getApprovalState($file1->getId(), 'user2');
 		$this->assertEquals(Application::STATE_NOTHING, $state['state']);
+
+		$this->tagObjectMapper->assignTags($file1->getId(), 'files', $this->idTagPending1);
+		$state = $this->approvalService->getApprovalState($file1->getId(), 'user1');
+		$this->assertEquals(Application::STATE_APPROVABLE, $state['state']);
+
+		$this->tagObjectMapper->unassignTags($file1->getId(), 'files', $this->idTagPending1);
+		$this->tagObjectMapper->assignTags($file1->getId(), 'files', $this->idTagApproved1);
+		$state = $this->approvalService->getApprovalState($file1->getId(), 'user1');
+		$this->assertEquals(Application::STATE_APPROVED, $state['state']);
+
+		$this->tagObjectMapper->unassignTags($file1->getId(), 'files', $this->idTagApproved1);
+		$this->tagObjectMapper->assignTags($file1->getId(), 'files', $this->idTagRejected1);
+		$state = $this->approvalService->getApprovalState($file1->getId(), 'user1');
+		$this->assertEquals(Application::STATE_REJECTED, $state['state']);
+
+		// failure because tag does not exist
+		$this->ruleService->saveRule($this->idRule1, -1, -2, -3, $this->approvers1, $this->requesters1, $this->description1);
+		$state = $this->approvalService->getApprovalState($file1->getId(), 'user1');
+		$this->assertEquals(Application::STATE_NOTHING, $state['state']);
+		$this->ruleService->saveRule($this->idRule1, $this->idTagPending1, $this->idTagApproved1, $this->idTagRejected1, $this->approvers1, $this->requesters1, $this->description1);
 	}
 
 	// test request/approve/reject
@@ -285,9 +312,10 @@ class ApprovalServiceTest extends TestCase {
 				'type' => 'user',
 			],
 		];
+		$description = 'desc3';
 		$r = $this->ruleService->createRule(
 			$idTagPending3, $idTagApproved3, $idTagRejected3,
-			$approvers, $requesters, 'desc3'
+			$approvers, $requesters, $description
 		);
 		$this->idRule3 = $r['id'];
 
@@ -312,6 +340,17 @@ class ApprovalServiceTest extends TestCase {
 		// unauthorized user
 		$result = $this->approvalService->request($otherFile->getId(), $this->idRule3, 'user2', true);
 		$this->assertTrue(isset($result['error']));
+		// not shared with any approver
+		$approversFailure = [
+			[
+				'entityId' => 'user2',
+				'type' => 'user',
+			],
+		];
+		$this->ruleService->saveRule($this->idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approversFailure, $requesters, $description);
+		$result = $this->approvalService->request($otherFile->getId(), $this->idRule3, 'user1', false);
+		$this->assertTrue(isset($result['warning']));
+		$this->ruleService->saveRule($this->idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approvers, $requesters, $description);
 
 		// get state
 		$stateForUser1 = $this->approvalService->getApprovalState($fileToApprove->getId(), 'user1');
@@ -326,10 +365,24 @@ class ApprovalServiceTest extends TestCase {
 		$this->assertCount(0, $result);
 		//$this->assertEquals('desc1', $result[0]['description']);
 
+		// approve failures
+		// tag does not exist
+		$this->ruleService->saveRule($this->idRule3, $idTagPending3, -1, $idTagRejected3, $approvers, $requesters, $description);
+		$result = $this->approvalService->approve($fileToReject->getId(), 'user1');
+		$this->assertFalse($result);
+		$this->ruleService->saveRule($this->idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approvers, $requesters, $description);
+
 		// approve
 		$this->approvalService->approve($fileToApprove->getId(), 'user1');
 		$stateForUser1 = $this->approvalService->getApprovalState($fileToApprove->getId(), 'user1');
 		$this->assertEquals(Application::STATE_APPROVED, $stateForUser1['state']);
+
+		// reject failures
+		// tag does not exist
+		$this->ruleService->saveRule($this->idRule3, $idTagPending3, $idTagApproved3, -1, $approvers, $requesters, $description);
+		$result = $this->approvalService->reject($fileToReject->getId(), 'user1');
+		$this->assertFalse($result);
+		$this->ruleService->saveRule($this->idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approvers, $requesters, $description);
 
 		// reject
 		$this->approvalService->reject($fileToReject->getId(), 'user1');
