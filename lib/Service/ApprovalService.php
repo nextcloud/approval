@@ -34,10 +34,34 @@ use OCA\Approval\Service\UtilsService;
 use OCA\Approval\Activity\ActivityManager;
 
 class ApprovalService {
-	private $l10n;
+	private string $appName;
+	private ISystemTagObjectMapper $tagObjectMapper;
+	private IRootFolder $root;
+	private IUserManager $userManager;
+	private IGroupManager $groupManager;
+	private IAppManager $appManager;
+	private INotificationManager $notificationManager;
+	private RuleService $ruleService;
+	private ActivityManager $activityManager;
+	private \OCA\Approval\Service\UtilsService $utilsService;
+	private IShareManager $shareManager;
+	private IL10N $l10n;
+	private string $userId;
 
 	/**
-	 * Service to operate on tags
+	 * ApprovalService constructor.
+	 * @param string $appName
+	 * @param ISystemTagObjectMapper $tagObjectMapper
+	 * @param IRootFolder $root
+	 * @param IUserManager $userManager
+	 * @param IGroupManager $groupManager
+	 * @param IAppManager $appManager
+	 * @param INotificationManager $notificationManager
+	 * @param RuleService $ruleService
+	 * @param ActivityManager $activityManager
+	 * @param \OCA\Approval\Service\UtilsService $utilsService
+	 * @param IShareManager $shareManager
+	 * @param IL10N $l10n
 	 */
 	public function __construct(string $appName,
 								ISystemTagObjectMapper $tagObjectMapper,
@@ -52,17 +76,17 @@ class ApprovalService {
 								IShareManager $shareManager,
 								IL10N $l10n) {
 		$this->appName = $appName;
-		$this->l10n = $l10n;
+		$this->tagObjectMapper = $tagObjectMapper;
 		$this->root = $root;
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->appManager = $appManager;
 		$this->notificationManager = $notificationManager;
-		$this->activityManager = $activityManager;
-		$this->shareManager = $shareManager;
-		$this->tagObjectMapper = $tagObjectMapper;
 		$this->ruleService = $ruleService;
+		$this->activityManager = $activityManager;
 		$this->utilsService = $utilsService;
+		$this->shareManager = $shareManager;
+		$this->l10n = $l10n;
 	}
 
 	/**
@@ -339,6 +363,8 @@ class ApprovalService {
 	 * @param string|null $userId
 	 * @param bool $createShares
 	 * @return array potential error message
+	 * @throws \OCP\Files\NotPermittedException
+	 * @throws \OC\User\NoUserException
 	 */
 	public function request(int $fileId, int $ruleId, ?string $userId, bool $createShares): array {
 		$fileState = $this->getApprovalState($fileId, $userId);
@@ -385,9 +411,11 @@ class ApprovalService {
 	 * Share file with everybody who can approve with given rule and have no access yet
 	 *
 	 * @param int $fileId
-	 * @param int $ruleId
+	 * @param array $rule
 	 * @param string $userId
 	 * @return array list of created shares
+	 * @throws \OCP\Files\NotPermittedException
+	 * @throws \OC\User\NoUserException
 	 */
 	private function shareWithApprovers(int $fileId, array $rule, string $userId): array {
 		$createdShares = [];

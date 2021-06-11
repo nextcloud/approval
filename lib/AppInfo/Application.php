@@ -9,7 +9,6 @@
 
 namespace OCA\Approval\AppInfo;
 
-use OCP\IConfig;
 use OCP\Util;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
@@ -62,8 +61,6 @@ class Application extends App implements IBootstrap {
 		parent::__construct(self::APP_ID, $urlParams);
 
 		$container = $this->getContainer();
-		$this->container = $container;
-		$this->config = $container->get(IConfig::class);
 
 		$eventDispatcher = $container->get(IEventDispatcher::class);
 		// load files plugin script
@@ -97,16 +94,16 @@ class Application extends App implements IBootstrap {
 	public function registerHooks(IServerContainer $container) {
 		$eventDispatcher = $container->get(IEventDispatcher::class);
 
-		$this->userSession = $container->get(IUserSession::class);
-		$this->approvalService = $container->get(ApprovalService::class);
-		if ($this->userSession->getUser() instanceof IUser) {
-			$this->approvalService->setUserId($this->userSession->getUser()->getUID());
+		$userSession = $container->get(IUserSession::class);
+		$approvalService = $container->get(ApprovalService::class);
+		if ($userSession->getUser() instanceof IUser) {
+			$approvalService->setUserId($userSession->getUser()->getUID());
 		}
 
 		$eventDispatcher->addListener(
-			'OCA\DAV\Connector\Sabre::addPlugin', function(SabrePluginEvent $e) {
+			'OCA\DAV\Connector\Sabre::addPlugin', function(SabrePluginEvent $e) use ($approvalService) {
 				$server = $e->getServer();
-				$server->on('propFind', [$this->approvalService, 'propFind']);
+				$server->on('propFind', [$approvalService, 'propFind']);
 			}
 		);
 	}

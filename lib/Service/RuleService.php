@@ -65,6 +65,7 @@ class RuleService {
 	 * @param ?int $id rule id, null if not specified
 	 * @param int $tagPending pending tag to search in other rules
 	 * @return bool true if there is a conflict
+	 * @throws \OCP\DB\Exception
 	 */
 	private function hasConflict(?int $id, int $tagPending): bool {
 		$qb = $this->db->getQueryBuilder();
@@ -84,7 +85,7 @@ class RuleService {
 				$qb->expr()->neq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
 		}
-		$req = $qb->execute();
+		$req = $qb->executeQuery();
 		while ($row = $req->fetch()) {
 			return true;
 		}
@@ -105,6 +106,7 @@ class RuleService {
 	 * @param array $requesters
 	 * @param string $description
 	 * @return array Error string or id of saved rule
+	 * @throws \OCP\DB\Exception
 	 */
 	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected,
 							array $approvers, array $requesters, string $description): array {
@@ -125,7 +127,7 @@ class RuleService {
 		$qb->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->execute();
+		$req = $qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		$rule = $this->getRule($id);
@@ -184,7 +186,7 @@ class RuleService {
 					->andWhere(
 						$qb->expr()->eq('entity_id', $qb->createNamedParameter($td['entityId'], IQueryBuilder::PARAM_STR))
 					);
-				$req = $qb->execute();
+				$req = $qb->executeStatement();
 				$qb = $qb->resetQueryParts();
 			}
 			foreach ($toAdd as $ta) {
@@ -194,7 +196,7 @@ class RuleService {
 						'entity_id' => $qb->createNamedParameter($ta['entityId'], IQueryBuilder::PARAM_STR),
 						'rule_id' => $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT),
 					]);
-				$req = $qb->execute();
+				$req = $qb->executeStatement();
 				$qb = $qb->resetQueryParts();
 			}
 		}
@@ -231,7 +233,7 @@ class RuleService {
 				'tag_rejected' => $qb->createNamedParameter($tagRejected, IQueryBuilder::PARAM_INT),
 				'description' => $qb->createNamedParameter($description, IQueryBuilder::PARAM_STR),
 			]);
-		$req = $qb->execute();
+		$req = $qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		$insertedRuleId = $qb->getLastInsertId();
@@ -243,7 +245,7 @@ class RuleService {
 					'entity_type' => $qb->createNamedParameter($this->strTypeToInt[$elem['type']], IQueryBuilder::PARAM_INT),
 					'rule_id' => $qb->createNamedParameter($insertedRuleId, IQueryBuilder::PARAM_INT),
 				]);
-			$req = $qb->execute();
+			$req = $qb->executeStatement();
 			$qb = $qb->resetQueryParts();
 		}
 		foreach ($requesters as $elem) {
@@ -253,7 +255,7 @@ class RuleService {
 					'entity_type' => $qb->createNamedParameter($this->strTypeToInt[$elem['type']], IQueryBuilder::PARAM_INT),
 					'rule_id' => $qb->createNamedParameter($insertedRuleId, IQueryBuilder::PARAM_INT),
 				]);
-			$req = $qb->execute();
+			$req = $qb->executeStatement();
 			$qb = $qb->resetQueryParts();
 		}
 
@@ -277,28 +279,28 @@ class RuleService {
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->execute();
+		$req = $qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		$qb->delete('approval_rule_approvers')
 			->where(
 				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->execute();
+		$req = $qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		$qb->delete('approval_rule_requesters')
 			->where(
 				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->execute();
+		$req = $qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		$qb->delete('approval_activity')
 			->where(
 				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->execute();
+		$req = $qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		return [];
@@ -318,7 +320,7 @@ class RuleService {
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->execute();
+		$req = $qb->executeQuery();
 		while ($row = $req->fetch()) {
 			$tagPending = (int) $row['tag_pending'];
 			$tagApproved = (int) $row['tag_approved'];
@@ -359,7 +361,7 @@ class RuleService {
 
 		$qb->select('*')
 			->from('approval_rules');
-		$req = $qb->execute();
+		$req = $qb->executeQuery();
 		while ($row = $req->fetch()) {
 			$id = (int) $row['id'];
 			$tagPending = (int) $row['tag_pending'];
@@ -404,7 +406,7 @@ class RuleService {
 			->where(
 				$qb->expr()->eq('rule_id', $qb->createNamedParameter($ruleId, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->execute();
+		$req = $qb->executeQuery();
 		while ($row = $req->fetch()) {
 			$type = (int)$row['entity_type'];
 			if ($type !== Application::TYPE_CIRCLE || $circlesEnabled) {
@@ -437,7 +439,7 @@ class RuleService {
 			->andWhere(
 				$qb->expr()->eq('file_id', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->execute();
+		$req = $qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		$timestamp = (new \DateTime())->getTimestamp();
@@ -449,7 +451,7 @@ class RuleService {
 				'new_state' => $qb->createNamedParameter($newState, IQueryBuilder::PARAM_INT),
 				'timestamp' => $qb->createNamedParameter($timestamp, IQueryBuilder::PARAM_INT),
 			]);
-		$req = $qb->execute();
+		$req = $qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 	}
 
@@ -476,7 +478,7 @@ class RuleService {
 			);
 		$qb->orderBy('timestamp', 'DESC');
 		$qb->setMaxResults(1);
-		$req = $qb->execute();
+		$req = $qb->executeQuery();
 		$activity = null;
 		while ($row = $req->fetch()) {
 			$activity = [
