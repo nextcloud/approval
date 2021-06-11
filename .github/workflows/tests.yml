@@ -45,7 +45,8 @@ jobs:
           cp -r $GITHUB_WORKSPACE ~/html/nextcloud/apps/${APP_ID}
           # BUILD APP
           cd ~/html/nextcloud/apps/${APP_ID}
-          make
+          # make
+          composer install --prefer-dist
           cd -
           php ~/html/nextcloud/occ maintenance:install --database "sqlite" --admin-user "admin" --admin-pass "password"
           php ~/html/nextcloud/occ app:enable ${APP_ID}

@@ -68,15 +68,13 @@ class UtilsService {
 				->setStatus(IShare::STATUS_ACCEPTED);
 			$share = $this->shareManager->updateShare($share);
 			//// this was done instead of ->setStatus() but it does not seem to work all the time
-			// if ($type === IShare::TYPE_USER) {
-			// 	try {
-			// 		$this->shareManager->acceptShare($share, $sharedWith);
-			// 	} catch (GenericShareException $e) {
-			// 		$this->logger->warning('Approval GenericShareException error : '.$e->getMessage(), ['app' => $this->appName]);
-			// 	} catch (\Throwable | \Exception $e) {
-			// 		$this->logger->warning('Approval sharing error : '.$e->getMessage(), ['app' => $this->appName]);
-			// 	}
-			// }
+			//if ($type === IShare::TYPE_USER) {
+			//	try {
+			//		$this->shareManager->acceptShare($share, $sharedWith);
+			//	} catch (\Throwable | \Exception $e) {
+			//		$this->logger->warning('Approval sharing error : '.$e->getMessage(), ['app' => $this->appName]);
+			//	}
+			//}
 			return true;
 		} catch (GenericShareException | \Exception $e) {
 			return false;

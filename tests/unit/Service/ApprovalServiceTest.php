@@ -43,12 +43,63 @@ use ChristophWurst\Nextcloud\Testing\TestCase;
 
 class ApprovalServiceTest extends TestCase {
 
+	/**
+	 * @var RuleService
+	 */
+	private RuleService $ruleService;
+	/**
+	 * @var ApprovalService
+	 */
+	private ApprovalService $approvalService;
+	/**
+	 * @var UtilsService
+	 */
+	private UtilsService $utilsService;
+	/**
+	 * @var IRootFolder
+	 */
+	private IRootFolder $root;
+	/**
+	 * @var int
+	 */
+	private int $idTagPending1;
+	/**
+	 * @var int
+	 */
+	private $idTagApproved1;
+	/**
+	 * @var int
+	 */
+	private $idTagRejected1;
+	/**
+	 * @var int
+	 */
+	private $idRule1;
+
+	public static function setUpBeforeClass(): void {
+		$app = new Application();
+		$c = $app->getContainer();
+
+		// create users
+		$userManager = $c->get(IUserManager::class);
+		$u1 = $userManager->createUser('user1', 'T0T0T0');
+		$u1->setEMailAddress('toto@toto.net');
+		$u2 = $userManager->createUser('user2', 'T0T0T0');
+		$u3 = $userManager->createUser('user3', 'T0T0T0');
+		$groupManager = $c->get(IGroupManager::class);
+		$groupManager->createGroup('group1');
+		$groupManager->get('group1')->addUser($u1);
+		$groupManager->createGroup('group2');
+		$groupManager->get('group2')->addUser($u2);
+		$groupManager->get('group2')->addUser($u3);
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->app = new Application();
-		$this->container = $this->app->getContainer();
-		$c = $this->container;
+		$app = new Application();
+		$c = $app->getContainer();
+		$this->root = $c->get(IRootFolder::class);
 
 		$this->utilsService = new UtilsService(
 			'approval',
@@ -89,13 +140,13 @@ class ApprovalServiceTest extends TestCase {
 		// add a rule
 		$approvers = [
 			[
-				'entityId' => 'mrstest',
+				'entityId' => 'user1',
 				'type' => 'user',
 			],
 		];
 		$requesters = [
 			[
-				'entityId' => 'mrstest',
+				'entityId' => 'user1',
 				'type' => 'user',
 			],
 		];
@@ -115,8 +166,147 @@ class ApprovalServiceTest extends TestCase {
 	}
 
 	public function testGetRequesterRules() {
-		$result = $this->approvalService->getUserRequesterRules('mrstest');
+		$result = $this->approvalService->getUserRequesterRules('user1');
 		// $this->assertEmpty($result);
-		$this->assertEquals(count($result), 1);
+		$this->assertEquals(1, count($result));
+		$this->assertEquals('desc1', $result[0]['description']);
+	}
+
+	public function testCreateAndDeleteRule() {
+		// add some tags
+		$r = $this->utilsService->createTag('pending2');
+		$idTagPending2 = $r['id'];
+		$r = $this->utilsService->createTag('approved2');
+		$idTagApproved2 = $r['id'];
+		$r = $this->utilsService->createTag('rejected2');
+		$idTagRejected2 = $r['id'];
+
+		// add a rule
+		$approvers = [
+			[
+				'entityId' => 'user2',
+				'type' => 'user',
+			],
+		];
+		$requesters = [
+			[
+				'entityId' => 'user2',
+				'type' => 'user',
+			],
+		];
+		$r = $this->ruleService->createRule(
+			$idTagPending2, $idTagApproved2, $idTagRejected2,
+			$approvers, $requesters, 'desc2'
+		);
+		$this->idRule2 = $r['id'];
+
+		$rule = $this->ruleService->getRule($this->idRule2);
+		$this->assertEquals($this->idRule2, $rule['id']);
+		$this->assertEquals('desc2', $rule['description']);
+		$this->assertEquals($idTagPending2, $rule['tagPending']);
+		$this->assertEquals($idTagApproved2, $rule['tagApproved']);
+		$this->assertEquals($idTagRejected2, $rule['tagRejected']);
+
+		// delete
+		$r = $this->ruleService->deleteRule($this->idRule2);
+		$this->assertEmpty($r);
+		$rule = $this->ruleService->getRule($this->idRule2);
+		$this->assertNull($rule);
+	}
+
+	public function testGetRules() {
+		$rules = $this->ruleService->getRules();
+		$this->assertCount(1, $rules);
+		$idRule1 = $this->idRule1;
+		$this->assertCount(1, $rules[$idRule1]['approvers']);
+		$this->assertEquals('user1', $rules[$idRule1]['approvers'][0]['entityId']);
+		$this->assertEquals('user', $rules[$idRule1]['approvers'][0]['type']);
+		$this->assertCount(1, $rules[$idRule1]['requesters']);
+		$this->assertEquals('user1', $rules[$idRule1]['requesters'][0]['entityId']);
+		$this->assertEquals('user', $rules[$idRule1]['requesters'][0]['type']);
+		$this->assertEquals('desc1', $rules[$idRule1]['description']);
+		$this->assertEquals($this->idTagPending1, $rules[$idRule1]['tagPending']);
+		$this->assertEquals($this->idTagApproved1, $rules[$idRule1]['tagApproved']);
+		$this->assertEquals($this->idTagRejected1, $rules[$idRule1]['tagRejected']);
+	}
+
+	public function testGetRuleAuthorizedUserIds() {
+		$rule = $this->ruleService->getRule($this->idRule1);
+		$uidApprovers = $this->approvalService->getRuleAuthorizedUserIds($rule, 'approvers');
+		$this->assertCount(1, $uidApprovers);
+		$this->assertEquals('user1', $uidApprovers[0]);
+		$uidRequesters = $this->approvalService->getRuleAuthorizedUserIds($rule, 'requesters');
+		$this->assertCount(1, $uidRequesters);
+		$this->assertEquals('user1', $uidRequesters[0]);
+	}
+
+	public function testGetApprovalState() {
+		$uf = $this->root->getUserFolder('user1');
+		$file1 = $uf->newFile('file1.txt', 'content');
+		$state = $this->approvalService->getApprovalState($file1->getId(), 'user1');
+		$this->assertEquals(Application::STATE_NOTHING, $state['state']);
+
+		$state = $this->approvalService->getApprovalState($file1->getId(), 'user2');
+		$this->assertEquals(Application::STATE_NOTHING, $state['state']);
+	}
+
+	// test request/approve/reject
+	public function testApproval() {
+		// create a file
+		$uf1 = $this->root->getUserFolder('user1');
+		$fileToApprove = $uf1->newFile('fileToApprove.txt', 'content');
+		$fileToReject = $uf1->newFile('fileToReject.txt', 'content');
+
+		// add some tags
+		$r = $this->utilsService->createTag('pending3');
+		$idTagPending3 = $r['id'];
+		$r = $this->utilsService->createTag('approved3');
+		$idTagApproved3 = $r['id'];
+		$r = $this->utilsService->createTag('rejected3');
+		$idTagRejected3 = $r['id'];
+
+		// add a rule
+		$approvers = [
+			[
+				'entityId' => 'user1',
+				'type' => 'user',
+			],
+		];
+		$requesters = [
+			[
+				'entityId' => 'user1',
+				'type' => 'user',
+			],
+		];
+		$r = $this->ruleService->createRule(
+			$idTagPending3, $idTagApproved3, $idTagRejected3,
+			$approvers, $requesters, 'desc3'
+		);
+		$this->idRule3 = $r['id'];
+
+		$stateForUser1 = $this->approvalService->getApprovalState($fileToApprove->getId(), 'user1');
+		$this->assertEquals(Application::STATE_NOTHING, $stateForUser1['state']);
+
+		// request
+		// TODO find a way to try with a different approver user, the shared access is not effective here
+		$this->approvalService->request($fileToApprove->getId(), $this->idRule3, 'user1', true);
+		$this->approvalService->request($fileToApprove->getId(), $this->idRule3, 'user1', false);
+
+		$this->approvalService->request($fileToReject->getId(), $this->idRule3, 'user1', true);
+		$this->approvalService->request($fileToReject->getId(), $this->idRule3, 'user1', false);
+
+		// get state
+		$stateForUser1 = $this->approvalService->getApprovalState($fileToApprove->getId(), 'user1');
+		$this->assertEquals(Application::STATE_APPROVABLE, $stateForUser1['state']);
+
+		// approve
+		$this->approvalService->approve($fileToApprove->getId(), 'user1');
+		$stateForUser1 = $this->approvalService->getApprovalState($fileToApprove->getId(), 'user1');
+		$this->assertEquals(Application::STATE_APPROVED, $stateForUser1['state']);
+
+		// reject
+		$this->approvalService->reject($fileToReject->getId(), 'user1');
+		$stateForUser1 = $this->approvalService->getApprovalState($fileToReject->getId(), 'user1');
+		$this->assertEquals(Application::STATE_REJECTED, $stateForUser1['state']);
 	}
 }
