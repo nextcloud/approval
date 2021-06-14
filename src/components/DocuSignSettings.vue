@@ -13,7 +13,7 @@
 		<p v-if="!connected"
 			class="settings-hint">
 			<br>
-			{{ t('approval', 'If you want to use DocuSign, create an application in your DocuSign \'My Apps & Keys\' developer account settings and put the client ID (integration key) and secret below.') }}
+			{{ t('approval', 'If you want to use DocuSign, create an application in your DocuSign "My Apps & Keys" developer account settings and put the client ID (integration key) and secret below.') }}
 			<br>
 			{{ t('approval', 'Make sure you set this "Redirect URI":') }}
 			<b> {{ redirect_uri }} </b>
