@@ -62,7 +62,6 @@
     "Request signature" : "Aanvragen ondertekening",
     "Failed to request signature with DocuSign" : "Aanvraag voor ondertekening via DocuSign mislukt",
     "DocuSign integration" : "DocuSign integratie",
-    "If you want to use DocuSign, create an application in your DocuSign 'My Apps & Keys' developer account settings and put the client ID (integration key) and secret below." : "Als je DocuSign wilt gebruiken, maak je een toepassing aan in de instellingen van je DocuSign 'Mijn apps & sleutels'-ontwikkelaarsaccount en plaats je de client-ID (integratiesleutel) en het Secret hieronder.",
     "Make sure you set this \"Redirect URI\":" : "Zorg ervoor dat je deze \"Redirect URI\" ingestelt",
     "If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used." : "Als je DocuSign-gebruiker is gekoppeld aan meerdere DocuSign-accounts, dan wordt het standaardaccount gebruikt.",
     "Client ID of your application" : "Client ID van je applicatie",

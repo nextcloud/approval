@@ -89,7 +89,6 @@
     "Failed to request signature with DocuSign" : "No s'ha pogut sol·licitar la signatura amb DocuSign",
     "DocuSign integration" : "Integració de DocuSign",
     "DocuSign is an electronic signature solution." : "DocuSign és una solució de signatura electrònica.",
-    "If you want to use DocuSign, create an application in your DocuSign 'My Apps & Keys' developer account settings and put the client ID (integration key) and secret below." : "Si voleu utilitzar DocuSign, creeu una aplicació al vostre compte de desenvolupador de DocuSign 'Les meves aplicacions i claus' i poseu l'identificador del client (clau d'integració) i el secret a continuació.",
     "Make sure you set this \"Redirect URI\":" : "Assegureu-vos de definir l'\"URI de redirecció”:",
     "If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used." : "Si el vostre usuari de DocuSign està associat amb diversos comptes de DocuSign, s'utilitzarà el valor per defecte.",
     "Client ID (aka integration key)" : "ID del client (clau d'integració)",

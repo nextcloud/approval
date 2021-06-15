@@ -94,7 +94,6 @@ OC.L10N.register(
     "Failed to request signature with DocuSign" : "Falha ao solicitar assinatura com DocuSign",
     "DocuSign integration" : "Integração com DocuSign",
     "DocuSign is an electronic signature solution." : "DocuSign é uma solução de assinatura eletrônica.",
-    "If you want to use DocuSign, create an application in your DocuSign 'My Apps & Keys' developer account settings and put the client ID (integration key) and secret below." : "Se desejar usar o DocuSign, crie um aplicativo nas configurações da conta de desenvolvedor 'Meus aplicativos e chaves' do DocuSign e coloque o ID do cliente (chave de integração) e o segredo abaixo.",
     "Make sure you set this \"Redirect URI\":" : "Certifique-se de definir este \"URI de redirecionamento\":",
     "If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used." : "Se o seu usuário DocuSign estiver associado a várias contas DocuSign, a conta padrão será usada.",
     "Client ID (aka integration key)" : "ID do cliente (também conhecido como chave de integração)",
