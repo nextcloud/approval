@@ -92,6 +92,7 @@
     "Failed to request signature with DocuSign" : "Nepodařilo se požádat o podepsání prostřednictvím DocuSign",
     "DocuSign integration" : "Napojení na DocuSign",
     "DocuSign is an electronic signature solution." : "DocuSign je řešení pro elektronický podpis.",
+    "If you want to use DocuSign, create an application in your DocuSign \"My Apps & Keys\" developer account settings and put the client ID (integration key) and secret below." : "Pokud chcete používat DocuSign, vytvořte aplikaci ve svém DocuSign vývojářském účtu „Moje aplikace a klíče“ a níže vložte identif. klienta (klíč k napojení) a tajemství.",
     "Make sure you set this \"Redirect URI\":" : "Ověřte, že jste nastavili tento „URI identifikátor přesměrování“:",
     "If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used." : "V případě, že je váš uživatel v DocuSign přiřazen k vícero účtům, bude použit ten výchozí.",
     "Client ID (aka integration key)" : "Identif. klienta (neboli napojovací klíč)",

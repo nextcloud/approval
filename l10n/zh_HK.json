@@ -92,6 +92,7 @@
     "Failed to request signature with DocuSign" : "無法使用 DocuSign 請求籤名",
     "DocuSign integration" : "DocuSign 整合",
     "DocuSign is an electronic signature solution." : "DocuSign 是一電子簽名解決方案。",
+    "If you want to use DocuSign, create an application in your DocuSign \"My Apps & Keys\" developer account settings and put the client ID (integration key) and secret below." : "如果您想使用 DocuSign，請在您的 DocuSign ”My Apps & Keys” 開發者帳戶設置中創建一個應用程序，並將客戶端 ID（整合密鑰）和密碼放在下面。",
     "Make sure you set this \"Redirect URI\":" : "確保設置此“重定向 URI”：",
     "If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used." : "如果您的 DocuSign 用戶與多個 DocuSign 賬戶相關聯，則將使用默認賬戶。",
     "Client ID (aka integration key)" : "客戶端 ID（又名集成密鑰）",

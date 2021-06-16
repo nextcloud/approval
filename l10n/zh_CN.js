@@ -94,6 +94,7 @@ OC.L10N.register(
     "Failed to request signature with DocuSign" : "未能通过 DocuSign 请求签名",
     "DocuSign integration" : "DocuSign 集成",
     "DocuSign is an electronic signature solution." : "DocuSign 是一个电子签名解决方案",
+    "If you want to use DocuSign, create an application in your DocuSign \"My Apps & Keys\" developer account settings and put the client ID (integration key) and secret below." : "如果你想使用 DocuSign，在你的 DocuSign “我的应用程序和密钥”开发帐户设置中创建一个应用程序，并将客户端ID(集成密钥)和 secret 放在下面。",
     "Make sure you set this \"Redirect URI\":" : "确保你设置了这个 \"重定向 URI\":",
     "If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used." : "如果你的DocuSign用户与多个DocuSign帐户关联，则将使用默认帐户。",
     "Client ID (aka integration key)" : "客户端 ID (即集成密钥)",
