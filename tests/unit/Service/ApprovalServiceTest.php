@@ -46,23 +46,23 @@ class ApprovalServiceTest extends TestCase {
 	/**
 	 * @var RuleService
 	 */
-	private RuleService $ruleService;
+	private $ruleService;
 	/**
 	 * @var ApprovalService
 	 */
-	private ApprovalService $approvalService;
+	private $approvalService;
 	/**
 	 * @var UtilsService
 	 */
-	private UtilsService $utilsService;
+	private $utilsService;
 	/**
 	 * @var IRootFolder
 	 */
-	private IRootFolder $root;
+	private $root;
 	/**
 	 * @var int
 	 */
-	private int $idTagPending1;
+	private $idTagPending1;
 	/**
 	 * @var int
 	 */
@@ -113,13 +113,13 @@ class ApprovalServiceTest extends TestCase {
 			$c->get(IUserManager::class),
 			$c->get(IShareManager::class),
 			$c->get(IRootFolder::class),
-			$c->get(ISystemTagManager::class),
+			$c->get(ISystemTagManager::class)
 		);
 		$this->ruleService = new RuleService(
 			'approval',
 			$c->get(IDBConnection::class),
 			$c->get(IUserManager::class),
-			$c->get(IAppManager::class),
+			$c->get(IAppManager::class)
 		);
 		$this->approvalService = new ApprovalService(
 			'approval',
@@ -133,7 +133,7 @@ class ApprovalServiceTest extends TestCase {
 			$c->get(ActivityManager::class),
 			$this->utilsService,
 			$c->get(IShareManager::class),
-			$c->get(IL10N::class),
+			$c->get(IL10N::class)
 		);
 
 		// add some tags

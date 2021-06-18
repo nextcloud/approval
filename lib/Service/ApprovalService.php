@@ -30,23 +30,22 @@ use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 
 use OCA\Approval\AppInfo\Application;
-use OCA\Approval\Service\UtilsService;
 use OCA\Approval\Activity\ActivityManager;
 
 class ApprovalService {
-	private string $appName;
-	private ISystemTagObjectMapper $tagObjectMapper;
-	private IRootFolder $root;
-	private IUserManager $userManager;
-	private IGroupManager $groupManager;
-	private IAppManager $appManager;
-	private INotificationManager $notificationManager;
-	private RuleService $ruleService;
-	private ActivityManager $activityManager;
-	private \OCA\Approval\Service\UtilsService $utilsService;
-	private IShareManager $shareManager;
-	private IL10N $l10n;
-	private string $userId;
+	private $appName;
+	private $tagObjectMapper;
+	private $root;
+	private $userManager;
+	private $groupManager;
+	private $appManager;
+	private $notificationManager;
+	private $ruleService;
+	private $activityManager;
+	private $utilsService;
+	private $shareManager;
+	private $l10n;
+	private $userId;
 
 	/**
 	 * ApprovalService constructor.
@@ -59,7 +58,7 @@ class ApprovalService {
 	 * @param INotificationManager $notificationManager
 	 * @param RuleService $ruleService
 	 * @param ActivityManager $activityManager
-	 * @param \OCA\Approval\Service\UtilsService $utilsService
+	 * @param UtilsService $utilsService
 	 * @param IShareManager $shareManager
 	 * @param IL10N $l10n
 	 */
@@ -388,7 +387,7 @@ class ApprovalService {
 				$this->activityManager->triggerEvent(
 					ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
 					ActivityManager::SUBJECT_REQUESTED_ORIGIN,
-					['origin_user_id' => $userId],
+					['origin_user_id' => $userId]
 				);
 
 				// check if someone can actually approve
@@ -616,13 +615,13 @@ class ApprovalService {
 			$this->activityManager->triggerEvent(
 				ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
 				ActivityManager::SUBJECT_REQUESTED,
-				['users' => $thisRuleUserIds],
+				['users' => $thisRuleUserIds]
 			);
 		} else {
 			$this->activityManager->triggerEvent(
 				ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
 				ActivityManager::SUBJECT_MANUALLY_REQUESTED,
-				['users' => $thisRuleUserIds, 'who' => $requestUserId],
+				['users' => $thisRuleUserIds, 'who' => $requestUserId]
 			);
 		}
 		// only notify users having access to the file
