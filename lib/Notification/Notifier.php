@@ -11,6 +11,7 @@
 
 namespace OCA\Approval\Notification;
 
+use InvalidArgumentException;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\IUser;
@@ -35,12 +36,22 @@ class Notifier implements INotifier {
 
 	/** @var IURLGenerator */
 	protected $url;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
+	/**
+	 * @var string|null
+	 */
+	private $userId;
 
 	/**
 	 * @param IFactory $factory
 	 * @param IUserManager $userManager
 	 * @param INotificationManager $notificationManager
 	 * @param IURLGenerator $urlGenerator
+	 * @param IConfig $config
+	 * @param string|null $userId
 	 */
 	public function __construct(IFactory $factory,
 								IUserManager $userManager,
@@ -52,8 +63,8 @@ class Notifier implements INotifier {
 		$this->userManager = $userManager;
 		$this->notificationManager = $notificationManager;
 		$this->url = $urlGenerator;
-		$this->userId = $userId;
 		$this->config = $config;
+		$this->userId = $userId;
 	}
 
 	/**
@@ -72,20 +83,20 @@ class Notifier implements INotifier {
 	 * @since 17.0.0
 	 */
 	public function getName(): string {
-		return $this->lFactory->get(Application::APP_ID)->t('Approval');
+		return $this->factory->get(Application::APP_ID)->t('Approval');
 	}
 
 	/**
 	 * @param INotification $notification
 	 * @param string $languageCode The code of the language that should be used to prepare the notification
 	 * @return INotification
-	 * @throws \InvalidArgumentException When the notification was not prepared by a notifier
+	 * @throws InvalidArgumentException When the notification was not prepared by a notifier
 	 * @since 9.0.0
 	 */
 	public function prepare(INotification $notification, string $languageCode): INotification {
 		if ($notification->getApp() !== Application::APP_ID) {
 			// Not my app => throw
-			throw new \InvalidArgumentException();
+			throw new InvalidArgumentException();
 		}
 
 		$l = $this->factory->get(Application::APP_ID, $languageCode);
@@ -123,7 +134,7 @@ class Notifier implements INotifier {
 					? $l->t('%1$s approved %2$s', [$user->getDisplayName(), $p['fileName']])
 					: $l->t('%1$s rejected %2$s', [$user->getDisplayName(), $p['fileName']]);
 
-				$theme = $this->config->getUserValue($this->userId, 'accessibility', 'theme', '');
+				$theme = $this->config->getUserValue($this->userId, 'accessibility', 'theme');
 				$green = ($theme === 'dark')
 				  ? 'E9322D'
 				  : '46BA61';
@@ -221,7 +232,7 @@ class Notifier implements INotifier {
 
 		default:
 			// Unknown subject => Unknown notification => throw
-			throw new \InvalidArgumentException();
+			throw new InvalidArgumentException();
 		}
 	}
 }

@@ -23,6 +23,8 @@
 
 namespace OCA\Approval\Activity;
 
+use Exception;
+use OC\Files\Node\Node;
 use OCP\Activity\IEvent;
 use OCP\Activity\IManager;
 use OCP\IUserManager;
@@ -34,9 +36,6 @@ use Psr\Log\LoggerInterface;
 use OCA\Approval\AppInfo\Application;
 
 class ActivityManager {
-	private $manager;
-	private $userId;
-	private $l10n;
 
 	public const APPROVAL_OBJECT_NODE = 'files';
 
@@ -45,6 +44,30 @@ class ActivityManager {
 	public const SUBJECT_REQUESTED = 'approval_requested';
 	public const SUBJECT_MANUALLY_REQUESTED = 'approval_manually_requested';
 	public const SUBJECT_REQUESTED_ORIGIN = 'approval_requested_origin';
+	/**
+	 * @var IManager
+	 */
+	private $manager;
+	/**
+	 * @var IL10N
+	 */
+	private $l10n;
+	/**
+	 * @var IRootFolder
+	 */
+	private $root;
+	/**
+	 * @var IUserManager
+	 */
+	private $userManager;
+	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
+	/**
+	 * @var string|null
+	 */
+	private $userId;
 
 	public function __construct(IManager $manager,
 								IL10N $l10n,
@@ -55,18 +78,18 @@ class ActivityManager {
 		$this->manager = $manager;
 		$this->l10n = $l10n;
 		$this->root = $root;
-		$this->userId = $userId;
 		$this->userManager = $userManager;
 		$this->logger = $logger;
+		$this->userId = $userId;
 	}
 
 	/**
-	 * @param $subjectIdentifier
+	 * @param string $subjectIdentifier
 	 * @param array $subjectParams
 	 * @param bool $ownActivity
 	 * @return string
 	 */
-	public function getActivityFormat($subjectIdentifier, $subjectParams = [], $ownActivity = false) {
+	public function getActivityFormat(string $subjectIdentifier, array $subjectParams = [], bool $ownActivity = false): string {
 		$subject = '';
 		switch ($subjectIdentifier) {
 			case self::SUBJECT_APPROVED:
@@ -96,7 +119,7 @@ class ActivityManager {
 			if ($event !== null) {
 				$this->sendToUsers($event, $entity, $subject, $additionalParams);
 			}
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			// Ignore exception for undefined activities on update events
 		}
 	}
@@ -106,10 +129,11 @@ class ActivityManager {
 	 * @param $entity
 	 * @param $subject
 	 * @param array $additionalParams
+	 * @param string|null $author
 	 * @return IEvent|null
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	private function createEvent($objectType, $entity, $subject, $additionalParams = [], $author = null) {
+	private function createEvent($objectType, $entity, $subject, array $additionalParams = [], ?string $author = null): ?IEvent {
 		$found = $this->root->getById($entity);
 		if (count($found) === 0) {
 			$this->logger->error('Could not create activity entry for ' . $entity . '. Node not found.', ['app' => Application::APP_ID]);
@@ -137,8 +161,7 @@ class ActivityManager {
 				$objectName = $node->getName();
 				break;
 			default:
-				throw new \Exception('Unknown subject for activity.');
-				break;
+				throw new Exception('Unknown subject for activity.');
 		}
 		$subjectParams['author'] = $this->l10n->t('A guest user');
 
@@ -160,8 +183,13 @@ class ActivityManager {
 	 * Publish activity to all users that are part of the project of a given object
 	 *
 	 * @param IEvent $event
+	 * @param $entity
+	 * @param string $subject
+	 * @param array $additionalParams
+	 * @throws \OCP\Files\NotPermittedException
+	 * @throws \OC\User\NoUserException
 	 */
-	private function sendToUsers(IEvent $event, $entity, $subject, $additionalParams) {
+	private function sendToUsers(IEvent $event, $entity, string $subject, array $additionalParams): void {
 		/*
 		switch ($event->getObjectType()) {
 			case self::APPROVAL_OBJECT_NODE:
@@ -199,7 +227,11 @@ class ActivityManager {
 		}
 	}
 
-	private function findDetailsForNode($node) {
+	/**
+	 * @param Node $node
+	 * @return array[]
+	 */
+	private function findDetailsForNode(Node $node): array {
 		$nodeInfo = [
 			'id' => $node->getId(),
 			'name' => $node->getName(),

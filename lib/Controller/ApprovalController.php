@@ -22,6 +22,18 @@ use OCA\Approval\Service\RuleService;
 
 class ApprovalController extends Controller {
 	private $userId;
+	/**
+	 * @var UtilsService
+	 */
+	private $utilsService;
+	/**
+	 * @var ApprovalService
+	 */
+	private $approvalService;
+	/**
+	 * @var RuleService
+	 */
+	private $ruleService;
 
 	public function __construct($AppName,
 								IRequest $request,
@@ -30,9 +42,9 @@ class ApprovalController extends Controller {
 								RuleService $ruleService,
 								?string $userId) {
 		parent::__construct($AppName, $request);
-		$this->userId = $userId;
 		$this->utilsService = $utilsService;
 		$this->approvalService = $approvalService;
+		$this->userId = $userId;
 		$this->ruleService = $ruleService;
 	}
 

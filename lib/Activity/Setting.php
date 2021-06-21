@@ -23,11 +23,12 @@
 
 namespace OCA\Approval\Activity;
 
+use OCP\Activity\ISetting;
 use OCP\IL10N;
 
 use OCA\Approval\AppInfo\Application;
 
-class Setting implements \OCP\Activity\ISetting {
+class Setting implements ISetting {
 
 	/** @var IL10N */
 	protected $l;
@@ -43,7 +44,7 @@ class Setting implements \OCP\Activity\ISetting {
 	 * @return string Lowercase a-z and underscore only identifier
 	 * @since 11.0.0
 	 */
-	public function getIdentifier() {
+	public function getIdentifier(): string {
 		return Application::APP_ID;
 	}
 
@@ -51,7 +52,7 @@ class Setting implements \OCP\Activity\ISetting {
 	 * @return string A translated string
 	 * @since 11.0.0
 	 */
-	public function getName() {
+	public function getName(): string {
 		return $this->l->t('<strong>Approval</strong> events');
 	}
 
@@ -61,7 +62,7 @@ class Setting implements \OCP\Activity\ISetting {
 	 * priority values. It is required to return a value between 0 and 100.
 	 * @since 11.0.0
 	 */
-	public function getPriority() {
+	public function getPriority(): int {
 		return 95;
 	}
 
@@ -69,7 +70,7 @@ class Setting implements \OCP\Activity\ISetting {
 	 * @return bool True when the option can be changed for the stream
 	 * @since 11.0.0
 	 */
-	public function canChangeStream() {
+	public function canChangeStream(): bool {
 		return true;
 	}
 
@@ -77,7 +78,7 @@ class Setting implements \OCP\Activity\ISetting {
 	 * @return bool True when the option can be changed for the stream
 	 * @since 11.0.0
 	 */
-	public function isDefaultEnabledStream() {
+	public function isDefaultEnabledStream(): bool {
 		return true;
 	}
 
@@ -85,7 +86,7 @@ class Setting implements \OCP\Activity\ISetting {
 	 * @return bool True when the option can be changed for the mail
 	 * @since 11.0.0
 	 */
-	public function canChangeMail() {
+	public function canChangeMail(): bool {
 		return true;
 	}
 
@@ -93,7 +94,7 @@ class Setting implements \OCP\Activity\ISetting {
 	 * @return bool True when the option can be changed for the stream
 	 * @since 11.0.0
 	 */
-	public function isDefaultEnabledMail() {
+	public function isDefaultEnabledMail(): bool {
 		return false;
 	}
 }

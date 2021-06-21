@@ -11,6 +11,7 @@
 
 namespace OCA\Approval\Service;
 
+use DateTime;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\IUserManager;
@@ -19,6 +20,26 @@ use OCP\App\IAppManager;
 use OCA\Approval\AppInfo\Application;
 
 class RuleService {
+	/**
+	 * @var IDBConnection
+	 */
+	private $db;
+	/**
+	 * @var IUserManager
+	 */
+	private $userManager;
+	/**
+	 * @var IAppManager
+	 */
+	private $appManager;
+	/**
+	 * @var array
+	 */
+	private $strTypeToInt;
+	/**
+	 * @var string[]
+	 */
+	private $intTypeToStr;
 
 	/**
 	 * Service to manage approval rules
@@ -27,10 +48,6 @@ class RuleService {
 								IDBConnection $db,
 								IUserManager $userManager,
 								IAppManager $appManager) {
-		$this->appName = $appName;
-		$this->db = $db;
-		$this->userManager = $userManager;
-		$this->appManager = $appManager;
 		$this->strTypeToInt = [
 			'user' => Application::TYPE_USER,
 			'group' => Application::TYPE_GROUP,
@@ -41,6 +58,9 @@ class RuleService {
 			Application::TYPE_GROUP => 'group',
 			Application::TYPE_CIRCLE => 'circle',
 		];
+		$this->db = $db;
+		$this->userManager = $userManager;
+		$this->appManager = $appManager;
 	}
 
 	/**
@@ -90,7 +110,7 @@ class RuleService {
 			return true;
 		}
 		$req->closeCursor();
-		$qb = $qb->resetQueryParts();
+		$qb->resetQueryParts();
 
 		return false;
 	}
@@ -127,7 +147,7 @@ class RuleService {
 		$qb->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->executeStatement();
+		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		$rule = $this->getRule($id);
@@ -186,7 +206,7 @@ class RuleService {
 					->andWhere(
 						$qb->expr()->eq('entity_id', $qb->createNamedParameter($td['entityId'], IQueryBuilder::PARAM_STR))
 					);
-				$req = $qb->executeStatement();
+				$qb->executeStatement();
 				$qb = $qb->resetQueryParts();
 			}
 			foreach ($toAdd as $ta) {
@@ -196,7 +216,7 @@ class RuleService {
 						'entity_id' => $qb->createNamedParameter($ta['entityId'], IQueryBuilder::PARAM_STR),
 						'rule_id' => $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT),
 					]);
-				$req = $qb->executeStatement();
+				$qb->executeStatement();
 				$qb = $qb->resetQueryParts();
 			}
 		}
@@ -233,7 +253,7 @@ class RuleService {
 				'tag_rejected' => $qb->createNamedParameter($tagRejected, IQueryBuilder::PARAM_INT),
 				'description' => $qb->createNamedParameter($description, IQueryBuilder::PARAM_STR),
 			]);
-		$req = $qb->executeStatement();
+		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		$insertedRuleId = $qb->getLastInsertId();
@@ -245,7 +265,7 @@ class RuleService {
 					'entity_type' => $qb->createNamedParameter($this->strTypeToInt[$elem['type']], IQueryBuilder::PARAM_INT),
 					'rule_id' => $qb->createNamedParameter($insertedRuleId, IQueryBuilder::PARAM_INT),
 				]);
-			$req = $qb->executeStatement();
+			$qb->executeStatement();
 			$qb = $qb->resetQueryParts();
 		}
 		foreach ($requesters as $elem) {
@@ -255,7 +275,7 @@ class RuleService {
 					'entity_type' => $qb->createNamedParameter($this->strTypeToInt[$elem['type']], IQueryBuilder::PARAM_INT),
 					'rule_id' => $qb->createNamedParameter($insertedRuleId, IQueryBuilder::PARAM_INT),
 				]);
-			$req = $qb->executeStatement();
+			$qb->executeStatement();
 			$qb = $qb->resetQueryParts();
 		}
 
@@ -279,29 +299,29 @@ class RuleService {
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->executeStatement();
+		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		$qb->delete('approval_rule_approvers')
 			->where(
 				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->executeStatement();
+		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		$qb->delete('approval_rule_requesters')
 			->where(
 				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->executeStatement();
+		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
 		$qb->delete('approval_activity')
 			->where(
 				$qb->expr()->eq('rule_id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->executeStatement();
-		$qb = $qb->resetQueryParts();
+		$qb->executeStatement();
+		$qb->resetQueryParts();
 
 		return [];
 	}
@@ -338,10 +358,10 @@ class RuleService {
 			break;
 		}
 		$req->closeCursor();
-		$qb = $qb->resetQueryParts();
+		$qb->resetQueryParts();
 
 		if (is_null($rule)) {
-			return $rule;
+			return null;
 		}
 
 		$rule['approvers'] = $this->getRuleEntities($id, 'approvers');
@@ -379,7 +399,7 @@ class RuleService {
 			];
 		}
 		$req->closeCursor();
-		$qb = $qb->resetQueryParts();
+		$qb->resetQueryParts();
 
 		foreach ($rules as $id => $rule) {
 			$rules[$id]['approvers'] = $this->getRuleEntities($id, 'approvers');
@@ -417,7 +437,7 @@ class RuleService {
 			}
 		}
 		$req->closeCursor();
-		$qb = $qb->resetQueryParts();
+		$qb->resetQueryParts();
 		return $entities;
 	}
 
@@ -439,10 +459,10 @@ class RuleService {
 			->andWhere(
 				$qb->expr()->eq('file_id', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT))
 			);
-		$req = $qb->executeStatement();
+		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
-		$timestamp = (new \DateTime())->getTimestamp();
+		$timestamp = (new DateTime())->getTimestamp();
 		$qb->insert('approval_activity')
 			->values([
 				'file_id' => $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT),
@@ -451,8 +471,8 @@ class RuleService {
 				'new_state' => $qb->createNamedParameter($newState, IQueryBuilder::PARAM_INT),
 				'timestamp' => $qb->createNamedParameter($timestamp, IQueryBuilder::PARAM_INT),
 			]);
-		$req = $qb->executeStatement();
-		$qb = $qb->resetQueryParts();
+		$qb->executeStatement();
+		$qb->resetQueryParts();
 	}
 
 	/**
@@ -488,7 +508,7 @@ class RuleService {
 			break;
 		}
 		$req->closeCursor();
-		$qb = $qb->resetQueryParts();
+		$qb->resetQueryParts();
 
 		if (!is_null($activity)) {
 			// get user display name

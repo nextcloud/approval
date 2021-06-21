@@ -3,22 +3,33 @@
 namespace OCA\Approval\Settings;
 
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;
 use OCP\Settings\ISettings;
-use OCP\IInitialStateService;
 
 use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Service\DocusignAPIService;
 
 class Admin implements ISettings {
 	private $config;
+	/**
+	 * @var IInitialState
+	 */
+	private $initialStateService;
+	/**
+	 * @var DocusignAPIService
+	 */
+	private $docusignAPIService;
+	/**
+	 * @var string|null
+	 */
+	private $userId;
 
 	public function __construct(string $appName,
 								IConfig $config,
-								IInitialStateService $initialStateService,
+								IInitialState $initialStateService,
 								DocusignAPIService $docusignAPIService,
 								?string $userId) {
-		$this->appName = $appName;
 		$this->config = $config;
 		$this->initialStateService = $initialStateService;
 		$this->docusignAPIService = $docusignAPIService;
@@ -29,16 +40,16 @@ class Admin implements ISettings {
 	 * @return TemplateResponse
 	 */
 	public function getForm(): TemplateResponse {
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
-		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
-		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token', '');
+		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id');
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret');
+		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token');
+		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token');
 
+		$accounts = [];
 		// get and update user info
 		if ($clientID && $clientSecret && $token && $refreshToken) {
 			$url = Application::DOCUSIGN_USER_INFO_REQUEST_URL;
 			$info = $this->docusignAPIService->apiRequest($url, $token, $refreshToken, $clientID, $clientSecret);
-			$accounts = [];
 			if (isset($info['name'], $info['email'], $info['accounts']) && is_array($info['accounts']) && count($info['accounts']) > 0) {
 				$this->config->setAppValue(Application::APP_ID, 'docusign_user_name', $info['name']);
 				$this->config->setAppValue(Application::APP_ID, 'docusign_user_email', $info['email']);
@@ -58,12 +69,11 @@ class Admin implements ISettings {
 				$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_email');
 				$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_account_id');
 				$this->config->deleteAppValue(Application::APP_ID, 'docusign_user_base_uri');
-				return $info;
 			}
 		}
 
-		$userName = $this->config->getAppValue(Application::APP_ID, 'docusign_user_name', '');
-		$userEmail = $this->config->getAppValue(Application::APP_ID, 'docusign_user_email', '');
+		$userName = $this->config->getAppValue(Application::APP_ID, 'docusign_user_name');
+		$userEmail = $this->config->getAppValue(Application::APP_ID, 'docusign_user_email');
 
 		$adminConfig = [
 			'docusign_client_id' => $clientID,
@@ -71,9 +81,9 @@ class Admin implements ISettings {
 			'docusign_token' => $token !== '',
 			'docusign_user_name' => $userName,
 			'docusign_user_email' => $userEmail,
-			'docusin_user_accounts' => $accounts,
+			'docusign_user_accounts' => $accounts,
 		];
-		$this->initialStateService->provideInitialState($this->appName, 'docusign-config', $adminConfig);
+		$this->initialStateService->provideInitialState('docusign-config', $adminConfig);
 		return new TemplateResponse(Application::APP_ID, 'adminSettings');
 	}
 

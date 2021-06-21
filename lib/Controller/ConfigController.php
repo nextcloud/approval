@@ -14,7 +14,6 @@ namespace OCA\Approval\Controller;
 use OCP\IUserManager;
 use OCP\IUser;
 
-use OCP\IL10N;
 use OCP\App\IAppManager;
 
 use OCP\IRequest;
@@ -24,21 +23,34 @@ use OCP\AppFramework\Controller;
 use OCA\Approval\Service\RuleService;
 
 class ConfigController extends Controller {
+	/**
+	 * @var IUserManager
+	 */
+	private $userManager;
+	/**
+	 * @var IAppManager
+	 */
+	private $appManager;
+	/**
+	 * @var RuleService
+	 */
+	private $ruleService;
+	/**
+	 * @var string|null
+	 */
 	private $userId;
 
 	public function __construct($AppName,
 								IRequest $request,
 								IUserManager $userManager,
 								IAppManager $appManager,
-								IL10N $l,
 								RuleService $ruleService,
 								?string $userId) {
 		parent::__construct($AppName, $request);
-		$this->l = $l;
-		$this->userId = $userId;
 		$this->userManager = $userManager;
 		$this->appManager = $appManager;
 		$this->ruleService = $ruleService;
+		$this->userId = $userId;
 	}
 
 	/**

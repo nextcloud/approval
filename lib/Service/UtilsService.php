@@ -11,6 +11,7 @@
 
 namespace OCA\Approval\Service;
 
+use Exception;
 use OCP\IUserManager;
 use OCP\IUser;
 use OCP\Files\IRootFolder;
@@ -21,10 +22,26 @@ use OCP\SystemTag\TagNotFoundException;
 use OCP\Files\Node;
 use OCP\Share\IManager as IShareManager;
 use OCP\Share\IShare;
-use OCP\Share\Exceptions\GenericShareException;
 use OCP\Constants;
 
 class UtilsService {
+	/**
+	 * @var IUserManager
+	 */
+	private $userManager;
+	/**
+	 * @var IShareManager
+	 */
+	private $shareManager;
+	/**
+	 * @var IRootFolder
+	 */
+	private $root;
+	/**
+	 * @var ISystemTagManager
+	 */
+	private $tagManager;
+
 	/**
 	 * Service providing storage, circles and tags tools
 	 */
@@ -33,7 +50,6 @@ class UtilsService {
 								IShareManager $shareManager,
 								IRootFolder $root,
 								ISystemTagManager $tagManager) {
-		$this->appName = $appName;
 		$this->userManager = $userManager;
 		$this->shareManager = $shareManager;
 		$this->root = $root;
@@ -66,7 +82,8 @@ class UtilsService {
 				->setNote($label)
 				->setMailSend(false)
 				->setStatus(IShare::STATUS_ACCEPTED);
-			$share = $this->shareManager->updateShare($share);
+			$this->shareManager->updateShare($share);
+			// $share = $this->shareManager->updateShare($share);
 			//// this was done instead of ->setStatus() but it does not seem to work all the time
 			//if ($type === IShare::TYPE_USER) {
 			//	try {
@@ -76,7 +93,7 @@ class UtilsService {
 			//	}
 			//}
 			return true;
-		} catch (GenericShareException | \Exception $e) {
+		} catch (Exception $e) {
 			return false;
 		}
 	}
@@ -148,7 +165,7 @@ class UtilsService {
 	}
 
 	/**
-	 * @param string $id of the tag to delete
+	 * @param int $id of the tag to delete
 	 * @return array
 	 */
 	public function deleteTag(int $id): array {

@@ -23,6 +23,8 @@
 
 namespace OCA\Approval\Activity;
 
+use Exception;
+use InvalidArgumentException;
 use OCP\Activity\IEvent;
 use OCP\Activity\IProvider;
 use OCP\IConfig;
@@ -44,6 +46,10 @@ class ApprovalProvider implements IProvider {
 	private $userManager;
 	/** @var IConfig */
 	private $config;
+	/**
+	 * @var IRootFolder
+	 */
+	private $root;
 
 	public function __construct(IURLGenerator $urlGenerator,
 								IRootFolder $root,
@@ -55,8 +61,8 @@ class ApprovalProvider implements IProvider {
 		$this->urlGenerator = $urlGenerator;
 		$this->activityManager = $activityManager;
 		$this->userManager = $userManager;
-		$this->root = $root;
 		$this->config = $config;
+		$this->root = $root;
 	}
 
 	/**
@@ -66,12 +72,12 @@ class ApprovalProvider implements IProvider {
 	 *                                   To do so, simply use setChildEvent($previousEvent) after setting the
 	 *                                   combined subject on the current event.
 	 * @return IEvent
-	 * @throws \InvalidArgumentException Should be thrown if your provider does not know this event
+	 * @throws InvalidArgumentException Should be thrown if your provider does not know this event
 	 * @since 11.0.0
 	 */
-	public function parse($language, IEvent $event, IEvent $previousEvent = null) {
+	public function parse($language, IEvent $event, IEvent $previousEvent = null): IEvent {
 		if ($event->getApp() !== Application::APP_ID) {
-			throw new \InvalidArgumentException();
+			throw new InvalidArgumentException();
 		}
 
 		$event = $this->getIcon($event);
@@ -80,9 +86,7 @@ class ApprovalProvider implements IProvider {
 		$subjectParams = $event->getSubjectParameters();
 		$ownActivity = ($event->getAuthor() === $this->userId);
 
-		/**
-		 * Map stored parameter objects to rich string types
-		 */
+		$params = [];
 
 		$author = $event->getAuthor();
 		// get author if
@@ -144,7 +148,7 @@ class ApprovalProvider implements IProvider {
 		try {
 			$subject = $this->activityManager->getActivityFormat($subjectIdentifier, $subjectParams, $ownActivity);
 			$this->setSubjects($event, $subject, $params);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 		}
 		return $event;
 	}
@@ -154,7 +158,7 @@ class ApprovalProvider implements IProvider {
 	 * @param string $subject
 	 * @param array $parameters
 	 */
-	protected function setSubjects(IEvent $event, $subject, array $parameters) {
+	protected function setSubjects(IEvent $event, string $subject, array $parameters) {
 		$placeholders = $replacements = $richParameters = [];
 		foreach ($parameters as $placeholder => $parameter) {
 			$placeholders[] = '{' . $placeholder . '}';
@@ -171,13 +175,17 @@ class ApprovalProvider implements IProvider {
 		$event->setSubject($subject, $parameters);
 	}
 
-	private function getIcon(IEvent $event) {
+	/**
+	 * @param IEvent $event
+	 * @return IEvent
+	 */
+	private function getIcon(IEvent $event): IEvent {
 		$event->setIcon(
 			$this->urlGenerator->getAbsoluteURL(
 				$this->urlGenerator->imagePath(Application::APP_ID, 'app-dark.svg')
 			)
 		);
-		$theme = $this->config->getUserValue($this->userId, 'accessibility', 'theme', '');
+		$theme = $this->config->getUserValue($this->userId, 'accessibility', 'theme');
 		$green = ($theme === 'dark')
 			? 'E9322D'
 			: '46BA61';
@@ -202,7 +210,12 @@ class ApprovalProvider implements IProvider {
 		return $event;
 	}
 
-	private function parseParamForWho($subjectParams, $params) {
+	/**
+	 * @param array $subjectParams
+	 * @param array $params
+	 * @return array
+	 */
+	private function parseParamForWho(array $subjectParams, array $params): array {
 		if (array_key_exists('who', $subjectParams)) {
 			$user = $this->userManager->get($subjectParams['who']);
 			$params['who'] = [

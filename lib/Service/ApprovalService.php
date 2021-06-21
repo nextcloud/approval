@@ -11,6 +11,7 @@
 
 namespace OCA\Approval\Service;
 
+use DateTime;
 use OCP\IL10N;
 use OCP\SystemTag\ISystemTagObjectMapper;
 use OCP\SystemTag\TagNotFoundException;
@@ -33,7 +34,6 @@ use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Activity\ActivityManager;
 
 class ApprovalService {
-	private $appName;
 	private $tagObjectMapper;
 	private $root;
 	private $userManager;
@@ -46,6 +46,10 @@ class ApprovalService {
 	private $shareManager;
 	private $l10n;
 	private $userId;
+	/**
+	 * @var string
+	 */
+	private $appName;
 
 	/**
 	 * ApprovalService constructor.
@@ -74,7 +78,6 @@ class ApprovalService {
 								UtilsService $utilsService,
 								IShareManager $shareManager,
 								IL10N $l10n) {
-		$this->appName = $appName;
 		$this->tagObjectMapper = $tagObjectMapper;
 		$this->root = $root;
 		$this->userManager = $userManager;
@@ -86,6 +89,7 @@ class ApprovalService {
 		$this->utilsService = $utilsService;
 		$this->shareManager = $shareManager;
 		$this->l10n = $l10n;
+		$this->appName = $appName;
 	}
 
 	/**
@@ -501,7 +505,7 @@ class ApprovalService {
 			$subject = $approved ? 'approved' : 'rejected';
 			$notification->setApp(Application::APP_ID)
 				->setUser($userId)
-				->setDateTime(new \DateTime())
+				->setDateTime(new DateTime())
 				->setObject('dum', 'dum')
 				->setSubject($subject, $params);
 
@@ -658,7 +662,7 @@ class ApprovalService {
 			}
 			$notification->setApp(Application::APP_ID)
 				->setUser($userId)
-				->setDateTime(new \DateTime())
+				->setDateTime(new DateTime())
 				->setObject('dum', 'dum')
 				->setSubject($subject, $params);
 

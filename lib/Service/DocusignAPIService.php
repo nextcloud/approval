@@ -11,6 +11,8 @@
 
 namespace OCA\Approval\Service;
 
+use Exception;
+use OCP\Http\Client\IClient;
 use OCP\IL10N;
 use Psr\Log\LoggerInterface;
 use OCP\IConfig;
@@ -28,6 +30,26 @@ class DocusignAPIService {
 
 	private $l10n;
 	private $logger;
+	/**
+	 * @var IUserManager
+	 */
+	private $userManager;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
+	/**
+	 * @var IRootFolder
+	 */
+	private $root;
+	/**
+	 * @var string
+	 */
+	private $appName;
+	/**
+	 * @var IClient
+	 */
+	private $client;
 
 	/**
 	 * Service to make requests to DocuSign
@@ -40,12 +62,11 @@ class DocusignAPIService {
 								IRootFolder $root,
 								IClientService $clientService) {
 		$this->appName = $appName;
-		$this->l10n = $l10n;
+		$this->userManager = $userManager;
 		$this->logger = $logger;
+		$this->l10n = $l10n;
 		$this->config = $config;
 		$this->root = $root;
-		$this->userManager = $userManager;
-		$this->clientService = $clientService;
 		$this->client = $clientService->newClient();
 	}
 
@@ -146,12 +167,6 @@ class DocusignAPIService {
 	/**
 	 * Build and sent the enveloppe to DocuSign
 	 *
-	 * @param string $accessToken
-	 * @param string $refreshToken
-	 * @param string $clientID
-	 * @param string $clientSecret
-	 * @param string $baseURI
-	 * @param string $accountId
 	 * @param File $file
 	 * @param array $signers
 	 * @param string|null $ccEmail
@@ -161,12 +176,12 @@ class DocusignAPIService {
 	public function emailSignRequest(File $file,
 									array $signers,
 									?string $ccEmail, ?string $ccName): array {
-		$accessToken = $this->config->getAppValue(Application::APP_ID, 'docusign_token', '');
-		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token', '');
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id', '');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret', '');
-		$accountId = $this->config->getAppValue(Application::APP_ID, 'docusign_user_account_id', '');
-		$baseURI = $this->config->getAppValue(Application::APP_ID, 'docusign_user_base_uri', '');
+		$accessToken = $this->config->getAppValue(Application::APP_ID, 'docusign_token');
+		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token');
+		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id');
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret');
+		$accountId = $this->config->getAppValue(Application::APP_ID, 'docusign_user_account_id');
+		$baseURI = $this->config->getAppValue(Application::APP_ID, 'docusign_user_base_uri');
 
 		$docB64 = base64_encode($file->getContent());
 		$enveloppe = [
@@ -223,14 +238,12 @@ class DocusignAPIService {
 		}
 
 		$endPoint = '/restapi/v2.1/accounts/' . $accountId .'/envelopes';
-		$info = $this->apiRequest($baseURI, $accessToken, $refreshToken, $clientID, $clientSecret, $endPoint, $enveloppe, 'POST');
-		return $info;
+		return $this->apiRequest($baseURI, $accessToken, $refreshToken, $clientID, $clientSecret, $endPoint, $enveloppe, 'POST');
 	}
 
 	/**
-	 * @param string $baseUrl
+	 * @param string|null $baseUrl
 	 * @param string $accessToken
-	 * @param string $authType
 	 * @param string $refreshToken
 	 * @param string $clientID
 	 * @param string $clientSecret
@@ -238,6 +251,7 @@ class DocusignAPIService {
 	 * @param array $params
 	 * @param string $method
 	 * @return array
+	 * @throws Exception
 	 */
 	public function apiRequest(?string $baseUrl, string $accessToken, string $refreshToken,
 							string $clientID, string $clientSecret,
@@ -279,6 +293,8 @@ class DocusignAPIService {
 				$response = $this->client->put($url, $options);
 			} else if ($method === 'DELETE') {
 				$response = $this->client->delete($url, $options);
+			} else {
+				return ['error' => $this->l10n->t('Bad HTTP method')];
 			}
 			$body = $response->getBody();
 			$respCode = $response->getStatusCode();
@@ -368,6 +384,8 @@ class DocusignAPIService {
 				$response = $this->client->put($url, $options);
 			} else if ($method === 'DELETE') {
 				$response = $this->client->delete($url, $options);
+			} else {
+				return ['error' => $this->l10n->t('Bad HTTP method')];
 			}
 			$body = $response->getBody();
 			$respCode = $response->getStatusCode();
@@ -377,7 +395,7 @@ class DocusignAPIService {
 			} else {
 				return json_decode($body, true);
 			}
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$this->logger->warning('DocuSign OAuth error : '.$e->getMessage(), ['app' => $this->appName]);
 			return ['error' => $e->getMessage()];
 		}
