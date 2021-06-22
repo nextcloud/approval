@@ -139,7 +139,8 @@ class ApprovalServiceTest extends TestCase {
 			$c->get(ActivityManager::class),
 			$this->utilsService,
 			$c->get(IShareManager::class),
-			$c->get(IL10N::class)
+			$c->get(IL10N::class),
+			'user1'
 		);
 
 		// add some tags
