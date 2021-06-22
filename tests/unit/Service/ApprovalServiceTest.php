@@ -186,6 +186,33 @@ class ApprovalServiceTest extends TestCase {
 		$this->assertEquals('desc1', $result[0]['description']);
 	}
 
+	public function testUserAccessCheck() {
+		$uf1 = $this->root->getUserFolder('user1');
+		$dummyFile = $uf1->newFile('dummyFile.txt', 'content');
+
+		$r = $this->utilsService->userHasAccessTo($dummyFile->getId(), 'user1');
+		$this->assertTrue($r);
+		$r = $this->utilsService->userHasAccessTo(0, 'user1');
+		$this->assertFalse($r);
+		$r = $this->utilsService->userHasAccessTo($dummyFile->getId(), 'unexistinguser');
+		$this->assertFalse($r);
+	}
+
+	public function testCreateAndDeleteTags() {
+		$r = $this->utilsService->createTag('test1');
+		$this->assertTrue(isset($r['id']));
+		$idTagTest1 = $r['id'];
+		// add tag that already exists
+		$r = $this->utilsService->createTag('test1');
+		$this->assertTrue(isset($r['error']));
+
+		$r = $this->utilsService->deleteTag($idTagTest1);
+		$this->assertTrue(isset($r['success']));
+		// delete tag which does not exist
+		$r = $this->utilsService->deleteTag($idTagTest1);
+		$this->assertTrue(isset($r['error']));
+	}
+
 	public function testCreateAndDeleteRule() {
 		// add some tags
 		$r = $this->utilsService->createTag('pending2');
