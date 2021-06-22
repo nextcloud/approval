@@ -9,6 +9,7 @@
 
 namespace OCA\Approval\AppInfo;
 
+use OCA\Approval\Dav\ApprovalPlugin;
 use OCP\Util;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
@@ -85,26 +86,19 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function boot(IBootContext $context): void {
-		$context->injectFn(Closure::fromCallable([$this, 'registerHooks']));
-	}
+		// $context->injectFn(Closure::fromCallable([$this, 'registerHooks']));
 
-	/**
-	 * @param IServerContainer $container
-	 */
-	public function registerHooks(IServerContainer $container) {
-		$eventDispatcher = $container->get(IEventDispatcher::class);
+		$eventDispatcher = $context->getServerContainer()->get(IEventDispatcher::class);
+		$eventDispatcher->addListener('OCA\DAV\Connector\Sabre::addPlugin', function (SabrePluginEvent $event) use ($context) {
+			$eventServer = $event->getServer();
 
-		$userSession = $container->get(IUserSession::class);
-		$approvalService = $container->get(ApprovalService::class);
-		if ($userSession->getUser() instanceof IUser) {
-			$approvalService->setUserId($userSession->getUser()->getUID());
-		}
-
-		$eventDispatcher->addListener(
-			'OCA\DAV\Connector\Sabre::addPlugin', function(SabrePluginEvent $e) use ($approvalService) {
-				$server = $e->getServer();
-				$server->on('propFind', [$approvalService, 'propFind']);
+			if ($eventServer !== null) {
+				// We have to register the ApprovalPlugin here and not info.xml,
+				// because info.xml plugins are loaded, after the
+				// beforeMethod:* hook has already been emitted.
+				$plugin = $context->getAppContainer()->get(ApprovalPlugin::class);
+				$eventServer->addPlugin($plugin);
 			}
-		);
+		});
 	}
 }

@@ -65,6 +65,7 @@ class ApprovalService {
 	 * @param UtilsService $utilsService
 	 * @param IShareManager $shareManager
 	 * @param IL10N $l10n
+	 * @param string|null $userId
 	 */
 	public function __construct(string $appName,
 								ISystemTagObjectMapper $tagObjectMapper,
@@ -77,7 +78,8 @@ class ApprovalService {
 								ActivityManager $activityManager,
 								UtilsService $utilsService,
 								IShareManager $shareManager,
-								IL10N $l10n) {
+								IL10N $l10n,
+								?string $userId) {
 		$this->tagObjectMapper = $tagObjectMapper;
 		$this->root = $root;
 		$this->userManager = $userManager;
@@ -90,6 +92,7 @@ class ApprovalService {
 		$this->shareManager = $shareManager;
 		$this->l10n = $l10n;
 		$this->appName = $appName;
+		$this->userId = $userId;
 	}
 
 	/**
@@ -690,16 +693,5 @@ class ApprovalService {
 				return $state['state'];
 			}
 		);
-	}
-
-	/**
-	 * This is only called in Application::registerHooks()
-	 * and is only usefull to propFind method
-	 *
-	 * @param string $userId
-	 * @return void
-	 */
-	public function setUserId(string $userId): void {
-		$this->userId = $userId;
 	}
 }
