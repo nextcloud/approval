@@ -28,6 +28,7 @@ OC.L10N.register(
     "{user} requested your approval for {node}" : "{user} 請求您審批 {node}",
     "Please check my approval request" : "請檢查我的審批請求",
     "Signature of %s" : "%s 的簽名",
+    "Bad HTTP method" : "不正確的 HTTP 方法",
     "Bad credentials" : "錯誤的憑證",
     "OAuth access token refused" : "OAuth 存取權杖被拒絕",
     "Approval workflows" : "審批流程",

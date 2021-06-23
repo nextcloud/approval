@@ -26,6 +26,7 @@
     "{user} requested your approval for {node}" : "{user} poprosił Ciebie o zatwierdzenie dla {node}",
     "Please check my approval request" : "Sprawdź moją prośbę o zatwierdzenie",
     "Signature of %s" : "Podpis %s",
+    "Bad HTTP method" : "Zła metoda HTTP",
     "Bad credentials" : "Złe poświadczenia",
     "OAuth access token refused" : "Odmowa tokena dostępu OAuth",
     "Approval workflows" : "Zatwierdzenie przepływu pracy",

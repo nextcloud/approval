@@ -28,6 +28,7 @@ OC.L10N.register(
     "{user} requested your approval for {node}" : "{user} pediu sua aprovação para {node}",
     "Please check my approval request" : "Por favor, verifique minha solicitação de aprovação",
     "Signature of %s" : "Assinatura de %s",
+    "Bad HTTP method" : "Método HTTP ruim ",
     "Bad credentials" : "Credenciais inválidas",
     "OAuth access token refused" : "Token de acesso OAuth inválido",
     "Approval workflows" : "Fluxo de aprovação",

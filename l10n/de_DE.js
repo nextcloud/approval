@@ -28,6 +28,7 @@ OC.L10N.register(
     "{user} requested your approval for {node}" : "{user} hat Ihre Genehmigung für {node} angefordert",
     "Please check my approval request" : "Bitte überprüfen Sie meine Genehmigungsanfrage",
     "Signature of %s" : "Signatur von %s",
+    "Bad HTTP method" : "Ungültige HTTP-Methode",
     "Bad credentials" : "Falsche Anmeldeinformationen",
     "OAuth access token refused" : "OAuth-Zugriffstoken abgelehnt",
     "Approval workflows" : "Arbeitsabläufe für Genehmigungen",

@@ -28,6 +28,7 @@ OC.L10N.register(
     "{user} requested your approval for {node}" : "{user} požádala o vaše schválení pro {node}",
     "Please check my approval request" : "Podívejte se prosím na moji žádost o schválení",
     "Signature of %s" : "Podpis %s",
+    "Bad HTTP method" : "Nesprávná HTTP metoda",
     "Bad credentials" : "Nesprávné přihlašovací údaje",
     "OAuth access token refused" : "OAuth přístupový token odmítnut",
     "Approval workflows" : "Schvalovací postupy",
