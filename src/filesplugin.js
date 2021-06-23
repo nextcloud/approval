@@ -242,7 +242,7 @@ import './bootstrap'
 			const req = {}
 			const url = generateUrl('/apps/approval/' + fileId + '/approve')
 			axios.put(url, req).then((response) => {
-				showSuccess(t('approval', '{name} approved!', { name: fileName }))
+				showSuccess(t('approval', 'You approved {name}', { name: fileName }))
 				model.set('approvalState', states.APPROVED)
 				OCA.Approval.View.getApprovalState(false)
 				OCA.Approval.View.reloadTags()
@@ -263,7 +263,7 @@ import './bootstrap'
 			const req = {}
 			const url = generateUrl('/apps/approval/' + fileId + '/reject')
 			axios.put(url, req).then((response) => {
-				showSuccess(t('approval', '{name} rejected!', { name: fileName }))
+				showSuccess(t('approval', 'You rejected {name}', { name: fileName }))
 				model.set('approvalState', states.REJECTED)
 				OCA.Approval.View.getApprovalState(false)
 				OCA.Approval.View.reloadTags()
