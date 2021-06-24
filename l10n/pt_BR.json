@@ -114,23 +114,17 @@
     "Select approval workflow" : "Selecione o fluxo de trabalho de aprovação",
     "File will be automatically shared with everybody allowed to approve." : "O arquivo será compartilhado automaticamente com todos os que têm permissão para aprovar.",
     "Can be approved by" : "Pode ser aprovado por",
-    "approved {name}" : "aprovado {name}",
     "Failed to approve {name}" : "Falha ao aprovar {name}",
-    "Rejected {name}" : "Rejeitado {name}",
     "Failed to reject {name}" : "Falha ao rejeitar {name}",
     "Approval requested for {name}" : "Aprovação solicitada para {name}",
     "Warning" : "Alerta",
     "Failed to request approval for {name}" : "Falha ao solicitar aprovação para {name}",
-    "Approval requested for {name}!" : "Aprovação solicitada para {name}!",
     "You will receive an email from DocuSign to sign the document" : "Você receberá um e-mail do DocuSign para assinar o documento",
     "The user who requested this approval was not found, remember to send or share the signed document yourself" : "O usuário que solicitou esta aprovação não foi encontrado, você mesmo lembre-se de enviar ou compartilhar o documento assinado",
     "Approval signature" : "Assinatura de aprovação",
-    "{name} signature requested via LibreSign!" : "{name} assinatura solicitada via LibreSign!",
     "Impossible to sign this document" : "Impossível assinar este documento",
     "Failed to check approval status" : "Falha ao verificar o status de aprovação",
     "Pending approval, you are authorized to approve." : "Pendente de aprovação, você está autorizado a aprovar.",
-    "Show approval details" : "Mostrar detalhes de aprovação",
-    "{name} approved!" : "{name} aprovado!",
-    "{name} rejected!" : "{name} rejeitado!"
+    "Show approval details" : "Mostrar detalhes de aprovação"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

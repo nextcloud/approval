@@ -26,6 +26,7 @@
     "{user} requested your approval for {node}" : "{user} vroeg jouw goedkeuring voor {node}",
     "Please check my approval request" : "Bekijk mijn goedkeuringsverzoek",
     "Signature of %s" : "Handtekening van %s",
+    "Bad HTTP method" : "Foute HTTP methode",
     "Bad credentials" : "Foute inloggegevens",
     "OAuth access token refused" : "OAuth toegangstoken geweigerd",
     "Approval workflows" : "Goedkeuringswerkstromen",
@@ -113,23 +114,17 @@
     "Select approval workflow" : "Selecteer goedkeuringswerkstroom",
     "File will be automatically shared with everybody allowed to approve." : "Bestand wordt automatisch gedeeld met iedereen die mag goedkeuren.",
     "Can be approved by" : "Kan worden goedgekeurd door",
-    "approved {name}" : "goedgekeurd {name}",
     "Failed to approve {name}" : "Kon {name} niet goedkeuren",
-    "Rejected {name}" : "{name} afgekeurd",
     "Failed to reject {name}" : "Kon {name} niet afkeuren",
     "Approval requested for {name}" : "Goedkeuring aangevraagd voor {name}",
     "Warning" : "Waarschuwing",
     "Failed to request approval for {name}" : "Kon geen goedkeuring vragen voor {name} ",
-    "Approval requested for {name}!" : "Goedkeuring aangevraagd voor {name}",
     "You will receive an email from DocuSign to sign the document" : "Je ontvangt een e-mail van DocuSign om het document te ondertekenen",
     "The user who requested this approval was not found, remember to send or share the signed document yourself" : "De gebruiker die deze goedkeuring heeft aangevraagd, is niet gevonden, vergeet niet het ondertekende document zelf te verzenden of te delen",
     "Approval signature" : "Goedkeuringshandtekening",
-    "{name} signature requested via LibreSign!" : "{name} ondertekening aangevraagd via LibreSign!",
     "Impossible to sign this document" : "Kon document niet ondertekenen",
     "Failed to check approval status" : "Kon goedkeuringsstatus niet ophalen",
     "Pending approval, you are authorized to approve." : "In afwachting van goedkeuring, jij mag goedkeuren.",
-    "Show approval details" : "Toon goedkeuringsdetails",
-    "{name} approved!" : "{name} keurde goed!",
-    "{name} rejected!" : "{name} keurde af!"
+    "Show approval details" : "Toon goedkeuringsdetails"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

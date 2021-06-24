@@ -114,23 +114,17 @@
     "Select approval workflow" : "Wybierz przepływ pracy zatwierdzenia",
     "File will be automatically shared with everybody allowed to approve." : "Plik zostanie automatycznie udostępniony wszystkim, którzy będą mogli zatwierdzić.",
     "Can be approved by" : "Może zostać zatwierdzone przez",
-    "approved {name}" : "Zatwierdzono {name}",
     "Failed to approve {name}" : "Nie udało się zatwierdzić {name}",
-    "Rejected {name}" : "Odrzucono {name}",
     "Failed to reject {name}" : "Nie udało się odrzucić {name}",
     "Approval requested for {name}" : "Prośba o zatwierdzenie dla {name}",
     "Warning" : "Ostrzeżenie",
     "Failed to request approval for {name}" : "Nie udało się poprosić o zatwierdzenie dla {name}",
-    "Approval requested for {name}!" : "Prośba o zatwierdzenie dla {name}!",
     "You will receive an email from DocuSign to sign the document" : "Otrzymasz wiadomość e-mail z DocuSign, aby podpisać dokument",
     "The user who requested this approval was not found, remember to send or share the signed document yourself" : "Nie znaleziono użytkownika, który poprosił o to zatwierdzenie. Należy pamiętać, aby samodzielnie wysłać lub udostępnić podpisany dokument",
     "Approval signature" : "Podpis zatwierdzenia",
-    "{name} signature requested via LibreSign!" : "Prośba o podpis {name} przez LibreSign!",
     "Impossible to sign this document" : "Nie można podpisać tego dokumentu",
     "Failed to check approval status" : "Nie udało się sprawdzić statusu zatwierdzenia",
     "Pending approval, you are authorized to approve." : "Oczekuje na zatwierdzenie, masz uprawnienia do zatwierdzenia.",
-    "Show approval details" : "Pokaż szczegóły zatwierdzenia",
-    "{name} approved!" : "{name} zatwierdzony!",
-    "{name} rejected!" : "{name} odrzucony!"
+    "Show approval details" : "Pokaż szczegóły zatwierdzenia"
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }

@@ -109,23 +109,17 @@
     "Select approval workflow" : "Seleccioneu el flux de treball d'aprovació",
     "File will be automatically shared with everybody allowed to approve." : "El fitxer es compartirà automàticament amb tots els que se'ls permeti aprovar.",
     "Can be approved by" : "Pot ser aprovat per",
-    "approved {name}" : "ha aprovat {name}",
     "Failed to approve {name}" : "No s'ha pogut aprovar {name}",
-    "Rejected {name}" : "S'ha rebutjat {name}",
     "Failed to reject {name}" : "No s'ha pogut rebutjar {name}",
     "Approval requested for {name}" : "Aprovació sol·licitada per a {name}",
     "Warning" : "Atenció",
     "Failed to request approval for {name}" : "No s'ha pogut sol·licitar l'aprovació de {name}",
-    "Approval requested for {name}!" : "Aprovació sol·licitada per a {name}!",
     "You will receive an email from DocuSign to sign the document" : "Rebràs un correu electrònic de DocuSign per signar el document",
     "The user who requested this approval was not found, remember to send or share the signed document yourself" : "L'usuari que ha sol·licitat aquesta aprovació no s'ha trobat, recorda enviar o compartir tu mateix el document signat",
     "Approval signature" : "Signatura d'aprovació",
-    "{name} signature requested via LibreSign!" : "{name} signatura sol·licitada mitjançant LibreSign!",
     "Impossible to sign this document" : "Impossible signar aquest document",
     "Failed to check approval status" : "No s'ha pogut comprovar l'estat d'aprovació",
     "Pending approval, you are authorized to approve." : "Pendents d'aprovació, esteu autoritzats a aprovar-lo.",
-    "Show approval details" : "Mostra els detalls de l'aprovació",
-    "{name} approved!" : "{name} aprovat!",
-    "{name} rejected!" : "{name} rebutjat!"
+    "Show approval details" : "Mostra els detalls de l'aprovació"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

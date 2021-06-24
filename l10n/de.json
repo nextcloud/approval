@@ -52,14 +52,9 @@
     "Users or email addresses" : "Benutzernamen oder E-Mail-Adressen",
     "Nextcloud users or email addresses" : "Nextcloud Benutzer oder E-Mail-Adressen",
     "Request signature" : "Signatur anfordern",
-    "approved {name}" : "{name} zugestimmt",
-    "Rejected {name}" : "{name} abgelehnt",
     "Approval requested for {name}" : "Genehmigung für {name} angefragt",
     "Failed to request approval for {name}" : "Genehmigung für {name} konnte nicht angefragt werden",
-    "Approval requested for {name}!" : "Genehmigung für {name} angefragt!",
     "Approval signature" : "Genehmigungs-Signatur",
-    "Show approval details" : "Genehmigungsdetails anzeigen",
-    "{name} approved!" : "{name} hat zugestimmt!",
-    "{name} rejected!" : "{name} hat abgelehnt!"
+    "Show approval details" : "Genehmigungsdetails anzeigen"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

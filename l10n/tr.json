@@ -113,23 +113,17 @@
     "Select approval workflow" : "Onay iş akışını seçin",
     "File will be automatically shared with everybody allowed to approve." : "Dosya, onaylamasına izin verilen herkesle otomatik olarak paylaşılacak.",
     "Can be approved by" : "Şununla onaylanabilir",
-    "approved {name}" : "Onaylandı {name}",
     "Failed to approve {name}" : "Onaylanamadı {name}",
-    "Rejected {name}" : "Reddedildi {name}",
     "Failed to reject {name}" : "Reddedilemedi {name}",
     "Approval requested for {name}" : "{name} için onay isteğinde bulunuldu",
     "Warning" : "Uyarı",
     "Failed to request approval for {name}" : "{name} için onay isteğinde bulunulamadı",
-    "Approval requested for {name}!" : "{name} için onay isteğinde bulunuldu!",
     "You will receive an email from DocuSign to sign the document" : "Size, DocuSign tarafından belgeyi imzalamanız için bir e-posta gönderilecek",
     "The user who requested this approval was not found, remember to send or share the signed document yourself" : "Bu onay isteğinde bulunan kullanıcı bulunamadı. İmzalı belgeyi kendiniz göndermeyi ya da paylaşmayı unutmayın.",
     "Approval signature" : "Onay imzası",
-    "{name} signature requested via LibreSign!" : "{name} LibreSign ile imza istedi!",
     "Impossible to sign this document" : "Bu belge imzalanamaz",
     "Failed to check approval status" : "Onay durumu denetlenemedi",
     "Pending approval, you are authorized to approve." : "Onay bekliyor. Onaylama yetkiniz var.",
-    "Show approval details" : "Onay ayrıntılarını görüntüle",
-    "{name} approved!" : "{name} onaylandı!",
-    "{name} rejected!" : "{name} reddedildi!"
+    "Show approval details" : "Onay ayrıntılarını görüntüle"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

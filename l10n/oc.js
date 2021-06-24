@@ -39,8 +39,6 @@ OC.L10N.register(
     "Connect to DocuSign" : "Se connectar a DocuSign",
     "No result." : "Cap de resultat.",
     "Who?" : "Qual ?",
-    "Warning" : "Avertiment",
-    "{name} approved!" : "{name} a validat !",
-    "{name} rejected!" : "{name} a regetat !"
+    "Warning" : "Avertiment"
 },
 "nplurals=2; plural=(n > 1);");

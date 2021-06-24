@@ -77,18 +77,13 @@ OC.L10N.register(
     "No result." : "Žiadny výsledok.",
     "Who?" : "Kto?",
     "Can be approved by" : "Môže schváliť",
-    "approved {name}" : "schválené {name}",
     "Failed to approve {name}" : "Zlyhalo povolenie {name}",
-    "Rejected {name}" : "Odmietnuté {name}",
     "Failed to reject {name}" : "Zlyhalo odmietnutie {name}",
     "Approval requested for {name}" : "Schválenie vyžiadané pre {name}",
     "Warning" : "Varovanie",
-    "Approval requested for {name}!" : "Schválenie vyžiadané pre {name}!",
     "Approval signature" : "Podpis schválenia",
     "Impossible to sign this document" : "Nie je možné podpísať tento dokument",
     "Pending approval, you are authorized to approve." : "Čaká na schválenie, ste autorizovaný schváliť.",
-    "Show approval details" : "Zobraziť detaily schválenia",
-    "{name} approved!" : "{name} schválené!",
-    "{name} rejected!" : "{name} odmietnuté!"
+    "Show approval details" : "Zobraziť detaily schválenia"
 },
 "nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");
