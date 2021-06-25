@@ -26,8 +26,8 @@ return [
 		['name' => 'Docusign#setDocusignConfig', 'url' => '/docusign-config', 'verb' => 'PUT'],
 		['name' => 'Docusign#getDocusignInfo', 'url' => '/docusign/info', 'verb' => 'GET'],
 		['name' => 'Docusign#oauthRedirect', 'url' => '/docusign/oauth-redirect', 'verb' => 'GET'],
-		['name' => 'Docusign#signByApprover', 'url' => '/docusign/{fileId}/approval-sign', 'verb' => 'PUT'],
-		['name' => 'Docusign#signStandalone', 'url' => '/docusign/{fileId}/standalone-sign', 'verb' => 'PUT'],
+		['name' => 'Docusign#signByApprover', 'url' => '/docusign/approval-sign/{fileId}', 'verb' => 'PUT'],
+		['name' => 'Docusign#signStandalone', 'url' => '/docusign/standalone-sign/{fileId}', 'verb' => 'PUT'],
 
 		/**
 		 * LibreSign
@@ -45,21 +45,21 @@ return [
 		],
 		[
 			'name' => 'Approval#getApprovalState',
-			'url' => '/api/v1/{fileId}/state',
+			'url' => '/api/v1/state/{fileId}',
 			'verb' => 'GET',
 		],
 		[
 			'name' => 'Approval#approve',
-			'url' => '/api/v1/{fileId}/approve',
+			'url' => '/api/v1/approve/{fileId}',
 			'verb' => 'PUT'],
 		[
 			'name' => 'Approval#reject',
-			'url' => '/api/v1/{fileId}/reject',
+			'url' => '/api/v1/reject/{fileId}',
 			'verb' => 'PUT',
 		],
 		[
 			'name' => 'Approval#request',
-			'url' => '/api/v1/{fileId}/request/{ruleId}',
+			'url' => '/api/v1/request/{fileId}/{ruleId}',
 			'verb' => 'POST',
 		],
 	],

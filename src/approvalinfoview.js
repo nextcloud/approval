@@ -116,7 +116,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		_onApprove() {
 			const req = {}
-			const url = generateOcsUrl('apps/approval/api/v1/' + this.fileId + '/approve', 2)
+			const url = generateOcsUrl('apps/approval/api/v1/approve/' + this.fileId, 2)
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'You approved {name}', { name: this.fileName }))
 				this.getApprovalState(true)
@@ -132,7 +132,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		_onReject() {
 			const req = {}
-			const url = generateOcsUrl('apps/approval/api/v1/' + this.fileId + '/reject', 2)
+			const url = generateOcsUrl('apps/approval/api/v1/reject/' + this.fileId, 2)
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'You rejected {name}', { name: this.fileName }))
 				this.getApprovalState(true)
@@ -149,7 +149,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const req = {
 				createShares,
 			}
-			const url = generateOcsUrl('apps/approval/api/v1/' + this.fileId + '/request/' + ruleId, 2)
+			const url = generateOcsUrl('apps/approval/api/v1/request/' + this.fileId + '/' + ruleId, 2)
 			axios.post(url, req).then((response) => {
 				// TODO make sure we see the freshly created shares
 				/*
@@ -187,7 +187,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const req = {
 				createShares: false,
 			}
-			const url = generateOcsUrl('apps/approval/api/v1/' + this.fileId + '/request/' + ruleId, 2)
+			const url = generateOcsUrl('apps/approval/api/v1/request/' + this.fileId + '/' + ruleId, 2)
 			axios.post(url, req).then((response) => {
 				showSuccess(t('approval', 'Approval requested for {name}', { name: this.fileName }))
 				if (response.data.ocs.data.warning) {
@@ -210,7 +210,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const req = {
 				requesterUserId: this.requesterUserId,
 			}
-			const url = generateUrl('/apps/approval/docusign/' + this.fileId + '/approval-sign')
+			const url = generateUrl('/apps/approval/docusign/approval-sign/' + this.fileId)
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'You will receive an email from DocuSign to sign the document'))
 				if (!this.requesterUserId) {
@@ -299,7 +299,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		getApprovalState(reloadFileItem) {
 			console.debug('getApprovalState of ' + this.fileName)
 			// get state and details
-			const url = generateOcsUrl('apps/approval/api/v1/' + this.fileId + '/state', 2)
+			const url = generateOcsUrl('apps/approval/api/v1/state/' + this.fileId, 2)
 			axios.get(url).then((response) => {
 				if (reloadFileItem && this.state !== response.data.ocs.data.state) {
 					this.updateFileItem(response.data.ocs.data.state)

@@ -240,7 +240,7 @@ import './bootstrap'
 			const model = context.fileList.getModelForFile(fileName)
 
 			const req = {}
-			const url = generateOcsUrl('apps/approval/api/v1/' + fileId + '/approve', 2)
+			const url = generateOcsUrl('apps/approval/api/v1/approve/' + fileId, 2)
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'You approved {name}', { name: fileName }))
 				model.set('approvalState', states.APPROVED)
@@ -261,7 +261,7 @@ import './bootstrap'
 			const model = context.fileList.getModelForFile(fileName)
 
 			const req = {}
-			const url = generateOcsUrl('apps/approval/api/v1/' + fileId + '/reject', 2)
+			const url = generateOcsUrl('apps/approval/api/v1/reject/' + fileId, 2)
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'You rejected {name}', { name: fileName }))
 				model.set('approvalState', states.REJECTED)
