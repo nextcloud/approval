@@ -107,7 +107,7 @@ export default {
 				targetUserIds,
 				targetEmails,
 			}
-			const url = generateUrl('/apps/approval/' + this.fileId + '/standalone-sign')
+			const url = generateUrl('/apps/approval/docusign/' + this.fileId + '/standalone-sign')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'Recipients will receive an email from DocuSign to sign the document'))
 				this.closeRequestModal()

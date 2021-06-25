@@ -12,7 +12,7 @@ import DocuSignModal from './components/DocuSignModal'
 import { states } from './states'
 
 import axios from '@nextcloud/axios'
-import { generateUrl } from '@nextcloud/router'
+import { generateOcsUrl, generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 
 import Vue from 'vue'
@@ -240,7 +240,7 @@ import './bootstrap'
 			const model = context.fileList.getModelForFile(fileName)
 
 			const req = {}
-			const url = generateUrl('/apps/approval/' + fileId + '/approve')
+			const url = generateOcsUrl('apps/approval/api/v1/' + fileId + '/approve', 2)
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'You approved {name}', { name: fileName }))
 				model.set('approvalState', states.APPROVED)
@@ -261,7 +261,7 @@ import './bootstrap'
 			const model = context.fileList.getModelForFile(fileName)
 
 			const req = {}
-			const url = generateUrl('/apps/approval/' + fileId + '/reject')
+			const url = generateOcsUrl('apps/approval/api/v1/' + fileId + '/reject', 2)
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'You rejected {name}', { name: fileName }))
 				model.set('approvalState', states.REJECTED)
@@ -317,9 +317,9 @@ axios.get(urlDs).then((response) => {
 })
 
 // on page load: get rules with current user as able to request
-const url = generateUrl('/apps/approval/user-requester-rules')
+const url = generateOcsUrl('apps/approval/api/v1/user-requester-rules', 2)
 axios.get(url).then((response) => {
-	OCA.Approval.userRules = response.data
+	OCA.Approval.userRules = response.data.ocs.data
 }).catch((error) => {
 	console.error(error)
 })

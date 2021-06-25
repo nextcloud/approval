@@ -11,21 +11,16 @@
 
 namespace OCA\Approval\Controller;
 
+use OCP\AppFramework\OCSController;
 use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Controller;
 
 use OCA\Approval\AppInfo\Application;
-use OCA\Approval\Service\UtilsService;
 use OCA\Approval\Service\ApprovalService;
 use OCA\Approval\Service\RuleService;
 
-class ApprovalController extends Controller {
+class ApprovalController extends OCSController {
 	private $userId;
-	/**
-	 * @var UtilsService
-	 */
-	private $utilsService;
 	/**
 	 * @var ApprovalService
 	 */
@@ -35,32 +30,15 @@ class ApprovalController extends Controller {
 	 */
 	private $ruleService;
 
-	public function __construct($AppName,
+	public function __construct(string $appName,
 								IRequest $request,
-								UtilsService $utilsService,
 								ApprovalService $approvalService,
 								RuleService $ruleService,
 								?string $userId) {
-		parent::__construct($AppName, $request);
-		$this->utilsService = $utilsService;
+		parent::__construct($appName, $request);
 		$this->approvalService = $approvalService;
 		$this->userId = $userId;
 		$this->ruleService = $ruleService;
-	}
-
-	/**
-	 * create a tag
-	 *
-	 * @param string $name of the new tag
-	 * @return DataResponse
-	 */
-	public function createTag(string $name): DataResponse {
-		$result = $this->utilsService->createTag($name);
-		if (isset($result['error'])) {
-			return new DataResponse($result, 400);
-		} else {
-			return new DataResponse($result);
-		}
 	}
 
 	/**

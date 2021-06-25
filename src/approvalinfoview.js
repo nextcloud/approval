@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { getCurrentUser } from '@nextcloud/auth'
 import axios from '@nextcloud/axios'
-import { generateUrl } from '@nextcloud/router'
+import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
 import '@nextcloud/dialogs/styles/toast.scss'
 
@@ -69,8 +69,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this._inputView.$on('open-request', () => {
 				// refresh request rules when opening request modal
 				this.getUserRequesterRules().then((response) => {
-					this._inputView.setUserRules(response.data)
-					this.userRules = response.data
+					this._inputView.setUserRules(response.data.ocs.data)
+					this.userRules = response.data.ocs.data
 				}).catch((error) => {
 					console.error(error)
 				})
@@ -89,7 +89,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		getUserRequesterRules() {
-			const url = generateUrl('/apps/approval/user-requester-rules')
+			const url = generateOcsUrl('apps/approval/api/v1/user-requester-rules', 2)
 			return axios.get(url)
 		},
 
@@ -116,7 +116,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		_onApprove() {
 			const req = {}
-			const url = generateUrl('/apps/approval/' + this.fileId + '/approve')
+			const url = generateOcsUrl('apps/approval/api/v1/' + this.fileId + '/approve', 2)
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'You approved {name}', { name: this.fileName }))
 				this.getApprovalState(true)
@@ -132,7 +132,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 		_onReject() {
 			const req = {}
-			const url = generateUrl('/apps/approval/' + this.fileId + '/reject')
+			const url = generateOcsUrl('apps/approval/api/v1/' + this.fileId + '/reject', 2)
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'You rejected {name}', { name: this.fileName }))
 				this.getApprovalState(true)
@@ -149,7 +149,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const req = {
 				createShares,
 			}
-			const url = generateUrl('/apps/approval/' + this.fileId + '/request/' + ruleId)
+			const url = generateOcsUrl('apps/approval/api/v1/' + this.fileId + '/request/' + ruleId, 2)
 			axios.post(url, req).then((response) => {
 				// TODO make sure we see the freshly created shares
 				/*
@@ -164,8 +164,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					this.requestAfterShareCreation(ruleId)
 				} else {
 					showSuccess(t('approval', 'Approval requested for {name}', { name: this.fileName }))
-					if (response.data.warning) {
-						showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
+					if (response.data.ocs.data.warning) {
+						showWarning(t('approval', 'Warning') + ': ' + response.data.ocs.data.warning)
 					}
 					this.reloadTags()
 					// if we reload the file item here, it appears twice in file list...
@@ -187,11 +187,11 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const req = {
 				createShares: false,
 			}
-			const url = generateUrl('/apps/approval/' + this.fileId + '/request/' + ruleId)
+			const url = generateOcsUrl('apps/approval/api/v1/' + this.fileId + '/request/' + ruleId, 2)
 			axios.post(url, req).then((response) => {
 				showSuccess(t('approval', 'Approval requested for {name}', { name: this.fileName }))
-				if (response.data.warning) {
-					showWarning(t('approval', 'Warning') + ': ' + response.data.warning)
+				if (response.data.ocs.data.warning) {
+					showWarning(t('approval', 'Warning') + ': ' + response.data.ocs.data.warning)
 				}
 				this.reloadTags()
 				// if we reload the file item here, it appears twice in file list...
@@ -210,7 +210,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const req = {
 				requesterUserId: this.requesterUserId,
 			}
-			const url = generateUrl('/apps/approval/' + this.fileId + '/approval-sign')
+			const url = generateUrl('/apps/approval/docusign/' + this.fileId + '/approval-sign')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('approval', 'You will receive an email from DocuSign to sign the document'))
 				if (!this.requesterUserId) {
@@ -272,8 +272,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 
 			// refresh requester rules info each time we get an approval state
 			this.getUserRequesterRules().then((response) => {
-				this._inputView.setUserRules(response.data)
-				this.userRules = response.data
+				this._inputView.setUserRules(response.data.ocs.data)
+				this.userRules = response.data.ocs.data
 			}).catch((error) => {
 				console.error(error)
 			}).then(() => {
@@ -299,27 +299,27 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		getApprovalState(reloadFileItem) {
 			console.debug('getApprovalState of ' + this.fileName)
 			// get state and details
-			const url = generateUrl('/apps/approval/' + this.fileId + '/state')
+			const url = generateOcsUrl('apps/approval/api/v1/' + this.fileId + '/state', 2)
 			axios.get(url).then((response) => {
-				if (reloadFileItem && this.state !== response.data.state) {
-					this.updateFileItem(response.data.state)
+				if (reloadFileItem && this.state !== response.data.ocs.data.state) {
+					this.updateFileItem(response.data.ocs.data.state)
 				}
 
-				this.state = response.data.state
+				this.state = response.data.ocs.data.state
 				if (this.state !== states.NOTHING) {
 					// i don't know how to change props with Vue instance
 					// so it's done with a method changing a data value
 					this._inputView.setState(this.state)
-					if (response.data.rule) {
-						this._inputView.setRule(response.data.rule)
+					if (response.data.ocs.data.rule) {
+						this._inputView.setRule(response.data.ocs.data.rule)
 					} else {
 						this._inputView.setRule(null)
 					}
-					if (response.data.userId && response.data.userName && response.data.timestamp) {
-						this._inputView.setUserId(response.data.userId ?? '')
-						this.requesterUserId = response.data.userId ?? ''
-						this._inputView.setUserName(response.data.userName ?? '')
-						this._inputView.setDatetime(response.data.timestamp ?? '')
+					if (response.data.ocs.data.userId && response.data.ocs.data.userName && response.data.ocs.data.timestamp) {
+						this._inputView.setUserId(response.data.ocs.data.userId ?? '')
+						this.requesterUserId = response.data.ocs.data.userId ?? ''
+						this._inputView.setUserName(response.data.ocs.data.userName ?? '')
+						this._inputView.setDatetime(response.data.ocs.data.timestamp ?? '')
 					} else {
 						this._inputView.setUserId('')
 						this.requesterUserId = null

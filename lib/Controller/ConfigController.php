@@ -21,6 +21,7 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
 use OCA\Approval\Service\RuleService;
+use OCA\Approval\Service\UtilsService;
 
 class ConfigController extends Controller {
 	/**
@@ -39,18 +40,39 @@ class ConfigController extends Controller {
 	 * @var string|null
 	 */
 	private $userId;
+	/**
+	 * @var UtilsService
+	 */
+	private $utilsService;
 
 	public function __construct($AppName,
 								IRequest $request,
 								IUserManager $userManager,
 								IAppManager $appManager,
 								RuleService $ruleService,
+								UtilsService $utilsService,
 								?string $userId) {
 		parent::__construct($AppName, $request);
 		$this->userManager = $userManager;
 		$this->appManager = $appManager;
 		$this->ruleService = $ruleService;
 		$this->userId = $userId;
+		$this->utilsService = $utilsService;
+	}
+
+	/**
+	 * create a tag
+	 *
+	 * @param string $name of the new tag
+	 * @return DataResponse
+	 */
+	public function createTag(string $name): DataResponse {
+		$result = $this->utilsService->createTag($name);
+		if (isset($result['error'])) {
+			return new DataResponse($result, 400);
+		} else {
+			return new DataResponse($result);
+		}
 	}
 
 	/**
