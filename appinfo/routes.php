@@ -40,27 +40,43 @@ return [
 		 */
 		[
 			'name' => 'Approval#getUserRequesterRules',
-			'url' => '/api/v1/user-requester-rules',
+			'url' => '/api/{apiVersion}/user-requester-rules',
 			'verb' => 'GET',
+			'requirements' => [
+				'apiVersion' => 'v1',
+			],
 		],
 		[
 			'name' => 'Approval#getApprovalState',
-			'url' => '/api/v1/state/{fileId}',
+			'url' => '/api/{apiVersion}/state/{fileId}',
 			'verb' => 'GET',
+			'requirements' => [
+				'apiVersion' => 'v1',
+			],
 		],
 		[
 			'name' => 'Approval#approve',
-			'url' => '/api/v1/approve/{fileId}',
-			'verb' => 'PUT'],
+			'url' => '/api/{apiVersion}/approve/{fileId}',
+			'verb' => 'PUT',
+			'requirements' => [
+				'apiVersion' => 'v1',
+			],
+		],
 		[
 			'name' => 'Approval#reject',
-			'url' => '/api/v1/reject/{fileId}',
+			'url' => '/api/{apiVersion}/reject/{fileId}',
 			'verb' => 'PUT',
+			'requirements' => [
+				'apiVersion' => 'v1',
+			],
 		],
 		[
 			'name' => 'Approval#request',
-			'url' => '/api/v1/request/{fileId}/{ruleId}',
+			'url' => '/api/{apiVersion}/request/{fileId}/{ruleId}',
 			'verb' => 'POST',
+			'requirements' => [
+				'apiVersion' => 'v1',
+			],
 		],
 	],
 ];
