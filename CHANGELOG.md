@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.2 – 2021-06-28
+### Added
+* support new Circles management API
+* translations
+* unit tests
+* Sabre plugin to provide approval state in WebDav PROPFIND requests
+* OCS routes to allow interaction with external clients
+
+### Changed
+* improve signature request form design
+* refactor rule service
+* Phpstormify
+* bump js libs
+
+### Fixed
+* Circle icons here and there
+
 ## 1.0.0 – 2021-06-04
 ### Changed
 * clear multiselect after selection
