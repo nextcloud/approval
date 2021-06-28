@@ -1,5 +1,5 @@
 {
-	"name": "nextcloud/contacts",
+	"name": "nextcloud/approval",
 	"config": {
 		"optimize-autoloader": true,
 		"classmap-authoritative": true,
