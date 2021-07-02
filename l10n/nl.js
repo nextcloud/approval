@@ -124,6 +124,7 @@ OC.L10N.register(
     "You will receive an email from DocuSign to sign the document" : "Je ontvangt een e-mail van DocuSign om het document te ondertekenen",
     "The user who requested this approval was not found, remember to send or share the signed document yourself" : "De gebruiker die deze goedkeuring heeft aangevraagd, is niet gevonden, vergeet niet het ondertekende document zelf te verzenden of te delen",
     "Approval signature" : "Goedkeuringshandtekening",
+    "{name} signature requested via LibreSign" : "{name} ondertekening aangevraagd via LibreSign",
     "Impossible to sign this document" : "Kon document niet ondertekenen",
     "Failed to check approval status" : "Kon goedkeuringsstatus niet ophalen",
     "Pending approval, you are authorized to approve." : "In afwachting van goedkeuring, jij mag goedkeuren.",
