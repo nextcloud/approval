@@ -68,6 +68,7 @@ OC.L10N.register(
     "Delete workflow" : "Ezabatu lan-fluxua",
     "Who can request approval" : "Nork eskatu dezake onarpena",
     "Who can approve" : "Nork onar dezake",
+    "Tag to act on" : "Ekiteko etiketa",
     "Tag set on approval" : "Onartuta dagoen etiketa",
     "Tag set on rejection" : "Ukatuta dagoen etiketa",
     "Workflow title" : "Lan-fluxuaren izenburua",
