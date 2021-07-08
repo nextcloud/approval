@@ -227,7 +227,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		_onSignLibresign() {
-			const url = generateUrl('/apps/libresign/api/0.1/webhook/register')
+			const url = generateUrl('/apps/libresign/api/0.1/sign/register')
 			const req = {
 				file: {
 					fileId: this.fileId,
