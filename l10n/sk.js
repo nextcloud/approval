@@ -109,6 +109,7 @@ OC.L10N.register(
     "No result." : "Žiadny výsledok.",
     "Who?" : "Kto?",
     "Select approval workflow" : "Vyberte schvaľovací proces",
+    "File will be automatically shared with everybody allowed to approve." : "Súbor bude automaticky zdieľaný s každým ktorý ma povolenie na schválenie.",
     "Can be approved by" : "Môže schváliť",
     "You approved {name}" : "Schválili ste {name}",
     "Failed to approve {name}" : "Zlyhalo povolenie {name}",

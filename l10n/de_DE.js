@@ -129,7 +129,7 @@ OC.L10N.register(
     "{name} signature requested via LibreSign" : "{name}-Signatur über LibreSign angefordert!",
     "Impossible to sign this document" : "Dieses Dokument kann nicht signiert werden",
     "Failed to check approval status" : "Fehler beim Überprüfen des Genehmigungsstatus",
-    "Pending approval, you are authorized to approve." : "Offene Genehmigung, Sie sind Sie zur Genehmigung berechtigt.",
+    "Pending approval, you are authorized to approve." : "Offene Genehmigung, Sie sind zur Genehmigung berechtigt.",
     "Show approval details" : "Genehmigungsdetails anzeigen"
 },
 "nplurals=2; plural=(n != 1);");
