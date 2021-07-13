@@ -343,8 +343,8 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to check approval status')
-					+ ': ' + error.response?.request?.responseText
 				)
+				console.error(error)
 				this._inputView.setState(states.NOTHING)
 				this._inputView.setUserId('')
 				this.requesterUserId = null
@@ -391,7 +391,12 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			// this was used when row rendering was getting the state
 			// model.trigger('change', model)
 			// but now we pass it directly to the model and it re-renders
-			model.set('approvalState', newState)
+
+			// model can be null if we display the sidebar for an element that is not in current directory
+			// for example when clicking the share button in the breadcrumb
+			if (model) {
+				model.set('approvalState', newState)
+			}
 		},
 		reloadTags() {
 			if (OCA.SystemTags?.View) {
