@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.3 – 2021-07-13
+### Changed
+* update LibreSign endpoint @
+[#8](https://github.com/nextcloud/approval/pull/8) @vitormattos
+
+### Fixed
+* bug when getting state of an element that is not in current directory
+
 ## 1.0.2 – 2021-06-28
 ### Added
 * support new Circles management API
