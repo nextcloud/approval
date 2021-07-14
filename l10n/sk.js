@@ -123,6 +123,7 @@ OC.L10N.register(
     "Approval signature" : "Podpis schválenia",
     "{name} signature requested via LibreSign" : "{name} podpis bol vyžiadaný od LibreSign",
     "Impossible to sign this document" : "Nie je možné podpísať tento dokument",
+    "Failed to check approval status" : "Nepodarilo sa skontrolovať stav schvaľovania",
     "Pending approval, you are authorized to approve." : "Čaká na schválenie, ste autorizovaný schváliť.",
     "Show approval details" : "Zobraziť detaily schválenia"
 },
