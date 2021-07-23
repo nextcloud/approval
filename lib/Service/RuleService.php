@@ -513,7 +513,7 @@ class RuleService {
 		if (!is_null($activity)) {
 			// get user display name
 			$user = $this->userManager->get($activity['userId']);
-			$activity['userName'] = $user ? $user->getDisplayName() : $$activity['userId'];
+			$activity['userName'] = $user ? $user->getDisplayName() : $activity['userId'];
 		}
 		return $activity;
 	}

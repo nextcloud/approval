@@ -96,12 +96,29 @@ class ApprovalService {
 	}
 
 	/**
-	 * Get rules allowing user to request approval
+	 * @param string $userId
+	 * @param string $role
+	 * @return array
+	 */
+	public function getBasicUserRules(string $userId, string $role): array {
+		$userRules = [];
+		$rules = $this->ruleService->getRules();
+
+		foreach ($rules as $rule) {
+			if ($this->userIsAuthorizedByRule($userId, $rule, $role)) {
+				$userRules[] = $rule;
+			}
+		}
+		return $userRules;
+	}
+
+	/**
+	 * Get rules allowing user to request/approve
 	 *
 	 * @param string $userId
 	 * @return array
 	 */
-	public function getUserRequesterRules(string $userId): array {
+	public function getUserRules(string $userId, string $role = 'requesters'): array {
 		$userRules = [];
 		$rules = $this->ruleService->getRules();
 
@@ -109,7 +126,7 @@ class ApprovalService {
 		$userNames = [];
 		$circleNames = [];
 		foreach ($rules as $rule) {
-			if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
+			if ($this->userIsAuthorizedByRule($userId, $rule, $role)) {
 				$userRules[] = $rule;
 				// get all entity ids
 				foreach ($rule['approvers'] as $k => $elem) {
@@ -218,6 +235,65 @@ class ApprovalService {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @param string $userId
+	 * @param int|null $since
+	 * @return array
+	 */
+	public function getPendingNodes(string $userId, ?int $since = null): array {
+		$pendingNodes = [];
+		// get pending tags i can approve
+		$rules = $this->getBasicUserRules($userId, 'approvers');
+		// search files with those tags which i have access to
+		$userFolder = $this->root->getUserFolder($userId);
+		foreach ($rules as $rule) {
+			$pendingTagId = $rule['tagPending'];
+			$ruleId = $rule['id'];
+			$nodeIdsWithTag = $this->tagObjectMapper->getObjectIdsForTags($pendingTagId, 'files');
+			// this actually does not work with tag IDs, only with tag names (not even sure it's about system tags...)
+			// $nodes = $userFolder->searchByTag($pendingTagId, $userId);
+			foreach ($nodeIdsWithTag as $nodeId) {
+				// is the node in the user storage (does the user have access to this node)?
+				$nodeInUserStorage = $userFolder->getById($nodeId);
+				if (count($nodeInUserStorage) > 0 && !isset($pendingNodes[$nodeId])) {
+					$node = $nodeInUserStorage[0];
+					$pendingNodes[$nodeId] = [
+						'node' => $node,
+						'ruleId' => $ruleId,
+					];
+				}
+			}
+		}
+		// get extra information
+		$that = $this;
+		$result =  array_map(function ($pendingNode) use ($that) {
+			$node = $pendingNode['node'];
+			$ruleId = $pendingNode['ruleId'];
+			return [
+				'file_id' => $node->getId(),
+				'file_name' => $node->getName(),
+				'mimetype' => $node->getMimetype(),
+				'activity' => $that->ruleService->getLastAction($node->getId(), $ruleId, Application::STATE_PENDING),
+
+			];
+		}, array_values($pendingNodes));
+
+		usort($result, function($a, $b) {
+			if ($a['activity'] === null) {
+				if ($b['activity'] === null) {
+					return 0;
+				} else {
+					return 1;
+				}
+			} elseif ($b['activity'] === null) {
+				return -1;
+			}
+            return ($a['activity']['timestamp'] > $b['activity']['timestamp']) ? -1 : 1;
+        });
+
+		return $result;
 	}
 
 	/**

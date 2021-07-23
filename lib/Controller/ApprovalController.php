@@ -47,7 +47,7 @@ class ApprovalController extends OCSController {
 	 * @return DataResponse
 	 */
 	public function getUserRequesterRules(): DataResponse {
-		$rules = $this->approvalService->getUserRequesterRules($this->userId);
+		$rules = $this->approvalService->getUserRules($this->userId, 'requesters');
 		return new DataResponse($rules);
 	}
 
@@ -71,6 +71,17 @@ class ApprovalController extends OCSController {
 			}
 		}
 		return new DataResponse($state);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 *
+	 * @param int|null $since
+	 * @return DataResponse
+	 */
+	public function getPendingNodes(?int $since = null): DataResponse {
+		$nodes = $this->approvalService->getPendingNodes($this->userId, $since);
+		return new DataResponse($nodes);
 	}
 
 	/**

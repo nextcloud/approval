@@ -47,6 +47,14 @@ return [
 			],
 		],
 		[
+			'name' => 'Approval#getPendingNodes',
+			'url' => '/api/{apiVersion}/pendings',
+			'verb' => 'GET',
+			'requirements' => [
+				'apiVersion' => 'v1',
+			],
+		],
+		[
 			'name' => 'Approval#getApprovalState',
 			'url' => '/api/{apiVersion}/state/{fileId}',
 			'verb' => 'GET',

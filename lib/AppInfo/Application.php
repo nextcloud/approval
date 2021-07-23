@@ -20,14 +20,11 @@ use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\Notification\IManager as INotificationManager;
 use OCP\SystemTag\MapperEvent;
-use OCP\IServerContainer;
-use OCP\IUserSession;
-use OCP\IUser;
 use OCP\SabrePluginEvent;
-use Closure;
 
 use OCA\Approval\Service\ApprovalService;
 use OCA\Approval\Notification\Notifier;
+use OCA\Approval\Dashboard\ApprovalPendingWidget;
 
 /**
  * Class Application
@@ -83,6 +80,7 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function register(IRegistrationContext $context): void {
+		$context->registerDashboardWidget(ApprovalPendingWidget::class);
 	}
 
 	public function boot(IBootContext $context): void {
