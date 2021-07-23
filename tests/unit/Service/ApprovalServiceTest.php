@@ -181,7 +181,7 @@ class ApprovalServiceTest extends TestCase {
 	}
 
 	public function testGetRequesterRules() {
-		$result = $this->approvalService->getUserRequesterRules('user1');
+		$result = $this->approvalService->getUserRules('user1', 'requesters');
 		// $this->assertEmpty($result);
 		$this->assertCount(1, $result);
 		$this->assertEquals('desc1', $result[0]['description']);
@@ -395,7 +395,7 @@ class ApprovalServiceTest extends TestCase {
 		$stateForUser2 = $this->approvalService->getApprovalState($fileToApprove->getId(), 'user2');
 		$this->assertEquals(Application::STATE_NOTHING, $stateForUser2['state']);
 		// this should also return the rule
-		$result = $this->approvalService->getUserRequesterRules('user2');
+		$result = $this->approvalService->getUserRules('user2', 'requesters');
 		$this->assertCount(0, $result);
 		//$this->assertEquals('desc1', $result[0]['description']);
 
