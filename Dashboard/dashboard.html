@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Dashboard for /home/runner/html/nextcloud/apps/approval/lib/Notification</title>
+  <title>Dashboard for /home/runner/html/nextcloud/apps/approval/lib/Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="../_css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../_css/nv.d3.min.css" rel="stylesheet" type="text/css">
@@ -17,7 +17,7 @@
       <nav aria-label="breadcrumb">
        <ol class="breadcrumb">
          <li class="breadcrumb-item"><a href="../index.html">/home/runner/html/nextcloud/apps/approval/lib</a></li>
-         <li class="breadcrumb-item"><a href="index.html">Notification</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
          <li class="breadcrumb-item active">(Dashboard)</li>
 
        </ol>
@@ -58,7 +58,7 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="Notifier.php.html#26">OCA\Approval\Notification\Notifier</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ApprovalPendingWidget.php.html#33">OCA\Approval\Dashboard\ApprovalPendingWidget</a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -75,7 +75,6 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="Notifier.php.html#26">OCA\Approval\Notification\Notifier</a></td><td class="text-right">462</td></tr>
 
        </tbody>
       </table>
@@ -113,10 +112,13 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="Notifier.php.html#56"><abbr title="OCA\Approval\Notification\Notifier::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="Notifier.php.html#76"><abbr title="OCA\Approval\Notification\Notifier::getID">getID</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="Notifier.php.html#85"><abbr title="OCA\Approval\Notification\Notifier::getName">getName</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="Notifier.php.html#96"><abbr title="OCA\Approval\Notification\Notifier::prepare">prepare</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ApprovalPendingWidget.php.html#42"><abbr title="OCA\Approval\Dashboard\ApprovalPendingWidget::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ApprovalPendingWidget.php.html#51"><abbr title="OCA\Approval\Dashboard\ApprovalPendingWidget::getId">getId</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ApprovalPendingWidget.php.html#58"><abbr title="OCA\Approval\Dashboard\ApprovalPendingWidget::getTitle">getTitle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ApprovalPendingWidget.php.html#65"><abbr title="OCA\Approval\Dashboard\ApprovalPendingWidget::getOrder">getOrder</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ApprovalPendingWidget.php.html#72"><abbr title="OCA\Approval\Dashboard\ApprovalPendingWidget::getIconClass">getIconClass</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ApprovalPendingWidget.php.html#79"><abbr title="OCA\Approval\Dashboard\ApprovalPendingWidget::getUrl">getUrl</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ApprovalPendingWidget.php.html#87"><abbr title="OCA\Approval\Dashboard\ApprovalPendingWidget::load">load</abbr></a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -133,7 +135,6 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="Notifier.php.html#96"><abbr title="OCA\Approval\Notification\Notifier::prepare">prepare</abbr></a></td><td class="text-right">342</td></tr>
 
        </tbody>
       </table>
@@ -180,7 +181,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([4,0,0,0,0,0,0,0,0,0,0,0], "Method Coverage"))
+      .datum(getCoverageDistributionData([7,0,0,0,0,0,0,0,0,0,0,0], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -230,7 +231,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[0,21,"<a href=\"Notifier.php.html#26\">OCA\\Approval\\Notification\\Notifier<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[0,7,"<a href=\"ApprovalPendingWidget.php.html#33\">OCA\\Approval\\Dashboard\\ApprovalPendingWidget<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -254,7 +255,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[0,1,"<a href=\"Notifier.php.html#56\">OCA\\Approval\\Notification\\Notifier::__construct<\/a>"],[0,1,"<a href=\"Notifier.php.html#76\">OCA\\Approval\\Notification\\Notifier::getID<\/a>"],[0,1,"<a href=\"Notifier.php.html#85\">OCA\\Approval\\Notification\\Notifier::getName<\/a>"],[0,18,"<a href=\"Notifier.php.html#96\">OCA\\Approval\\Notification\\Notifier::prepare<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[0,1,"<a href=\"ApprovalPendingWidget.php.html#42\">OCA\\Approval\\Dashboard\\ApprovalPendingWidget::__construct<\/a>"],[0,1,"<a href=\"ApprovalPendingWidget.php.html#51\">OCA\\Approval\\Dashboard\\ApprovalPendingWidget::getId<\/a>"],[0,1,"<a href=\"ApprovalPendingWidget.php.html#58\">OCA\\Approval\\Dashboard\\ApprovalPendingWidget::getTitle<\/a>"],[0,1,"<a href=\"ApprovalPendingWidget.php.html#65\">OCA\\Approval\\Dashboard\\ApprovalPendingWidget::getOrder<\/a>"],[0,1,"<a href=\"ApprovalPendingWidget.php.html#72\">OCA\\Approval\\Dashboard\\ApprovalPendingWidget::getIconClass<\/a>"],[0,1,"<a href=\"ApprovalPendingWidget.php.html#79\">OCA\\Approval\\Dashboard\\ApprovalPendingWidget::getUrl<\/a>"],[0,1,"<a href=\"ApprovalPendingWidget.php.html#87\">OCA\\Approval\\Dashboard\\ApprovalPendingWidget::load<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);
