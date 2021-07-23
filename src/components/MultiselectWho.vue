@@ -37,10 +37,10 @@
 				:class="{ icon: true, [option.icon]: true, 'multiselect-icon': true }" />
 		</template>
 		<template #noOptions>
-			{{ t('welcome', 'No recommendations. Start typing.') }}
+			{{ t('approval', 'No recommendations. Start typing.') }}
 		</template>
 		<template #noResult>
-			{{ t('welcome', 'No result.') }}
+			{{ t('approval', 'No result.') }}
 		</template>
 	</Multiselect>
 </template>
