@@ -56,7 +56,7 @@ class ApprovalPendingWidget implements IWidget {
 	 * @inheritDoc
 	 */
 	public function getTitle(): string {
-		return $this->l10n->t('Your pending approvals');
+		return $this->l10n->t('Pending approvals');
 	}
 
 	/**

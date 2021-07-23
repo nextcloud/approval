@@ -671,7 +671,13 @@ class ApprovalService {
 		}
 		// search our activities to see if we know who made the request
 		$activity = $this->ruleService->getLastAction($fileId, $ruleInvolded['id'], Application::STATE_PENDING);
-		$requestUserId = is_null($activity) ? null : $activity['userId'];
+		// if there is no activity, the tag was assigned manually => store an activity here
+		if (is_null($activity)) {
+			$requestUserId = null;
+			$this->ruleService->storeAction($fileId, $ruleInvolded['id'], '', Application::STATE_PENDING);
+		} else {
+			$requestUserId = $activity['userId'];
+		}
 		$this->sendRequestNotification($fileId, $ruleInvolded, $requestUserId);
 	}
 

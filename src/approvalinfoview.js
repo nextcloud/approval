@@ -315,15 +315,18 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					} else {
 						this._inputView.setRule(null)
 					}
-					if (response.data.ocs.data.userId && response.data.ocs.data.userName && response.data.ocs.data.timestamp) {
+					if (response.data.ocs.data.userId && response.data.ocs.data.userName) {
 						this._inputView.setUserId(response.data.ocs.data.userId ?? '')
 						this.requesterUserId = response.data.ocs.data.userId ?? ''
 						this._inputView.setUserName(response.data.ocs.data.userName ?? '')
-						this._inputView.setDatetime(response.data.ocs.data.timestamp ?? '')
 					} else {
 						this._inputView.setUserId('')
 						this.requesterUserId = null
 						this._inputView.setUserName('')
+					}
+					if (response.data.ocs.data.timestamp) {
+						this._inputView.setDatetime(response.data.ocs.data.timestamp ?? '')
+					} else {
 						this._inputView.setDatetime('')
 					}
 					this.show()

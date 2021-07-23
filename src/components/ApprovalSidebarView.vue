@@ -60,7 +60,7 @@
 					:size="24" />
 				{{ relativeTime }}
 			</span>
-			<span v-else>{{ pendingText }}</span>
+			<span v-else>{{ pendingTextWithTime }}</span>
 		</span>
 		<span v-if="canRequestApproval"
 			class="request-button-wrapper">
@@ -139,7 +139,7 @@ export default {
 		},
 		pendingText: {
 			type: String,
-			default: t('approval', 'Pending approval'),
+			default: t('approval', 'Approval requested'),
 		},
 		state: {
 			type: Number,
@@ -171,6 +171,11 @@ export default {
 	},
 
 	computed: {
+		pendingTextWithTime() {
+			return this.myDatetime
+				? this.pendingText + ' ' + this.relativeTime
+				: this.pendingText
+		},
 		stateApproved() {
 			return this.myState === states.APPROVED
 		},

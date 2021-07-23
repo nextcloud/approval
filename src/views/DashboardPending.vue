@@ -71,7 +71,7 @@ export default {
 					targetUrl: generateUrl('/f/' + p.file_id),
 					avatarUrl: OC.MimeType.getIconUrl(p.mimetype),
 					mainText: p.file_name,
-					subText: 'SUB TODO',
+					subText: this.getSubText(p),
 				}
 			})
 		},
@@ -165,8 +165,16 @@ export default {
 		filter(pendings) {
 			return pendings
 		},
-		getFormattedDate(n) {
-			return moment.unix(n.pending_since).format('LLL')
+		getFormattedDate(p) {
+			const mom = moment.unix(p.activity?.timestamp)
+			return mom.format('L LT')
+		},
+		getSubText(p) {
+			return p.activity?.userName && p.activity?.timestamp
+				? t('approval', 'by {name} at {date}', { name: p.activity.userName, date: this.getFormattedDate(p) })
+				: p.activity?.timestamp
+					? t('approval', 'at {date}', { date: this.getFormattedDate(p) })
+					: ''
 		},
 	},
 }
@@ -176,6 +184,7 @@ export default {
 .thumbnail {
 	background-size: contain;
 	margin-left: 8px;
+	min-width: 44px;
 	width: 44px;
 	height: 44px;
 }
