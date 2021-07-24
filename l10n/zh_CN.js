@@ -78,7 +78,6 @@ OC.L10N.register(
     "Rejected" : "已拒绝",
     "Rejected by" : "拒绝人",
     "Approval requested by" : "谁请求进行批准",
-    "Pending approval" : "待批准",
     "you" : "你",
     "Request approval" : "请求批准",
     "Sign with DocuSign" : "用 DocuSign 签名",

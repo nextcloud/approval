@@ -78,7 +78,6 @@ OC.L10N.register(
     "Rejected" : "Afgekeurd",
     "Rejected by" : "Afgewezen door",
     "Approval requested by" : "Goedkeuring gevraagd door",
-    "Pending approval" : "Wacht op goedkeuring",
     "you" : "jij",
     "Request approval" : "Vraag goedkeuring",
     "Sign with DocuSign" : "Ondertekenen met DocuSign",

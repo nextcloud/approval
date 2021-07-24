@@ -72,7 +72,6 @@ OC.L10N.register(
     "Rejected" : "Elutasított",
     "Rejected by" : "Elutasította",
     "Approval requested by" : "Jóváhagyást kért",
-    "Pending approval" : "Függő jóváhagyás",
     "you" : "te",
     "Request approval" : "Jóváhagyás kérése",
     "Sign with DocuSign" : "DocuSign-nal aláírva",

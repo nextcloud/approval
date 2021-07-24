@@ -76,7 +76,6 @@ OC.L10N.register(
     "Rejected" : "Rebutjat",
     "Rejected by" : "Rebutjat per",
     "Approval requested by" : "Aprovació sol·licitada per",
-    "Pending approval" : "Pendent d'aprovació",
     "you" : "vostè",
     "Request approval" : "Sol·licitar l'aprovació",
     "Sign with DocuSign" : "Signa amb DocuSign",

@@ -78,7 +78,6 @@ OC.L10N.register(
     "Rejected" : "Rejeitado",
     "Rejected by" : "Rejeitado por ",
     "Approval requested by" : "Aprovação solicitada por ",
-    "Pending approval" : "Aprovação pendente ",
     "you" : "você",
     "Request approval" : "Solicite aprovação ",
     "Sign with DocuSign" : "Assine com DocuSign",

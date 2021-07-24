@@ -78,7 +78,6 @@ OC.L10N.register(
     "Rejected" : "Zamítnuto",
     "Rejected by" : "Zamítnul(a)",
     "Approval requested by" : "Schválení vyžádal(a)",
-    "Pending approval" : "Čeká na schválení",
     "you" : "vy",
     "Request approval" : "Požádat o schválení",
     "Sign with DocuSign" : "Podepsat prostřednictvím DocuSign",

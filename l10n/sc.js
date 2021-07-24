@@ -78,7 +78,6 @@ OC.L10N.register(
     "Rejected" : "Refudadu",
     "Rejected by" : "Refudadu dae",
     "Approval requested by" : "Aprovatzione recherta dae",
-    "Pending approval" : "Aprovatzione in suspesu",
     "you" : "tue",
     "Request approval" : "Rechede aprovatzione",
     "Sign with DocuSign" : "Firma cun DocuSign",

@@ -78,7 +78,6 @@ OC.L10N.register(
     "Rejected" : "Reddedildi",
     "Rejected by" : "Reddeden",
     "Approval requested by" : "Onay isteğinde bulunan",
-    "Pending approval" : "Onay bekleyen",
     "you" : "siz",
     "Request approval" : "Onay isteğinde bulun",
     "Sign with DocuSign" : "DocuSign ile imzala",

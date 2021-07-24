@@ -78,7 +78,6 @@ OC.L10N.register(
     "Rejected" : "Baztertua",
     "Rejected by" : "Ukatu duena",
     "Approval requested by" : "Onarpen eskatzailea",
-    "Pending approval" : "Onarpenaren zain",
     "you" : "zu",
     "Request approval" : "Eskatu onarpena",
     "Sign with DocuSign" : "Hasi saioa DocuSign bidez",
