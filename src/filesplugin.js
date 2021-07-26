@@ -130,6 +130,21 @@ import './bootstrap'
 				action: (selectedFiles) => { this.rejectMulti(selectedFiles, fileList) },
 			})
 
+			// when the multiselect menu is opened =>
+			// only show accept/reject if at least one selected item is approvable
+			fileList.$el.find('.actions-selected').click(() => {
+				let showMultiApproveReject = false
+				for (const fid in fileList._selectedFiles) {
+					const file = fileList.files.find((t) => parseInt(fid) === t.id)
+					if (file && file.approvalState && parseInt(file.approvalState) === states.APPROVABLE) {
+						showMultiApproveReject = true
+						break
+					}
+				}
+				fileList.fileMultiSelectMenu.toggleItemVisibility('approveMulti', showMultiApproveReject)
+				fileList.fileMultiSelectMenu.toggleItemVisibility('rejectMulti', showMultiApproveReject)
+			})
+
 			fileList.fileActions.registerAction({
 				name: 'approval-approve',
 				displayName: (context) => {
@@ -255,9 +270,7 @@ import './bootstrap'
 				// why does this model miss the approvalState?
 				// const model = fileList.getModelForFile(f.name)
 				// trick to get the approval state...
-				const file = fileList.files.find((t) => {
-					return f.id === t.id
-				})
+				const file = fileList.files.find((t) => f.id === t.id)
 				if (parseInt(file.approvalState) === states.APPROVABLE) {
 					const url = generateOcsUrl('apps/approval/api/v1/approve/' + file.id, 2)
 					axios.put(url, {}).then((response) => {
@@ -285,9 +298,7 @@ import './bootstrap'
 				// why does this model miss the approvalState?
 				// const model = fileList.getModelForFile(f.name)
 				// trick to get the approval state...
-				const file = fileList.files.find((t) => {
-					return f.id === t.id
-				})
+				const file = fileList.files.find((t) => f.id === t.id)
 				if (parseInt(file.approvalState) === states.APPROVABLE) {
 					const url = generateOcsUrl('apps/approval/api/v1/reject/' + file.id, 2)
 					axios.put(url, {}).then((response) => {
