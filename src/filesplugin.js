@@ -119,7 +119,7 @@ import './bootstrap'
 				displayName: t('approval', 'Approve'),
 				iconClass: 'icon-checkmark',
 				order: -2,
-				action: (selectedFiles) => { this.approveMulti(selectedFiles, fileList) },
+				action: (selectedFiles) => { this.approveMulti(selectedFiles, fileList, this) },
 			})
 
 			fileList.registerMultiSelectFileAction({
@@ -127,7 +127,7 @@ import './bootstrap'
 				displayName: t('approval', 'Reject'),
 				iconClass: 'icon-close',
 				order: -1,
-				action: (selectedFiles) => { this.rejectMulti(selectedFiles, fileList) },
+				action: (selectedFiles) => { this.rejectMulti(selectedFiles, fileList, this) },
 			})
 
 			// when the multiselect menu is opened =>
@@ -167,7 +167,7 @@ import './bootstrap'
 					}
 				},
 				permissions: OC.PERMISSION_READ,
-				actionHandler: this.approve,
+				actionHandler: (fileName, context) => { this.approveSingle(fileName, context, this) },
 			})
 
 			fileList.fileActions.registerAction({
@@ -192,7 +192,7 @@ import './bootstrap'
 					}
 				},
 				permissions: OC.PERMISSION_READ,
-				actionHandler: this.reject,
+				actionHandler: (fileName, context) => { this.rejectSingle(fileName, context, this) },
 			})
 
 			fileList.fileActions.registerAction({
@@ -265,74 +265,51 @@ import './bootstrap'
 			})
 		},
 
-		approveMulti: (selectedFiles, fileList) => {
+		approveMulti: (selectedFiles, fileList, that) => {
 			selectedFiles.forEach((f) => {
 				// why does this model miss the approvalState?
 				// const model = fileList.getModelForFile(f.name)
 				// trick to get the approval state...
 				const file = fileList.files.find((t) => f.id === t.id)
 				if (parseInt(file.approvalState) === states.APPROVABLE) {
-					const url = generateOcsUrl('apps/approval/api/v1/approve/' + file.id, 2)
-					axios.put(url, {}).then((response) => {
-						showSuccess(t('approval', 'You approved {name}', { name: file.name }))
-						const model = fileList.getModelForFile(file.name)
-						model.set('approvalState', states.APPROVED)
-						// sidebar shows this file info => reload tags and approval state
-						if (OCA.Approval.View.fileId === file.id) {
-							OCA.Approval.View.getApprovalState(false)
-							OCA.Approval.View.reloadTags()
-						}
-					}).catch((error) => {
-						console.error(error)
-						showError(
-							t('approval', 'Failed to approve {name}', { name: file.name })
-							+ ': ' + error.response?.request?.responseText
-						)
-					})
+					that.approve(file.id, file.name, fileList)
 				}
 			})
 		},
 
-		rejectMulti: (selectedFiles, fileList) => {
+		rejectMulti: (selectedFiles, fileList, that) => {
 			selectedFiles.forEach((f) => {
 				// why does this model miss the approvalState?
 				// const model = fileList.getModelForFile(f.name)
 				// trick to get the approval state...
 				const file = fileList.files.find((t) => f.id === t.id)
 				if (parseInt(file.approvalState) === states.APPROVABLE) {
-					const url = generateOcsUrl('apps/approval/api/v1/reject/' + file.id, 2)
-					axios.put(url, {}).then((response) => {
-						showSuccess(t('approval', 'You rejected {name}', { name: file.name }))
-						const model = fileList.getModelForFile(file.name)
-						model.set('approvalState', states.REJECTED)
-						// sidebar shows this file info => reload tags and approval state
-						if (OCA.Approval.View.fileId === file.id) {
-							OCA.Approval.View.getApprovalState(false)
-							OCA.Approval.View.reloadTags()
-						}
-					}).catch((error) => {
-						console.error(error)
-						showError(
-							t('approval', 'Failed to reject {name}', { name: file.name })
-							+ ': ' + error.response?.request?.responseText
-						)
-					})
+					that.reject(file.id, file.name, fileList)
 				}
 			})
 		},
 
-		approve: (fileName, context) => {
+		approveSingle: (fileName, context, that) => {
 			const fileId = context.$file.data('id')
-			// const state = context.$file.data('approvalState')
-			const model = context.fileList.getModelForFile(fileName)
+			that.approve(fileId, fileName, context.fileList)
+		},
 
-			const req = {}
+		rejectSingle: (fileName, context, that) => {
+			const fileId = context.$file.data('id')
+			that.reject(fileId, fileName, context.fileList)
+		},
+
+		approve: (fileId, fileName, fileList) => {
 			const url = generateOcsUrl('apps/approval/api/v1/approve/' + fileId, 2)
-			axios.put(url, req).then((response) => {
+			axios.put(url, {}).then((response) => {
 				showSuccess(t('approval', 'You approved {name}', { name: fileName }))
+				const model = fileList.getModelForFile(fileName)
 				model.set('approvalState', states.APPROVED)
-				OCA.Approval.View.getApprovalState(false)
-				OCA.Approval.View.reloadTags()
+				// sidebar shows this file info => reload tags and approval state
+				if (OCA.Approval.View.fileId === fileId) {
+					OCA.Approval.View.getApprovalState(false)
+					OCA.Approval.View.reloadTags()
+				}
 			}).catch((error) => {
 				console.error(error)
 				showError(
@@ -342,19 +319,19 @@ import './bootstrap'
 			})
 		},
 
-		reject: (fileName, context) => {
-			const fileId = context.$file.data('id')
-			// const state = context.$file.data('approvalState')
-			const model = context.fileList.getModelForFile(fileName)
-
-			const req = {}
+		reject: (fileId, fileName, fileList) => {
 			const url = generateOcsUrl('apps/approval/api/v1/reject/' + fileId, 2)
-			axios.put(url, req).then((response) => {
+			axios.put(url, {}).then((response) => {
 				showSuccess(t('approval', 'You rejected {name}', { name: fileName }))
+				const model = fileList.getModelForFile(fileName)
 				model.set('approvalState', states.REJECTED)
-				OCA.Approval.View.getApprovalState(false)
-				OCA.Approval.View.reloadTags()
+				// sidebar shows this file info => reload tags and approval state
+				if (OCA.Approval.View.fileId === fileId) {
+					OCA.Approval.View.getApprovalState(false)
+					OCA.Approval.View.reloadTags()
+				}
 			}).catch((error) => {
+				console.error(error)
 				showError(
 					t('approval', 'Failed to reject {name}', { name: fileName })
 					+ ': ' + error.response?.request?.responseText
