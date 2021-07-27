@@ -119,7 +119,7 @@ OC.L10N.register(
     "Can be approved by" : "Kann genehmigt werden durch",
     "More files to approve" : "Weitere Dateien zum Genehmigen",
     "No files to approve!" : "Keine Dateien zum Genehmigen",
-    "Failed to get approval pending files" : "Fehler beim  Laden der auf Genehmigung wartenden Dateien",
+    "Failed to get approval pending files" : "Fehler beim Laden der auf Genehmigung wartenden Dateien",
     "by {name} at {date}" : "von {name} am {date}",
     "at {date}" : "am {date}",
     "You approved {name}" : "Sie haben {name} genehmigt",
