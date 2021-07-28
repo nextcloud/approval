@@ -115,6 +115,7 @@ OC.L10N.register(
     "Select approval workflow" : "Selecteer goedkeuringswerkstroom",
     "File will be automatically shared with everybody allowed to approve." : "Bestand wordt automatisch gedeeld met iedereen die mag goedkeuren.",
     "Can be approved by" : "Kan worden goedgekeurd door",
+    "at {date}" : "op {date}",
     "You approved {name}" : "Je keurde {name} goed",
     "Failed to approve {name}" : "Kon {name} niet goedkeuren",
     "You rejected {name}" : "Je keurde {name} af",
