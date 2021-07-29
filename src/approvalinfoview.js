@@ -11,9 +11,7 @@ import { states } from './states'
 /**
  * @class OCA.Approval.ApprovalInfoView
  * @classdesc
- *
  * Displays approval buttons or approval state
- *
  */
 export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 	/** @lends OCA.Approval.ApprovalInfoView.prototype */ {

@@ -1,4 +1,5 @@
 let mytimer = 0
+// eslint-disable-next-line
 export function delay(callback, ms) {
 	return function() {
 		const context = this
