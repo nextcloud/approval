@@ -297,7 +297,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 		},
 
 		getApprovalState(reloadFileItem) {
-			console.debug('getApprovalState of ' + this.fileName)
 			// get state and details
 			const url = generateOcsUrl('apps/approval/api/v1/state/' + this.fileId, 2)
 			axios.get(url).then((response) => {
