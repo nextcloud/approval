@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## 1.0.4 – 2021-07-29
+## 1.0.4 – 2021-08-01
 ### Added
 * dashboard widget with pending files user can approve
 * multiple file selection with approve/reject actions
