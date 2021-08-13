@@ -127,7 +127,7 @@ OC.L10N.register(
     "You rejected {name}" : "As refudadu {name}",
     "Failed to reject {name}" : "No at fatu a refudare {name}",
     "Approval requested for {name}" : "Aprovatzione recherta pro {name}",
-    "Warning" : "Avisuq",
+    "Warning" : "Avisu",
     "Failed to request approval for {name}" : "No at fatu a rechèdere aprovatzione pro {name}",
     "You will receive an email from DocuSign to sign the document" : "As a retzire unu messàgiu de posta dae DocuSign pro firmare su documentu",
     "The user who requested this approval was not found, remember to send or share the signed document yourself" : "S'utèntzia chi at rechertu custa aprovatzione non s'agatat, regorda·ti tue de imbiare o cumpartzire su documentu firmadu",
