@@ -1,6 +1,9 @@
 OC.L10N.register(
     "approval",
     {
+    "A guest user" : "Gostujoči uporabnik",
+    "Error during OAuth exchanges" : "Napaka med izmenjavo podatkov OAuth",
+    "Pending approvals" : "Potrditve na čakanju",
     "A file was approved" : "Datoteka je odobrena",
     "A file was rejected" : "Datoteka je zavrnjena",
     "A directory was approved" : "Mapa je odobrena",
@@ -23,6 +26,8 @@ OC.L10N.register(
     "Approve" : "Odobri",
     "Reject" : "Zavrni",
     "Who can approve?" : "Kdo lahko odobri?",
+    "Who can request approval" : "Kdo lahko zahteva odobritev",
+    "Who can approve" : "Kdo lahko odobri",
     "Approved" : "Odobreno",
     "Rejected" : "Zavrnjeno",
     "Sign with DocuSign" : "Podpiši z DocuSign",
