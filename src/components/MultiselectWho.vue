@@ -48,6 +48,7 @@
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateOcsUrl } from '@nextcloud/router'
+import { showError } from '@nextcloud/dialogs'
 import axios from '@nextcloud/axios'
 import Avatar from '@nextcloud/vue/dist/Components/Avatar'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
@@ -233,6 +234,7 @@ export default {
 			}).then((response) => {
 				this.suggestions = response.data.ocs.data
 			}).catch((error) => {
+				showError(t('approval', 'Impossible to get user/group/circle list'))
 				console.error(error)
 			}).then(() => {
 				this.loadingSuggestions = false
