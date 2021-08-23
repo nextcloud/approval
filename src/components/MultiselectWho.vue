@@ -69,7 +69,12 @@ export default {
 		types: {
 			type: Array,
 			// users, groups and circles
-			default: () => [0, 1, 7],
+			default: () => [
+				0,
+				1,
+				// wait until new circle stuff is more stable
+				// 7,
+			],
 		},
 		placeholder: {
 			type: String,
