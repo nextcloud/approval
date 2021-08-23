@@ -6,8 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.6 – 2021-08-23
 ### Changed
 - bump dependencies
+
+### Fixed
+- don't search for circles in admin settings, it crashes these days
+[#13](https://github.com/nextcloud/approval/issues/13) @OkhamG @zydisney @AdnanCivic
 
 ## 1.0.4 – 2021-08-01
 ### Added
