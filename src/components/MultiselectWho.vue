@@ -256,7 +256,7 @@ export default {
 		opacity: 0.5;
 	}
 	.icon-circle {
-		background-image: var(--icon-circles-circles-000);
+		background-image: var(--icon-contacts-circles-000);
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
 		background-position: center;
