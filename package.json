@@ -61,6 +61,7 @@
     "babel-loader": "^8.2.2",
     "css-loader": "^4.3.0",
     "eslint": "^7.29.0",
+    "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-jsdoc": "^36.0.7",
     "eslint-plugin-node": "^11.1.0",
