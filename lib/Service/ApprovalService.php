@@ -122,7 +122,7 @@ class ApprovalService {
 		$userRules = [];
 		$rules = $this->ruleService->getRules();
 
-		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles') && class_exists(\OCA\Circles\CirclesManager::class);
 		$userNames = [];
 		$circleNames = [];
 		foreach ($rules as $rule) {
@@ -195,7 +195,7 @@ class ApprovalService {
 	 * @return bool
 	 */
 	private function userIsAuthorizedByRule(string $userId, array $rule, string $role = 'approvers'): bool {
-		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles') && class_exists(\OCA\Circles\CirclesManager::class);
 
 		$user = $this->userManager->get($userId);
 
@@ -529,7 +529,7 @@ class ApprovalService {
 			}
 		}
 
-		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles') && class_exists(\OCA\Circles\CirclesManager::class);
 		if ($circlesEnabled) {
 			foreach ($rule['approvers'] as $approver) {
 				if ($approver['type'] === 'circle') {
@@ -600,7 +600,7 @@ class ApprovalService {
 	 * @return array userId list
 	 */
 	public function getRuleAuthorizedUserIds(array $rule, string $role = 'approvers'): array {
-		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles') && class_exists(\OCA\Circles\CirclesManager::class);
 		if ($circlesEnabled) {
 			$circlesManager = \OC::$server->get(\OCA\Circles\CirclesManager::class);
 			$circlesManager->startSuperSession();

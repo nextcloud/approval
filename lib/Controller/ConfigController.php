@@ -80,7 +80,7 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 */
 	public function getRules(): DataResponse {
-		$circlesEnabled = $this->appManager->isEnabledForUser('circles');
+		$circlesEnabled = $this->appManager->isEnabledForUser('circles') && class_exists(\OCA\Circles\CirclesManager::class);
 		if ($circlesEnabled) {
 			$circlesManager = \OC::$server->get(\OCA\Circles\CirclesManager::class);
 			$circlesManager->startSuperSession();
