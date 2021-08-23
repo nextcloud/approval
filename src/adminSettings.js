@@ -8,7 +8,9 @@
  * later. See the COPYING file.
  *
  * @author Julien Veyssier <eneiluj@posteo.net>
+ *
  * @copyright Julien Veyssier 2021
+ *
  */
 
 import Vue from 'vue'
