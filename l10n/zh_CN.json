@@ -112,6 +112,7 @@
     "No recommendations. Start typing." : "无建议。开始输入。",
     "No result." : "无结果",
     "Who?" : "谁？",
+    "Impossible to get user/group/circle list" : "无法获得用户/群组、圈子列表",
     "Select approval workflow" : "选择批准流程",
     "File will be automatically shared with everybody allowed to approve." : "文件将自动与被允许继续进行批准的每个人共享。",
     "Can be approved by" : "能够进行批准的都有谁",

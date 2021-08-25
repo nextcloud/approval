@@ -114,6 +114,7 @@ OC.L10N.register(
     "No recommendations. Start typing." : "Žádná doporučení. Pište.",
     "No result." : "Bez výsledku.",
     "Who?" : "Kdo?",
+    "Impossible to get user/group/circle list" : "Nedaří se získat seznam uživatelů/skupin/okruhů",
     "Select approval workflow" : "Vybrat schvalovací postup",
     "File will be automatically shared with everybody allowed to approve." : "Soubor bude automaticky nasdílen všem, kteří ho mohou schválit.",
     "Can be approved by" : "Může schvalovat",

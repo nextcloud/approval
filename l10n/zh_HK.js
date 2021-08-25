@@ -114,6 +114,7 @@ OC.L10N.register(
     "No recommendations. Start typing." : "沒有建議。開始輸入。",
     "No result." : "無結果。",
     "Who?" : "誰？",
+    "Impossible to get user/group/circle list" : "無法獲取用戶/群組/社交圈子列表",
     "Select approval workflow" : "選擇審批工作流程",
     "File will be automatically shared with everybody allowed to approve." : "文件將自動與允許批准的所有人共享。",
     "Can be approved by" : "可由以下人仕批准",

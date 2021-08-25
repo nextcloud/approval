@@ -112,6 +112,7 @@
     "No recommendations. Start typing." : "Keine Empfehlungen. Beginnen Sie mit der Eingabe.",
     "No result." : "Kein Ergebnis.",
     "Who?" : "Wer?",
+    "Impossible to get user/group/circle list" : "Es ist nicht möglich, eine Benutzer-/Gruppen-/Kreisliste zu erhalten",
     "Select approval workflow" : "Arbeitsablauf für Genehmigungen auswählen",
     "File will be automatically shared with everybody allowed to approve." : "Die Datei wird automatisch an alle Personen weitergegeben, die zur Genehmigung berechtigt sind.",
     "Can be approved by" : "Kann genehmigt werden durch",
