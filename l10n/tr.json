@@ -112,6 +112,7 @@
     "No recommendations. Start typing." : "Herhangi bir öneri yok. Yazmaya başlayın.",
     "No result." : "Herhangi bir sonuç yok.",
     "Who?" : "Kim?",
+    "Impossible to get user/group/circle list" : "Kullanıcı/grup/çevre listesi alınamadı",
     "Select approval workflow" : "Onay iş akışını seçin",
     "File will be automatically shared with everybody allowed to approve." : "Dosya, onaylamasına izin verilen herkesle otomatik olarak paylaşılacak.",
     "Can be approved by" : "Şununla onaylanabilir",

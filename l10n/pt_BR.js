@@ -114,6 +114,7 @@ OC.L10N.register(
     "No recommendations. Start typing." : "Sem recomendações. Começe a digitar.",
     "No result." : "Sem resultado.",
     "Who?" : "Quem?",
+    "Impossible to get user/group/circle list" : "Impossível obter lista de usuários/grupos/círculos",
     "Select approval workflow" : "Selecione o fluxo de trabalho de aprovação",
     "File will be automatically shared with everybody allowed to approve." : "O arquivo será compartilhado automaticamente com todos os que têm permissão para aprovar.",
     "Can be approved by" : "Pode ser aprovado por",
