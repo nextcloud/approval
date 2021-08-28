@@ -1,7 +1,14 @@
 OC.L10N.register(
     "approval",
     {
+    "You approved {file}" : "Odobrite datoteko {file}",
+    "{user} approved {file}" : "{user} odobri {file}",
+    "You rejected {file}" : "Zavrnete datoteko {file}",
+    "{user} rejected {file}" : "{user} zavrne {file}",
+    "You requested approval on {file}" : "Zahtevate odobritev datoteke {file}",
     "A guest user" : "Gostujoči uporabnik",
+    "Approval" : "Odobritev",
+    "<strong>Approval</strong> events" : "Dogodki <strong>odobritve</strong>",
     "Error during OAuth exchanges" : "Napaka med izmenjavo podatkov OAuth",
     "Pending approvals" : "Potrditve na čakanju",
     "A file was approved" : "Datoteka je odobrena",
@@ -25,7 +32,10 @@ OC.L10N.register(
     "All tags must be different" : "Vse oznake morajo biti različne",
     "Approve" : "Odobri",
     "Reject" : "Zavrni",
+    "Select pending tag" : "Izberi oznako za pripravljeno na odobritev",
     "Who can approve?" : "Kdo lahko odobri?",
+    "Select approved tag" : "Izberi oznako za odobreno",
+    "Select rejected tag" : "Izberi oznako za zavrnjeno",
     "Who can request approval" : "Kdo lahko zahteva odobritev",
     "Who can approve" : "Kdo lahko odobri",
     "Approved" : "Odobreno",
@@ -36,6 +46,8 @@ OC.L10N.register(
     "Nextcloud users or email addresses" : "Uporabniki Nextcloud oziroma elektronski naslovi",
     "Request signature" : "Zahtevaj podpis",
     "DocuSign integration" : "Združevalnik DocuSign",
-    "DocuSign is an electronic signature solution." : "DocuSign je orodje za elektronsko podpisovanje dokumentov."
+    "DocuSign is an electronic signature solution." : "DocuSign je orodje za elektronsko podpisovanje dokumentov.",
+    "More files to approve" : "Več datotek za odobritev",
+    "No files to approve!" : "Ni datotek za odobritev"
 },
 "nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);");
