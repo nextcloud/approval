@@ -449,12 +449,13 @@ class ApprovalService {
 	 * @throws \OC\User\NoUserException
 	 */
 	public function request(int $fileId, int $ruleId, ?string $userId, bool $createShares): array {
+		$rule = $this->ruleService->getRule($ruleId);
+		if (is_null($rule)) {
+			return ['error' => 'Rule does not exist'];
+		}
+
 		$fileState = $this->getApprovalState($fileId, $userId);
 		if ($fileState['state'] === Application::STATE_NOTHING) {
-			$rule = $this->ruleService->getRule($ruleId);
-			if (is_null($rule)) {
-				return ['error' => 'Rule does not exist'];
-			}
 			if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
 				if ($createShares) {
 					$this->shareWithApprovers($fileId, $rule, $userId);
@@ -486,6 +487,31 @@ class ApprovalService {
 			}
 		} else {
 			return ['error' => 'File is already pending/approved/rejected'];
+		}
+	}
+
+	public function requestViaTagAssignment(int $fileId, int $ruleId, string $userId): array {
+		$rule = $this->ruleService->getRule($ruleId);
+		if (is_null($rule)) {
+			return ['error' => 'Rule does not exist'];
+		}
+
+		if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
+			$this->shareWithApprovers($fileId, $rule, $userId);
+			// store activity in our tables
+			$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_PENDING);
+
+			// still produce an activity entry for the user who requests
+			$this->activityManager->triggerEvent(
+				ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
+				ActivityManager::SUBJECT_REQUESTED_ORIGIN,
+				['origin_user_id' => $userId]
+			);
+
+			// here we don't check if someone can actually approve, because there is nobody to warn
+			return [];
+		} else {
+			return ['error' => 'File owner is not authorized to request with this rule'];
 		}
 	}
 
@@ -671,11 +697,23 @@ class ApprovalService {
 		}
 		// search our activities to see if we know who made the request
 		$activity = $this->ruleService->getLastAction($fileId, $ruleInvolded['id'], Application::STATE_PENDING);
-		// if there is no activity, the tag was assigned manually => store an activity here
+		// if there is no activity, the tag was assigned manually (or via auto-tagging flows)
+		// => perform the request here (share, store action and trigger activity event)
 		if (is_null($activity)) {
-			$requestUserId = null;
-			$this->ruleService->storeAction($fileId, $ruleInvolded['id'], '', Application::STATE_PENDING);
+			$found = $this->root->getById($fileId);
+			if (count($found) > 0) {
+				$node = $found[0];
+			} else {
+				return;
+			}
+			// we can assume the file owner is the one who requests
+			$requestUserId = $node->getOwner()->getUID();
+			$requestResult = $this->requestViaTagAssignment($fileId, $ruleInvolded['id'], $requestUserId);
+			if (isset($requestResult['error'])) {
+				return;
+			}
 		} else {
+			// it was request via the approval interface, nothing more to do
 			$requestUserId = $activity['userId'];
 		}
 		$this->sendRequestNotification($fileId, $ruleInvolded, $requestUserId);
