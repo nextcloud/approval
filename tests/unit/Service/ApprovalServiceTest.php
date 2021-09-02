@@ -32,6 +32,7 @@ use OCP\IGroupManager;
 use OCP\App\IAppManager;
 use OCP\Notification\IManager as INotificationManager;
 use OCP\Share\IManager as IShareManager;
+use Psr\Log\LoggerInterface;
 
 use OCP\IDBConnection;
 use OCP\SystemTag\ISystemTagManager;
@@ -140,6 +141,7 @@ class ApprovalServiceTest extends TestCase {
 			$this->utilsService,
 			$c->get(IShareManager::class),
 			$c->get(IL10N::class),
+			$c->get(LoggerInterface::class),
 			'user1'
 		);
 
