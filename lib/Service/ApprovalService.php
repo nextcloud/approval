@@ -27,6 +27,7 @@ use OCP\Share\IManager as IShareManager;
 use OCP\Share\IShare;
 
 use OCA\DAV\Connector\Sabre\Node as SabreNode;
+use Psr\Log\LoggerInterface;
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 
@@ -50,6 +51,10 @@ class ApprovalService {
 	 * @var string
 	 */
 	private $appName;
+	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
 
 	/**
 	 * ApprovalService constructor.
@@ -79,6 +84,7 @@ class ApprovalService {
 								UtilsService $utilsService,
 								IShareManager $shareManager,
 								IL10N $l10n,
+								LoggerInterface $logger,
 								?string $userId) {
 		$this->tagObjectMapper = $tagObjectMapper;
 		$this->root = $root;
@@ -93,6 +99,7 @@ class ApprovalService {
 		$this->l10n = $l10n;
 		$this->appName = $appName;
 		$this->userId = $userId;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -693,6 +700,10 @@ class ApprovalService {
 			}
 		}
 		if (is_null($ruleInvolded)) {
+			$this->logger->debug(
+				'Could not request approval of file ' . $fileId . ': no rule found for tags ' . implode(',', $tags) . '.',
+				['app' => Application::APP_ID]
+			);
 			return;
 		}
 		// search our activities to see if we know who made the request
@@ -704,12 +715,14 @@ class ApprovalService {
 			if (count($found) > 0) {
 				$node = $found[0];
 			} else {
+				$this->logger->error('Could not request approval of file ' . $fileId . ': file not found.', ['app' => Application::APP_ID]);
 				return;
 			}
 			// we can assume the file owner is the one who requests
 			$requestUserId = $node->getOwner()->getUID();
 			$requestResult = $this->requestViaTagAssignment($fileId, $ruleInvolded['id'], $requestUserId);
 			if (isset($requestResult['error'])) {
+				$this->logger->error('Approval request error: ' . $requestResult['error'] . '.', ['app' => Application::APP_ID]);
 				return;
 			}
 		} else {
