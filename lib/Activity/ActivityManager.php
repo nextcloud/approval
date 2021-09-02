@@ -198,14 +198,9 @@ class ActivityManager {
 		$userIds = [];
 		$root = $this->root;
 		if ($subject === self::SUBJECT_REQUESTED || $subject === self::SUBJECT_MANUALLY_REQUESTED) {
-			$ruleUserIds = $additionalParams['users'];
-			foreach ($ruleUserIds as $userId) {
-				$userFolder = $root->getUserFolder($userId);
-				$found = $userFolder->getById($entity);
-				if (count($found) > 0) {
-					$userIds[] = $userId;
-				}
-			}
+			// publish to every approver, they won't see the activity entry if they don't have access
+			// (check done in Acitivty\ApprovalProvider)
+			$userIds = $additionalParams['users'];
 		} elseif ($subject === self::SUBJECT_REQUESTED_ORIGIN) {
 			$userIds[] = $additionalParams['origin_user_id'];
 		} else {

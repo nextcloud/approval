@@ -758,10 +758,10 @@ class ApprovalService {
 			['users' => $thisRuleUserIds, 'who' => $requestUserId]
 		);
 
-		// only notify users having access to the file
 		$paramsByUser = [];
 		$root = $this->root;
 		if ($checkAccess) {
+			// only notify users having access to the file
 			foreach ($rulesUserIds as $userId) {
 				$userFolder = $root->getUserFolder($userId);
 				$found = $userFolder->getById($fileId);
@@ -781,6 +781,7 @@ class ApprovalService {
 			}
 		} else {
 			// we don't check if users have access to the file because they might not have yet (share is not effective yet)
+			// => notify every approver
 			foreach ($rulesUserIds as $userId) {
 				$found = $root->getById($fileId);
 				if (count($found) > 0) {
