@@ -1,0 +1,25 @@
+OC.L10N.register(
+    "approval",
+    {
+    "You approved {file}" : "Hyväksyit {file}",
+    "{user} approved {file}" : "{user} hyväksyi {file}",
+    "A guest user" : "Vieraskäyttäjä",
+    "Approval" : "Hyväksyntä",
+    "Create" : "Luo",
+    "Cancel" : "Peruuta",
+    "All fields are required" : "Kaikki kentät ovat pakollisia",
+    "Approve" : "Hyväksy",
+    "Who can request approval?" : "Kuka voi pyytää hyväksyntää?",
+    "Who can approve?" : "Kuka voi hyväksyä?",
+    "Who can request approval" : "Kuka voi pyytää hyväksyntää",
+    "Who can approve" : "Kuka voi hyväksyä",
+    "Approved" : "Hyväksytty",
+    "you" : "sinä",
+    "Request approval" : "Pyydä hyväksyntää",
+    "Users or email addresses" : "Käyttäjät tai sähköpostiosoitteet",
+    "No recommendations. Start typing." : "Ei suosituksia. Aloita kirjoittaminen.",
+    "No result." : "Ei tulosta.",
+    "Who?" : "Kuka?",
+    "Warning" : "Varoitus"
+},
+"nplurals=2; plural=(n != 1);");
