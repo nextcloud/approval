@@ -160,37 +160,6 @@ class Notifier implements INotifier {
 			}
 			return $notification;
 
-		case 'request':
-			$p = $notification->getSubjectParameters();
-
-			$linkToFile = $this->url->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileid' => $p['fileId']]);
-			$richSubjectNode = [
-				'type' => 'file',
-				'id' => $p['fileId'],
-				'name' => $p['fileName'],
-				'path' => trim($p['relativePath'], '/'),
-				'link' => $linkToFile,
-			];
-
-			$subject = $l->t('Your approval was requested');
-			$content = $p['type'] === 'file'
-				? $l->t('Your approval was requested for file %1$s', [$p['fileName']])
-				: $l->t('Your approval was requested for directory %1$s', [$p['fileName']]);
-			$iconUrl = $this->url->getAbsoluteURL('/index.php/svg/core/actions/more?color=000000');
-
-			$notification
-				->setParsedSubject($subject)
-				->setParsedMessage($content)
-				->setLink($linkToFile)
-				->setRichMessage(
-					'{node}',
-					[
-						'node' => $richSubjectNode,
-					]
-				)
-				->setIcon($iconUrl);
-			return $notification;
-
 		case 'manual_request':
 			$p = $notification->getSubjectParameters();
 

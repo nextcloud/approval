@@ -725,11 +725,12 @@ class ApprovalService {
 				$this->logger->error('Approval request error: ' . $requestResult['error'] . '.', ['app' => Application::APP_ID]);
 				return;
 			}
+			$this->sendRequestNotification($fileId, $ruleInvolded, $requestUserId, false);
 		} else {
 			// it was request via the approval interface, nothing more to do
 			$requestUserId = $activity['userId'];
+			$this->sendRequestNotification($fileId, $ruleInvolded, $requestUserId, true);
 		}
-		$this->sendRequestNotification($fileId, $ruleInvolded, $requestUserId);
 	}
 
 	/**
@@ -741,7 +742,7 @@ class ApprovalService {
 	 * @param string|null $requestUserId
 	 * @return void
 	 */
-	public function sendRequestNotification(int $fileId, array $rule, ?string $requestUserId = null): void {
+	public function sendRequestNotification(int $fileId, array $rule, string $requestUserId, bool $checkAccess): void {
 		// find users involved in rules matching tags
 		$rulesUserIds = [];
 		$thisRuleUserIds = $this->getRuleAuthorizedUserIds($rule, 'approvers');
@@ -751,37 +752,51 @@ class ApprovalService {
 			}
 		}
 		// create activity (which deals with access checks)
-		if (is_null($requestUserId)) {
-			$this->activityManager->triggerEvent(
-				ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
-				ActivityManager::SUBJECT_REQUESTED,
-				['users' => $thisRuleUserIds]
-			);
-		} else {
-			$this->activityManager->triggerEvent(
-				ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
-				ActivityManager::SUBJECT_MANUALLY_REQUESTED,
-				['users' => $thisRuleUserIds, 'who' => $requestUserId]
-			);
-		}
+		$this->activityManager->triggerEvent(
+			ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
+			ActivityManager::SUBJECT_MANUALLY_REQUESTED,
+			['users' => $thisRuleUserIds, 'who' => $requestUserId]
+		);
+
 		// only notify users having access to the file
 		$paramsByUser = [];
 		$root = $this->root;
-		foreach ($rulesUserIds as $userId) {
-			$userFolder = $root->getUserFolder($userId);
-			$found = $userFolder->getById($fileId);
-			if (count($found) > 0) {
-				$node = $found[0];
-				$path = $userFolder->getRelativePath($node->getPath());
-				$type = $node->getType() === FileInfo::TYPE_FILE
-					? 'file'
-					: 'folder';
-				$paramsByUser[$userId] = [
-					'type' => $type,
-					'fileId' => $fileId,
-					'fileName' => $node->getName(),
-					'relativePath' => $path,
-				];
+		if ($checkAccess) {
+			foreach ($rulesUserIds as $userId) {
+				$userFolder = $root->getUserFolder($userId);
+				$found = $userFolder->getById($fileId);
+				if (count($found) > 0) {
+					$node = $found[0];
+					$path = $userFolder->getRelativePath($node->getPath());
+					$type = $node->getType() === FileInfo::TYPE_FILE
+						? 'file'
+						: 'folder';
+					$paramsByUser[$userId] = [
+						'type' => $type,
+						'fileId' => $fileId,
+						'fileName' => $node->getName(),
+						'relativePath' => $path,
+					];
+				}
+			}
+		} else {
+			// we don't check if users have access to the file because they might not have yet (share is not effective yet)
+			foreach ($rulesUserIds as $userId) {
+				$found = $root->getById($fileId);
+				if (count($found) > 0) {
+					$node = $found[0];
+					// we don't know the path in user storage
+					$path = '';
+					$type = $node->getType() === FileInfo::TYPE_FILE
+						? 'file'
+						: 'folder';
+					$paramsByUser[$userId] = [
+						'type' => $type,
+						'fileId' => $fileId,
+						'fileName' => $node->getName(),
+						'relativePath' => $path,
+					];
+				}
 			}
 		}
 
@@ -790,12 +805,8 @@ class ApprovalService {
 			$manager = $this->notificationManager;
 			$notification = $manager->createNotification();
 
-			if (is_null($requestUserId)) {
-				$subject = 'request';
-			} else {
-				$subject = 'manual_request';
-				$params['requesterId'] = $requestUserId;
-			}
+			$subject = 'manual_request';
+			$params['requesterId'] = $requestUserId;
 			$notification->setApp(Application::APP_ID)
 				->setUser($userId)
 				->setDateTime(new DateTime())
