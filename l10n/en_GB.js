@@ -23,8 +23,6 @@ OC.L10N.register(
     "{user} approved {node}" : "{user} approved {node}",
     "{user} rejected {node}" : "{user} rejected {node}",
     "Your approval was requested" : "Your approval was requested",
-    "Your approval was requested for file %1$s" : "Your approval was requested for file %1$s",
-    "Your approval was requested for directory %1$s" : "Your approval was requested for directory %1$s",
     "%2$s requested your approval for %1$s" : "%2$s requested your approval for %1$s",
     "{user} requested your approval for {node}" : "{user} requested your approval for {node}",
     "Please check my approval request" : "Please check my approval request",

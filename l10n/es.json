@@ -21,8 +21,6 @@
     "{user} approved {node}" : "{user} aprobó {node}",
     "{user} rejected {node}" : "{user} rechazó {node}",
     "Your approval was requested" : "Tu aprobación fue solicitada",
-    "Your approval was requested for file %1$s" : "Tu aprobación fue solicitada para el archivo %1$s",
-    "Your approval was requested for directory %1$s" : "Tu aprobación fue solicitada para la carpeta %1$s",
     "%2$s requested your approval for %1$s" : "%2$srequirió tu aprobación para  %1$s",
     "{user} requested your approval for {node}" : "{user} requirió tu aprobación para {node}",
     "Please check my approval request" : "Por favor comprueba mi solicitud de aprobación",

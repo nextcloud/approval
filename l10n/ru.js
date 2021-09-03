@@ -23,8 +23,6 @@ OC.L10N.register(
     "{user} approved {node}" : "{user} согласовал(а) {node}",
     "{user} rejected {node}" : "{user} отклонил(а) {node}",
     "Your approval was requested" : "Было запрошено ваше согласование",
-    "Your approval was requested for file %1$s" : "Было запрошено ваше согласование для файла %1$s",
-    "Your approval was requested for directory %1$s" : "Было запрошено ваше согласование для каталога %1$s",
     "%2$s requested your approval for %1$s" : "%2$s запросил(а) ваше согласование для %1$s",
     "{user} requested your approval for {node}" : "{user} запросил(а) ваше согласование для {node}",
     "Please check my approval request" : "Пожалуйста рассмотрите мой запрос на согласование",

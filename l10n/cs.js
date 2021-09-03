@@ -23,8 +23,6 @@ OC.L10N.register(
     "{user} approved {node}" : "{user} schválil(a) {node}",
     "{user} rejected {node}" : "{user} zamítl(a) {node}",
     "Your approval was requested" : "Bylo požádáno o vaše schválení",
-    "Your approval was requested for file %1$s" : "Bylo požádáno o vaše schválení pro soubor %1$s",
-    "Your approval was requested for directory %1$s" : "Bylo požádáno o vaše schválení pro složku %1$s",
     "%2$s requested your approval for %1$s" : "%2$s požádal(a) o vaše schválení u %1$s",
     "{user} requested your approval for {node}" : "{user} požádala o vaše schválení pro {node}",
     "Please check my approval request" : "Podívejte se prosím na moji žádost o schválení",

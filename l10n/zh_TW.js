@@ -23,8 +23,6 @@ OC.L10N.register(
     "{user} approved {node}" : "{user} 批准了 {node}",
     "{user} rejected {node}" : "{user} 回絕了 {node}",
     "Your approval was requested" : "已請求您的批准",
-    "Your approval was requested for file %1$s" : "已請求您批准檔案 %1$s ",
-    "Your approval was requested for directory %1$s" : "已請求您批准目錄 %1$s",
     "%2$s requested your approval for %1$s" : "%2$s 請求您批准 %1$s",
     "{user} requested your approval for {node}" : "{user} 請求您批准 {node}",
     "Please check my approval request" : "請檢查我的批准請求",

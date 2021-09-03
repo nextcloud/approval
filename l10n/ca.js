@@ -23,8 +23,6 @@ OC.L10N.register(
     "{user} approved {node}" : "{user} ha aprovat {node}",
     "{user} rejected {node}" : "{user} ha rebutjat {node}",
     "Your approval was requested" : "S'ha sol·licitat la vostra aprovació",
-    "Your approval was requested for file %1$s" : "S'ha sol·licitat la vostra aprovació pel fitxer %1$s",
-    "Your approval was requested for directory %1$s" : "S'ha sol·licitat la vostra aprovació per al directori %1$s",
     "%2$s requested your approval for %1$s" : "%2$s ha sol·licitar l'aprovació per a %1$s",
     "{user} requested your approval for {node}" : "{user} ha sol·licitat la vostra aprovació per a {node}",
     "Please check my approval request" : "Comproveu la meva sol·licitud d'aprovació",

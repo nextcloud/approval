@@ -21,8 +21,6 @@
     "{user} approved {node}" : "{user} povolil {node}",
     "{user} rejected {node}" : "{user} odmietol {node}",
     "Your approval was requested" : "Požadované vaše schválenie",
-    "Your approval was requested for file %1$s" : "Požadované vaše schválenie pre súbor %1$s",
-    "Your approval was requested for directory %1$s" : "Požadované vaše schválenie pre adresár %1$s",
     "%2$s requested your approval for %1$s" : "%2$s požiadal o schválenie k %1$s",
     "{user} requested your approval for {node}" : "{user} požiadal o schválenie k {node}",
     "Please check my approval request" : "Prosím skontrolujte moju žiadosť o schválenie",

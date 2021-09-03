@@ -22,8 +22,6 @@ OC.L10N.register(
     "{user} approved {node}" : "{user} keurde {node} goed",
     "{user} rejected {node}" : "{user} weigerde {node}",
     "Your approval was requested" : "Je goedkeuring is gevraagd",
-    "Your approval was requested for file %1$s" : "Je goedkeuring voor %1$s werd gevraagd",
-    "Your approval was requested for directory %1$s" : "Je goedkeuring is gevraagd voor map %1$s",
     "%2$s requested your approval for %1$s" : "%2$s vroeg je toestemming voor %1$s",
     "{user} requested your approval for {node}" : "{user} vroeg jouw goedkeuring voor {node}",
     "Please check my approval request" : "Bekijk mijn goedkeuringsverzoek",

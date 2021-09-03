@@ -22,8 +22,6 @@ OC.L10N.register(
     "{user} approved {node}" : "{user} jóváhagyta: {node}",
     "{user} rejected {node}" : "{user} elutasította: {node}",
     "Your approval was requested" : "Az ön engedélyét kérték",
-    "Your approval was requested for file %1$s" : "Jóváhagyásodat kérték erre a fáljra: %1$s",
-    "Your approval was requested for directory %1$s" : "Jóváhagyásodat kérték erre a könyvtárra: %1$s",
     "%2$s requested your approval for %1$s" : "%2$s a jóváhagyásodat kérte erre: %1$s",
     "{user} requested your approval for {node}" : "{user} a jóváhagyásodat kérte erre: {node}",
     "Please check my approval request" : "Kérem ellenőrizze a jóváhagyási kérelmemet",

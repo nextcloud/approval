@@ -21,8 +21,6 @@
     "{user} approved {node}" : "{user} at aprovadu {node}",
     "{user} rejected {node}" : "{user} at refudadu {node}",
     "Your approval was requested" : "Ant rechertu s'aprovatzione tua",
-    "Your approval was requested for file %1$s" : "Ant rechertu s'aprovatzione tua pro s'archìviu %1$s",
-    "Your approval was requested for directory %1$s" : "Ant rechertu s'aprovatzione tua pro sa cartella%1$s",
     "%2$s requested your approval for %1$s" : "%2$s at rechertu s'aprovatzione tua pro%1$s",
     "{user} requested your approval for {node}" : "{user} at rechertu s'aprovatzione tua pro node}",
     "Please check my approval request" : "Controlla sa rechesta mia de aprovatzione",

@@ -23,8 +23,6 @@ OC.L10N.register(
     "{user} approved {node}" : "{user} erabiltzaileak {node} onartu du",
     "{user} rejected {node}" : "{user} erabiltzaileak {node} ukatu du",
     "Your approval was requested" : "Zure onarpena eskatu dute",
-    "Your approval was requested for file %1$s" : "Zure onarpena eskatu dute %1$s fitxategiarentzat",
-    "Your approval was requested for directory %1$s" : "Zure onarpena eskatu dute %1$s direktorioarentzat",
     "%2$s requested your approval for %1$s" : "%2$s(e)k eskatu du zuk %1$s onartzeko",
     "{user} requested your approval for {node}" : "{user} erabiltzaileak eskatu du zuk {node} onartzeko",
     "Please check my approval request" : "Mesedez, begiratu nire onarpen eskaera",
