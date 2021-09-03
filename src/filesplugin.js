@@ -82,7 +82,7 @@ import './bootstrap'
 					}
 
 					const state = context.$file.data('approvalState')
-					if (state !== states.NOTHING) {
+					if (state !== undefined && state !== states.NOTHING) {
 						const actionLink = document.createElement('span')
 						actionLink.classList.add('approval-inline-state')
 						if (state === states.APPROVED) {
