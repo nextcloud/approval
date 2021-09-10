@@ -121,7 +121,7 @@ class ApprovalService {
 
 	/**
 	 * Get rules allowing user to request/approve
-	 * If file ID is provided and role is requesters, avoid the rules for which the file is already pending
+	 * If file ID is provided and role is requesters, avoid the rules for which the file is already pending/approved/rejected
 	 *
 	 * @param string $userId
 	 * @param string $role
@@ -138,10 +138,13 @@ class ApprovalService {
 		foreach ($rules as $rule) {
 			if ($this->userIsAuthorizedByRule($userId, $rule, $role)) {
 				// if looking for requester rules and we have a file ID:
-				// avoid if it's already pending for this rule
+				// avoid if it's already pending/approved/rejected for this rule
 				if ($role === 'requesters'
 					&& $fileId !== null
-					&& $this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+					&& ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+						|| $this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])
+						|| $this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])
+					)
 				) {
 					continue;
 				}
