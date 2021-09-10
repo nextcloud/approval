@@ -195,7 +195,7 @@ export default {
 			return this.myUserId !== getCurrentUser().uid
 		},
 		canRequestApproval() {
-			return this.myState === states.NOTHING && this.userRules.length > 0
+			return this.userRules.length > 0
 		},
 		infoText() {
 			if (this.myState === states.APPROVABLE) {

@@ -46,8 +46,8 @@ class ApprovalController extends OCSController {
 	 *
 	 * @return DataResponse
 	 */
-	public function getUserRequesterRules(): DataResponse {
-		$rules = $this->approvalService->getUserRules($this->userId, 'requesters');
+	public function getUserRequesterRules(?int $fileId = null): DataResponse {
+		$rules = $this->approvalService->getUserRules($this->userId, 'requesters', $fileId);
 		return new DataResponse($rules);
 	}
 

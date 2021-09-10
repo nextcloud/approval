@@ -66,7 +66,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			})
 			this._inputView.$on('open-request', () => {
 				// refresh request rules when opening request modal
-				this.getUserRequesterRules().then((response) => {
+				this.getUserRequesterRules(this.fileId).then((response) => {
 					this._inputView.setUserRules(response.data.ocs.data)
 					this.userRules = response.data.ocs.data
 				}).catch((error) => {
@@ -86,9 +86,14 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this._rendered = true
 		},
 
-		getUserRequesterRules() {
+		getUserRequesterRules(fileId) {
+			const req = {
+				params: {
+					fileId,
+				},
+			}
 			const url = generateOcsUrl('apps/approval/api/v1/user-requester-rules', 2)
-			return axios.get(url)
+			return axios.get(url, req)
 		},
 
 		getDocusignInfo() {
@@ -148,6 +153,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				createShares,
 			}
 			const url = generateOcsUrl('apps/approval/api/v1/request/' + this.fileId + '/' + ruleId, 2)
+			let failed = false
 			axios.post(url, req).then((response) => {
 				// TODO make sure we see the freshly created shares
 				/*
@@ -162,7 +168,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					this.requestAfterShareCreation(ruleId)
 				} else {
 					showSuccess(t('approval', 'Approval requested for {name}', { name: this.fileName }))
-					if (response.data.ocs.data.warning) {
+					if (response.data?.ocs?.data?.warning) {
 						showWarning(t('approval', 'Warning') + ': ' + response.data.ocs.data.warning)
 					}
 					this.reloadTags()
@@ -170,12 +176,13 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 					this.getApprovalState(true)
 				}
 			}).catch((error) => {
+				failed = true
 				showError(
 					t('approval', 'Failed to request approval for {name}', { name: this.fileName })
-					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.data?.ocs?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
 			}).then(() => {
-				if (!createShares) {
+				if (!createShares || failed) {
 					this._inputView.setRequesting(false)
 				}
 			})
@@ -188,7 +195,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			const url = generateOcsUrl('apps/approval/api/v1/request/' + this.fileId + '/' + ruleId, 2)
 			axios.post(url, req).then((response) => {
 				showSuccess(t('approval', 'Approval requested for {name}', { name: this.fileName }))
-				if (response.data.ocs.data.warning) {
+				if (response.data?.ocs?.data?.warning) {
 					showWarning(t('approval', 'Warning') + ': ' + response.data.ocs.data.warning)
 				}
 				this.reloadTags()
@@ -197,7 +204,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to request approval for {name}', { name: this.fileName })
-					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.data?.ocs?.data?.error ?? error.response?.request?.responseText ?? '')
 				)
 			}).then(() => {
 				this._inputView.setRequesting(false)
@@ -269,7 +276,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			this._inputView.setLibresignEnabled(this.libresignEnabled)
 
 			// refresh requester rules info each time we get an approval state
-			this.getUserRequesterRules().then((response) => {
+			this.getUserRequesterRules(this.fileId).then((response) => {
 				this._inputView.setUserRules(response.data.ocs.data)
 				this.userRules = response.data.ocs.data
 			}).catch((error) => {

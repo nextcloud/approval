@@ -121,11 +121,14 @@ class ApprovalService {
 
 	/**
 	 * Get rules allowing user to request/approve
+	 * If file ID is provided and role is requesters, avoid the rules for which the file is already pending
 	 *
 	 * @param string $userId
+	 * @param string $role
+	 * @param int|null $fileId
 	 * @return array
 	 */
-	public function getUserRules(string $userId, string $role = 'requesters'): array {
+	public function getUserRules(string $userId, string $role = 'requesters', ?int $fileId = null): array {
 		$userRules = [];
 		$rules = $this->ruleService->getRules();
 
@@ -134,6 +137,14 @@ class ApprovalService {
 		$circleNames = [];
 		foreach ($rules as $rule) {
 			if ($this->userIsAuthorizedByRule($userId, $rule, $role)) {
+				// if looking for requester rules and we have a file ID:
+				// avoid if it's already pending for this rule
+				if ($role === 'requesters'
+					&& $fileId !== null
+					&& $this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+				) {
+					continue;
+				}
 				$userRules[] = $rule;
 				// get all entity ids
 				foreach ($rule['approvers'] as $k => $elem) {
@@ -458,12 +469,12 @@ class ApprovalService {
 	public function request(int $fileId, int $ruleId, ?string $userId, bool $createShares): array {
 		$rule = $this->ruleService->getRule($ruleId);
 		if (is_null($rule)) {
-			return ['error' => 'Rule does not exist'];
+			return ['error' => $this->l10n->t('Rule does not exist')];
 		}
 
-		$fileState = $this->getApprovalState($fileId, $userId);
-		if ($fileState['state'] === Application::STATE_NOTHING) {
-			if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
+		if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
+			// only request if it has not yet been requested for this rule
+			if (!$this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])) {
 				if ($createShares) {
 					$this->shareWithApprovers($fileId, $rule, $userId);
 					// if shares are auto created, request is actually done in a separated request with $createShares === false
@@ -488,12 +499,12 @@ class ApprovalService {
 						return [];
 					}
 				}
-				return ['warning' => 'This element is not shared with any user who is authorized to approve it'];
+				return ['warning' => $this->l10n->t('This element is not shared with any user who is authorized to approve it')];
 			} else {
-				return ['error' => 'You are not authorized to request with this rule'];
+				return ['error' => $this->l10n->t('Approval has already been request with this rule for this file')];
 			}
 		} else {
-			return ['error' => 'File is already pending/approved/rejected'];
+			return ['error' => $this->l10n->t('You are not authorized to request with this rule')];
 		}
 	}
 
