@@ -53,6 +53,7 @@
     "Request signature" : "Zahtevaj podpis",
     "DocuSign integration" : "Združevalnik DocuSign",
     "DocuSign is an electronic signature solution." : "DocuSign je orodje za elektronsko podpisovanje dokumentov.",
+    "Connect to DocuSign" : "Poveži z računom DocuSign",
     "More files to approve" : "Več datotek za odobritev",
     "No files to approve!" : "Ni datotek za odobritev"
 },"pluralForm" :"nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);"

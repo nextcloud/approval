@@ -55,6 +55,7 @@ OC.L10N.register(
     "Request signature" : "Zahtevaj podpis",
     "DocuSign integration" : "Združevalnik DocuSign",
     "DocuSign is an electronic signature solution." : "DocuSign je orodje za elektronsko podpisovanje dokumentov.",
+    "Connect to DocuSign" : "Poveži z računom DocuSign",
     "More files to approve" : "Več datotek za odobritev",
     "No files to approve!" : "Ni datotek za odobritev"
 },
