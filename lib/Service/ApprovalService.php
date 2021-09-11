@@ -504,7 +504,7 @@ class ApprovalService {
 				}
 				return ['warning' => $this->l10n->t('This element is not shared with any user who is authorized to approve it')];
 			} else {
-				return ['error' => $this->l10n->t('Approval has already been request with this rule for this file')];
+				return ['error' => $this->l10n->t('Approval has already been requested with this rule for this file')];
 			}
 		} else {
 			return ['error' => $this->l10n->t('You are not authorized to request with this rule')];
