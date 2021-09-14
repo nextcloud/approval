@@ -27,7 +27,6 @@ OC.L10N.register(
     "{user} requested your approval for {node}" : "{user} erabiltzaileak eskatu du zuk {node} onartzeko",
     "Rule does not exist" : "Araua ez da existitzen",
     "This element is not shared with any user who is authorized to approve it" : "Elementu hau ez da partekatzen hori onartzeko baimena duen edozein erabiltzailerekin ",
-    "Approval has already been request with this rule for this file" : "Onarpen eskaera egin da fitxategi honetarako arau honekin ",
     "You are not authorized to request with this rule" : "Ez duzu baimenik arau honekin eskaera egiteko",
     "Please check my approval request" : "Mesedez, begiratu nire onarpen eskaera",
     "Signature of %s" : "%s(r)en sinadura",

@@ -25,7 +25,6 @@
     "{user} requested your approval for {node}" : "{user}, {node} düğümü için onayınızı istedi",
     "Rule does not exist" : "Kural bulunamadı",
     "This element is not shared with any user who is authorized to approve it" : "Bu bileşen, onu onaylama yetkisi olan herhangi bir kullanıcıyla paylaşılmaz",
-    "Approval has already been request with this rule for this file" : "Bu dosya için zaten bu kuralla onay istendi",
     "You are not authorized to request with this rule" : "Bu kuralla istekte bulunma yetkiniz yok",
     "Please check my approval request" : "Lütfen onay isteğimi değerlendirin",
     "Signature of %s" : "%s imzası",

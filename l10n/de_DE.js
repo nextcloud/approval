@@ -27,7 +27,6 @@ OC.L10N.register(
     "{user} requested your approval for {node}" : "{user} hat Ihre Genehmigung für {node} angefordert",
     "Rule does not exist" : "Regel existiert nicht",
     "This element is not shared with any user who is authorized to approve it" : "Dieses Element wurde nicht mit Benutzern geteilt, die berechtigt sind, es zu genehmigen",
-    "Approval has already been request with this rule for this file" : "Für diese Datei wurde bereits eine Genehmigung mit dieser Regel angefordert",
     "You are not authorized to request with this rule" : "Sie sind nicht berechtigt, mit dieser Regel anzufordern",
     "Please check my approval request" : "Bitte überprüfen Sie meine Genehmigungsanfrage",
     "Signature of %s" : "Signatur von %s",
