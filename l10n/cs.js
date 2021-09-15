@@ -27,6 +27,7 @@ OC.L10N.register(
     "{user} requested your approval for {node}" : "{user} požádala o vaše schválení pro {node}",
     "Rule does not exist" : "Pravidlo neexistuje",
     "This element is not shared with any user who is authorized to approve it" : "Tento prvek není sdílen s žádným z uživatelů, který je pověřen ho schválit",
+    "Approval has already been requested with this rule for this file" : "O schválení už bylo požádáno s tímto pravidlem pro tento soubor",
     "You are not authorized to request with this rule" : "Nejste oprávněni požádat s tímto pravidlem",
     "Please check my approval request" : "Podívejte se prosím na moji žádost o schválení",
     "Signature of %s" : "Podpis %s",

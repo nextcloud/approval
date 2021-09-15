@@ -16,6 +16,7 @@ OC.L10N.register(
     "%1$s rejected %2$s" : "%1$s atmetė %2$s",
     "{user} approved {node}" : "{user} patvirtino {node}",
     "{user} rejected {node}" : "{user} atmetė {node}",
+    "Rule does not exist" : "Taisyklės nėra",
     "Bad HTTP method" : "Blogas HTTP metodas",
     "OAuth access token refused" : "„OAuth“ prieigos raktas atmestas",
     "Create new hidden tag" : "Sukurti naują paslėptą žymę",
@@ -26,6 +27,9 @@ OC.L10N.register(
     "Failed to create tag \"{name}\"" : "Nepavyko sukurti žymės „{name}“",
     "Approve" : "Patvirtinti",
     "Reject" : "Atmesti",
+    "Sign with DocuSign" : "Pasirašyti naudojant „DocuSign“",
+    "Sign with LibreSign" : "Pasirašyti naudojant „LibreSign“",
+    "Who?" : "Kas?",
     "Failed to reject {name}" : "Nepavyko atmesti {name}",
     "Warning" : "Įspėjimas",
     "Impossible to sign this document" : "Neįmanoma pasirašyti šio dokumento"

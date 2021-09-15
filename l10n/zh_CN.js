@@ -27,6 +27,7 @@ OC.L10N.register(
     "{user} requested your approval for {node}" : "{user} 请求你批准 {node}",
     "Rule does not exist" : "规则不存在",
     "This element is not shared with any user who is authorized to approve it" : "此元素没有与任何被授权批准它的用户共享",
+    "Approval has already been requested with this rule for this file" : "已根据此规则请求批准该文件",
     "You are not authorized to request with this rule" : "您无权使用此规则提出请求",
     "Please check my approval request" : "请检查我的批准请求",
     "Signature of %s" : "%s 的签名",
