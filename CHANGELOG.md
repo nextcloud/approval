@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.7 – 2021-09-16
+### Changed
+- allow multiple requests in UI
+  [#11](https://github.com/nextcloud/approval/issues/11) @meichthys
+- in request modal, only show workflows that have not yet been used for the file
+  [#11](https://github.com/nextcloud/approval/issues/11) @meichthys
+
+### Fixed
+- trigger file sharing, activity and notifications when a request is done via tag assignment
+  (manual or automatic)
+  [#14](https://github.com/nextcloud/approval/issues/14) @eco-villenet
+- don't display state icon for recent files
+
 ## 1.0.6 – 2021-08-23
 ### Changed
 - bump dependencies
