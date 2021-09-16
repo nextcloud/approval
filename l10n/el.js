@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "approval",
+    {
+    "Pending approvals" : "Εκκρεμείς εγκρίσεις",
+    "A file was rejected" : "Ένα αρχείο απορρίφθηκε",
+    "A directory was approved" : "Ένας κατάλογος εγκρίθηκε",
+    "Approve" : "Έγκριση",
+    "Reject" : "Απόρριψη",
+    "Who can approve?" : "Ποιος μπορεί να εγκρίνει;",
+    "Delete workflow" : "Διαγραφή ροής εργασιών",
+    "Who can approve" : "Ποιος μπορεί να εγκρίνει",
+    "Workflow title" : "Τίτλος ροής εργασιών",
+    "Approved" : "Εγκρίθηκε",
+    "Approved by" : "Εγκρίθηκε από",
+    "Rejected" : "Απορρίφθηκε",
+    "Rejected by" : "Απορρίφθηκε από",
+    "Approval requested by" : "Αίτηση έγκρισης από",
+    "Approval requested" : "Αίτηση έγκρισης",
+    "Request approval" : "Αίτηση έγκρισης",
+    "Request signature" : "Αίτηση υπογραφής",
+    "DocuSign integration" : "Ενσωμάτωση DocuSign",
+    "Application secret key" : "Κρυφό κλειδί εφαρμογής",
+    "Connect to DocuSign" : "Σύνδεση με DocuSign",
+    "Disconnect from DocuSign" : "Αποσύνδεση από DocuSign",
+    "No result." : "Κανένα αποτέλεσμα."
+},
+"nplurals=2; plural=(n != 1);");
