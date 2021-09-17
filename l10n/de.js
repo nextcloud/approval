@@ -25,6 +25,7 @@ OC.L10N.register(
     "Your approval was requested" : "Um deine Genehmigung wurde gebeten",
     "%2$s requested your approval for %1$s" : "%2$s hat deine Genehmigung für %1$s angefordert",
     "{user} requested your approval for {node}" : "{user} hat Deine Genehmigung für {node} angefordert",
+    "You are not authorized to request with this rule" : "Du bist nicht berechtigt, mit dieser Regel anzufordern",
     "Please check my approval request" : "Bitte genehmige meine Anfrage",
     "Signature of %s" : "Signatur von %s",
     "Bad HTTP method" : "Falsche HTTP Methode",
