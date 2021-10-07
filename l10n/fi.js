@@ -3,8 +3,13 @@ OC.L10N.register(
     {
     "You approved {file}" : "Hyväksyit {file}",
     "{user} approved {file}" : "{user} hyväksyi {file}",
+    "You rejected {file}" : "Hylkäsit tiedoston {file}",
+    "{user} rejected {file}" : "{user} hylkäsi tiedoston {file}",
     "A guest user" : "Vieraskäyttäjä",
     "Approval" : "Hyväksyntä",
+    "A file was approved" : "Tiedosto hyväksyttiin",
+    "Bad HTTP method" : "Virheellinen HTTP-metodi",
+    "Bad credentials" : "Virheelliset kirjautumistiedot",
     "Create" : "Luo",
     "Cancel" : "Peruuta",
     "All fields are required" : "Kaikki kentät ovat pakollisia",
