@@ -24,6 +24,8 @@
     "%2$s requested your approval for %1$s" : "%2$s je zahteval potrditev za %1$s",
     "{user} requested your approval for {node}" : "{user} je zahteval potrditev za {node}",
     "Rule does not exist" : "Pravilo ne obstaja",
+    "This element is not shared with any user who is authorized to approve it" : "Ta predmet ni v souporabi z nobenim uporabnikom, ki ima dovoljenje za potrditev",
+    "You are not authorized to request with this rule" : "Za to overjanje po tem pravilu ni ustreznih dovoljenj",
     "Signature of %s" : "Podpis %s",
     "Bad HTTP method" : "Neustrezna metoda HTTP",
     "Bad credentials" : "Neustrezna poverila",
@@ -88,6 +90,8 @@
     "at {date}" : "na {date}",
     "Warning" : "Opozorilo",
     "Approval signature" : "Podpis potrditve",
+    "Impossible to sign this document" : "Tega dokumenta ni mogoče podpisati",
+    "Failed to check approval status" : "Preverjanje stanja potrditve je spodletelo.",
     "Show approval details" : "Pokaži podrobnosti potrjevanja"
 },"pluralForm" :"nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);"
 }
