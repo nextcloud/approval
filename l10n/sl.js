@@ -84,6 +84,8 @@ OC.L10N.register(
     "Client ID of your application" : "ID odjemalca programa",
     "Application secret key" : "Skrivni ključ programa",
     "Connect to DocuSign" : "Poveži z računom DocuSign",
+    "Disconnect from DocuSign" : "Prekini povezavo s programom DocuSign",
+    "DocuSign admin options saved" : "Skrbniške nastavitve DocuSign so shranjene",
     "No result." : "Ni zadetkov",
     "Who?" : "Kdo?",
     "Impossible to get user/group/circle list" : "Ni mogoče pridobiti seznama uporabnikov skupin ali kroga",
