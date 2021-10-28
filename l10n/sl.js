@@ -83,6 +83,7 @@ OC.L10N.register(
     "DocuSign is an electronic signature solution." : "DocuSign je orodje za elektronsko podpisovanje dokumentov.",
     "Client ID of your application" : "ID odjemalca programa",
     "Application secret key" : "Skrivni ključ programa",
+    "Secret key of your application" : "Koda za vaš program",
     "Connect to DocuSign" : "Poveži z računom DocuSign",
     "Disconnect from DocuSign" : "Prekini povezavo s programom DocuSign",
     "DocuSign admin options saved" : "Skrbniške nastavitve DocuSign so shranjene",
