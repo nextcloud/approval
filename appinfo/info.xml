@@ -4,7 +4,7 @@
 	<name>Approval</name>
 	<summary>Let users approve or reject files</summary>
 	<description><![CDATA[Approve/reject files based on workflows defined by admins.]]></description>
-	<version>1.0.7</version>
+	<version>1.0.8</version>
 	<licence>agpl</licence>
 	<author>Julien Veyssier</author>
 	<namespace>Approval</namespace>
@@ -23,10 +23,7 @@
 	<screenshot>https://github.com/eneiluj/approval/raw/master/img/screenshot_2.jpg</screenshot>
 	<screenshot>https://github.com/eneiluj/approval/raw/master/img/screenshot_3.jpg</screenshot>
 	<dependencies>
-		<database min-version="9.4">pgsql</database>
-		<database>sqlite</database>
-		<database min-version="5.5">mysql</database>
-		<nextcloud min-version="22" max-version="23"/>
+		<nextcloud min-version="22" max-version="24"/>
 	</dependencies>
 	<settings>
 		<admin>OCA\Approval\Settings\Admin</admin>
