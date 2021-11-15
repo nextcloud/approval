@@ -73,7 +73,7 @@ class Version000004Date20210331142734 extends SimpleMigrationStep {
 				'notnull' => true,
 				'length' => 300,
 			]);
-			$table->setPrimaryKey(['id']);
+			$table->setPrimaryKey(['id'], 'i');
 		}
 
 		if (!$schema->hasTable('approval_rule_approvers')) {
@@ -95,7 +95,7 @@ class Version000004Date20210331142734 extends SimpleMigrationStep {
 				'notnull' => true,
 				'length' => 300,
 			]);
-			$table->setPrimaryKey(['id']);
+			$table->setPrimaryKey(['id'], 'i');
 		}
 
 		return $schema;
