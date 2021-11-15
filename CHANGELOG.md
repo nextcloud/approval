@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.8 – 2021-11-15
+### Added
+- new translations
+
+### Changed
+- bump max NC version to 24
+- improve release action
+- clarify package.json
+- remove DB version constraints
+
+### Fixed
+- some DB index names being too long because of long table names
+
 ## 1.0.7 – 2021-09-16
 ### Changed
 - allow multiple requests in UI
