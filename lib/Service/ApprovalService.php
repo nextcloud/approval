@@ -730,6 +730,7 @@ class ApprovalService {
 		$activity = $this->ruleService->getLastAction($fileId, $ruleInvolded['id'], Application::STATE_PENDING);
 		// if there is no activity, the tag was assigned manually (or via auto-tagging flows)
 		// => perform the request here (share, store action and trigger activity event)
+		error_log('IS THERE AN ACTIVITY? '.(is_null($activity) ? 'NOPE' : 'YES'));
 		if (is_null($activity)) {
 			$found = $this->root->getById($fileId);
 			if (count($found) > 0) {
@@ -750,6 +751,24 @@ class ApprovalService {
 			// it was request via the approval interface, nothing more to do
 			$requesterUserId = $activity['userId'];
 			$this->sendRequestNotification($fileId, $ruleInvolded, $requesterUserId, true);
+		}
+	}
+
+	/**
+	 * Called when a tag is assigned
+	 *
+	 * @param int $fileId
+	 * @param array $tags
+	 * @return void
+	 */
+	public function handleTagUnassignmentEvent(int $fileId, array $tags): void {
+		error_log('UNASSIGN ---> FILEID '.$fileId.' TAGS ' . implode(';', $tags));
+		foreach ($tags as $tag) {
+			// look for rules having this tag as a pending one
+			$rules = $this->ruleService->getRules($tag);
+			foreach ($rules as $rule) {
+				error_log('RULE '.$rule['description']);
+			}
 		}
 	}
 

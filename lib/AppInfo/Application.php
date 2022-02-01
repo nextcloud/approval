@@ -77,6 +77,13 @@ class Application extends App implements IBootstrap {
 				$service->handleTagAssignmentEvent($event->getObjectId(), $event->getTags());
 			}
 		});
+		// a tag was unassigned
+		$eventDispatcher->addListener(MapperEvent::EVENT_UNASSIGN, function (MapperEvent $event) use ($container) {
+			if ($event->getObjectType() === 'files') {
+				$service = $container->get(ApprovalService::class);
+				$service->handleTagUnassignmentEvent($event->getObjectId(), $event->getTags());
+			}
+		});
 	}
 
 	public function register(IRegistrationContext $context): void {

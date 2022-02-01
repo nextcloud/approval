@@ -371,16 +371,37 @@ class RuleService {
 	}
 
 	/**
-	 * Get all rules
+	 * Get rules with optional filters
 	 *
 	 * @return array
 	 */
-	public function getRules(): array {
+	public function getRules(?int $tagPending = null, ?int $tagApproved = null, ?int $tagRejected = null): array {
 		$rules = [];
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
 			->from('approval_rules');
+		// filters
+		$filters = [
+			'tag_pending' => $tagPending,
+			'tag_approved' => $tagApproved,
+			'tag_rejected' => $tagRejected,
+		];
+		$oneFilterSet = false;
+		foreach ($filters as $filterKey => $filterValue) {
+			if ($filterValue !== null) {
+				if (!$oneFilterSet) {
+					$qb->where(
+						$qb->expr()->eq($filterKey, $qb->createNamedParameter($filterValue, IQueryBuilder::PARAM_INT))
+					);
+					$oneFilterSet = true;
+				} else {
+					$qb->andWhere(
+						$qb->expr()->eq($filterKey, $qb->createNamedParameter($filterValue, IQueryBuilder::PARAM_INT))
+					);
+				}
+			}
+		}
 		$req = $qb->executeQuery();
 		while ($row = $req->fetch()) {
 			$id = (int) $row['id'];
