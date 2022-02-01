@@ -511,29 +511,35 @@ class ApprovalService {
 		}
 	}
 
-	public function requestViaTagAssignment(int $fileId, int $ruleId, string $userId): array {
+	/**
+	 * @param int $fileId
+	 * @param int $ruleId
+	 * @param string $requesterUserId
+	 * @return array|string[]
+	 * @throws \OCP\Files\NotPermittedException
+	 * @throws \OC\User\NoUserException
+	 */
+	public function requestViaTagAssignment(int $fileId, int $ruleId, string $requesterUserId): array {
 		$rule = $this->ruleService->getRule($ruleId);
 		if (is_null($rule)) {
 			return ['error' => 'Rule does not exist'];
 		}
 
-		if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
-			$this->shareWithApprovers($fileId, $rule, $userId);
-			// store activity in our tables
-			$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_PENDING);
+		// WARNING we don't actually check if the requester is allowed to request with this rule here
+		// because the request was not done with the UI but with manual/auto tag assignment => accept the request anyway
+		$this->shareWithApprovers($fileId, $rule, $requesterUserId);
+		// store activity in our tables
+		$this->ruleService->storeAction($fileId, $ruleId, $requesterUserId, Application::STATE_PENDING);
 
-			// still produce an activity entry for the user who requests
-			$this->activityManager->triggerEvent(
-				ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
-				ActivityManager::SUBJECT_REQUESTED_ORIGIN,
-				['origin_user_id' => $userId]
-			);
+		// still produce an activity entry for the user who requests
+		$this->activityManager->triggerEvent(
+			ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
+			ActivityManager::SUBJECT_REQUESTED_ORIGIN,
+			['origin_user_id' => $requesterUserId]
+		);
 
-			// here we don't check if someone can actually approve, because there is nobody to warn
-			return [];
-		} else {
-			return ['error' => 'File owner is not authorized to request with this rule'];
-		}
+		// here we don't check if someone can actually approve, because there is nobody to warn
+		return [];
 	}
 
 	/**
@@ -732,18 +738,18 @@ class ApprovalService {
 				$this->logger->error('Could not request approval of file ' . $fileId . ': file not found.', ['app' => Application::APP_ID]);
 				return;
 			}
-			// we can assume the file owner is the one who requests
-			$requestUserId = $node->getOwner()->getUID();
-			$requestResult = $this->requestViaTagAssignment($fileId, $ruleInvolded['id'], $requestUserId);
+			// get the requester user ID
+			$requesterUserId = $this->userId;
+			$requestResult = $this->requestViaTagAssignment($fileId, $ruleInvolded['id'], $requesterUserId);
 			if (isset($requestResult['error'])) {
 				$this->logger->error('Approval request error: ' . $requestResult['error'] . '.', ['app' => Application::APP_ID]);
 				return;
 			}
-			$this->sendRequestNotification($fileId, $ruleInvolded, $requestUserId, false);
+			$this->sendRequestNotification($fileId, $ruleInvolded, $requesterUserId, false);
 		} else {
 			// it was request via the approval interface, nothing more to do
-			$requestUserId = $activity['userId'];
-			$this->sendRequestNotification($fileId, $ruleInvolded, $requestUserId, true);
+			$requesterUserId = $activity['userId'];
+			$this->sendRequestNotification($fileId, $ruleInvolded, $requesterUserId, true);
 		}
 	}
 
