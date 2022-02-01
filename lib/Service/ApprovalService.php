@@ -738,8 +738,8 @@ class ApprovalService {
 				$this->logger->error('Could not request approval of file ' . $fileId . ': file not found.', ['app' => Application::APP_ID]);
 				return;
 			}
-			// get the requester user ID
-			$requesterUserId = $this->userId;
+			// the requester user ID is the current user or else the file owner
+			$requesterUserId = $this->userId ?? $node->getOwner()->getUID();
 			$requestResult = $this->requestViaTagAssignment($fileId, $ruleInvolded['id'], $requesterUserId);
 			if (isset($requestResult['error'])) {
 				$this->logger->error('Approval request error: ' . $requestResult['error'] . '.', ['app' => Application::APP_ID]);
