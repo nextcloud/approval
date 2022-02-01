@@ -4,7 +4,7 @@
 	<name>Approval</name>
 	<summary>Let users approve or reject files</summary>
 	<description><![CDATA[Approve/reject files based on workflows defined by admins.]]></description>
-	<version>1.0.9</version>
+	<version>1.0.10</version>
 	<licence>agpl</licence>
 	<author>Julien Veyssier</author>
 	<namespace>Approval</namespace>
