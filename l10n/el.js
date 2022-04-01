@@ -5,6 +5,7 @@ OC.L10N.register(
     "{user} approved {file}" : "Ο/η {user} ενέκρινε το {file}",
     "You rejected {file}" : "Απορρίψατε το {file}",
     "{user} rejected {file}" : "Ο/η {user} απέρριψε το {file}",
+    "Your approval was requested on {file}" : "Ζητήθηκε η έγκρισή σας για το {file}",
     "Approval" : "Έγκριση",
     "Pending approvals" : "Εκκρεμείς εγκρίσεις",
     "A file was approved" : "Ένα αρχείο εγκρίθηκε",
