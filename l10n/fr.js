@@ -141,4 +141,4 @@ OC.L10N.register(
     "Pending approval, you are authorized to approve." : "Approbation en attente, vous êtes autorisé(e) à valider.",
     "Show approval details" : "Afficher les détails d'approbation"
 },
-"nplurals=2; plural=(n > 1);");
+"nplurals=3; plural=(n==0 || n==1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
