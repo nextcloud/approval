@@ -1,0 +1,10 @@
+{ "translations": {
+    "Create" : "Opret",
+    "Cancel" : "Annuller",
+    "Approve" : "Godkend",
+    "Reject" : "Afvis",
+    "Approved" : "Godkendt",
+    "you" : "dig",
+    "Warning" : "Advarsler"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

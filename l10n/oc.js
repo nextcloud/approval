@@ -33,6 +33,7 @@ OC.L10N.register(
     "Approved by" : "Validat per",
     "Rejected" : "Regetat",
     "Rejected by" : "Regetat per",
+    "you" : "vos",
     "Sign with DocuSign" : "Signar amb DocuSign",
     "Sign with LibreSign" : "Signar amb LibreSign",
     "DocuSign integration" : "integracion DocuSign",

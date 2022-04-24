@@ -1,0 +1,10 @@
+{ "translations": {
+    "Create" : "ساخت",
+    "Cancel" : "لغو",
+    "Reject" : "رد کردن",
+    "Approved" : "تایید شده",
+    "you" : "شما",
+    "No recommendations. Start typing." : "هیچ توصیه ای نیست شروع به تایپ کنید.",
+    "Warning" : "هشدار"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}
