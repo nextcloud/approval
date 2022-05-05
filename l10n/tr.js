@@ -41,7 +41,7 @@ OC.L10N.register(
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "İsteğe bağlı olarak, el ile onay isteğinde bulunabilecek kullanıcıların/grupların/çevrelerin listesi tanımlanabilir.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Birden çok bekleyen etikete sahip bir dosyanın/klasörün onaylanması için, ilgili tüm iş akışları tarafından onaylanması gereklidir.",
     "You can chain approval workflows by using a pending tag as approved/rejected tag in another workflow." : "Bekleyen bir etiketi başka bir iş akışında onaylandı/reddedildi etiketi olarak kullanarak onay iş akışlarını bağlayabilirsiniz.",
-    "All tags must be different in a workflow. A pending tag can only be used in one workflow." : "Bir iş akışındaki tüm etiketler farklı olmalıdır. Bekleyen bir etiket yalnız bir iş akışında kullanılabilir.",
+    "All tags must be different in a workflow. A pending tag can only be used in one workflow." : "Bir iş akışındaki tüm etiketler farklı olmalıdır. Bekleyen bir etiket yalnızca bir iş akışında kullanılabilir.",
     "No workflow yet" : "Henüz bir iş akışı yok",
     "New workflow" : "Yeni iş akışı",
     "Create new hidden tag" : "Yeni gizli etiket ekle",
