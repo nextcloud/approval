@@ -10,6 +10,7 @@ OC.L10N.register(
     "Cancel" : "Anulare",
     "Approved" : "Aprobat",
     "you" : "tu",
+    "No result." : "Niciun rezultat.",
     "Warning" : "Atenție"
 },
 "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));");
