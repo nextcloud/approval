@@ -138,5 +138,5 @@
     "Failed to check approval status" : "Controllo stato di approvazione fallito",
     "Pending approval, you are authorized to approve." : "In attesa di approvazione, sei autorizzato ad approvare.",
     "Show approval details" : "Mostra dettagli di approvazione"
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
+},"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }
