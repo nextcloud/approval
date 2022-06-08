@@ -98,7 +98,7 @@ OC.L10N.register(
     "Disconnect from DocuSign" : "Prekini povezavo s programom DocuSign",
     "OAuth access token could not be obtained:" : "Žetona OAuth za dostop ni mogoče pridobiti:",
     "DocuSign admin options saved" : "Skrbniške nastavitve DocuSign so shranjene",
-    "No recommendations. Start typing." : "Ni priporočil; začnite vpisovati",
+    "No recommendations. Start typing." : "Ni priporočil; začnite z vpisovanjem",
     "No result." : "Ni zadetkov",
     "Who?" : "Kdo?",
     "Impossible to get user/group/circle list" : "Ni mogoče pridobiti seznama uporabnikov skupin ali kroga",
