@@ -7,6 +7,7 @@ OC.L10N.register(
     "Reject" : "Afvis",
     "Approved" : "Godkendt",
     "you" : "dig",
+    "No result." : "Intet resultat",
     "Warning" : "Advarsler"
 },
 "nplurals=2; plural=(n != 1);");
