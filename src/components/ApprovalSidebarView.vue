@@ -81,7 +81,7 @@
 			</Modal>
 		</span>
 		<span v-if="myRule">
-			<button
+			<span
 				v-tooltip.bottom="{ content: infoText + ' ' + myRule.description }"
 				class="icon icon-details info-button" />
 		</span>
@@ -381,11 +381,14 @@ export default {
 	}
 
 	.info-button {
+		display: block;
 		height: 44px;
 		width: 44px;
 		margin: 0;
 		border: none;
+		border-radius: 50%;
 		background-color: transparent;
+		opacity: 0.5;
 		&:hover {
 			background-color: var(--color-background-dark);
 		}
