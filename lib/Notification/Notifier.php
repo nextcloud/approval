@@ -134,16 +134,13 @@ class Notifier implements INotifier {
 					? $l->t('%1$s approved %2$s', [$user->getDisplayName(), $p['fileName']])
 					: $l->t('%1$s rejected %2$s', [$user->getDisplayName(), $p['fileName']]);
 
-				$theme = $this->config->getUserValue($this->userId, 'accessibility', 'theme');
-				$green = ($theme === 'dark')
-				  ? 'E9322D'
-				  : '46BA61';
-				$red = ($theme === 'dark')
-				  ? '46BA61'
-				  : 'E9322D';
 				$iconUrl = $notification->getSubject() === 'approved'
-					? $this->url->getAbsoluteURL('/index.php/svg/core/actions/checkmark?color=' . $green)
-					: $this->url->getAbsoluteURL('/index.php/svg/core/actions/close?color=' . $red);
+					? $this->url->getAbsoluteURL(
+						$this->url->imagePath(Application::APP_ID, 'checkmark-green.svg')
+					)
+					: $this->url->getAbsoluteURL(
+						$this->url->imagePath(Application::APP_ID, 'close-red.svg')
+					);
 
 				$notification
 					->setParsedSubject($subject)
@@ -182,7 +179,9 @@ class Notifier implements INotifier {
 
 				$subject = $l->t('Your approval was requested');
 				$content = $l->t('%2$s requested your approval for %1$s', [$p['fileName'], $user->getDisplayName()]);
-				$iconUrl = $this->url->getAbsoluteURL('/index.php/svg/core/actions/more?color=000000');
+				$iconUrl = $this->url->getAbsoluteURL(
+					$this->url->imagePath('core', 'actions/more.svg')
+				);
 
 				$notification
 					->setParsedSubject($subject)

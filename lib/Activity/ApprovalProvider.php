@@ -185,26 +185,25 @@ class ApprovalProvider implements IProvider {
 				$this->urlGenerator->imagePath(Application::APP_ID, 'app-dark.svg')
 			)
 		);
-		$theme = $this->config->getUserValue($this->userId, 'accessibility', 'theme');
-		$green = ($theme === 'dark')
-			? 'E9322D'
-			: '46BA61';
-		$red = ($theme === 'dark')
-			? '46BA61'
-			: 'E9322D';
 		if ($event->getSubject() === ActivityManager::SUBJECT_APPROVED) {
 			$event->setIcon(
-				$this->urlGenerator->getAbsoluteURL('/index.php/svg/core/actions/checkmark?color=' . $green)
+				$this->urlGenerator->getAbsoluteURL(
+					$this->urlGenerator->imagePath(Application::APP_ID, 'checkmark-green.svg')
+				)
 			);
 		} elseif ($event->getSubject() === ActivityManager::SUBJECT_REJECTED) {
 			$event->setIcon(
-				$this->urlGenerator->getAbsoluteURL('/index.php/svg/core/actions/close?color=' . $red)
+				$this->urlGenerator->getAbsoluteURL(
+					$this->urlGenerator->imagePath(Application::APP_ID, 'close-red.svg')
+				)
 			);
 		} elseif ($event->getSubject() === ActivityManager::SUBJECT_REQUESTED
 			|| $event->getSubject() === ActivityManager::SUBJECT_MANUALLY_REQUESTED
 			|| $event->getSubject() === ActivityManager::SUBJECT_REQUESTED_ORIGIN) {
 			$event->setIcon(
-				$this->urlGenerator->getAbsoluteURL('/index.php/svg/core/actions/more?color=000000')
+				$this->urlGenerator->getAbsoluteURL(
+					$this->urlGenerator->imagePath('core', 'actions/more.svg')
+				)
 			);
 		}
 		return $event;
