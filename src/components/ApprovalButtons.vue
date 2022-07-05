@@ -1,26 +1,36 @@
 <template>
 	<div class="buttons">
-		<button
-			class="success"
+		<Button
+			type="success"
 			@click="$emit('approve')">
-			<span class="icon icon-checkmark-white" />
+			<template #icon>
+				<CheckIcon />
+			</template>
 			{{ approveText }}
-		</button>
-		<button
-			class="error"
+		</Button>
+		<Button
+			type="error"
 			@click="$emit('reject')">
-			<span class="icon icon-close-white" />
+			<template #icon>
+				<CloseIcon />
+			</template>
 			{{ rejectText }}
-		</button>
+		</Button>
 	</div>
 </template>
 
 <script>
+import CheckIcon from 'vue-material-design-icons/Check'
+import CloseIcon from 'vue-material-design-icons/Close'
+import Button from '@nextcloud/vue/dist/Components/Button'
 
 export default {
 	name: 'ApprovalButtons',
 
 	components: {
+		Button,
+		CheckIcon,
+		CloseIcon,
 	},
 
 	props: {
@@ -65,25 +75,8 @@ export default {
 
 	button {
 		margin: 0 4px 0 4px;
-		min-height: 44px;
 		&:first-child {
 			margin-left: 0;
-		}
-		&.success {
-			background-color: var(--color-success) !important;
-			border-color: var(--color-success) !important;
-			color: #fff !important;
-		}
-
-		&.error,
-		&.success {
-			&:hover,
-			&:focus {
-				border-color: var(--color-main-text) !important;
-			}
-		}
-		.icon {
-			opacity: 1;
 		}
 	}
 }

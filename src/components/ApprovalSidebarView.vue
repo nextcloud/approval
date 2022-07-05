@@ -64,13 +64,15 @@
 		</span>
 		<span v-if="canRequestApproval"
 			class="request-button-wrapper">
-			<button :class="{ loading: requesting }"
+			<Button :class="{ loading: requesting }"
 				@click="showRequestModal">
-				<span class="icon icon-approval" />
+				<template #icon>
+					<CheckIcon />
+				</template>
 				{{ requestLabel }}
-			</button>
+			</Button>
 			<Modal v-if="requestModal"
-				size="large"
+				size="normal"
 				@close="closeRequestModal">
 				<RequestForm :rules="userRules"
 					class="info-modal"
@@ -93,6 +95,8 @@ import moment from '@nextcloud/moment'
 import { getCurrentUser } from '@nextcloud/auth'
 import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
+import Button from '@nextcloud/vue/dist/Components/Button'
+import CheckIcon from 'vue-material-design-icons/Check'
 
 import ApprovalButtons from './ApprovalButtons'
 import RequestForm from './RequestForm'
@@ -105,7 +109,12 @@ export default {
 	name: 'ApprovalSidebarView',
 
 	components: {
-		UserBubble, Modal, ApprovalButtons, RequestForm,
+		UserBubble,
+		Modal,
+		ApprovalButtons,
+		RequestForm,
+		Button,
+		CheckIcon,
 	},
 
 	props: {
@@ -385,7 +394,7 @@ export default {
 
 ::v-deep.info-modal {
 	padding: 16px;
-	max-width: 600px;
+	width: 100%;
 	overflow: scroll;
 }
 

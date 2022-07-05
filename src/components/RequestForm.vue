@@ -36,30 +36,36 @@
 			</label>
 		</fieldset>
 		<div class="footer">
-			<button
-				class="cancel"
+			<Button
 				@click="$emit('cancel')">
 				{{ cancelLabel }}
-			</button>
-			<button
-				class="primary"
+			</Button>
+			<div class="spacer" />
+			<Button
+				type="primary"
 				:disabled="!selectedRule"
 				@click="$emit('request', selectedRule, true)">
-				<span class="icon icon-checkmark-white" />
+				<template #icon>
+					<CheckIcon />
+				</template>
 				{{ requestLabel }}
-			</button>
+			</Button>
 		</div>
 	</div>
 </template>
 
 <script>
+import CheckIcon from 'vue-material-design-icons/Check'
 import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
+import Button from '@nextcloud/vue/dist/Components/Button'
 
 export default {
 	name: 'RequestForm',
 
 	components: {
 		UserBubble,
+		Button,
+		CheckIcon,
 	},
 
 	props: {
@@ -163,12 +169,11 @@ export default {
 	}
 
 	.footer {
+		display: flex;
+		align-items: center;
 		margin-top: 16px;
-		.primary {
-			float: right;
-		}
-		.icon {
-			opacity: 1;
+		.spacer {
+			flex-grow: 1;
 		}
 	}
 }

@@ -17,11 +17,11 @@
 					<TagIcon :size="16" class="icon" />
 					{{ pendingLabel }}
 					<div class="spacer" />
-					<button v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
+					<span v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
 						<span class="icon icon-add" />
-					</button>
+					</span>
 				</span>
 				<MultiselectTags class="tag-select"
 					:value="value.tagPending"
@@ -60,11 +60,11 @@
 					<TagIcon :size="16" class="icon color-success" />
 					{{ approvedLabel }}
 					<div class="spacer" />
-					<button v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
+					<span v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
 						<span class="icon icon-add" />
-					</button>
+					</span>
 				</span>
 				<MultiselectTags class="tag-select"
 					:value="value.tagApproved"
@@ -77,11 +77,11 @@
 					<TagIcon :size="16" class="icon color-error" />
 					{{ rejectedLabel }}
 					<div class="spacer" />
-					<button v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
+					<span v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
 						<span class="icon icon-add" />
-					</button>
+					</span>
 				</span>
 				<MultiselectTags class="tag-select"
 					:value="value.tagRejected"
@@ -99,7 +99,6 @@
 
 <script>
 import TagIcon from 'vue-material-design-icons/Tag'
-import { generateUrl } from '@nextcloud/router'
 import MultiselectTags from '@nextcloud/vue/dist/Components/MultiselectTags'
 
 import { delay } from '../utils'
@@ -246,11 +245,14 @@ export default {
 			min-height: 10px;
 			width: 26px;
 			padding: 0;
-			float: right;
 			border: none;
+			border-radius: 50%;
 			background-color: transparent;
 			&:hover {
 				background-color: var(--color-background-darker);
+			}
+			> .icon {
+				opacity: 0.5;
 			}
 		}
 	}
