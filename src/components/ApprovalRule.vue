@@ -155,6 +155,9 @@ export default {
 	},
 
 	methods: {
+		resetFocus() {
+			this.$refs.title.focus()
+		},
 		onDescriptionInput(e) {
 			delay(() => {
 				this.update('description', e.target.value)
@@ -169,6 +172,9 @@ export default {
 					requesters: this.value.requesters.map(e => e),
 				}
 				this.$emit('input', { ...this.value, [key]: value, backupRule })
+				if (['tagPending', 'tagApproved', 'tagRejected'].includes(key)) {
+					this.resetFocus()
+				}
 			}
 		},
 	},
