@@ -46,7 +46,6 @@ import Modal from '@nextcloud/vue/dist/Components/Modal'
 import MultiselectWho from './MultiselectWho'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import '@nextcloud/dialogs/styles/toast.scss'
 
 export default {
 	name: 'DocuSignModal',

@@ -3,7 +3,6 @@ import { getCurrentUser } from '@nextcloud/auth'
 import axios from '@nextcloud/axios'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
-import '@nextcloud/dialogs/styles/toast.scss'
 
 import ApprovalSidebarView from './components/ApprovalSidebarView'
 import { states } from './states'

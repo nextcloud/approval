@@ -14,8 +14,9 @@
 			</div>
 			<div class="tag">
 				<span class="field-label">
-					<span class="icon" :style="'background-image: url(' + tagPendingIconUrl + ');'" />
+					<TagIcon :size="16" class="icon" />
 					{{ pendingLabel }}
+					<div class="spacer" />
 					<button v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
@@ -30,7 +31,7 @@
 			</div>
 			<div class="users">
 				<span class="field-label">
-					<span class="icon" :style="'background-image: url(' + groupYellowIconUrl + ');'" />
+					<GroupIcon :size="16" class="icon color-warning" />
 					{{ whoRequestLabel }}
 				</span>
 				<div class="approval-user">
@@ -43,7 +44,7 @@
 			</div>
 			<div class="users">
 				<span class="field-label">
-					<span class="icon" :style="'background-image: url(' + groupGreenIconUrl + ');'" />
+					<GroupIcon :size="16" class="icon color-success" />
 					{{ whoApproveLabel }}
 				</span>
 				<div class="approval-user">
@@ -56,8 +57,9 @@
 			</div>
 			<div class="tag">
 				<span class="field-label">
-					<span class="icon" :style="'background-image: url(' + tagApprovedIconUrl + ');'" />
+					<TagIcon :size="16" class="icon color-success" />
 					{{ approvedLabel }}
+					<div class="spacer" />
 					<button v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
@@ -72,8 +74,9 @@
 			</div>
 			<div class="tag">
 				<span class="field-label">
-					<span class="icon" :style="'background-image: url(' + tagRejectedIconUrl + ');'" />
+					<TagIcon :size="16" class="icon color-error" />
 					{{ rejectedLabel }}
+					<div class="spacer" />
 					<button v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
@@ -88,12 +91,6 @@
 			</div>
 		</div>
 		<div class="buttons">
-			<button
-				class="delete-rule"
-				@click="$emit('delete')">
-				<span :class="{ icon: deleteIcon !== '', [deleteIcon]: true }" />
-				{{ deleteRuleLabel }}
-			</button>
 			<slot name="extra-buttons" />
 		</div>
 		<slot name="extra-footer" />
@@ -101,18 +98,22 @@
 </template>
 
 <script>
+import TagIcon from 'vue-material-design-icons/Tag'
 import { generateUrl } from '@nextcloud/router'
 import MultiselectTags from '@nextcloud/vue/dist/Components/MultiselectTags'
 
 import { delay } from '../utils'
 import MultiselectWho from './MultiselectWho'
+import GroupIcon from './icons/GroupIcon'
 
 export default {
 	name: 'ApprovalRule',
 
 	components: {
+		GroupIcon,
 		MultiselectWho,
 		MultiselectTags,
+		TagIcon,
 	},
 
 	props: {
@@ -123,10 +124,6 @@ export default {
 		deleteIcon: {
 			type: String,
 			default: '',
-		},
-		deleteRuleLabel: {
-			type: String,
-			default: t('approval', 'Delete workflow'),
 		},
 		focus: {
 			type: Boolean,
@@ -190,6 +187,24 @@ export default {
 	background: var(--color-background-hover);
 	padding: 16px;
 
+	.color-warning {
+		color: var(--color-warning);
+	}
+	.color-success {
+		color: var(--color-success);
+	}
+	.color-error {
+		color: var(--color-error);
+	}
+
+	.buttons {
+		display: flex;
+		align-items: center;
+		> * {
+			margin-right: 4px;
+		}
+	}
+
 	.fields {
 		display: flex;
 		flex-direction: column;
@@ -213,8 +228,13 @@ export default {
 		}
 
 		.field-label {
+			display: flex;
+			align-items: center;
 			margin-right: 5px;
 			width: 250px;
+			.spacer {
+				flex-grow: 1;
+			}
 		}
 
 		.main-label {
@@ -238,13 +258,6 @@ export default {
 				background-color: var(--color-background-darker);
 			}
 		}
-	}
-
-	.delete-rule {
-		width: max-content;
-		color: var(--color-error);
-		border-color: var(--color-error);
-		margin: 0;
 	}
 
 	.icon {

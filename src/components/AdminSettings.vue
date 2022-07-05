@@ -29,11 +29,23 @@
 					class="approval-rule"
 					delete-icon="icon-delete"
 					@input="onRuleInput(id, $event)"
-					@delete="onRuleDelete(id)"
-					@add-tag="onAddTagClick" />
+					@add-tag="onAddTagClick">
+					<template #extra-buttons>
+						<Button
+							type="error"
+							@click="onRuleDelete(id)">
+							<template #icon>
+								<DeleteIcon />
+							</template>
+							{{ t('approval', 'Delete workflow') }}
+						</Button>
+					</template>
+				</ApprovalRule>
 				<EmptyContent v-if="noRules && !loadingRules"
-					class="no-rules"
-					icon="icon-approval">
+					class="no-rules">
+					<template #icon>
+						<CheckIcon />
+					</template>
 					{{ t('approval', 'No workflow yet') }}
 				</EmptyContent>
 				<div v-if="newRule" class="new-rule">
@@ -41,16 +53,21 @@
 						v-model="newRule"
 						:delete-rule-label="newRuleDeleteLabel"
 						:focus="true"
-						@delete="onNewRuleDelete"
 						@add-tag="onAddTagClick">
 						<template #extra-buttons>
-							<button
-								class="new-rule-ok"
+							<Button
+								@click="onNewRuleDelete">
+								{{ newRuleDeleteLabel }}
+							</Button>
+							<Button
+								type="success"
 								:disabled="!newRuleIsValid"
 								@click="onValidateNewRule">
-								<span class="icon icon-checkmark-color" />
+								<template #icon>
+									<CheckIcon />
+								</template>
 								{{ createTooltip }}
-							</button>
+							</Button>
 						</template>
 						<template #extra-footer>
 							<p v-if="!newRuleIsValid"
@@ -61,15 +78,17 @@
 					</ApprovalRule>
 				</div>
 			</div>
-			<button :class="{ 'add-rule': true, loading: savingRule }"
+			<Button :class="{ 'add-rule': true, loading: savingRule }"
 				:disabled="savingRule"
 				@click="onAddRule">
-				<span class="icon icon-add" />
+				<template #icon>
+					<PlusIcon />
+				</template>
 				{{ t('approval', 'New workflow') }}
-			</button>
+			</Button>
 			<div class="create-tag">
 				<label for="create-tag-input">
-					<span class="icon icon-tag" />
+					<TagIcon :size="16" />
 					{{ t('approval', 'Create new hidden tag') }}
 				</label>
 				<input id="create-tag-input"
@@ -78,12 +97,14 @@
 					:placeholder="t('approval', 'New tag name')"
 					type="text"
 					@keyup.enter="onCreateTag">
-				<button :class="{ loading: creatingTag }"
+				<Button :class="{ loading: creatingTag }"
 					:disabled="creatingTag"
 					@click="onCreateTag">
-					<span class="icon icon-add" />
+					<template #icon>
+						<PlusIcon />
+					</template>
 					{{ t('approval', 'Create') }}
-				</button>
+				</Button>
 			</div>
 		</div>
 		<DocuSignSettings />
@@ -91,11 +112,15 @@
 </template>
 
 <script>
+import CheckIcon from 'vue-material-design-icons/Check'
+import TagIcon from 'vue-material-design-icons/Tag'
+import DeleteIcon from 'vue-material-design-icons/Delete'
+import PlusIcon from 'vue-material-design-icons/Plus'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import '@nextcloud/dialogs/styles/toast.scss'
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+import Button from '@nextcloud/vue/dist/Components/Button'
 
 import ApprovalRule from './ApprovalRule'
 import DocuSignSettings from './DocuSignSettings'
@@ -104,7 +129,14 @@ export default {
 	name: 'AdminSettings',
 
 	components: {
-		ApprovalRule, EmptyContent, DocuSignSettings,
+		CheckIcon,
+		TagIcon,
+		PlusIcon,
+		DeleteIcon,
+		ApprovalRule,
+		EmptyContent,
+		Button,
+		DocuSignSettings,
 	},
 
 	props: [],
@@ -366,14 +398,28 @@ export default {
 
 	.create-tag {
 		margin-top: 30px;
+		display: flex;
+		align-items: center;
+
+		> * {
+			margin: 0 4px;
+		}
+
+		> label {
+			display: flex;
+			align-items: center;
+			> * {
+				margin: 0 4px;
+			}
+		}
+
+		#create-tag-input {
+			margin-left: 3px;
+		}
 	}
 
 	button.add-rule {
 		margin: 0 0 10px 15px;
-	}
-
-	#create-tag-input {
-		margin-left: 3px;
 	}
 
 	.approval-rule,
@@ -412,6 +458,7 @@ export default {
 	background-size: 23px 23px;
 	height: 23px;
 	margin-bottom: -4px;
+	filter: var(--background-invert-if-dark);
 }
 
 body.theme--dark .icon-approval {
