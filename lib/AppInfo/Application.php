@@ -66,13 +66,11 @@ class Application extends App implements IBootstrap {
 			Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin');
 			Util::addStyle(self::APP_ID, 'files-style');
 		});
-		// notifications
-		$manager = $container->get(INotificationManager::class);
-		$manager->registerNotifierService(Notifier::class);
 
 		// listen to tag assignments
 		$eventDispatcher->addListener(MapperEvent::EVENT_ASSIGN, function (MapperEvent $event) use ($container) {
 			if ($event->getObjectType() === 'files') {
+				/** @var ApprovalService $service */
 				$service = $container->get(ApprovalService::class);
 				$service->handleTagAssignmentEvent($event->getObjectId(), $event->getTags());
 			}
@@ -80,6 +78,7 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function register(IRegistrationContext $context): void {
+		$context->registerNotifierService(Notifier::class);
 		$context->registerDashboardWidget(ApprovalPendingWidget::class);
 	}
 

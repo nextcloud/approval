@@ -563,11 +563,12 @@ class ApprovalService {
 			return [];
 		}
 		$label = $this->l10n->t('Please check my approval request');
+		$fileOwner = $node->getOwner()->getUID();
 
 		foreach ($rule['approvers'] as $approver) {
 			if ($approver['type'] === 'user' && !$this->utilsService->userHasAccessTo($fileId, $approver['entityId'])) {
 				// create user share
-				if ($this->utilsService->createShare($node, IShare::TYPE_USER, $approver['entityId'], $userId, $label)) {
+				if ($this->utilsService->createShare($node, IShare::TYPE_USER, $approver['entityId'], $fileOwner, $label)) {
 					$createdShares[] = $approver;
 				}
 			}
@@ -575,7 +576,7 @@ class ApprovalService {
 		if ($this->shareManager->allowGroupSharing()) {
 			foreach ($rule['approvers'] as $approver) {
 				if ($approver['type'] === 'group') {
-					if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $userId, $label)) {
+					if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $fileOwner, $label)) {
 						$createdShares[] = $approver;
 					}
 				}
@@ -586,7 +587,7 @@ class ApprovalService {
 		if ($circlesEnabled) {
 			foreach ($rule['approvers'] as $approver) {
 				if ($approver['type'] === 'circle') {
-					if ($this->utilsService->createShare($node, IShare::TYPE_CIRCLE, $approver['entityId'], $userId, $label)) {
+					if ($this->utilsService->createShare($node, IShare::TYPE_CIRCLE, $approver['entityId'], $fileOwner, $label)) {
 						$createdShares[] = $approver;
 					}
 				}
@@ -730,7 +731,7 @@ class ApprovalService {
 		$activity = $this->ruleService->getLastAction($fileId, $ruleInvolded['id'], Application::STATE_PENDING);
 		// if there is no activity, the tag was assigned manually (or via auto-tagging flows)
 		// => perform the request here (share, store action and trigger activity event)
-		if (is_null($activity)) {
+		if ($activity === null) {
 			$found = $this->root->getById($fileId);
 			if (count($found) > 0) {
 				$node = $found[0];
