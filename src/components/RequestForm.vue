@@ -143,11 +143,11 @@ export default {
 				align-items: center;
 				&.approvers {
 					flex-wrap: wrap;
-					margin: -4px 0 10px 24px;
+					margin: -4px 0 8px 24px;
 					.user-bubble {
 						color: var(--color-main-text);
 						height: 28px;
-						margin: 4px 0 0 4px;
+						margin-left: 4px;
 					}
 				}
 			}
