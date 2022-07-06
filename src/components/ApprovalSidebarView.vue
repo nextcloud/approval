@@ -21,17 +21,17 @@
 			</span>
 			<span v-else>{{ approvedText }}</span>
 		</span>
-		<button v-if="isSignableDocuSign"
+		<Button v-if="isSignableDocuSign"
 			:class="{ loading: docusignLoading, signButton: true }"
 			:disabled="docusignRequested"
 			@click="onSignDocuSignClick">
 			{{ docusignButtonText }}
-		</button>
-		<button v-if="isSignableLibreSign"
+		</Button>
+		<Button v-if="isSignableLibreSign"
 			:class="{ loading: libresignLoading, signButton: true }"
 			@click="onSignLibreSignClick">
 			{{ libresignButtonText }}
-		</button>
+		</Button>
 		<span v-if="stateRejected"
 			class="state-label rejected-label">
 			<span class="icon icon-close-white" />
@@ -80,6 +80,7 @@
 					@cancel="requestModal = false" />
 			</Modal>
 		</span>
+		<div class="spacer" />
 		<span v-if="myRule">
 			<span
 				v-tooltip.bottom="{ content: infoText + ' ' + myRule.description }"
@@ -317,12 +318,20 @@ export default {
 <style scoped lang="scss">
 .approval-container {
 	display: flex;
+	flex-wrap: wrap;
 	margin: 5px 0 15px 0;
 
+	> * {
+		margin-top: 4px;
+		margin-bottom: 4px;
+	}
+
+	.spacer {
+		flex-grow: 1;
+	}
+
 	.signButton {
-		min-height: 44px;
-		height: 44px;
-		margin: 0 4px 0 4px;
+		margin-right: 8px;
 	}
 
 	.state-label {
@@ -371,13 +380,6 @@ export default {
 	.icon-close-white,
 	.icon-checkmark-white {
 		margin-right: 5px;
-	}
-
-	.request-button-wrapper {
-		width: 100%;
-		button {
-			height: 44px;
-		}
 	}
 
 	.info-button {

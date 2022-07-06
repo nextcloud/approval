@@ -43,37 +43,43 @@
 				@focus="readonly = false"
 				@input="onFieldInput">
 		</div>
-		<button v-if="oAuthConfigured && !connected"
+		<Button v-if="oAuthConfigured && !connected"
 			id="docusign-oauth-connect"
 			:disabled="loading === true"
 			:class="{ loading }"
 			@click="onOAuthClick">
 			{{ t('approval', 'Connect to DocuSign') }}
-		</button>
+		</Button>
 		<div v-if="connected">
 			<p class="docusign-connected">
 				<a class="icon icon-checkmark-color" />
 				{{ t('approval', 'Connected as {user} ({email})', { user: state.docusign_user_name, email: state.docusign_user_email }) }}
 			</p>
-			<button class="docusign-rm-cred" @click="onLogoutClick">
-				<span class="icon icon-close" />
+			<Button class="docusign-rm-cred" @click="onLogoutClick">
+				<template #icon>
+					<CloseIcon :size="20" />
+				</template>
 				{{ t('approval', 'Disconnect from DocuSign') }}
-			</button>
+			</Button>
 		</div>
 	</div>
 </template>
 
 <script>
+import CloseIcon from 'vue-material-design-icons/Close'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { delay } from '../utils'
 import { showSuccess, showError } from '@nextcloud/dialogs'
+import Button from '@nextcloud/vue/dist/Components/Button'
 
 export default {
 	name: 'DocuSignSettings',
 
 	components: {
+		Button,
+		CloseIcon,
 	},
 
 	props: [],
