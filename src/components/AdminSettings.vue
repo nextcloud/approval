@@ -35,7 +35,7 @@
 							type="error"
 							@click="onRuleDelete(id)">
 							<template #icon>
-								<DeleteIcon />
+								<DeleteIcon :size="20" />
 							</template>
 							{{ t('approval', 'Delete workflow') }}
 						</Button>
@@ -64,7 +64,7 @@
 								:disabled="!newRuleIsValid"
 								@click="onValidateNewRule">
 								<template #icon>
-									<CheckIcon />
+									<CheckIcon :size="20" />
 								</template>
 								{{ createTooltip }}
 							</Button>
@@ -82,7 +82,7 @@
 				:disabled="savingRule"
 				@click="onAddRule">
 				<template #icon>
-					<PlusIcon />
+					<PlusIcon :size="20" />
 				</template>
 				{{ t('approval', 'New workflow') }}
 			</Button>
@@ -101,7 +101,7 @@
 					:disabled="creatingTag"
 					@click="onCreateTag">
 					<template #icon>
-						<PlusIcon />
+						<PlusIcon :size="20" />
 					</template>
 					{{ t('approval', 'Create') }}
 				</Button>

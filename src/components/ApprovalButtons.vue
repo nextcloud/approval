@@ -4,7 +4,7 @@
 			type="success"
 			@click="$emit('approve')">
 			<template #icon>
-				<CheckIcon />
+				<CheckIcon :size="20" />
 			</template>
 			{{ approveText }}
 		</Button>
@@ -12,7 +12,7 @@
 			type="error"
 			@click="$emit('reject')">
 			<template #icon>
-				<CloseIcon />
+				<CloseIcon :size="20" />
 			</template>
 			{{ rejectText }}
 		</Button>

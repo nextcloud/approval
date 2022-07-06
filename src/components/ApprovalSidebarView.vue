@@ -67,7 +67,7 @@
 			<Button :class="{ loading: requesting }"
 				@click="showRequestModal">
 				<template #icon>
-					<CheckIcon />
+					<CheckIcon :size="20" />
 				</template>
 				{{ requestLabel }}
 			</Button>

@@ -46,7 +46,7 @@
 				:disabled="!selectedRule"
 				@click="$emit('request', selectedRule, true)">
 				<template #icon>
-					<CheckIcon />
+					<CheckIcon :size="20" />
 				</template>
 				{{ requestLabel }}
 			</Button>
