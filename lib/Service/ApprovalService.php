@@ -556,9 +556,16 @@ class ApprovalService {
 		$createdShares = [];
 		// get node
 		$userFolder = $this->root->getUserFolder($userId);
-		$found = $userFolder->getById($fileId);
-		if (count($found) > 0) {
-			$node = $found[0];
+		$nodeResults = $userFolder->getById($fileId);
+		if (count($nodeResults) > 0) {
+			$node = $nodeResults[0];
+			// get the node again from the owner's storage to avoid sharing permission issues
+			$ownerId = $node->getOwner()->getUID();
+			$ownerFolder = $this->root->getUserFolder($ownerId);
+			$ownerNodeResults = $ownerFolder->getById($fileId);
+			if (count($ownerNodeResults) > 0) {
+				$node = $ownerNodeResults[0];
+			}
 		} else {
 			return [];
 		}
