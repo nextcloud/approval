@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.10 – 2022-07-08
+### Changed
+- bump js libs
+- use latest @nextcloud/vue
+- adjustments for Nextcloud 25 (no more svg api, replace icon classes with material icons etc...)
+- polish UI
+- CI tests with multiple Nextcloud, DB and Php version
+
+### Fixed
+- Sharing is now working with chained rules
+  [#27](https://github.com/nextcloud/approval/issues/11) @rmuzzini @osm-frasch @xenophil90
+
 ## 1.0.9 – 2021-11-15
 ### Added
 - new translations
