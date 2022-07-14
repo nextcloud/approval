@@ -8,6 +8,7 @@ OC.L10N.register(
     "OAuth access token refused" : "Token-ul OAuth a fost refuzat",
     "Create" : "Crează",
     "Cancel" : "Anulare",
+    "Reject" : "Respinge",
     "Approved" : "Aprobat",
     "you" : "tu",
     "No result." : "Niciun rezultat.",
