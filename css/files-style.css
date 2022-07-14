@@ -84,6 +84,7 @@
 /* for file actions */
 .icon-approval {
 	background-image: url('../img/app-dark.svg');
+	filter: var(--background-invert-if-dark);
 }
 body.theme--dark .icon-approval {
 	background-image: url('../img/app.svg');
