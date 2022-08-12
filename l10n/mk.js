@@ -1,6 +1,7 @@
 OC.L10N.register(
     "approval",
     {
+    "A guest user" : "Корисник гостин",
     "Error during OAuth exchanges" : "Грешка при размена на податоци со OAuth ",
     "Bad credentials" : "Неточни акредитиви",
     "OAuth access token refused" : "Одбиен OAuth пристапен токен ",
