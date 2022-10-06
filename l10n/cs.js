@@ -11,7 +11,7 @@ OC.L10N.register(
     "A guest user" : "Uživatel-host",
     "Approval" : "Schválení",
     "<strong>Approval</strong> events" : "<strong>Schválení</strong> událostí",
-    "Error getting OAuth access token" : "Chyba při získávání přístupového OAuth přístupového tokenu",
+    "Error getting OAuth access token" : "Chyba při získávání OAuth přístupového tokenu",
     "Error during OAuth exchanges" : "Chyba při výměnách informací v rámci OAuth",
     "Pending approvals" : "Čekající schválení",
     "A file was approved" : "Soubor byl schválen",
