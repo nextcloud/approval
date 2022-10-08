@@ -130,7 +130,7 @@
     "Approval requested for {name}" : "Approbation demandée pour {name}",
     "Warning" : "Avertissement",
     "Failed to request approval for {name}" : "Impossible de demander l'approbation pour {name}",
-    "You will receive an email from DocuSign to sign the document" : "Vous allez recevoir un email de DocuSign pour signer ce document",
+    "You will receive an email from DocuSign to sign the document" : "Vous allez recevoir un e-mail de DocuSign pour signer ce document",
     "The user who requested this approval was not found, remember to send or share the signed document yourself" : "L'utilisateur qui a demandé cette approbation n'a pas été trouvé. Pensez à envoyer ou partager vous-même le document signé",
     "Approval signature" : "Signature d'approbation",
     "{name} signature requested via LibreSign" : "Signature de {name} requise via LibreSign",
