@@ -121,7 +121,7 @@
     "More files to approve" : "Більше файлів для схвалення",
     "No files to approve!" : "Немає файлів для схвалення!",
     "Failed to get approval pending files" : "Не вдалося отримати файли, що очікують на схвалення",
-    "by {name} at {date}" : "автор: {name} о {date}",
+    "by {name} at {date}" : "Автор: {name} о {date}",
     "at {date}" : "о {date}",
     "You approved {name}" : "Ви схвалили {name}",
     "Failed to approve {name}" : "Не вдалося схвалити {name}",
