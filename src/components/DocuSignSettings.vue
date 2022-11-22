@@ -43,42 +43,44 @@
 				@focus="readonly = false"
 				@input="onFieldInput">
 		</div>
-		<Button v-if="oAuthConfigured && !connected"
+		<NcButton v-if="oAuthConfigured && !connected"
 			id="docusign-oauth-connect"
 			:disabled="loading === true"
 			:class="{ loading }"
 			@click="onOAuthClick">
 			{{ t('approval', 'Connect to DocuSign') }}
-		</Button>
+		</NcButton>
 		<div v-if="connected">
 			<p class="docusign-connected">
 				<a class="icon icon-checkmark-color" />
 				{{ t('approval', 'Connected as {user} ({email})', { user: state.docusign_user_name, email: state.docusign_user_email }) }}
 			</p>
-			<Button class="docusign-rm-cred" @click="onLogoutClick">
+			<NcButton class="docusign-rm-cred" @click="onLogoutClick">
 				<template #icon>
 					<CloseIcon :size="20" />
 				</template>
 				{{ t('approval', 'Disconnect from DocuSign') }}
-			</Button>
+			</NcButton>
 		</div>
 	</div>
 </template>
 
 <script>
-import CloseIcon from 'vue-material-design-icons/Close'
+import CloseIcon from 'vue-material-design-icons/Close.vue'
+
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { delay } from '../utils'
+import { delay } from '../utils.js'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import Button from '@nextcloud/vue/dist/Components/Button'
 
 export default {
 	name: 'DocuSignSettings',
 
 	components: {
-		Button,
+		NcButton,
 		CloseIcon,
 	},
 

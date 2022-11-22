@@ -17,30 +17,35 @@
 			</DashboardWidgetItem>
 		</template>
 		<template #empty-content>
-			<EmptyContent
+			<NcEmptyContent
 				v-if="emptyContentMessage"
-				:icon="emptyContentIcon">
-				<template #desc>
-					{{ emptyContentMessage }}
+				:description="emptyContentMessage">
+				<template #icon>
+					<component :is="emptyContentIcon" />
 				</template>
-			</EmptyContent>
+			</NcEmptyContent>
 		</template>
 	</DashboardWidget>
 </template>
 
 <script>
+import CheckIcon from 'vue-material-design-icons/Check.vue'
+
 import axios from '@nextcloud/axios'
 import { generateOcsUrl, generateUrl } from '@nextcloud/router'
 import { showError } from '@nextcloud/dialogs'
 import moment from '@nextcloud/moment'
 import { DashboardWidget, DashboardWidgetItem } from '@nextcloud/vue-dashboard'
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
 
 export default {
 	name: 'DashboardPending',
 
 	components: {
-		DashboardWidget, DashboardWidgetItem, EmptyContent,
+		DashboardWidget,
+		DashboardWidgetItem,
+		NcEmptyContent,
+		CheckIcon,
 	},
 
 	props: {
@@ -85,7 +90,7 @@ export default {
 			return t('approval', 'No files to approve!')
 		},
 		emptyContentIcon() {
-			return 'icon-checkmark'
+			return CheckIcon
 		},
 	},
 

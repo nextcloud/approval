@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-
 /**
  * Nextcloud - Approval
  *
@@ -14,16 +12,10 @@
  */
 
 import Vue from 'vue'
-import './bootstrap'
-import AdminSettings from './components/AdminSettings'
-import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
+import './bootstrap.js'
+import AdminSettings from './components/AdminSettings.vue'
+import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip.js'
 Vue.directive('tooltip', Tooltip)
 
-// eslint-disable-next-line
-'use strict'
-
-// eslint-disable-next-line
-new Vue({
-	el: '#approval_prefs',
-	render: h => h(AdminSettings),
-})
+const View = Vue.extend(AdminSettings)
+new View().$mount('#approval_prefs')

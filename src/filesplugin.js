@@ -7,16 +7,16 @@
  * See the COPYING-README file.
  *
  */
-import { ApprovalInfoView } from './approvalinfoview'
-import DocuSignModal from './components/DocuSignModal'
-import { states } from './states'
+import { ApprovalInfoView } from './approvalinfoview.js'
+import DocuSignModal from './components/DocuSignModal.vue'
+import { states } from './states.js'
 
 import axios from '@nextcloud/axios'
 import { generateOcsUrl, generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 
 import Vue from 'vue'
-import './bootstrap'
+import './bootstrap.js'
 
 (function() {
 	if (!OCA.Approval) {

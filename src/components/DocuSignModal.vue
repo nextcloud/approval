@@ -1,6 +1,6 @@
 <template>
 	<div class="docusign-modal-container">
-		<Modal v-if="show"
+		<NcModal v-if="show"
 			size="large"
 			@close="closeRequestModal">
 			<div class="docusign-modal-content">
@@ -35,15 +35,16 @@
 					</button>
 				</div>
 			</div>
-		</Modal>
+		</NcModal>
 	</div>
 </template>
 
 <script>
-import axios from '@nextcloud/axios'
-import Modal from '@nextcloud/vue/dist/Components/Modal'
+import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
 
-import MultiselectWho from './MultiselectWho'
+import MultiselectWho from './MultiselectWho.vue'
+
+import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 
@@ -51,7 +52,7 @@ export default {
 	name: 'DocuSignModal',
 
 	components: {
-		Modal,
+		NcModal,
 		MultiselectWho,
 	},
 

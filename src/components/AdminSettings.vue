@@ -31,23 +31,23 @@
 					@input="onRuleInput(id, $event)"
 					@add-tag="onAddTagClick">
 					<template #extra-buttons>
-						<Button
+						<NcButton
 							type="error"
 							@click="onRuleDelete(id)">
 							<template #icon>
 								<DeleteIcon :size="20" />
 							</template>
 							{{ t('approval', 'Delete workflow') }}
-						</Button>
+						</NcButton>
 					</template>
 				</ApprovalRule>
-				<EmptyContent v-if="noRules && !loadingRules"
+				<NcEmptyContent v-if="noRules && !loadingRules"
+					:title="t('approval', 'No workflow yet')"
 					class="no-rules">
 					<template #icon>
 						<CheckIcon />
 					</template>
-					{{ t('approval', 'No workflow yet') }}
-				</EmptyContent>
+				</NcEmptyContent>
 				<div v-if="newRule" class="new-rule">
 					<ApprovalRule
 						v-model="newRule"
@@ -55,11 +55,11 @@
 						:focus="true"
 						@add-tag="onAddTagClick">
 						<template #extra-buttons>
-							<Button
+							<NcButton
 								@click="onNewRuleDelete">
 								{{ newRuleDeleteLabel }}
-							</Button>
-							<Button
+							</NcButton>
+							<NcButton
 								type="success"
 								:disabled="!newRuleIsValid"
 								@click="onValidateNewRule">
@@ -67,7 +67,7 @@
 									<CheckIcon :size="20" />
 								</template>
 								{{ createTooltip }}
-							</Button>
+							</NcButton>
 						</template>
 						<template #extra-footer>
 							<p v-if="!newRuleIsValid"
@@ -78,14 +78,14 @@
 					</ApprovalRule>
 				</div>
 			</div>
-			<Button :class="{ 'add-rule': true, loading: savingRule }"
+			<NcButton :class="{ 'add-rule': true, loading: savingRule }"
 				:disabled="savingRule"
 				@click="onAddRule">
 				<template #icon>
 					<PlusIcon :size="20" />
 				</template>
 				{{ t('approval', 'New workflow') }}
-			</Button>
+			</NcButton>
 			<div class="create-tag">
 				<label for="create-tag-input">
 					<TagIcon :size="16" />
@@ -97,14 +97,14 @@
 					:placeholder="t('approval', 'New tag name')"
 					type="text"
 					@keyup.enter="onCreateTag">
-				<Button :class="{ loading: creatingTag }"
+				<NcButton :class="{ loading: creatingTag }"
 					:disabled="creatingTag"
 					@click="onCreateTag">
 					<template #icon>
 						<PlusIcon :size="20" />
 					</template>
 					{{ t('approval', 'Create') }}
-				</Button>
+				</NcButton>
 			</div>
 		</div>
 		<DocuSignSettings />
@@ -112,18 +112,20 @@
 </template>
 
 <script>
-import CheckIcon from 'vue-material-design-icons/Check'
-import TagIcon from 'vue-material-design-icons/Tag'
-import DeleteIcon from 'vue-material-design-icons/Delete'
-import PlusIcon from 'vue-material-design-icons/Plus'
+import CheckIcon from 'vue-material-design-icons/Check.vue'
+import TagIcon from 'vue-material-design-icons/Tag.vue'
+import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import PlusIcon from 'vue-material-design-icons/Plus.vue'
+
+import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+
+import ApprovalRule from './ApprovalRule.vue'
+import DocuSignSettings from './DocuSignSettings.vue'
+
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
-import Button from '@nextcloud/vue/dist/Components/Button'
-
-import ApprovalRule from './ApprovalRule'
-import DocuSignSettings from './DocuSignSettings'
 
 export default {
 	name: 'AdminSettings',
@@ -134,8 +136,8 @@ export default {
 		PlusIcon,
 		DeleteIcon,
 		ApprovalRule,
-		EmptyContent,
-		Button,
+		NcEmptyContent,
+		NcButton,
 		DocuSignSettings,
 	},
 

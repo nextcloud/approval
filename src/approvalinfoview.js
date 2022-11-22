@@ -4,8 +4,8 @@ import axios from '@nextcloud/axios'
 import { generateUrl, generateOcsUrl } from '@nextcloud/router'
 import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
 
-import ApprovalSidebarView from './components/ApprovalSidebarView'
-import { states } from './states'
+import ApprovalSidebarView from './components/ApprovalSidebarView.vue'
+import { states } from './states.js'
 
 /**
  * @class OCA.Approval.ApprovalInfoView
