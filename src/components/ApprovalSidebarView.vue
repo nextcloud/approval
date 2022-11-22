@@ -12,7 +12,7 @@
 			<span v-if="myUserId && myDatetime"
 				class="details">
 				<strong>{{ approvedByText }}</strong>
-				<UserBubble
+				<NcUserBubble
 					class="user-bubble"
 					:user="myUserId"
 					:display-name="notMe ? myUserName : you"
@@ -21,24 +21,24 @@
 			</span>
 			<span v-else>{{ approvedText }}</span>
 		</span>
-		<Button v-if="isSignableDocuSign"
+		<NcButton v-if="isSignableDocuSign"
 			:class="{ loading: docusignLoading, signButton: true }"
 			:disabled="docusignRequested"
 			@click="onSignDocuSignClick">
 			{{ docusignButtonText }}
-		</Button>
-		<Button v-if="isSignableLibreSign"
+		</NcButton>
+		<NcButton v-if="isSignableLibreSign"
 			:class="{ loading: libresignLoading, signButton: true }"
 			@click="onSignLibreSignClick">
 			{{ libresignButtonText }}
-		</Button>
+		</NcButton>
 		<span v-if="stateRejected"
 			class="state-label rejected-label">
 			<span class="icon icon-close-white" />
 			<span v-if="myUserId && myDatetime"
 				class="details">
 				<strong>{{ rejectedByText }}</strong>
-				<UserBubble
+				<NcUserBubble
 					class="user-bubble"
 					:user="myUserId"
 					:display-name="notMe ? myUserName : you"
@@ -53,7 +53,7 @@
 			<span v-if="myUserId && myDatetime"
 				class="details">
 				<strong>{{ requestedByText }}</strong>
-				<UserBubble
+				<NcUserBubble
 					class="user-bubble"
 					:user="myUserId"
 					:display-name="notMe ? myUserName : you"
@@ -64,21 +64,21 @@
 		</span>
 		<span v-if="canRequestApproval"
 			class="request-button-wrapper">
-			<Button :class="{ loading: requesting }"
+			<NcButton :class="{ loading: requesting }"
 				@click="showRequestModal">
 				<template #icon>
 					<CheckIcon :size="20" />
 				</template>
 				{{ requestLabel }}
-			</Button>
-			<Modal v-if="requestModal"
+			</NcButton>
+			<NcModal v-if="requestModal"
 				size="normal"
 				@close="closeRequestModal">
 				<RequestForm :rules="userRules"
 					class="info-modal"
 					@request="onRequest"
 					@cancel="requestModal = false" />
-			</Modal>
+			</NcModal>
 		</span>
 		<div class="spacer" />
 		<span v-if="myRule">
@@ -90,31 +90,33 @@
 </template>
 
 <script>
-import { states } from '../states'
+import CheckIcon from 'vue-material-design-icons/Check.vue'
+
+import NcUserBubble from '@nextcloud/vue/dist/Components/NcUserBubble.js'
+import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+
+import ApprovalButtons from './ApprovalButtons.vue'
+import RequestForm from './RequestForm.vue'
 
 import moment from '@nextcloud/moment'
 import { getCurrentUser } from '@nextcloud/auth'
-import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
-import Modal from '@nextcloud/vue/dist/Components/Modal'
-import Button from '@nextcloud/vue/dist/Components/Button'
-import CheckIcon from 'vue-material-design-icons/Check'
 
-import ApprovalButtons from './ApprovalButtons'
-import RequestForm from './RequestForm'
+import { states } from '../states.js'
 
 import Vue from 'vue'
-import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
+import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip.js'
 Vue.directive('tooltip', Tooltip)
 
 export default {
 	name: 'ApprovalSidebarView',
 
 	components: {
-		UserBubble,
-		Modal,
+		NcUserBubble,
+		NcModal,
 		ApprovalButtons,
 		RequestForm,
-		Button,
+		NcButton,
 		CheckIcon,
 	},
 

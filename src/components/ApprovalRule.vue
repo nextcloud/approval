@@ -23,10 +23,11 @@
 						<span class="icon icon-add" />
 					</span>
 				</span>
-				<MultiselectTags class="tag-select"
+				<NcMultiselectTags class="tag-select"
 					:value="value.tagPending"
 					:label="t('approval', 'Select pending tag')"
 					:multiple="false"
+					:filter="null"
 					@input="update('tagPending', $event)" />
 			</div>
 			<div class="users">
@@ -66,10 +67,11 @@
 						<span class="icon icon-add" />
 					</span>
 				</span>
-				<MultiselectTags class="tag-select"
+				<NcMultiselectTags class="tag-select"
 					:value="value.tagApproved"
 					:label="t('approval', 'Select approved tag')"
 					:multiple="false"
+					:filter="null"
 					@input="update('tagApproved', $event)" />
 			</div>
 			<div class="tag">
@@ -83,10 +85,11 @@
 						<span class="icon icon-add" />
 					</span>
 				</span>
-				<MultiselectTags class="tag-select"
+				<NcMultiselectTags class="tag-select"
 					:value="value.tagRejected"
 					:label="t('approval', 'Select rejected tag')"
 					:multiple="false"
+					:filter="null"
 					@input="update('tagRejected', $event)" />
 			</div>
 		</div>
@@ -98,12 +101,13 @@
 </template>
 
 <script>
-import TagIcon from 'vue-material-design-icons/Tag'
-import MultiselectTags from '@nextcloud/vue/dist/Components/MultiselectTags'
+import TagIcon from 'vue-material-design-icons/Tag.vue'
 
-import { delay } from '../utils'
-import MultiselectWho from './MultiselectWho'
-import GroupIcon from './icons/GroupIcon'
+import NcMultiselectTags from '@nextcloud/vue/dist/Components/NcMultiselectTags.js'
+
+import { delay } from '../utils.js'
+import MultiselectWho from './MultiselectWho.vue'
+import GroupIcon from './icons/GroupIcon.vue'
 
 export default {
 	name: 'ApprovalRule',
@@ -111,7 +115,7 @@ export default {
 	components: {
 		GroupIcon,
 		MultiselectWho,
-		MultiselectTags,
+		NcMultiselectTags,
 		TagIcon,
 	},
 

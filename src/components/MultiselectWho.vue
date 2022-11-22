@@ -1,5 +1,5 @@
 <template>
-	<Multiselect
+	<NcMultiselect
 		class="approval-multiselect"
 		label="displayName"
 		track-by="trackKey"
@@ -20,11 +20,11 @@
 		@search-change="asyncFind"
 		@update:value="$emit('update:value', $event)">
 		<template #option="{option}">
-			<Avatar v-if="option.type === 'user'"
+			<NcAvatar v-if="option.type === 'user'"
 				class="approval-avatar-option"
 				:user="option.entityId"
 				:show-user-status="false" />
-			<Avatar v-else-if="['group', 'circle', 'email'].includes(option.type)"
+			<NcAvatar v-else-if="['group', 'circle', 'email'].includes(option.type)"
 				class="approval-avatar-option"
 				:display-name="option.displayName"
 				:is-no-user="true"
@@ -42,7 +42,7 @@
 		<template #noResult>
 			{{ t('approval', 'No result.') }}
 		</template>
-	</Multiselect>
+	</NcMultiselect>
 </template>
 
 <script>
@@ -50,15 +50,16 @@ import { getCurrentUser } from '@nextcloud/auth'
 import { generateOcsUrl } from '@nextcloud/router'
 import { showError } from '@nextcloud/dialogs'
 import axios from '@nextcloud/axios'
-import Avatar from '@nextcloud/vue/dist/Components/Avatar'
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+
+import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
+import NcMultiselect from '@nextcloud/vue/dist/Components/NcMultiselect.js'
 
 export default {
 	name: 'MultiselectWho',
 
 	components: {
-		Avatar,
-		Multiselect,
+		NcAvatar,
+		NcMultiselect,
 	},
 
 	props: {

@@ -14,8 +14,8 @@
  */
 
 import Vue from 'vue'
-import './bootstrap'
-import DashboardPending from './views/DashboardPending'
+import './bootstrap.js'
+import DashboardPending from './views/DashboardPending.vue'
 
 document.addEventListener('DOMContentLoaded', function() {
 

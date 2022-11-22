@@ -1,34 +1,35 @@
 <template>
 	<div class="buttons">
-		<Button
+		<NcButton
 			type="success"
 			@click="$emit('approve')">
 			<template #icon>
 				<CheckIcon :size="20" />
 			</template>
 			{{ approveText }}
-		</Button>
-		<Button
+		</NcButton>
+		<NcButton
 			type="error"
 			@click="$emit('reject')">
 			<template #icon>
 				<CloseIcon :size="20" />
 			</template>
 			{{ rejectText }}
-		</Button>
+		</NcButton>
 	</div>
 </template>
 
 <script>
-import CheckIcon from 'vue-material-design-icons/Check'
-import CloseIcon from 'vue-material-design-icons/Close'
-import Button from '@nextcloud/vue/dist/Components/Button'
+import CheckIcon from 'vue-material-design-icons/Check.vue'
+import CloseIcon from 'vue-material-design-icons/Close.vue'
+
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 
 export default {
 	name: 'ApprovalButtons',
 
 	components: {
-		Button,
+		NcButton,
 		CheckIcon,
 		CloseIcon,
 	},

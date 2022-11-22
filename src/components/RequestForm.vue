@@ -25,7 +25,7 @@
 					<span>
 						{{ approversLabel }}
 					</span>
-					<UserBubble v-for="approver in r.approvers"
+					<NcUserBubble v-for="approver in r.approvers"
 						:key="approver.type + '-' + approver.entityId"
 						class="user-bubble"
 						:user="approver.type === 'user' ? approver.entityId : undefined"
@@ -36,12 +36,12 @@
 			</label>
 		</fieldset>
 		<div class="footer">
-			<Button
+			<NcButton
 				@click="$emit('cancel')">
 				{{ cancelLabel }}
-			</Button>
+			</NcButton>
 			<div class="spacer" />
-			<Button
+			<NcButton
 				type="primary"
 				:disabled="!selectedRule"
 				@click="$emit('request', selectedRule, true)">
@@ -49,22 +49,23 @@
 					<CheckIcon :size="20" />
 				</template>
 				{{ requestLabel }}
-			</Button>
+			</NcButton>
 		</div>
 	</div>
 </template>
 
 <script>
-import CheckIcon from 'vue-material-design-icons/Check'
-import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
-import Button from '@nextcloud/vue/dist/Components/Button'
+import CheckIcon from 'vue-material-design-icons/Check.vue'
+
+import NcUserBubble from '@nextcloud/vue/dist/Components/NcUserBubble.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 
 export default {
 	name: 'RequestForm',
 
 	components: {
-		UserBubble,
-		Button,
+		NcUserBubble,
+		NcButton,
 		CheckIcon,
 	},
 
