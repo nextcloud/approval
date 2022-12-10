@@ -100,7 +100,7 @@ OC.L10N.register(
     "DocuSign is an electronic signature solution." : "DocuSign — це рішення для електронного підпису.",
     "If you want to use DocuSign, create an application in your DocuSign \"My Apps & Keys\" developer account settings and put the client ID (integration key) and secret below." : "Якщо ви хочете використовувати DocuSign, створіть програму в налаштуваннях облікового запису розробника DocuSign «Мої програми та ключі» та введіть нижче ідентифікатор клієнта (ключ інтеграції) та секрет.",
     "Make sure you set this \"Redirect URI\":" : "Переконайтеся, що ви встановили цей \"URI перенаправлення\":",
-    "If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used." : "Якщо ваш користувач DocuSign пов’язаний з кількома обліковими записами DocuSign, буде використано обліковий запис за умовчанням.",
+    "If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used." : "Якщо ваш користувач DocuSign пов’язаний з кількома обліковими записами DocuSign, буде використано типовий обліковий запис.",
     "Client ID (aka integration key)" : "Ідентифікатор клієнта (він же ключ інтеграції)",
     "Client ID of your application" : "Ідентифікатор клієнта вашої програми",
     "Application secret key" : "Секретний ключ програми",
