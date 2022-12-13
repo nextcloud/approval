@@ -1,68 +1,24 @@
 app_name=approval
-app_version=$(version)
-project_dir=.
-build_dir=/tmp/build
-sign_dir=/tmp/sign
+
+project_dir=$(CURDIR)/../$(app_name)
+build_dir=$(CURDIR)/build/artifacts
+appstore_dir=$(build_dir)/appstore
+source_dir=$(build_dir)/source
+sign_dir=$(build_dir)/sign
+package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
-webserveruser ?= www-data
-occ_dir ?= /var/www/html/dev/server
 
-build_tools_directory=$(CURDIR)/build/tools
-npm=$(shell which npm 2> /dev/null)
-composer=$(shell which composer 2> /dev/null)
+all: appstore
 
-all: build
-
-.PHONY: build
-build:
-ifneq (,$(wildcard $(CURDIR)/composer.json))
-	make composer
-endif
-ifneq (,$(wildcard $(CURDIR)/package.json))
-	make npm
-endif
-
-.PHONY: dev
-dev:
-ifneq (,$(wildcard $(CURDIR)/composer.json))
-	make composer
-endif
-ifneq (,$(wildcard $(CURDIR)/package.json))
-	make npm-dev
-endif
-
-# Installs and updates the composer dependencies. If composer is not installed
-# a copy is fetched from the web
-.PHONY: composer
-composer:
-ifeq (, $(composer))
-	@echo "No composer command available, downloading a copy from the web"
-	mkdir -p $(build_tools_directory)
-	curl -sS https://getcomposer.org/installer | php
-	mv composer.phar $(build_tools_directory)
-	php $(build_tools_directory)/composer.phar install --prefer-dist
-else
-	composer install --prefer-dist
-endif
-
-.PHONY: npm
-npm:
-	$(npm) ci
-	$(npm) run build
-
-.PHONY: npm-dev
-npm-dev:
-	$(npm) ci
-	$(npm) run dev
+release: appstore
 
 clean:
-	sudo rm -rf $(build_dir)
-	sudo rm -rf $(sign_dir)
+	rm -rf $(build_dir)
+	rm -rf node_modules
 
 appstore: clean
 	mkdir -p $(sign_dir)
-	mkdir -p $(build_dir)
-	@rsync -a \
+	rsync -a \
 	--exclude=.git \
 	--exclude=appinfo/signature.json \
 	--exclude=*.swp \
@@ -102,17 +58,10 @@ appstore: clean
 	--exclude=tests \
 	--exclude=ci \
 	--exclude=vendor/bin \
-	$(project_dir) $(sign_dir)/$(app_name)
-	@if [ -f $(cert_dir)/$(app_name).key ]; then \
-		sudo chown $(webserveruser) $(sign_dir)/$(app_name)/appinfo ;\
-		sudo -u $(webserveruser) php $(occ_dir)/occ integrity:sign-app --privateKey=$(cert_dir)/$(app_name).key --certificate=$(cert_dir)/$(app_name).crt --path=$(sign_dir)/$(app_name)/ ;\
-		sudo chown -R $(USER) $(sign_dir)/$(app_name)/appinfo ;\
-	else \
-		echo "!!! WARNING signature key not found" ;\
-	fi
-	tar -czf $(build_dir)/$(app_name)-$(app_version).tar.gz \
+	$(project_dir)/ $(sign_dir)/$(app_name)
+	tar -czf $(build_dir)/$(app_name).tar.gz \
 		-C $(sign_dir) $(app_name)
 	@if [ -f $(cert_dir)/$(app_name).key ]; then \
-		echo NEXTCLOUD------------------------------------------ ;\
-		openssl dgst -sha512 -sign $(cert_dir)/$(app_name).key $(build_dir)/$(app_name)-$(app_version).tar.gz | openssl base64 | tee $(build_dir)/sign.txt ;\
+		echo "Signing package…"; \
+		openssl dgst -sha512 -sign $(cert_dir)/$(app_name).key $(build_dir)/$(app_name).tar.gz | openssl base64; \
 	fi
