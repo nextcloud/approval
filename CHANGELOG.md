@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.11 – 2022-12-13
+### Fixed
+- Fix 1.0.10 release missing js files
+- Replace deprecated String.prototype.substr()
+- Bump js libs, fix file action color in NC >= 25
+
+### Added
+- New translations
+
 ## 1.0.10 – 2022-07-08
 ### Changed
 - bump js libs
