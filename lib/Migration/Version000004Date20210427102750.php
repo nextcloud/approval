@@ -6,6 +6,7 @@ namespace OCA\Approval\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
+use OCP\DB\Types;
 use OCP\Migration\SimpleMigrationStep;
 use OCP\Migration\IOutput;
 use OCP\IDBConnection;
@@ -43,9 +44,9 @@ class Version000004Date20210427102750 extends SimpleMigrationStep {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 		$table = $schema->getTable('approval_rules');
-		$table->addColumn('description', 'text', [
+		$table->addColumn('description', Types::TEXT, [
 			'notnull' => true,
-			'default' => '',
+			'default' => '???',
 		]);
 		return $schema;
 	}
