@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.12 – 2022-12-14
+### Fixed
+- Issue with empty string default value on notNull DB column
+  [#42](https://github.com/nextcloud/approval/pull/42) @julien-nc
+
+### Changed
+- Improve test workflows
+  [#40](https://github.com/nextcloud/approval/pull/40) @skjnldsv
+
 ## 1.0.11 – 2022-12-13
 ### Fixed
 - Fix 1.0.10 release missing js files
@@ -25,7 +34,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Sharing is now working with chained rules
-  [#27](https://github.com/nextcloud/approval/issues/11) @rmuzzini @osm-frasch @xenophil90
+  [#27](https://github.com/nextcloud/approval/issues/27) @rmuzzini @osm-frasch @xenophil90
 
 ## 1.0.9 – 2021-11-15
 ### Added
