@@ -6,6 +6,7 @@ namespace OCA\Approval\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
+use OCP\DB\Types;
 use OCP\Migration\SimpleMigrationStep;
 use OCP\Migration\IOutput;
 
@@ -34,20 +35,20 @@ class Version000004Date20210331142734 extends SimpleMigrationStep {
 
 		if (!$schema->hasTable('approval_rules')) {
 			$table = $schema->createTable('approval_rules');
-			$table->addColumn('id', 'integer', [
+			$table->addColumn('id', Types::INTEGER, [
 				'autoincrement' => true,
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('tag_pending', 'integer', [
+			$table->addColumn('tag_pending', Types::INTEGER, [
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('tag_approved', 'integer', [
+			$table->addColumn('tag_approved', Types::INTEGER, [
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('tag_rejected', 'integer', [
+			$table->addColumn('tag_rejected', Types::INTEGER, [
 				'notnull' => true,
 				'length' => 4,
 			]);
@@ -56,20 +57,20 @@ class Version000004Date20210331142734 extends SimpleMigrationStep {
 
 		if (!$schema->hasTable('approval_rule_requesters')) {
 			$table = $schema->createTable('approval_rule_requesters');
-			$table->addColumn('id', 'integer', [
+			$table->addColumn('id', Types::INTEGER, [
 				'autoincrement' => true,
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('rule_id', 'integer', [
+			$table->addColumn('rule_id', Types::INTEGER, [
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('entity_type', 'integer', [
+			$table->addColumn('entity_type', Types::INTEGER, [
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('entity_id', 'string', [
+			$table->addColumn('entity_id', Types::STRING, [
 				'notnull' => true,
 				'length' => 300,
 			]);
@@ -78,20 +79,20 @@ class Version000004Date20210331142734 extends SimpleMigrationStep {
 
 		if (!$schema->hasTable('approval_rule_approvers')) {
 			$table = $schema->createTable('approval_rule_approvers');
-			$table->addColumn('id', 'integer', [
+			$table->addColumn('id', Types::INTEGER, [
 				'autoincrement' => true,
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('rule_id', 'integer', [
+			$table->addColumn('rule_id', Types::INTEGER, [
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('entity_type', 'integer', [
+			$table->addColumn('entity_type', Types::INTEGER, [
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('entity_id', 'string', [
+			$table->addColumn('entity_id', Types::STRING, [
 				'notnull' => true,
 				'length' => 300,
 			]);

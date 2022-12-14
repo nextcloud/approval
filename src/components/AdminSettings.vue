@@ -165,7 +165,11 @@ export default {
 		},
 		invalidRuleMessage() {
 			const newRule = this.newRule
-			const noMissingField = newRule.tagPending && newRule.tagApproved && newRule.tagRejected && newRule.approvers.length > 0
+			const noMissingField = newRule.description
+				&& newRule.tagPending
+				&& newRule.tagApproved
+				&& newRule.tagRejected
+				&& newRule.approvers.length > 0
 			if (!noMissingField) {
 				return t('approval', 'All fields are required')
 			}
@@ -230,7 +234,7 @@ export default {
 		},
 		onRuleInput(id, rule) {
 			// save if all values are set
-			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.approvers.length > 0) {
+			if (rule.description && rule.tagPending && rule.tagApproved && rule.tagRejected && rule.approvers.length > 0) {
 				this.savingRule = true
 				const req = {
 					tagPending: rule.tagPending,

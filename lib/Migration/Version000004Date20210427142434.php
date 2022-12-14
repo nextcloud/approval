@@ -6,6 +6,7 @@ namespace OCA\Approval\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
+use OCP\DB\Types;
 use OCP\Migration\SimpleMigrationStep;
 use OCP\Migration\IOutput;
 
@@ -34,27 +35,27 @@ class Version000004Date20210427142434 extends SimpleMigrationStep {
 
 		if (!$schema->hasTable('approval_activity')) {
 			$table = $schema->createTable('approval_activity');
-			$table->addColumn('id', 'integer', [
+			$table->addColumn('id', Types::INTEGER, [
 				'autoincrement' => true,
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('file_id', 'integer', [
+			$table->addColumn('file_id', Types::INTEGER, [
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('rule_id', 'integer', [
+			$table->addColumn('rule_id', Types::INTEGER, [
 				'notnull' => true,
 				'length' => 4,
 			]);
-			$table->addColumn('user_id', 'string', [
+			$table->addColumn('user_id', Types::STRING, [
 				'notnull' => true,
 				'length' => 300,
 			]);
-			$table->addColumn('new_state', 'integer', [
+			$table->addColumn('new_state', Types::INTEGER, [
 				'notnull' => true,
 			]);
-			$table->addColumn('timestamp', 'integer', [
+			$table->addColumn('timestamp', Types::INTEGER, [
 				'notnull' => true,
 				'length' => 4,
 			]);
