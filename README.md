@@ -47,6 +47,6 @@ make build
 
 ## Screenshots
 
-![1](https://github.com/eneiluj/approval/raw/master/img/screenshot_1.jpg)
-![2](https://github.com/eneiluj/approval/raw/master/img/screenshot_2.jpg)
-![3](https://github.com/eneiluj/approval/raw/master/img/screenshot_3.jpg)
+![1](https://github.com/nextcloud/approval/raw/main/img/screenshot_1.jpg)
+![2](https://github.com/nextcloud/approval/raw/main/img/screenshot_2.jpg)
+![3](https://github.com/nextcloud/approval/raw/main/img/screenshot_3.jpg)
