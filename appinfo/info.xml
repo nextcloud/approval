@@ -19,9 +19,9 @@
 	<category>workflow</category>
 	<website>https://github.com/eneiluj/approval</website>
 	<bugs>https://github.com/eneiluj/approval/issues</bugs>
-	<screenshot>https://github.com/eneiluj/approval/raw/master/img/screenshot_1.jpg</screenshot>
-	<screenshot>https://github.com/eneiluj/approval/raw/master/img/screenshot_2.jpg</screenshot>
-	<screenshot>https://github.com/eneiluj/approval/raw/master/img/screenshot_3.jpg</screenshot>
+	<screenshot>https://github.com/nextcloud/approval/raw/main/img/screenshot_1.jpg</screenshot>
+	<screenshot>https://github.com/nextcloud/approval/raw/main/img/screenshot_2.jpg</screenshot>
+	<screenshot>https://github.com/nextcloud/approval/raw/main/img/screenshot_3.jpg</screenshot>
 	<dependencies>
 		<nextcloud min-version="22" max-version="26"/>
 	</dependencies>
