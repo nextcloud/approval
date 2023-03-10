@@ -6,6 +6,7 @@ OC.L10N.register(
     "Approve" : "Godkend",
     "Reject" : "Afvis",
     "Approved" : "Godkendt",
+    "Approved by" : "Godkendt af",
     "you" : "dig",
     "No recommendations. Start typing." : "Ingen anbefalinger. Begynd at skrive.",
     "No result." : "Intet resultat",
