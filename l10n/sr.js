@@ -99,7 +99,7 @@ OC.L10N.register(
     "DocuSign integration" : "DocuSign интеграција",
     "DocuSign is an electronic signature solution." : "DocuSign је решење за електронско потписивање.",
     "If you want to use DocuSign, create an application in your DocuSign \"My Apps & Keys\" developer account settings and put the client ID (integration key) and secret below." : "Ако жеите да користите DocuSign, креирајте апликацију у својим DocuSign „My Apps & Keys” програмерским подешавањима налога наведите испод клијент ID (кључ интеграције) и тајну.",
-    "Make sure you set this \"Redirect URI\":" : "Осигурајте да поставите овај „Redirect URI:",
+    "Make sure you set this \"Redirect URI\":" : "Осигурајте да поставите овај „Redirect URI:”",
     "If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used." : "Ако је ваш DocuSign корисник придружен са више DocuSign налога, користиће се подразумевани.",
     "Client ID (aka integration key)" : "Клијент ID (познат као кључ интеграције)",
     "Client ID of your application" : "Клијент ID ваше апликације",
