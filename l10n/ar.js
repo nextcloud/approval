@@ -3,6 +3,10 @@ OC.L10N.register(
     {
     "You approved {file}" : "لقد وافقت {ملف}",
     "{user} approved {file}" : "<br>{مستخدم} تم الموافقة عليه {ملف}",
+    "Error during OAuth exchanges" : "خطأ أثناء تبادل OAuth.",
+    "Bad HTTP method" : "دالة HTTP  غير صحيحة",
+    "Bad credentials" : "رموز التعريف غير صحيحة",
+    "OAuth access token refused" : "أمارة token مرفوضة",
     "Create" : "إنشاء",
     "Cancel" : "إلغاء",
     "Reject" : "رفض",
