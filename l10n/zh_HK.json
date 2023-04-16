@@ -105,7 +105,7 @@
     "Secret key of your application" : "您應用程序的密鑰",
     "Connect to DocuSign" : "連線至 DocuSign",
     "Connected as {user} ({email})" : "以 {user}（{email}）身分連線",
-    "Disconnect from DocuSign" : "斷開與 DocuSign 的連接",
+    "Disconnect from DocuSign" : "與 DocuSign 斷開連線",
     "Successfully connected to DocuSign!" : "與 DocuSign 連線成功！",
     "OAuth access token could not be obtained:" : "無法獲得 OAuth 存取權杖：",
     "DocuSign admin options saved" : "已儲存 DocuSign 管理員選項",
