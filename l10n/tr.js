@@ -12,7 +12,7 @@ OC.L10N.register(
     "Approval" : "Onay",
     "<strong>Approval</strong> events" : "<strong>Onay</strong> işlemleri",
     "Error getting OAuth access token" : "OAuth erişim kodu alınırken sorun çıktı",
-    "Error during OAuth exchanges" : "OAuth takasında sorun çıktı",
+    "Error during OAuth exchanges" : "OAuth alış verişinde sorun çıktı",
     "Pending approvals" : "Onay bekleyen",
     "A file was approved" : "Bir dosya onaylandı",
     "A file was rejected" : "Bir dosya reddedildi",
