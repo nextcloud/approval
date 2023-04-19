@@ -15,6 +15,8 @@ use OCP\Files\Node;
 use OCP\IConfig;
 
 use OCP\IUser;
+use OCP\IGroup;
+use OCP\IGroupManager;
 use OCP\IUserManager;
 use OCP\Security\ICrypto;
 use OCP\Share\IManager as IShareManager;
@@ -31,6 +33,7 @@ class UtilsService {
 	public function __construct(
 		string $appName,
 		private IUserManager $userManager,
+		private IGroupManager $groupManager,
 		private IShareManager $shareManager,
 		private IRootFolder $root,
 		private ISystemTagManager $tagManager,
@@ -162,6 +165,26 @@ class UtilsService {
 			$userFolder = $this->root->getUserFolder($userId);
 			$found = $userFolder->getById($fileId);
 			return count($found) > 0;
+		}
+		return false;
+	}
+
+	/**
+	 * Return false if at least one member of the group does not have access to the file
+	 *
+	 * @param int $fileId
+	 * @param string|null $groupId
+	 * @return bool
+	 */
+	public function groupHasAccessTo(int $fileId, ?string $groupId): bool {
+		$group = $this->groupManager->get($groupId);
+		if ($group instanceof IGroup) {
+			foreach ($group->getUsers() as $groupUser) {
+				if (!$this->userHasAccessTo($fileId, $groupUser->getUID())) {
+					return false;
+				}
+			}
+			return true;
 		}
 		return false;
 	}

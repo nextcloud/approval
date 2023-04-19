@@ -532,7 +532,7 @@ class ApprovalService {
 		}
 		if ($this->shareManager->allowGroupSharing()) {
 			foreach ($rule['approvers'] as $approver) {
-				if ($approver['type'] === 'group') {
+				if ($approver['type'] === 'group' && !$this->utilsService->groupHasAccessTo($fileId, $approver['entityId'])) {
 					if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $fileOwner, $label)) {
 						$createdShares[] = $approver;
 					}
