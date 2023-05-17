@@ -13,7 +13,7 @@ OC.L10N.register(
     "<strong>Approval</strong> events" : "<strong>Aprovação</strong> eventos",
     "Error getting OAuth access token" : "Erro ao coletar token de acesso OAuth",
     "Error during OAuth exchanges" : "Erro durante as trocas de autenticação OAuth",
-    "Pending approvals" : "Pending approvals",
+    "Pending approvals" : "Aprovação pendente ",
     "A file was approved" : "O arquivo foi aprovado.",
     "A file was rejected" : "O arquivo foi rejeitado",
     "A directory was approved" : "O diretório foi aprovado",
