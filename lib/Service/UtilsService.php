@@ -12,10 +12,13 @@
 namespace OCA\Approval\Service;
 
 use Exception;
+use OCA\Approval\AppInfo\Application;
+use OCP\IConfig;
 use OCP\IUserManager;
 use OCP\IUser;
 use OCP\Files\IRootFolder;
 
+use OCP\Security\ICrypto;
 use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\TagAlreadyExistsException;
 use OCP\SystemTag\TagNotFoundException;
@@ -41,6 +44,14 @@ class UtilsService {
 	 * @var ISystemTagManager
 	 */
 	private $tagManager;
+	/**
+	 * @var ICrypto
+	 */
+	private $crypto;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
 
 	/**
 	 * Service providing storage, circles and tags tools
@@ -49,11 +60,44 @@ class UtilsService {
 								IUserManager $userManager,
 								IShareManager $shareManager,
 								IRootFolder $root,
-								ISystemTagManager $tagManager) {
+								ISystemTagManager $tagManager,
+								IConfig $config,
+								ICrypto $crypto) {
 		$this->userManager = $userManager;
 		$this->shareManager = $shareManager;
 		$this->root = $root;
 		$this->tagManager = $tagManager;
+		$this->crypto = $crypto;
+		$this->config = $config;
+	}
+
+	/**
+	 * Get decrypted app value
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public function getEncryptedAppValue(string $key): string {
+		$storedValue = $this->config->getAppValue(Application::APP_ID, $key);
+		if ($storedValue === '') {
+			return '';
+		}
+		return $this->crypto->decrypt($storedValue);
+	}
+
+	/**
+	 * Store encrypted client secret
+	 *
+	 * @param string $value
+	 * @return void
+	 */
+	public function setEncryptedAppValue(string $key, string $value): void {
+		if ($value === '') {
+			$this->config->setAppValue(Application::APP_ID, $key, '');
+		} else {
+			$encryptedClientSecret = $this->crypto->encrypt($value);
+			$this->config->setAppValue(Application::APP_ID, $key, $encryptedClientSecret);
+		}
 	}
 
 	/**

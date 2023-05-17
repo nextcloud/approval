@@ -24,7 +24,9 @@
 
 namespace OCA\Approval\Service;
 
+use OCP\IConfig;
 use OCP\IL10N;
+use OCP\Security\ICrypto;
 use OCP\SystemTag\ISystemTagObjectMapper;
 use OCP\Files\IRootFolder;
 use OCP\IUserManager;
@@ -120,7 +122,9 @@ class ApprovalServiceTest extends TestCase {
 			$c->get(IUserManager::class),
 			$c->get(IShareManager::class),
 			$c->get(IRootFolder::class),
-			$c->get(ISystemTagManager::class)
+			$c->get(ISystemTagManager::class),
+			$c->get(IConfig::class),
+			$c->get(ICrypto::class)
 		);
 		$this->ruleService = new RuleService(
 			'approval',

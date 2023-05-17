@@ -50,6 +50,10 @@ class DocusignAPIService {
 	 * @var IClient
 	 */
 	private $client;
+	/**
+	 * @var UtilsService
+	 */
+	private $utilsService;
 
 	/**
 	 * Service to make requests to DocuSign
@@ -60,7 +64,8 @@ class DocusignAPIService {
 								IL10N $l10n,
 								IConfig $config,
 								IRootFolder $root,
-								IClientService $clientService) {
+								IClientService $clientService,
+								UtilsService $utilsService) {
 		$this->appName = $appName;
 		$this->userManager = $userManager;
 		$this->logger = $logger;
@@ -68,6 +73,7 @@ class DocusignAPIService {
 		$this->config = $config;
 		$this->root = $root;
 		$this->client = $clientService->newClient();
+		$this->utilsService = $utilsService;
 	}
 
 	/**
@@ -179,7 +185,7 @@ class DocusignAPIService {
 		$accessToken = $this->config->getAppValue(Application::APP_ID, 'docusign_token');
 		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret');
+		$clientSecret = $this->utilsService->getEncryptedAppValue('docusign_client_secret');
 		$accountId = $this->config->getAppValue(Application::APP_ID, 'docusign_user_account_id');
 		$baseURI = $this->config->getAppValue(Application::APP_ID, 'docusign_user_base_uri');
 
