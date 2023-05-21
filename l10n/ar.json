@@ -14,7 +14,7 @@
     "Your approval was requested" : "تم ارسال طلب الموافقة",
     "You are not authorized to request with this rule" : "غير مصرح لك",
     "Bad HTTP method" : "دالة HTTP  غير صحيحة",
-    "Bad credentials" : "رموز التعريف غير صحيحة",
+    "Bad credentials" : "معلومات تسجيل الدخول غير صحيحة",
     "OAuth access token refused" : "أمارة token مرفوضة",
     "Create" : "إنشاء",
     "Cancel" : "إلغاء",
