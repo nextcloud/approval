@@ -84,7 +84,7 @@ class DocusignController extends Controller {
 	public function signByApprover(int $fileId, ?string $requesterUserId = null): DataResponse {
 		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret');
+		$clientSecret = $this->utilsService->getEncryptedAppValue('docusign_client_secret');
 		$isConnected = ($token !== '' && $clientID !== '' && $clientSecret !== '');
 		if (!$isConnected) {
 			return new DataResponse(['error' => 'DocuSign admin connected account is not configured'], 401);
@@ -111,7 +111,7 @@ class DocusignController extends Controller {
 	public function signStandalone(int $fileId, array $targetEmails = [], array $targetUserIds = []): DataResponse {
 		$token = $this->config->getAppValue(Application::APP_ID, 'docusign_token');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret');
+		$clientSecret = $this->utilsService->getEncryptedAppValue('docusign_client_secret');
 		$isConnected = ($token !== '' && $clientID !== '' && $clientSecret !== '');
 		if (!$isConnected) {
 			return new DataResponse(['error' => 'DocuSign admin connected account is not configured'], 401);
@@ -135,7 +135,11 @@ class DocusignController extends Controller {
 	 */
 	public function setDocusignConfig(array $values): DataResponse {
 		foreach ($values as $key => $value) {
-			$this->config->setAppValue(Application::APP_ID, $key, $value);
+			if ($key === 'docusign_client_secret') {
+				$this->utilsService->setEncryptedAppValue($key, $value);
+			} else {
+				$this->config->setAppValue(Application::APP_ID, $key, $value);
+			}
 		}
 		$result = [];
 
@@ -168,7 +172,7 @@ class DocusignController extends Controller {
 	public function oauthRedirect(string $code = '', string $state = ''): RedirectResponse {
 		$configState = $this->config->getAppValue(Application::APP_ID, 'docusign_oauth_state');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret');
+		$clientSecret = $this->utilsService->getEncryptedAppValue('docusign_client_secret');
 
 		// anyway, reset state
 		$this->config->deleteAppValue(Application::APP_ID, 'docusign_oauth_state');
@@ -214,7 +218,7 @@ class DocusignController extends Controller {
 	private function storeUserInfo(string $accessToken): array {
 		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'docusign_client_secret');
+		$clientSecret = $this->utilsService->getEncryptedAppValue('docusign_client_secret');
 
 		$url = Application::DOCUSIGN_USER_INFO_REQUEST_URL;
 
