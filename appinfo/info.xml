@@ -23,7 +23,7 @@
 	<screenshot>https://github.com/nextcloud/approval/raw/main/img/screenshot_2.jpg</screenshot>
 	<screenshot>https://github.com/nextcloud/approval/raw/main/img/screenshot_3.jpg</screenshot>
 	<dependencies>
-		<nextcloud min-version="22" max-version="27"/>
+		<nextcloud min-version="24" max-version="28"/>
 	</dependencies>
 	<settings>
 		<admin>OCA\Approval\Settings\Admin</admin>
