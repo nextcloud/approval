@@ -11,6 +11,7 @@ OC.L10N.register(
     "Approve" : "Aprobar",
     "Reject" : "Rexeitar",
     "Approved" : "Aprobado",
+    "Approved by" : "Aprobado por",
     "you" : "vostede",
     "OAuth access token could not be obtained:" : "Non foi posíbel obter o testemuño de acceso OAuth",
     "No recommendations. Start typing." : "Non hai recomendacións. Comece a escribir.",
