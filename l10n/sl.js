@@ -76,7 +76,7 @@ OC.L10N.register(
     "Rejected" : "Zavrnjeno",
     "Rejected by" : "Zavrnjeno:",
     "Approval requested by" : "Odobritev je zahtevana od",
-    "Approval requested" : "Odobritev zahtevana",
+    "Approval requested" : "Zahtevana je odobritev",
     "you" : "vi",
     "Request approval" : "Zahtevaj odobritev",
     "Sign with DocuSign" : "Podpiši z DocuSign",
