@@ -16,6 +16,6 @@ OC.L10N.register(
     "OAuth access token could not be obtained:" : "Non foi posíbel obter o testemuño de acceso OAuth",
     "No recommendations. Start typing." : "Non hai recomendacións. Comece a escribir.",
     "No result." : "Sen resultados.",
-    "Warning" : "Aviso"
+    "Warning" : "Advertencia"
 },
 "nplurals=2; plural=(n != 1);");
