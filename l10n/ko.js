@@ -95,7 +95,7 @@ OC.L10N.register(
     "Failed to request signature with DocuSign" : "DocuSign에서 서명을 요청하는데 실패했습니다",
     "DocuSign integration" : "DocuSign 통합",
     "DocuSign is an electronic signature solution." : "DocuSign은 전자 서명 솔루션입니다",
-    "If you want to use DocuSign, create an application in your DocuSign \"My Apps & Keys\" developer account settings and put the client ID (integration key) and secret below." : "만약 당신이 DocuSign을 이용하고 싶으시다면, 당신의 DocuSign의 \"My Apps & Keys\" 개발자 계정 설정에서 신청서를 생성하고 그 안에   클라이언트 ID(통합 key)와 비밀번호를 입력하십시오.",
+    "If you want to use DocuSign, create an application in your DocuSign \"My Apps & Keys\" developer account settings and put the client ID (integration key) and secret below." : "DocuSign을 이용하려면, 당신의 DocuSign의 \"My Apps & Keys\" 개발자 계정 설정에서 신청서를 제출하고 그 안에 클라이언트 ID(통합 key)와 암호를 입력하십시오.",
     "Make sure you set this \"Redirect URI\":" : "\"Redirect URI\"를 설정하는 것을 잊지 마십시오:",
     "If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used." : "만약 당신의 DocuSign 사용자가 다수의 DocuSign 계정으로 이루어져 있다면, 기본 계정이 사용될 것입니다",
     "Client ID (aka integration key)" : "클라이언트 ID(통합 key라고도 불립니다)",

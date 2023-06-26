@@ -17,6 +17,7 @@ OC.L10N.register(
     "Approve" : "אישור",
     "Reject" : "דחייה",
     "Approved" : "מאושר",
+    "Approved by" : "אושר ע״י",
     "you" : "את/ה",
     "No recommendations. Start typing." : "אין המלצות. נא להתחיל להקליד.",
     "No result." : "אין תוצאות.",
