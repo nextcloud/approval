@@ -83,7 +83,7 @@ OC.L10N.register(
     "Sign with LibreSign" : "Podpiši z LibreSign",
     "Your approval was requested by {name}." : "{name} zahteva vašo odobritev.",
     "Your approval was requested." : "Podana je zahteva za odobritev.",
-    "Request a signature via DocuSign" : "Zahtevaj podpis s DocuSign",
+    "Request a signature via DocuSign" : "Zahtevaj podpis z DocuSign",
     "Users or email addresses" : "Uporabniki oziroma elektronski naslovi",
     "Nextcloud users or email addresses" : "Uporabniki Nextcloud oziroma elektronski naslovi",
     "Recipients will receive an email from DocuSign with a link to sign the document. You will be informed by email when the document has been signed by all recipients." : "Prejemniki prejmejo sporočilo DocuSign s povezavo do dokumenta za podpis. Obvestilo o končanju postopka prejmete, ko ga vsi prejemniki podpišejo.",
