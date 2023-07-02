@@ -28,6 +28,7 @@ OC.L10N.register(
     "you" : "أنت",
     "Request approval" : "طلب موافقة",
     "Sign with DocuSign" : "تسجيل الدخول بواسطة DocuSign",
+    "Connected as {user} ({email})" : "متصل بصفته {مستخدم} ({البريد الإلكتروني})",
     "No recommendations. Start typing." : "لا توجد توصيات. ابدأ بالكتابة.",
     "No result." : "لا يوجد نتيجة",
     "Warning" : "تحذير"
