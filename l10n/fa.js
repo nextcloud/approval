@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Create" : "ساخت",
     "Cancel" : "لغو",
+    "Approve" : "تأیید",
     "Reject" : "رد کردن",
     "Approved" : "تایید شده",
     "you" : "شما",
