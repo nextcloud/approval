@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.13 – 2023-07-06
+
+### Changed
+
+- Bump max Nextcloud version to 28 [#56](https://github.com/nextcloud/approval/pull/56) @julien-nc
+- Store encrypted docusign client secret, make sure old stored value gets encrypted [#54](https://github.com/nextcloud/approval/pull/54) @julien-nc
+
+### Fixed
+
+- Adjust screenshots URLs which were outdated [#45](https://github.com/nextcloud/approval/pull/45) @julien-nc
+
 ## 1.0.12 – 2022-12-14
 ### Fixed
 - Issue with empty string default value on notNull DB column
