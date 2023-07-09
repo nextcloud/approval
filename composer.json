@@ -11,8 +11,7 @@
 		"cs:fix": "php-cs-fixer fix",
 		"cs:check": "php-cs-fixer fix --dry-run --diff",
 		"lint": "find . -name \\*.php -not -path './vendor/*' -print0 | xargs -0 -n1 php -l",
-		"test:unit": "phpunit -c phpunit.xml --fail-on-warning",
-		"test:integration": "phpunit -c phpunit.integration.xml --fail-on-warning"
+		"test:unit": "phpunit -c tests/phpunit.xml --fail-on-warning"
 	},
 	"require-dev": {
 		"christophwurst/nextcloud_testing": "^0.12.4",
