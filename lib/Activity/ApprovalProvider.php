@@ -25,14 +25,14 @@ namespace OCA\Approval\Activity;
 
 use Exception;
 use InvalidArgumentException;
+use OCA\Approval\AppInfo\Application;
 use OCP\Activity\IEvent;
 use OCP\Activity\IProvider;
+use OCP\Files\IRootFolder;
 use OCP\IConfig;
 use OCP\IURLGenerator;
-use OCP\IUserManager;
-use OCP\Files\IRootFolder;
 
-use OCA\Approval\AppInfo\Application;
+use OCP\IUserManager;
 
 class ApprovalProvider implements IProvider {
 
@@ -52,11 +52,11 @@ class ApprovalProvider implements IProvider {
 	private $root;
 
 	public function __construct(IURLGenerator $urlGenerator,
-								IRootFolder $root,
-								ActivityManager $activityManager,
-								IUserManager $userManager,
-								IConfig $config,
-								?string $userId) {
+		IRootFolder $root,
+		ActivityManager $activityManager,
+		IUserManager $userManager,
+		IConfig $config,
+		?string $userId) {
 		$this->userId = $userId;
 		$this->urlGenerator = $urlGenerator;
 		$this->activityManager = $activityManager;

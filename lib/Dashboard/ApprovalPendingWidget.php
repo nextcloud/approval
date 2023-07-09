@@ -23,12 +23,12 @@
 
 namespace OCA\Approval\Dashboard;
 
+use OCA\Approval\AppInfo\Application;
 use OCP\Dashboard\IWidget;
 use OCP\IL10N;
 use OCP\IURLGenerator;
-use OCP\Util;
 
-use OCA\Approval\AppInfo\Application;
+use OCP\Util;
 
 class ApprovalPendingWidget implements IWidget {
 
@@ -40,7 +40,7 @@ class ApprovalPendingWidget implements IWidget {
 	private $url;
 
 	public function __construct(IL10N $l10n,
-								IURLGenerator $url) {
+		IURLGenerator $url) {
 		$this->l10n = $l10n;
 		$this->url = $url;
 	}
@@ -78,7 +78,7 @@ class ApprovalPendingWidget implements IWidget {
 	 */
 	public function getUrl(): ?string {
 		return '';
-//		return $this->url->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']);
+		//		return $this->url->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']);
 	}
 
 	/**

@@ -2,13 +2,13 @@
 
 namespace OCA\Approval\Settings;
 
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AppFramework\Services\IInitialState;
-use OCP\IConfig;
-use OCP\Settings\ISettings;
-
 use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Service\DocusignAPIService;
+use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Services\IInitialState;
+
+use OCP\IConfig;
+use OCP\Settings\ISettings;
 
 class Admin implements ISettings {
 	private $config;
@@ -26,10 +26,10 @@ class Admin implements ISettings {
 	private $userId;
 
 	public function __construct(string $appName,
-								IConfig $config,
-								IInitialState $initialStateService,
-								DocusignAPIService $docusignAPIService,
-								?string $userId) {
+		IConfig $config,
+		IInitialState $initialStateService,
+		DocusignAPIService $docusignAPIService,
+		?string $userId) {
 		$this->config = $config;
 		$this->initialStateService = $initialStateService;
 		$this->docusignAPIService = $docusignAPIService;

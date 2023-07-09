@@ -11,18 +11,18 @@
 
 namespace OCA\Approval\Controller;
 
-use OCP\IConfig;
-use OCP\IL10N;
-use OCP\IURLGenerator;
+use OCA\Approval\AppInfo\Application;
+use OCA\Approval\Service\DocusignAPIService;
+use OCA\Approval\Service\UtilsService;
 
-use OCP\IRequest;
+use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
-use OCP\AppFramework\Controller;
+use OCP\IConfig;
 
-use OCA\Approval\AppInfo\Application;
-use OCA\Approval\Service\UtilsService;
-use OCA\Approval\Service\DocusignAPIService;
+use OCP\IL10N;
+use OCP\IRequest;
+use OCP\IURLGenerator;
 
 class DocusignController extends Controller {
 	private $userId;
@@ -45,13 +45,13 @@ class DocusignController extends Controller {
 	private $utilsService;
 
 	public function __construct($AppName,
-								IRequest $request,
-								IConfig $config,
-								IL10N $l,
-								IURLGenerator $urlGenerator,
-								DocusignAPIService $docusignAPIService,
-								UtilsService $utilsService,
-								?string $userId) {
+		IRequest $request,
+		IConfig $config,
+		IL10N $l,
+		IURLGenerator $urlGenerator,
+		DocusignAPIService $docusignAPIService,
+		UtilsService $utilsService,
+		?string $userId) {
 		parent::__construct($AppName, $request);
 		$this->config = $config;
 		$this->l = $l;

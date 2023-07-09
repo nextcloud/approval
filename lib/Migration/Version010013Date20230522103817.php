@@ -8,8 +8,8 @@ use Closure;
 use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Service\UtilsService;
 use OCP\IConfig;
-use OCP\Migration\SimpleMigrationStep;
 use OCP\Migration\IOutput;
+use OCP\Migration\SimpleMigrationStep;
 
 class Version010013Date20230522103817 extends SimpleMigrationStep {
 

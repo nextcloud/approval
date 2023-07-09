@@ -13,19 +13,19 @@ namespace OCA\Approval\Service;
 
 use Exception;
 use OCA\Approval\AppInfo\Application;
-use OCP\IConfig;
-use OCP\IUserManager;
-use OCP\IUser;
+use OCP\Constants;
 use OCP\Files\IRootFolder;
+use OCP\Files\Node;
+use OCP\IConfig;
 
+use OCP\IUser;
+use OCP\IUserManager;
 use OCP\Security\ICrypto;
+use OCP\Share\IManager as IShareManager;
+use OCP\Share\IShare;
 use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\TagAlreadyExistsException;
 use OCP\SystemTag\TagNotFoundException;
-use OCP\Files\Node;
-use OCP\Share\IManager as IShareManager;
-use OCP\Share\IShare;
-use OCP\Constants;
 
 class UtilsService {
 	/**
@@ -57,12 +57,12 @@ class UtilsService {
 	 * Service providing storage, circles and tags tools
 	 */
 	public function __construct(string $appName,
-								IUserManager $userManager,
-								IShareManager $shareManager,
-								IRootFolder $root,
-								ISystemTagManager $tagManager,
-								IConfig $config,
-								ICrypto $crypto) {
+		IUserManager $userManager,
+		IShareManager $shareManager,
+		IRootFolder $root,
+		ISystemTagManager $tagManager,
+		IConfig $config,
+		ICrypto $crypto) {
 		$this->userManager = $userManager;
 		$this->shareManager = $shareManager;
 		$this->root = $root;

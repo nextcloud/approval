@@ -25,15 +25,15 @@ namespace OCA\Approval\Activity;
 
 use Exception;
 use OC\Files\Node\Node;
+use OCA\Approval\AppInfo\Application;
 use OCP\Activity\IEvent;
 use OCP\Activity\IManager;
-use OCP\IUserManager;
+use OCP\Files\IRootFolder;
 use OCP\IL10N;
 use OCP\IUser;
-use OCP\Files\IRootFolder;
-use Psr\Log\LoggerInterface;
+use OCP\IUserManager;
 
-use OCA\Approval\AppInfo\Application;
+use Psr\Log\LoggerInterface;
 
 class ActivityManager {
 
@@ -70,11 +70,11 @@ class ActivityManager {
 	private $userId;
 
 	public function __construct(IManager $manager,
-								IL10N $l10n,
-								IRootFolder $root,
-								IUserManager $userManager,
-								LoggerInterface $logger,
-								?string $userId) {
+		IL10N $l10n,
+		IRootFolder $root,
+		IUserManager $userManager,
+		LoggerInterface $logger,
+		?string $userId) {
 		$this->manager = $manager;
 		$this->l10n = $l10n;
 		$this->root = $root;

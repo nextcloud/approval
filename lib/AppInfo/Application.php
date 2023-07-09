@@ -9,22 +9,21 @@
 
 namespace OCA\Approval\AppInfo;
 
+use OCA\Approval\Dashboard\ApprovalPendingWidget;
 use OCA\Approval\Dav\ApprovalPlugin;
-use OCP\Util;
-use OCP\EventDispatcher\IEventDispatcher;
-use OCA\Files\Event\LoadAdditionalScriptsEvent;
+use OCA\Approval\Notification\Notifier;
+use OCA\Approval\Service\ApprovalService;
 
+use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCP\AppFramework\App;
-use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
-use OCP\Notification\IManager as INotificationManager;
-use OCP\SystemTag\MapperEvent;
-use OCP\SabrePluginEvent;
+use OCP\AppFramework\Bootstrap\IRegistrationContext;
+use OCP\EventDispatcher\IEventDispatcher;
 
-use OCA\Approval\Service\ApprovalService;
-use OCA\Approval\Notification\Notifier;
-use OCA\Approval\Dashboard\ApprovalPendingWidget;
+use OCP\SabrePluginEvent;
+use OCP\SystemTag\MapperEvent;
+use OCP\Util;
 
 /**
  * Class Application
