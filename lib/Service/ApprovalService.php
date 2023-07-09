@@ -321,10 +321,11 @@ class ApprovalService {
 	 * Get approval state of a given file for a given user
 	 * @param int $fileId
 	 * @param string|null $userId
+	 * @param bool $userHasAccessChecked whether we already checked if a user has access
 	 * @return array state and rule id
 	 */
-	public function getApprovalState(int $fileId, ?string $userId): array {
-		if (is_null($userId) || !$this->utilsService->userHasAccessTo($fileId, $userId)) {
+	public function getApprovalState(int $fileId, ?string $userId, bool $userHasAccessChecked = false): array {
+		if (is_null($userId) || !($userHasAccessChecked || $this->utilsService->userHasAccessTo($fileId, $userId))) {
 			return ['state' => Application::STATE_NOTHING];
 		}
 
@@ -858,11 +859,10 @@ class ApprovalService {
 			return;
 		}
 		$nodeId = $node->getId();
-		// get state
-		$state = $this->getApprovalState($nodeId, $this->userId);
 
 		$propFind->handle(
-			Application::DAV_PROPERTY_APPROVAL_STATE, function() use ($nodeId, $state) {
+			Application::DAV_PROPERTY_APPROVAL_STATE, function() use ($nodeId) {
+				$state = $this->getApprovalState($nodeId, $this->userId, true);
 				return $state['state'];
 			}
 		);

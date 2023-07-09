@@ -40,6 +40,7 @@ class RuleService {
 	 * @var string[]
 	 */
 	private $intTypeToStr;
+	private ?array $cachedRules = null;
 
 	/**
 	 * Service to manage approval rules
@@ -130,6 +131,7 @@ class RuleService {
 	 */
 	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected,
 							array $approvers, array $requesters, string $description): array {
+		$this->cachedRules = null;
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Invalid rule'];
 		}
@@ -237,6 +239,7 @@ class RuleService {
 	 */
 	public function createRule(int $tagPending, int $tagApproved, int $tagRejected,
 								array $approvers, array $requesters, string $description): array {
+		$this->cachedRules = null;
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Rule is invalid'];
 		}
@@ -289,6 +292,7 @@ class RuleService {
 	 * @return array potential error
 	 */
 	public function deleteRule(int $id): array {
+		$this->cachedRules = null;
 		if (is_null($this->getRule($id))) {
 			return ['error' => 'Rule does not exist'];
 		}
@@ -376,37 +380,40 @@ class RuleService {
 	 * @return array
 	 */
 	public function getRules(): array {
-		$rules = [];
-		$qb = $this->db->getQueryBuilder();
+		if ($this->cachedRules === null) {
+			$rules = [];
+			$qb = $this->db->getQueryBuilder();
 
-		$qb->select('*')
-			->from('approval_rules');
-		$req = $qb->executeQuery();
-		while ($row = $req->fetch()) {
-			$id = (int) $row['id'];
-			$tagPending = (int) $row['tag_pending'];
-			$tagApproved = (int) $row['tag_approved'];
-			$tagRejected = (int) $row['tag_rejected'];
-			$description = $row['description'];
-			$rules[$id] = [
-				'id' => $id,
-				'tagPending' => $tagPending,
-				'tagApproved' => $tagApproved,
-				'tagRejected' => $tagRejected,
-				'description' => $description,
-				'approvers' => [],
-				'requesters' => [],
-			];
+			$qb->select('*')
+				->from('approval_rules');
+			$req = $qb->executeQuery();
+			while ($row = $req->fetch()) {
+				$id = (int)$row['id'];
+				$tagPending = (int)$row['tag_pending'];
+				$tagApproved = (int)$row['tag_approved'];
+				$tagRejected = (int)$row['tag_rejected'];
+				$description = $row['description'];
+				$rules[$id] = [
+					'id' => $id,
+					'tagPending' => $tagPending,
+					'tagApproved' => $tagApproved,
+					'tagRejected' => $tagRejected,
+					'description' => $description,
+					'approvers' => [],
+					'requesters' => [],
+				];
+			}
+			$req->closeCursor();
+			$qb->resetQueryParts();
+
+			foreach ($rules as $id => $rule) {
+				$rules[$id]['approvers'] = $this->getRuleEntities($id, 'approvers');
+				$rules[$id]['requesters'] = $this->getRuleEntities($id, 'requesters');
+			}
+			$this->cachedRules = $rules;
 		}
-		$req->closeCursor();
-		$qb->resetQueryParts();
 
-		foreach ($rules as $id => $rule) {
-			$rules[$id]['approvers'] = $this->getRuleEntities($id, 'approvers');
-			$rules[$id]['requesters'] = $this->getRuleEntities($id, 'requesters');
-		}
-
-		return $rules;
+		return $this->cachedRules;
 	}
 
 	/**

@@ -11,6 +11,7 @@ OC.L10N.register(
     "Reject" : "Одбиј",
     "Approved" : "Одобрен",
     "you" : "ти",
+    "Connected as {user} ({email})" : "Поврзан како {user} ({email})",
     "No recommendations. Start typing." : "Нема препораки. Започнете со пишување.",
     "No result." : "Нема резултати.",
     "Warning" : "Предупредување"
