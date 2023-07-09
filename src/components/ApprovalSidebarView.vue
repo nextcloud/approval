@@ -399,7 +399,7 @@ export default {
 	}
 }
 
-::v-deep.info-modal {
+:deep(.info-modal) {
 	padding: 16px;
 	width: 100%;
 	overflow: scroll;

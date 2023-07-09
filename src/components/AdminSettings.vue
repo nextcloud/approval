@@ -371,7 +371,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-::v-deep .multiselect__input {
+:deep(.multiselect__input) {
 	height: 34px !important;
 }
 
