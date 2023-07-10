@@ -399,9 +399,8 @@ export default {
 	}
 }
 
-:deep(.info-modal) {
+.info-modal {
 	padding: 16px;
-	width: 100%;
 	overflow: scroll;
 }
 
