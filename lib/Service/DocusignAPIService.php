@@ -12,19 +12,19 @@
 namespace OCA\Approval\Service;
 
 use Exception;
-use OCP\Http\Client\IClient;
-use OCP\IL10N;
-use Psr\Log\LoggerInterface;
-use OCP\IConfig;
-use OCP\IUserManager;
-use OCP\Files\File;
-use OCP\Http\Client\IClientService;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\ConnectException;
-use OCP\Files\IRootFolder;
-
+use GuzzleHttp\Exception\ServerException;
 use OCA\Approval\AppInfo\Application;
+use OCP\Files\File;
+use OCP\Files\IRootFolder;
+use OCP\Http\Client\IClient;
+use OCP\Http\Client\IClientService;
+use OCP\IConfig;
+use OCP\IL10N;
+use OCP\IUserManager;
+
+use Psr\Log\LoggerInterface;
 
 class DocusignAPIService {
 
@@ -58,14 +58,14 @@ class DocusignAPIService {
 	/**
 	 * Service to make requests to DocuSign
 	 */
-	public function __construct (IUserManager $userManager,
-								string $appName,
-								LoggerInterface $logger,
-								IL10N $l10n,
-								IConfig $config,
-								IRootFolder $root,
-								IClientService $clientService,
-								UtilsService $utilsService) {
+	public function __construct(IUserManager $userManager,
+		string $appName,
+		LoggerInterface $logger,
+		IL10N $l10n,
+		IConfig $config,
+		IRootFolder $root,
+		IClientService $clientService,
+		UtilsService $utilsService) {
 		$this->appName = $appName;
 		$this->userManager = $userManager;
 		$this->logger = $logger;
@@ -180,8 +180,8 @@ class DocusignAPIService {
 	 * @return array request result
 	 */
 	public function emailSignRequest(File $file,
-									array $signers,
-									?string $ccEmail, ?string $ccName): array {
+		array $signers,
+		?string $ccEmail, ?string $ccName): array {
 		$accessToken = $this->config->getAppValue(Application::APP_ID, 'docusign_token');
 		$refreshToken = $this->config->getAppValue(Application::APP_ID, 'docusign_refresh_token');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'docusign_client_id');
@@ -260,13 +260,13 @@ class DocusignAPIService {
 	 * @throws Exception
 	 */
 	public function apiRequest(?string $baseUrl, string $accessToken, string $refreshToken,
-							string $clientID, string $clientSecret,
-							string $endPoint = '', array $params = [], string $method = 'GET'): array {
+		string $clientID, string $clientSecret,
+		string $endPoint = '', array $params = [], string $method = 'GET'): array {
 		try {
 			$url = $baseUrl . $endPoint;
 			$options = [
 				'headers' => [
-					'Authorization'  => 'Bearer ' . $accessToken,
+					'Authorization' => 'Bearer ' . $accessToken,
 					'User-Agent' => 'Nextcloud DocuSign integration',
 					'Content-Type' => 'application/json',
 				]
@@ -293,11 +293,11 @@ class DocusignAPIService {
 
 			if ($method === 'GET') {
 				$response = $this->client->get($url, $options);
-			} else if ($method === 'POST') {
+			} elseif ($method === 'POST') {
 				$response = $this->client->post($url, $options);
-			} else if ($method === 'PUT') {
+			} elseif ($method === 'PUT') {
 				$response = $this->client->put($url, $options);
-			} else if ($method === 'DELETE') {
+			} elseif ($method === 'DELETE') {
 				$response = $this->client->delete($url, $options);
 			} else {
 				return ['error' => $this->l10n->t('Bad HTTP method')];
@@ -363,7 +363,7 @@ class DocusignAPIService {
 	 * @return array
 	 */
 	public function requestOAuthAccessToken(string $url, string $clientId, string $clientSecret,
-											array $params = [], string $method = 'GET'): array {
+		array $params = [], string $method = 'GET'): array {
 		try {
 			$b64Credentials = base64_encode($clientId . ':' . $clientSecret);
 			$options = [
@@ -384,11 +384,11 @@ class DocusignAPIService {
 
 			if ($method === 'GET') {
 				$response = $this->client->get($url, $options);
-			} else if ($method === 'POST') {
+			} elseif ($method === 'POST') {
 				$response = $this->client->post($url, $options);
-			} else if ($method === 'PUT') {
+			} elseif ($method === 'PUT') {
 				$response = $this->client->put($url, $options);
-			} else if ($method === 'DELETE') {
+			} elseif ($method === 'DELETE') {
 				$response = $this->client->delete($url, $options);
 			} else {
 				return ['error' => $this->l10n->t('Bad HTTP method')];

@@ -12,16 +12,16 @@
 namespace OCA\Approval\Notification;
 
 use InvalidArgumentException;
-use OCP\IURLGenerator;
-use OCP\IUserManager;
-use OCP\IUser;
+use OCA\Approval\AppInfo\Application;
 use OCP\IConfig;
+use OCP\IURLGenerator;
+use OCP\IUser;
+use OCP\IUserManager;
 use OCP\L10N\IFactory;
 use OCP\Notification\IManager as INotificationManager;
 use OCP\Notification\INotification;
-use OCP\Notification\INotifier;
 
-use OCA\Approval\AppInfo\Application;
+use OCP\Notification\INotifier;
 
 class Notifier implements INotifier {
 
@@ -54,11 +54,11 @@ class Notifier implements INotifier {
 	 * @param string|null $userId
 	 */
 	public function __construct(IFactory $factory,
-								IUserManager $userManager,
-								INotificationManager $notificationManager,
-								IURLGenerator $urlGenerator,
-								IConfig $config,
-								?string $userId) {
+		IUserManager $userManager,
+		INotificationManager $notificationManager,
+		IURLGenerator $urlGenerator,
+		IConfig $config,
+		?string $userId) {
 		$this->factory = $factory;
 		$this->userManager = $userManager;
 		$this->notificationManager = $notificationManager;
@@ -102,105 +102,105 @@ class Notifier implements INotifier {
 		$l = $this->factory->get(Application::APP_ID, $languageCode);
 
 		switch ($notification->getSubject()) {
-		case 'approved':
-		case 'rejected':
-			$p = $notification->getSubjectParameters();
+			case 'approved':
+			case 'rejected':
+				$p = $notification->getSubjectParameters();
 
-			$user = $this->userManager->get($p['approverId']);
-			if ($user instanceof IUser) {
-				$richSubjectUser = [
-					'type' => 'user',
-					'id' => $p['approverId'],
-					'name' => $user->getDisplayName(),
-				];
+				$user = $this->userManager->get($p['approverId']);
+				if ($user instanceof IUser) {
+					$richSubjectUser = [
+						'type' => 'user',
+						'id' => $p['approverId'],
+						'name' => $user->getDisplayName(),
+					];
 
-				$linkToFile = $this->url->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileid' => $p['fileId']]);
-				$richSubjectNode = [
-					'type' => 'file',
-					'id' => $p['fileId'],
-					'name' => $p['fileName'],
-					'path' => trim($p['relativePath'], '/'),
-					'link' => $linkToFile,
-				];
+					$linkToFile = $this->url->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileid' => $p['fileId']]);
+					$richSubjectNode = [
+						'type' => 'file',
+						'id' => $p['fileId'],
+						'name' => $p['fileName'],
+						'path' => trim($p['relativePath'], '/'),
+						'link' => $linkToFile,
+					];
 
-				$subject = $p['type'] === 'file'
-					? ($notification->getSubject() === 'approved'
-						? $l->t('A file was approved')
-						: $l->t('A file was rejected'))
-					: ($notification->getSubject() === 'approved'
-						? $l->t('A directory was approved')
-						: $l->t('A directory was rejected'));
-				$content = $notification->getSubject() === 'approved'
-					? $l->t('%1$s approved %2$s', [$user->getDisplayName(), $p['fileName']])
-					: $l->t('%1$s rejected %2$s', [$user->getDisplayName(), $p['fileName']]);
+					$subject = $p['type'] === 'file'
+						? ($notification->getSubject() === 'approved'
+							? $l->t('A file was approved')
+							: $l->t('A file was rejected'))
+						: ($notification->getSubject() === 'approved'
+							? $l->t('A directory was approved')
+							: $l->t('A directory was rejected'));
+					$content = $notification->getSubject() === 'approved'
+						? $l->t('%1$s approved %2$s', [$user->getDisplayName(), $p['fileName']])
+						: $l->t('%1$s rejected %2$s', [$user->getDisplayName(), $p['fileName']]);
 
-				$iconUrl = $notification->getSubject() === 'approved'
-					? $this->url->getAbsoluteURL(
-						$this->url->imagePath(Application::APP_ID, 'checkmark-green.svg')
-					)
-					: $this->url->getAbsoluteURL(
-						$this->url->imagePath(Application::APP_ID, 'close-red.svg')
+					$iconUrl = $notification->getSubject() === 'approved'
+						? $this->url->getAbsoluteURL(
+							$this->url->imagePath(Application::APP_ID, 'checkmark-green.svg')
+						)
+						: $this->url->getAbsoluteURL(
+							$this->url->imagePath(Application::APP_ID, 'close-red.svg')
+						);
+
+					$notification
+						->setParsedSubject($subject)
+						->setParsedMessage($content)
+						->setLink($linkToFile)
+						->setRichMessage(
+							$notification->getSubject() === 'approved' ? $l->t('{user} approved {node}') : $l->t('{user} rejected {node}'),
+							[
+								'user' => $richSubjectUser,
+								'node' => $richSubjectNode,
+							]
+						)
+						->setIcon($iconUrl);
+				}
+				return $notification;
+
+			case 'manual_request':
+				$p = $notification->getSubjectParameters();
+
+				$user = $this->userManager->get($p['requesterId']);
+				if ($user instanceof IUser) {
+					$richSubjectUser = [
+						'type' => 'user',
+						'id' => $p['requesterId'],
+						'name' => $user->getDisplayName(),
+					];
+
+					$linkToFile = $this->url->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileid' => $p['fileId']]);
+					$richSubjectNode = [
+						'type' => 'file',
+						'id' => $p['fileId'],
+						'name' => $p['fileName'],
+						'path' => trim($p['relativePath'], '/'),
+						'link' => $linkToFile,
+					];
+
+					$subject = $l->t('Your approval was requested');
+					$content = $l->t('%2$s requested your approval for %1$s', [$p['fileName'], $user->getDisplayName()]);
+					$iconUrl = $this->url->getAbsoluteURL(
+						$this->url->imagePath('core', 'actions/more.svg')
 					);
 
-				$notification
-					->setParsedSubject($subject)
-					->setParsedMessage($content)
-					->setLink($linkToFile)
-					->setRichMessage(
-						$notification->getSubject() === 'approved' ? $l->t('{user} approved {node}') : $l->t('{user} rejected {node}'),
-						[
-							'user' => $richSubjectUser,
-							'node' => $richSubjectNode,
-						]
-					)
-					->setIcon($iconUrl);
-			}
-			return $notification;
+					$notification
+						->setParsedSubject($subject)
+						->setParsedMessage($content)
+						->setLink($linkToFile)
+						->setRichMessage(
+							$l->t('{user} requested your approval for {node}'),
+							[
+								'node' => $richSubjectNode,
+								'user' => $richSubjectUser,
+							]
+						)
+						->setIcon($iconUrl);
+				}
+				return $notification;
 
-		case 'manual_request':
-			$p = $notification->getSubjectParameters();
-
-			$user = $this->userManager->get($p['requesterId']);
-			if ($user instanceof IUser) {
-				$richSubjectUser = [
-					'type' => 'user',
-					'id' => $p['requesterId'],
-					'name' => $user->getDisplayName(),
-				];
-
-				$linkToFile = $this->url->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileid' => $p['fileId']]);
-				$richSubjectNode = [
-					'type' => 'file',
-					'id' => $p['fileId'],
-					'name' => $p['fileName'],
-					'path' => trim($p['relativePath'], '/'),
-					'link' => $linkToFile,
-				];
-
-				$subject = $l->t('Your approval was requested');
-				$content = $l->t('%2$s requested your approval for %1$s', [$p['fileName'], $user->getDisplayName()]);
-				$iconUrl = $this->url->getAbsoluteURL(
-					$this->url->imagePath('core', 'actions/more.svg')
-				);
-
-				$notification
-					->setParsedSubject($subject)
-					->setParsedMessage($content)
-					->setLink($linkToFile)
-					->setRichMessage(
-						$l->t('{user} requested your approval for {node}'),
-						[
-							'node' => $richSubjectNode,
-							'user' => $richSubjectUser,
-						]
-					)
-					->setIcon($iconUrl);
-			}
-			return $notification;
-
-		default:
-			// Unknown subject => Unknown notification => throw
-			throw new InvalidArgumentException();
+			default:
+				// Unknown subject => Unknown notification => throw
+				throw new InvalidArgumentException();
 		}
 	}
 }

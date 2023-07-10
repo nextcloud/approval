@@ -12,27 +12,27 @@
 namespace OCA\Approval\Service;
 
 use DateTime;
+use OCA\Approval\Activity\ActivityManager;
+use OCA\Approval\AppInfo\Application;
+use OCA\DAV\Connector\Sabre\Node as SabreNode;
+use OCP\App\IAppManager;
+use OCP\Files\FileInfo;
+use OCP\Files\IRootFolder;
+use OCP\IGroupManager;
 use OCP\IL10N;
+use OCP\IUser;
+use OCP\IUserManager;
+
+use OCP\Notification\IManager as INotificationManager;
+use OCP\Share\IManager as IShareManager;
+
+use OCP\Share\IShare;
 use OCP\SystemTag\ISystemTagObjectMapper;
 use OCP\SystemTag\TagNotFoundException;
-use OCP\Files\IRootFolder;
-use OCP\Files\FileInfo;
-use OCP\IUserManager;
-use OCP\IUser;
-use OCP\IGroupManager;
-use OCP\App\IAppManager;
-use OCP\Notification\IManager as INotificationManager;
-
-use OCP\Share\IManager as IShareManager;
-use OCP\Share\IShare;
-
-use OCA\DAV\Connector\Sabre\Node as SabreNode;
 use Psr\Log\LoggerInterface;
+
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
-
-use OCA\Approval\AppInfo\Application;
-use OCA\Approval\Activity\ActivityManager;
 
 class ApprovalService {
 	private $tagObjectMapper;
@@ -73,19 +73,19 @@ class ApprovalService {
 	 * @param string|null $userId
 	 */
 	public function __construct(string $appName,
-								ISystemTagObjectMapper $tagObjectMapper,
-								IRootFolder $root,
-								IUserManager $userManager,
-								IGroupManager $groupManager,
-								IAppManager $appManager,
-								INotificationManager $notificationManager,
-								RuleService $ruleService,
-								ActivityManager $activityManager,
-								UtilsService $utilsService,
-								IShareManager $shareManager,
-								IL10N $l10n,
-								LoggerInterface $logger,
-								?string $userId) {
+		ISystemTagObjectMapper $tagObjectMapper,
+		IRootFolder $root,
+		IUserManager $userManager,
+		IGroupManager $groupManager,
+		IAppManager $appManager,
+		INotificationManager $notificationManager,
+		RuleService $ruleService,
+		ActivityManager $activityManager,
+		UtilsService $utilsService,
+		IShareManager $shareManager,
+		IL10N $l10n,
+		LoggerInterface $logger,
+		?string $userId) {
 		$this->tagObjectMapper = $tagObjectMapper;
 		$this->root = $root;
 		$this->userManager = $userManager;
@@ -289,7 +289,7 @@ class ApprovalService {
 		}
 		// get extra information
 		$that = $this;
-		$result =  array_map(function ($pendingNode) use ($that) {
+		$result = array_map(function ($pendingNode) use ($that) {
 			$node = $pendingNode['node'];
 			$ruleId = $pendingNode['ruleId'];
 			return [
@@ -301,7 +301,7 @@ class ApprovalService {
 			];
 		}, array_values($pendingNodes));
 
-		usort($result, function($a, $b) {
+		usort($result, function ($a, $b) {
 			if ($a['activity'] === null) {
 				if ($b['activity'] === null) {
 					return 0;
@@ -311,8 +311,8 @@ class ApprovalService {
 			} elseif ($b['activity'] === null) {
 				return -1;
 			}
-            return ($a['activity']['timestamp'] > $b['activity']['timestamp']) ? -1 : 1;
-        });
+			return ($a['activity']['timestamp'] > $b['activity']['timestamp']) ? -1 : 1;
+		});
 
 		return $result;
 	}
@@ -861,7 +861,7 @@ class ApprovalService {
 		$nodeId = $node->getId();
 
 		$propFind->handle(
-			Application::DAV_PROPERTY_APPROVAL_STATE, function() use ($nodeId) {
+			Application::DAV_PROPERTY_APPROVAL_STATE, function () use ($nodeId) {
 				$state = $this->getApprovalState($nodeId, $this->userId, true);
 				return $state['state'];
 			}

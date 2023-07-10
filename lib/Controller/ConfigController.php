@@ -11,17 +11,17 @@
 
 namespace OCA\Approval\Controller;
 
-use OCP\IUserManager;
-use OCP\IUser;
+use OCA\Approval\Service\RuleService;
+use OCA\Approval\Service\UtilsService;
 
 use OCP\App\IAppManager;
 
-use OCP\IRequest;
-use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\IRequest;
 
-use OCA\Approval\Service\RuleService;
-use OCA\Approval\Service\UtilsService;
+use OCP\IUser;
+use OCP\IUserManager;
 
 class ConfigController extends Controller {
 	/**
@@ -46,12 +46,12 @@ class ConfigController extends Controller {
 	private $utilsService;
 
 	public function __construct($AppName,
-								IRequest $request,
-								IUserManager $userManager,
-								IAppManager $appManager,
-								RuleService $ruleService,
-								UtilsService $utilsService,
-								?string $userId) {
+		IRequest $request,
+		IUserManager $userManager,
+		IAppManager $appManager,
+		RuleService $ruleService,
+		UtilsService $utilsService,
+		?string $userId) {
 		parent::__construct($AppName, $request);
 		$this->userManager = $userManager;
 		$this->appManager = $appManager;
@@ -141,7 +141,7 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 */
 	public function createRule(int $tagPending, int $tagApproved, int $tagRejected,
-								array $approvers, array $requesters, string $description): DataResponse {
+		array $approvers, array $requesters, string $description): DataResponse {
 		$result = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $approvers, $requesters, $description);
 		return isset($result['error'])
 			? new DataResponse($result, 400)
@@ -159,7 +159,7 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 */
 	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected,
-							array $approvers, array $requesters, string $description): DataResponse {
+		array $approvers, array $requesters, string $description): DataResponse {
 		$result = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $approvers, $requesters, $description);
 		return isset($result['error'])
 			? new DataResponse($result, 400)

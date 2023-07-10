@@ -11,13 +11,13 @@
 
 namespace OCA\Approval\Controller;
 
-use OCP\AppFramework\OCSController;
-use OCP\IRequest;
-use OCP\AppFramework\Http\DataResponse;
-
 use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Service\ApprovalService;
 use OCA\Approval\Service\RuleService;
+
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\OCSController;
+use OCP\IRequest;
 
 class ApprovalController extends OCSController {
 	private $userId;
@@ -31,10 +31,10 @@ class ApprovalController extends OCSController {
 	private $ruleService;
 
 	public function __construct(string $appName,
-								IRequest $request,
-								ApprovalService $approvalService,
-								RuleService $ruleService,
-								?string $userId) {
+		IRequest $request,
+		ApprovalService $approvalService,
+		RuleService $ruleService,
+		?string $userId) {
 		parent::__construct($appName, $request);
 		$this->approvalService = $approvalService;
 		$this->userId = $userId;

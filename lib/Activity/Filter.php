@@ -23,18 +23,18 @@
 
 namespace OCA\Approval\Activity;
 
-use OCP\IL10N;
-use OCP\IURLGenerator;
-use OCP\Activity\IFilter;
-
 use OCA\Approval\AppInfo\Application;
+use OCP\Activity\IFilter;
+use OCP\IL10N;
+
+use OCP\IURLGenerator;
 
 class Filter implements IFilter {
 	private $l10n;
 	private $urlGenerator;
 
 	public function __construct(IL10N $l10n,
-								IURLGenerator $urlGenerator) {
+		IURLGenerator $urlGenerator) {
 		$this->l10n = $l10n;
 		$this->urlGenerator = $urlGenerator;
 	}

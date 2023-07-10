@@ -179,7 +179,7 @@ export default {
 	}
 }
 
-::v-deep .user-bubble {
+:deep(.user-bubble) {
 	.icon-circle {
 		background-image: var(--icon-circles-circles-000);
 		background-size: 100% 100%;

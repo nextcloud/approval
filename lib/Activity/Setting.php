@@ -23,10 +23,10 @@
 
 namespace OCA\Approval\Activity;
 
-use OCP\Activity\ISetting;
-use OCP\IL10N;
-
 use OCA\Approval\AppInfo\Application;
+use OCP\Activity\ISetting;
+
+use OCP\IL10N;
 
 class Setting implements ISetting {
 

@@ -12,12 +12,12 @@
 namespace OCA\Approval\Service;
 
 use DateTime;
+use OCA\Approval\AppInfo\Application;
+use OCP\App\IAppManager;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
-use OCP\IUserManager;
-use OCP\App\IAppManager;
 
-use OCA\Approval\AppInfo\Application;
+use OCP\IUserManager;
 
 class RuleService {
 	/**
@@ -46,9 +46,9 @@ class RuleService {
 	 * Service to manage approval rules
 	 */
 	public function __construct(string $appName,
-								IDBConnection $db,
-								IUserManager $userManager,
-								IAppManager $appManager) {
+		IDBConnection $db,
+		IUserManager $userManager,
+		IAppManager $appManager) {
 		$this->strTypeToInt = [
 			'user' => Application::TYPE_USER,
 			'group' => Application::TYPE_GROUP,
@@ -130,7 +130,7 @@ class RuleService {
 	 * @throws \OCP\DB\Exception
 	 */
 	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected,
-							array $approvers, array $requesters, string $description): array {
+		array $approvers, array $requesters, string $description): array {
 		$this->cachedRules = null;
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Invalid rule'];
@@ -147,8 +147,8 @@ class RuleService {
 		$qb->set('tag_rejected', $qb->createNamedParameter($tagRejected, IQueryBuilder::PARAM_INT));
 		$qb->set('description', $qb->createNamedParameter($description, IQueryBuilder::PARAM_STR));
 		$qb->where(
-				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
-			);
+			$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
+		);
 		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
 
@@ -176,7 +176,7 @@ class RuleService {
 				'circle' => [],
 			];
 			foreach ($paramValue as $elem) {
-				$newIds[$elem['type']][]= $elem['entityId'];
+				$newIds[$elem['type']][] = $elem['entityId'];
 			}
 
 			foreach (['user', 'group', 'circle'] as $type) {
@@ -238,7 +238,7 @@ class RuleService {
 	 * @return array id of created rule or error string
 	 */
 	public function createRule(int $tagPending, int $tagApproved, int $tagRejected,
-								array $approvers, array $requesters, string $description): array {
+		array $approvers, array $requesters, string $description): array {
 		$this->cachedRules = null;
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Rule is invalid'];

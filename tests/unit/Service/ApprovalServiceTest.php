@@ -24,25 +24,25 @@
 
 namespace OCA\Approval\Service;
 
-use OCP\IConfig;
-use OCP\IL10N;
-use OCP\Security\ICrypto;
-use OCP\SystemTag\ISystemTagObjectMapper;
-use OCP\Files\IRootFolder;
-use OCP\IUserManager;
-use OCP\IGroupManager;
-use OCP\App\IAppManager;
-use OCP\Notification\IManager as INotificationManager;
-use OCP\Share\IManager as IShareManager;
-use Psr\Log\LoggerInterface;
-
-use OCP\IDBConnection;
-use OCP\SystemTag\ISystemTagManager;
-
-use OCA\Approval\AppInfo\Application;
-use OCA\Approval\Activity\ActivityManager;
-
 use ChristophWurst\Nextcloud\Testing\TestCase;
+use OCA\Approval\Activity\ActivityManager;
+use OCA\Approval\AppInfo\Application;
+use OCP\App\IAppManager;
+use OCP\Files\IRootFolder;
+use OCP\IConfig;
+use OCP\IDBConnection;
+use OCP\IGroupManager;
+use OCP\IL10N;
+use OCP\IUserManager;
+use OCP\Notification\IManager as INotificationManager;
+
+use OCP\Security\ICrypto;
+use OCP\Share\IManager as IShareManager;
+
+use OCP\SystemTag\ISystemTagManager;
+use OCP\SystemTag\ISystemTagObjectMapper;
+
+use Psr\Log\LoggerInterface;
 
 class ApprovalServiceTest extends TestCase {
 

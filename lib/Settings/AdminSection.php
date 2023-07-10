@@ -1,11 +1,12 @@
 <?php
+
 namespace OCA\Approval\Settings;
 
-use OCP\IURLGenerator;
-use OCP\IL10N;
-use OCP\Settings\IIconSection;
-
 use OCA\Approval\AppInfo\Application;
+use OCP\IL10N;
+use OCP\IURLGenerator;
+
+use OCP\Settings\IIconSection;
 
 class AdminSection implements IIconSection {
 
@@ -20,9 +21,9 @@ class AdminSection implements IIconSection {
 	private $appName;
 
 	public function __construct(string $appName,
-				    IURLGenerator $urlGenerator,
-				    IL10N $l
-				    ) {
+		IURLGenerator $urlGenerator,
+		IL10N $l
+	) {
 		$this->appName = $appName;
 		$this->l = $l;
 		$this->urlGenerator = $urlGenerator;

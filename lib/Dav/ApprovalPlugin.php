@@ -26,13 +26,13 @@ declare(strict_types=1);
 
 namespace OCA\Approval\Dav;
 
-use Sabre\DAV\INode;
-use Sabre\DAV\PropFind;
-use Sabre\DAV\Server;
-use Sabre\DAV\ServerPlugin;
-
 use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Service\ApprovalService;
+use Sabre\DAV\INode;
+use Sabre\DAV\PropFind;
+
+use Sabre\DAV\Server;
+use Sabre\DAV\ServerPlugin;
 
 class ApprovalPlugin extends ServerPlugin {
 	/** @var Server */
@@ -85,7 +85,7 @@ class ApprovalPlugin extends ServerPlugin {
 	 */
 	public function getPluginInfo(): array {
 		return [
-			'name'        => $this->getPluginName(),
+			'name' => $this->getPluginName(),
 			'description' => 'Provides approval state in PROPFIND WebDav requests',
 		];
 	}

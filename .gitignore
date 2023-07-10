@@ -8,3 +8,4 @@ node_modules
 vendor
 js/*hot-update.*
 build
+.php-cs-fixer.cache
