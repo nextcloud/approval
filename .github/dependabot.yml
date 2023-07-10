@@ -1,14 +1,5 @@
 version: 2
-updates:
-  - package-ecosystem: github-actions
-    directory: "/"
-    schedule:
-      interval: daily
-      timezone: Europe/Paris
-    labels:
-      - "3. to review"
-      - "dependencies"
-      
+updates:      
   - package-ecosystem: composer
     directory: "/"
     schedule:
