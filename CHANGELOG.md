@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.14 – 2023-07-10
+
+### Changed
+
+- Optimize propfind plugins [#62](https://github.com/nextcloud/approval/pull/62) @icewind1991
+- Drop Nextcloud 24 support [#63](https://github.com/nextcloud/approval/pull/63) @skjnldsv
+- Avoid changing global NcModal style [#68](https://github.com/nextcloud/approval/pull/68) @julien-nc
+
 ## 1.0.13 – 2023-07-06
 
 ### Changed
