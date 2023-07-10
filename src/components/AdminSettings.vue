@@ -371,10 +371,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-:deep(.multiselect__input) {
-	height: 34px !important;
-}
-
 #approval_prefs {
 	.rules {
 		margin-top: 20px;
