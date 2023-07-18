@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.15 – 2023-07-18
+
+### Changed
+
+- set min and max compatible NC to 24 [#73](https://github.com/nextcloud/approval/pull/73) @julien-nc
+
 ## 1.0.14 – 2023-07-10
 
 ### Changed
