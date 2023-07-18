@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.1.0 – 2023-07-18
+
+### Changed
+
+- Bump minor version digit to still be able to publish for 24 [#72](https://github.com/nextcloud/approval/pull/72) @julien-nc
+
 ## 1.0.14 – 2023-07-10
 
 ### Changed
