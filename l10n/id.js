@@ -8,6 +8,7 @@ OC.L10N.register(
     "OAuth access token refused" : "Token akses OAuth ditolak",
     "Create" : "Buat",
     "Cancel" : "Membatalkan",
+    "Approve" : "Menyetujui",
     "Reject" : "Ditolak",
     "Approved" : "Disetujui",
     "you" : "Anda",
