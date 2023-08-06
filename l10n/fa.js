@@ -1,6 +1,10 @@
 OC.L10N.register(
     "approval",
     {
+    "Error during OAuth exchanges" : "خطا در هنگام تبادل OAuth",
+    "Bad HTTP method" : "روش HTTP بد",
+    "Bad credentials" : "اعتبارنامه بد",
+    "OAuth access token refused" : "نشانه دسترسی OAuth رد شد",
     "Create" : "ساخت",
     "Cancel" : "لغو",
     "Approve" : "تأیید",
