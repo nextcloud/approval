@@ -11,6 +11,7 @@ OC.L10N.register(
     "Reject" : "رد کردن",
     "Approved" : "تایید شده",
     "you" : "شما",
+    "OAuth access token could not be obtained:" : "نشانه دسترسی OAuth بدست نیامد:",
     "No recommendations. Start typing." : "هیچ توصیه ای نیست شروع به تایپ کنید.",
     "No result." : "بدون نتیجه.",
     "Warning" : "هشدار"
