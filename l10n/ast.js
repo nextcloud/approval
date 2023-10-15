@@ -8,6 +8,7 @@ OC.L10N.register(
     "{user} rejected {node}" : "{user} refugó «{node}»",
     "you" : "tu",
     "DocuSign integration" : "Integración con DocuSign",
+    "No result." : "Nun hai nengún resultáu.",
     "Who?" : "¿Quién?"
 },
 "nplurals=2; plural=(n != 1);");

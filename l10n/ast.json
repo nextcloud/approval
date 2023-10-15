@@ -6,6 +6,7 @@
     "{user} rejected {node}" : "{user} refugó «{node}»",
     "you" : "tu",
     "DocuSign integration" : "Integración con DocuSign",
+    "No result." : "Nun hai nengún resultáu.",
     "Who?" : "¿Quién?"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
