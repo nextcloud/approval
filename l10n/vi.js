@@ -25,6 +25,7 @@ OC.L10N.register(
     "Select rejected tag" : "Chọn thẻ bị từ chối",
     "Who can request approval" : "Ai có thể yêu cầu phê duyệt",
     "Who can approve" : "Ai có thể phê duyệt",
+    "No recommendations. Start typing." : "Không có khuyến nghị. Bắt đầu gõ.",
     "Warning" : "Cảnh báo"
 },
 "nplurals=1; plural=0;");
