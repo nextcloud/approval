@@ -64,13 +64,6 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				this._onReject()
 			})
 			this._inputView.$on('open-request', () => {
-				// refresh request rules when opening request modal
-				this.getUserRequesterRules(this.fileId).then((response) => {
-					this._inputView.setUserRules(response.data.ocs.data)
-					this.userRules = response.data.ocs.data
-				}).catch((error) => {
-					console.error(error)
-				})
 			})
 			this._inputView.$on('request', (ruleId, createShares) => {
 				this._onRequest(ruleId, createShares)
@@ -127,7 +120,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				console.error(error)
 				showError(
 					t('approval', 'Failed to approve {name}', { name: this.fileName })
-					+ ': ' + error.response?.request?.responseText
+					+ ': ' + error.response?.request?.responseText,
 				)
 			})
 		},
@@ -142,7 +135,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to reject {name}', { name: this.fileName })
-					+ ': ' + error.response?.request?.responseText
+					+ ': ' + error.response?.request?.responseText,
 				)
 			})
 		},
@@ -178,7 +171,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				failed = true
 				showError(
 					t('approval', 'Failed to request approval for {name}', { name: this.fileName })
-					+ ': ' + (error.response?.data?.ocs?.data?.error ?? error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.data?.ocs?.data?.error ?? error.response?.request?.responseText ?? ''),
 				)
 			}).then(() => {
 				if (!createShares || failed) {
@@ -203,7 +196,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to request approval for {name}', { name: this.fileName })
-					+ ': ' + (error.response?.data?.ocs?.data?.error ?? error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.data?.ocs?.data?.error ?? error.response?.request?.responseText ?? ''),
 				)
 			}).then(() => {
 				this._inputView.setRequesting(false)
@@ -224,7 +217,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to request signature with DocuSign')
-					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 				)
 				console.error(error)
 			})
@@ -348,7 +341,7 @@ export const ApprovalInfoView = OCA.Files.DetailFileInfoView.extend(
 				}
 			}).catch((error) => {
 				showError(
-					t('approval', 'Failed to check approval status')
+					t('approval', 'Failed to check approval status'),
 				)
 				console.error(error)
 				this._inputView.setState(states.NOTHING)

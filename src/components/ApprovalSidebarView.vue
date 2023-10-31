@@ -21,17 +21,6 @@
 			</span>
 			<span v-else>{{ approvedText }}</span>
 		</span>
-		<NcButton v-if="isSignableDocuSign"
-			:class="{ loading: docusignLoading, signButton: true }"
-			:disabled="docusignRequested"
-			@click="onSignDocuSignClick">
-			{{ docusignButtonText }}
-		</NcButton>
-		<NcButton v-if="isSignableLibreSign"
-			:class="{ loading: libresignLoading, signButton: true }"
-			@click="onSignLibreSignClick">
-			{{ libresignButtonText }}
-		</NcButton>
 		<span v-if="stateRejected"
 			class="state-label rejected-label">
 			<span class="icon icon-close-white" />

@@ -11,6 +11,7 @@ namespace OCA\Approval\AppInfo;
 
 use OCA\Approval\Dashboard\ApprovalPendingWidget;
 use OCA\Approval\Dav\ApprovalPlugin;
+use OCA\Approval\Listener\LoadAdditionalScriptsListener;
 use OCA\Approval\Notification\Notifier;
 use OCA\Approval\Service\ApprovalService;
 
@@ -60,11 +61,6 @@ class Application extends App implements IBootstrap {
 		$container = $this->getContainer();
 
 		$eventDispatcher = $container->get(IEventDispatcher::class);
-		// load files plugin script
-		$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function () {
-			Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin');
-			Util::addStyle(self::APP_ID, 'files-style');
-		});
 
 		// listen to tag assignments
 		$eventDispatcher->addListener(MapperEvent::EVENT_ASSIGN, function (MapperEvent $event) use ($container) {
@@ -77,6 +73,7 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function register(IRegistrationContext $context): void {
+		$context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalScriptsListener::class);
 		$context->registerNotifierService(Notifier::class);
 		$context->registerDashboardWidget(ApprovalPendingWidget::class);
 	}

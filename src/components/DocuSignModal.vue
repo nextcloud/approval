@@ -115,7 +115,7 @@ export default {
 				console.debug(error.response)
 				showError(
 					t('approval', 'Failed to request signature with DocuSign')
-					+ ': ' + (error.response?.data?.response?.message ?? error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.data?.response?.message ?? error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 				)
 			}).then(() => {
 				this.loading = false

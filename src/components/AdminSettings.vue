@@ -225,7 +225,7 @@ export default {
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to get approval workflows')
-					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 				)
 				console.debug(error)
 			}).then(() => {
@@ -260,7 +260,7 @@ export default {
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to save approval workflow')
-						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 					)
 					console.error(error)
 					// restore rule values
@@ -315,7 +315,7 @@ export default {
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to create approval workflow')
-						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 					)
 					console.debug(error)
 				}).then(() => {
@@ -331,7 +331,7 @@ export default {
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to delete approval workflow')
-					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 				)
 				console.debug(error)
 			}).then(() => {
@@ -355,7 +355,7 @@ export default {
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to create tag "{name}"', { name: this.newTagName })
-						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 					)
 					console.debug(error)
 				}).then(() => {

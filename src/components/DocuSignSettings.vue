@@ -142,7 +142,7 @@ export default {
 				.catch((error) => {
 					showError(
 						t('approval', 'Failed to save DocuSign admin options')
-						+ ': ' + error.response.request.responseText
+						+ ': ' + error.response.request.responseText,
 					)
 				})
 				.then(() => {
@@ -177,7 +177,7 @@ export default {
 				.catch((error) => {
 					showError(
 						t('approval', 'Failed to save DocuSign OAuth state')
-						+ ': ' + error.response.request.responseText
+						+ ': ' + error.response.request.responseText,
 					)
 				})
 				.then(() => {

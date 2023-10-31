@@ -43,10 +43,6 @@ export default {
 			type: String,
 			default: t('approval', 'Reject'),
 		},
-		state: {
-			type: Number,
-			required: true,
-		},
 	},
 	data() {
 		return {
