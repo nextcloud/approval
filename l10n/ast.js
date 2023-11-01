@@ -6,6 +6,7 @@ OC.L10N.register(
     "A directory was approved" : "Aprobóse un direutoriu",
     "A directory was rejected" : "Refugóse un direutoriu",
     "{user} rejected {node}" : "{user} refugó «{node}»",
+    "Cancel" : "Encaboxar",
     "you" : "tu",
     "DocuSign integration" : "Integración con DocuSign",
     "No result." : "Nun hai nengún resultáu.",
