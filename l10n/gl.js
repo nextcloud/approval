@@ -49,7 +49,7 @@ OC.L10N.register(
     "New tag name" : "Novo nome de etiqueta",
     "Create" : "Crear",
     "Cancel" : "Cancelar",
-    "All fields are required" : "Precisase todos os campos",
+    "All fields are required" : "Precísanse todos os campos",
     "All tags must be different" : "Todas as etiquetas deben ser diferentes",
     "Pending tag is already used in another workflow" : "A etiqueta pendente xa se está en uso noutro fluxo de traballo",
     "Create workflow" : "Crear fluxo de traballo",
