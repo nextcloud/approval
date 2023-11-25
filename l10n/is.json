@@ -9,6 +9,7 @@
     "Reject" : "Hafna",
     "Approved" : "Samþykkt",
     "you" : "þú",
+    "No recommendations. Start typing." : "Engar tillögur. Byrjaðu að skrifa.",
     "No result." : "Engar niðurstöður.",
     "Warning" : "Aðvörun"
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"

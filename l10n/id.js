@@ -12,6 +12,7 @@ OC.L10N.register(
     "Reject" : "Ditolak",
     "Approved" : "Disetujui",
     "you" : "Anda",
+    "No recommendations. Start typing." : "Tidak ada saran. Mulai mengetik.",
     "No result." : "Tidak ada hasil.",
     "Warning" : "Peringatan"
 },
