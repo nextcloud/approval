@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.1.1 – 2023-11-29
+
+### Added
+
+- Added Deprecation changelog [#111](https://github.com/nextcloud/approval/pull/111) @nc-fkl
+- Added Deprecation notice - The Approval App discontinues maintenance for Nextcloud versions 28+ [#102](https://github.com/nextcloud/approval/pull/102) @julien-nc
+
 ## 1.1.0 – 2023-07-18
 
 ### Changed
