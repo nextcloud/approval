@@ -9,7 +9,7 @@
 	If you are a customer and rely on features not available in DocuSign and are planning to upgrade, please open a support ticket before upgrading so we can assist you.
 	We appreciate your understanding and are committed to helping you through this transition.**
 	]]></description>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	<licence>agpl</licence>
 	<author>Julien Veyssier</author>
 	<namespace>Approval</namespace>

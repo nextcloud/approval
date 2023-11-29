@@ -1,5 +1,6 @@
 # Important
 
+⚠️ Deprecation notice:
 The Approval App will no longer be maintained for Nextcloud versions 28 and above, users are encouraged to transition to https://apps.nextcloud.com/apps/integration_docusign.
 If you are a customer and rely on features not available in DocuSign and are planning to upgrade, please open a support ticket before upgrading so we can assist you.
 We appreciate your understanding and are committed to helping you through this transition.
