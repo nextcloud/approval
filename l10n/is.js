@@ -11,6 +11,7 @@ OC.L10N.register(
     "Reject" : "Hafna",
     "Approved" : "Samþykkt",
     "you" : "þú",
+    "No recommendations. Start typing." : "Engar tillögur. Byrjaðu að skrifa.",
     "No result." : "Engar niðurstöður.",
     "Warning" : "Aðvörun"
 },
