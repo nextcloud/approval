@@ -34,7 +34,6 @@
     "OAuth access token refused" : "Одбијен је OAuth приступни жетон",
     "Approval workflows" : "Радни процеси одобрења",
     "Let users approve or reject files" : "Нека корисницу одобре или одбију фајлове",
-    "Approve/reject files based on workflows defined by admins." : "Одобравање/одбијање фајлова засновано на процесима рада које дефинишу админи.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Сваки процес рада дефинише ко (који корисници, групе или кругови) може да одобри фајлове за наведену ознаку на чекању и затим која ознака одобрења/одбијања треба да се додели.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Постоји могућност и да се дефинише листа корисника/група/кругова који могу ручно да захтевају одобрење.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Да би се сматрао одобреним, фајл/директоријум који има више ознака на чекању мора да буде одобрен у свим повезаним процесима рада.",

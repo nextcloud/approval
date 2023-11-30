@@ -36,7 +36,6 @@ OC.L10N.register(
     "OAuth access token refused" : "Odmowa tokena dostępu OAuth",
     "Approval workflows" : "Zatwierdzenie przepływu pracy",
     "Let users approve or reject files" : "Pozwól użytkownikom zatwierdzać lub odrzucać pliki",
-    "Approve/reject files based on workflows defined by admins." : "Zatwierdź/odrzuć pliki na podstawie przepływów pracy zdefiniowanych przez administratorów.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Każdy przepływ pracy określa, kto (którzy użytkownicy, grupy lub kręgi) może zatwierdzać pliki dla danej oczekującej etykiety oraz która etykieta zatwierdzona/odrzucona powinna zostać przypisana.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Można opcjonalnie zdefiniować listę użytkowników/grup/kręgów, którzy mogą ręcznie poprosić o zatwierdzenie.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Aby uznać o zatwierdzeniu, plik/katalog z wieloma przypisanymi etykietami oczekującymi musi zostać zatwierdzony przez wszystkich zainteresowanych przepływami pracy.",

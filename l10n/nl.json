@@ -34,7 +34,6 @@
     "OAuth access token refused" : "OAuth toegangstoken geweigerd",
     "Approval workflows" : "Goedkeuringswerkstromen",
     "Let users approve or reject files" : "Laat gebruikers bestanden goed of afkeuren",
-    "Approve/reject files based on workflows defined by admins." : "Keur bestanden goed of af op basis van werkstromen gedefinieerd door administrators.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Elke werkstroom definieert wie (welke gebruikers, groepen of kringen) bestanden kunnen goedkeuren voor een bepaalde tag die in behandeling is en welke goedgekeurde/afgewezen tag dan moet worden toegewezen.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Een lijst met gebruikers/groepen/kringen die handmatig goedkeuring kunnen aanvragen, kan optioneel worden gedefinieerd.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Om als goedgekeurd te worden beschouwd, moet een bestand/map waaraan meerdere lopende tags zijn toegewezen, worden goedgekeurd in alle betrokken werkstromen.",

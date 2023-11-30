@@ -36,7 +36,6 @@ OC.L10N.register(
     "OAuth access token refused" : "OAuth 存取權杖被拒絕",
     "Approval workflows" : "審批流程",
     "Let users approve or reject files" : "讓用戶批准或拒絕文件",
-    "Approve/reject files based on workflows defined by admins." : "根據管理員定義的工作流程批准/拒絕文件。",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "每個工作流程定義誰（哪些用戶、群組或圈子）可以批准給定待定標籤的文件，然後應該分配哪個批准/拒絕標籤。",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "可以選擇定義可以手動請求審批的用戶/群組/圈子列表。",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "要被視為已批准，分配有多個待處理標籤的文件/目錄必須得到所有相關工作流程的批准。",

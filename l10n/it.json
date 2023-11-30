@@ -34,7 +34,6 @@
     "OAuth access token refused" : "Token di accesso OAuth rifiutato",
     "Approval workflows" : "Workflow di approvazione",
     "Let users approve or reject files" : "Consenti agli utenti di approvare o rifiutare i file",
-    "Approve/reject files based on workflows defined by admins." : "Approva/rifiuta file sulla base dei workflow definiti dagli amministratori.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Ciascun workflow definisce chi (quali utenti, gruppi o cerchie) può approvare i file per una data etichetta pendente e quale etichetta approvata/rifiutata dovrebbe quindi essere assegnato.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Può essere definita opzionalmente una lista di utenti/gruppi/cerchie che può richiedere manualmente l'approvazione.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Per essere considerato approvato, un file/cartella con assegnate più etichette pendenti deve essere approvata da tutti i workflow coinvolti.",

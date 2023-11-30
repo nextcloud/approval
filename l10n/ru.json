@@ -34,7 +34,6 @@
     "OAuth access token refused" : "Токен доступа OAuth был отклонен",
     "Approval workflows" : "Согласования",
     "Let users approve or reject files" : "Позволяет пользователям согласовывать или отклонять файлы",
-    "Approve/reject files based on workflows defined by admins." : "Процессы для согласования/отклонения файлов на основе определенных администратором обработок",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Каждый процесс определяет кто (какие пользователи, группы или круги) может согласовывать файлы имеющие установленную метку ожидания и какие метки должны быть назначены далее в случае согласования/отклонения.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "При желании можно определить список пользователей/групп/кругов, которые могут вручную запрашивать согласование.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Чтобы считаться согласованным, файл/каталог, имеющий несколько назначенных ожидающих меток, должен быть согласован во всех процессах, в которых данные метки указаны.",
