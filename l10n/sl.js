@@ -35,7 +35,6 @@ OC.L10N.register(
     "OAuth access token refused" : "Žeton OAuth za dostop je bil zavrnjen",
     "Approval workflows" : "Postopki potrjevanja",
     "Let users approve or reject files" : "Omogoči uporabnikom potrjevanje in zavračanje datotek",
-    "Approve/reject files based on workflows defined by admins." : "Potrjevanje in zavračanje datotek po postopkih, kot jih določijo skrbniki.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Vsak delovni tok določa kdo (kateri uporabniki, skupine, krogi), lahko odobrijo datoteke za podano oznako in katera oznaka odobritve/zavrnitve se nato datotekam dodeli.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Seznam uporabnikov/skupin/krogov, ki lahko ročno zahtevajo odobritev, je mogoče izbirno določiti v naprej.",
     "Delete workflow" : "Izbriši postopek",

@@ -30,7 +30,6 @@
     "OAuth access token refused" : "Odbijen token za pristup OAuth",
     "Approval workflows" : "Tijekovi rada odobrenja",
     "Let users approve or reject files" : "Dopusti korisnicima da odobre ili odbiju datoteke",
-    "Approve/reject files based on workflows defined by admins." : "Odobravajte/odbijajte datoteke na temelju tijekova rada koje definiraju administratori.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Svaki tijek rada definira tko (koji korisnici, grupe ili krugovi) može odobriti datoteke za određenu oznaku na čekanju i koju odobrenu/odbijenu oznaku tada treba dodijeliti.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Po izboru se može definirati popis korisnika/grupa/krugova koji mogu ručno zatražiti odobrenje.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Kako bi se datoteka/direktorij s više dodijeljenih oznaka na čekanju smatrala odobrenim moraju je odobriti svi uključeni tijekovi rada.",

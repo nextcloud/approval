@@ -34,7 +34,6 @@
     "OAuth access token refused" : "OAuth 접근 토큰 거부됐습니다.",
     "Approval workflows" : "승인 워크플로",
     "Let users approve or reject files" : "사용자가 파일을 승인 혹은 거부하도록 합니다.",
-    "Approve/reject files based on workflows defined by admins." : "관리자가 정의한 워크플로에 기반하여 파일을 승인/거부합니다.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "각 워크플로는 누가(어떤 사용자, 그룹 혹은 서클) 보류 태그가 주어지고 승인됨/거부됨 태그가 정해질 파일을 승인 가능한지 정의합니다.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "수동적으로 승인을 요청할 수 있는 사용자/그룹/서클의 리스트는 선택적으로 정의될 수 있습니다.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "승인되었다고 여겨지기 위해서는, 연관된 다수의 보류 태그를 가지고 있는 파일/디렉토리가 관련된 모든 워크플로에게 승인되어야 합니다.",

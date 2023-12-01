@@ -30,7 +30,6 @@
     "OAuth access token refused" : "Token de intrada OAuth refudadu",
     "Approval workflows" : "Flussos de traballu de aprovatzione",
     "Let users approve or reject files" : "Permite a is utentes de aprovare o refudare archìvios",
-    "Approve/reject files based on workflows defined by admins." : "Aprova/refuda archìvios segundu is flussos de traballu definidos dae s'amministratzione.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Cada flussu de traballu definit chie (cale utente, grupos o giros) podet aprovare archìvios pro un'eticheta in suspesu e cales etichetas aprovadas/refudadas si diant dèpere assignare.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Faghet a seberare de definire una lista de utentes/grupos/giros chi podent rechèdere aprovatzione a manu.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Pro si considerare aprovadu, un'archìviu/cartella chi tenet etichetas in suspesu mùltiplas assignadas depet èssere aprovada dae totu is flussos de traballu interessados.",

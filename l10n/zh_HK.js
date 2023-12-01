@@ -36,7 +36,7 @@ OC.L10N.register(
     "OAuth access token refused" : "OAuth 存取權杖被拒絕",
     "Approval workflows" : "審批流程",
     "Let users approve or reject files" : "讓用戶批准或拒絕文件",
-    "Approve/reject files based on workflows defined by admins." : "根據管理員定義的工作流程批准/拒絕文件。",
+    "Approve/reject files based on workflows defined by admins.\n\n:warning: **This app will be deprecated from Nextcloud 28 onwards.\nIf you are a Nextcloud customer and you rely on this app,\nplease wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**" : "根據管理員定義的工作流程批准/拒絕檔案。\n\n:warning: **此應用程式將從 Nextcloud 28 開始被棄用。\n若您是 Nextcloud 使用者並正在使用此應用程式，\n請您暫緩更新到 28 並開啟支援工單，如此我們才能為您找到適合您用法的解決方案。**",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "每個工作流程定義誰（哪些用戶、群組或圈子）可以批准給定待定標籤的文件，然後應該分配哪個批准/拒絕標籤。",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "可以選擇定義可以手動請求審批的用戶/群組/圈子列表。",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "要被視為已批准，分配有多個待處理標籤的文件/目錄必須得到所有相關工作流程的批准。",

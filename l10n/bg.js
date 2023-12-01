@@ -36,7 +36,6 @@ OC.L10N.register(
     "OAuth access token refused" : " Маркерът за достъп OAuth е отказан",
     "Approval workflows" : "Работни процеси за одобрение",
     "Let users approve or reject files" : "Позволение на потребителите да одобряват или отхвърлят файлове",
-    "Approve/reject files based on workflows defined by admins." : "Одобряване/отхвърляне на файлове въз основа на работни потоци, определени от администраторите.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Всеки работен поток определя кой (кои потребители, групи или кръгове) може да одобри файлове за даден чакащ маркер/етикет/ и кой одобрен/отхвърлен маркер/етикет/ трябва да бъде присвоен.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "По избор може да се дефинира списък с потребители/групи/кръгове, които могат ръчно да поискат одобрение.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "За да се счита за одобрен, файл/директория, на която са зададени множество чакащи тагове, трябва да бъде одобрен от всички участващи работни потоци.",

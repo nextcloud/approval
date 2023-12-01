@@ -36,7 +36,6 @@ OC.L10N.register(
     "OAuth access token refused" : "Se rechazó el token de acceso de OAuth",
     "Approval workflows" : "Flujos de aprobación",
     "Let users approve or reject files" : "Permite a los usuarios aprobar o rechazar archivos",
-    "Approve/reject files based on workflows defined by admins." : "Aprobar/rechazar archivos basados en flujos de trabajo definidos por los administradores.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Cada flujo de trabajo define quién (qué usuarios, grupos o círculos) puede aprobar archivos para una etiqueta pendiente dada y qué etiqueta aprobada/rechazada debe asignarse a continuación.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Opcionalmente, se puede definir una lista de usuarios/grupos/círculos que puedan solicitar manualmente la aprobación.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Para considerarse aprobado, un archivo/directorio que tenga varias etiquetas pendientes asignadas debe ser aprobado por todos los flujos de trabajo involucrados.",

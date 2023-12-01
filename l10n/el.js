@@ -25,7 +25,6 @@ OC.L10N.register(
     "Bad credentials" : "Εσφαλμένα διαπιστευτήρια",
     "OAuth access token refused" : "Το διακριτικό πρόσβασης OAuth απορρίφθηκε",
     "Let users approve or reject files" : "Επιτρέψτε στους χρήστες να εγκρίνουν ή να απορρίπτουν αρχεία",
-    "Approve/reject files based on workflows defined by admins." : "Έγκριση/απόρριψη αρχείων με βάση τις ροές εργασίας (workflows) που ορίζονται από τους διαχειριστές.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Κάθε ροή εργασιών (workflow) ορίζει ποιοι (χρήστες, ομάδες ή κύκλοι) μπορούν να εγκρίνουν αρχεία για μια δεδομένη ετικέτα σε εκκρεμότητα και ποια ετικέτα έγκρισης/απόρριψης θα πρέπει στη συνέχεια να εκχωρηθεί.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Προαιρετικά μπορεί να οριστεί μια λίστα χρηστών/ομάδων/κύκλων που μπορούν να ζητήσουν έγκριση χειρωνακτικά.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Για να θεωρηθεί εγκεκριμένο, ένα αρχείο/κατάλογος που έχει εκχωρημένες πολλές ετικέτες σε εκκρεμότητα πρέπει να εγκριθεί από όλες τις εμπλεκόμενες ροές εργασίας.",

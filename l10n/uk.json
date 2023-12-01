@@ -34,7 +34,6 @@
     "OAuth access token refused" : "Маркер доступу OAuth відхилено",
     "Approval workflows" : "Робочі процеси затвердження",
     "Let users approve or reject files" : "Дозвольте користувачам схвалювати або відхиляти файли",
-    "Approve/reject files based on workflows defined by admins." : "Схвалення/відхилення файлів на основі робочих процесів, визначених адміністраторами.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Кожен робочий процес визначає, які користувачі, групи чи кола можуть затверджувати файли для такої мітки, що очікує на розгляд, і яку схвалену/відхилену мітку потім слід призначити.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Додатково можна визначити список користувачів/груп/кіл, які можуть вручну запитувати схвалення.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Щоб вважатися схваленим, файл/каталог із кількома призначеними мітками, що очікують на розгляд, має бути схвалено всіма задіяними робочими процесами.",
