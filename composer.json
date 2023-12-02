@@ -14,7 +14,7 @@
 		"test:unit": "phpunit -c tests/phpunit.xml --fail-on-warning"
 	},
 	"require-dev": {
-		"christophwurst/nextcloud_testing": "^0.12.4",
+		"christophwurst/nextcloud_testing": "^1.0.0",
 		"nextcloud/coding-standard": "^1.1",
 		"phpunit/phpunit": "^9"
 	}
