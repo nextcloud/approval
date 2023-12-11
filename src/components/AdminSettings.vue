@@ -107,7 +107,6 @@
 				</NcButton>
 			</div>
 		</div>
-		<DocuSignSettings />
 	</div>
 </template>
 
@@ -121,7 +120,6 @@ import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 
 import ApprovalRule from './ApprovalRule.vue'
-import DocuSignSettings from './DocuSignSettings.vue'
 
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
@@ -138,7 +136,6 @@ export default {
 		ApprovalRule,
 		NcEmptyContent,
 		NcButton,
-		DocuSignSettings,
 	},
 
 	props: [],
