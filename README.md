@@ -11,8 +11,6 @@ This app is integrated in the files list (Files app).
 Admins can define approval workflows: who can request, who can approve/reject.
 Users can then request approval. Authorized users will be able to approve or reject.
 
-Files can optionally be signed with DocuSign or LibreSign.
-
 ## Settings
 
 There is an Approval admin settings section where you define workflows.

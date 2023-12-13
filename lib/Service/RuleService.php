@@ -20,35 +20,18 @@ use OCP\IDBConnection;
 use OCP\IUserManager;
 
 class RuleService {
-	/**
-	 * @var IDBConnection
-	 */
-	private $db;
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
-	/**
-	 * @var IAppManager
-	 */
-	private $appManager;
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	private $strTypeToInt;
-	/**
-	 * @var string[]
-	 */
+	/** @var string[] */
 	private $intTypeToStr;
 	private ?array $cachedRules = null;
 
-	/**
-	 * Service to manage approval rules
-	 */
-	public function __construct(string $appName,
-		IDBConnection $db,
-		IUserManager $userManager,
-		IAppManager $appManager) {
+	public function __construct(
+		string $appName,
+		private IDBConnection $db,
+		private IUserManager $userManager,
+		private IAppManager $appManager
+	) {
 		$this->strTypeToInt = [
 			'user' => Application::TYPE_USER,
 			'group' => Application::TYPE_GROUP,
@@ -59,9 +42,6 @@ class RuleService {
 			Application::TYPE_GROUP => 'group',
 			Application::TYPE_CIRCLE => 'circle',
 		];
-		$this->db = $db;
-		$this->userManager = $userManager;
-		$this->appManager = $appManager;
 	}
 
 	/**

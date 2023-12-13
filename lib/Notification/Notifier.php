@@ -13,58 +13,21 @@ namespace OCA\Approval\Notification;
 
 use InvalidArgumentException;
 use OCA\Approval\AppInfo\Application;
-use OCP\IConfig;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\L10N\IFactory;
-use OCP\Notification\IManager as INotificationManager;
 use OCP\Notification\INotification;
 
 use OCP\Notification\INotifier;
 
 class Notifier implements INotifier {
 
-	/** @var IFactory */
-	protected $factory;
-
-	/** @var IUserManager */
-	protected $userManager;
-
-	/** @var INotificationManager */
-	protected $notificationManager;
-
-	/** @var IURLGenerator */
-	protected $url;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	/**
-	 * @var string|null
-	 */
-	private $userId;
-
-	/**
-	 * @param IFactory $factory
-	 * @param IUserManager $userManager
-	 * @param INotificationManager $notificationManager
-	 * @param IURLGenerator $urlGenerator
-	 * @param IConfig $config
-	 * @param string|null $userId
-	 */
-	public function __construct(IFactory $factory,
-		IUserManager $userManager,
-		INotificationManager $notificationManager,
-		IURLGenerator $urlGenerator,
-		IConfig $config,
-		?string $userId) {
-		$this->factory = $factory;
-		$this->userManager = $userManager;
-		$this->notificationManager = $notificationManager;
-		$this->url = $urlGenerator;
-		$this->config = $config;
-		$this->userId = $userId;
+	public function __construct(
+		private IFactory $factory,
+		private IUserManager $userManager,
+		private IURLGenerator $url,
+	) {
 	}
 
 	/**

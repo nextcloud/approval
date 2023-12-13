@@ -35,71 +35,22 @@ use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 
 class ApprovalService {
-	private $tagObjectMapper;
-	private $root;
-	private $userManager;
-	private $groupManager;
-	private $appManager;
-	private $notificationManager;
-	private $ruleService;
-	private $activityManager;
-	private $utilsService;
-	private $shareManager;
-	private $l10n;
-	private $userId;
-	/**
-	 * @var string
-	 */
-	private $appName;
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
 
-	/**
-	 * ApprovalService constructor.
-	 * @param string $appName
-	 * @param ISystemTagObjectMapper $tagObjectMapper
-	 * @param IRootFolder $root
-	 * @param IUserManager $userManager
-	 * @param IGroupManager $groupManager
-	 * @param IAppManager $appManager
-	 * @param INotificationManager $notificationManager
-	 * @param RuleService $ruleService
-	 * @param ActivityManager $activityManager
-	 * @param UtilsService $utilsService
-	 * @param IShareManager $shareManager
-	 * @param IL10N $l10n
-	 * @param string|null $userId
-	 */
-	public function __construct(string $appName,
-		ISystemTagObjectMapper $tagObjectMapper,
-		IRootFolder $root,
-		IUserManager $userManager,
-		IGroupManager $groupManager,
-		IAppManager $appManager,
-		INotificationManager $notificationManager,
-		RuleService $ruleService,
-		ActivityManager $activityManager,
-		UtilsService $utilsService,
-		IShareManager $shareManager,
-		IL10N $l10n,
-		LoggerInterface $logger,
-		?string $userId) {
-		$this->tagObjectMapper = $tagObjectMapper;
-		$this->root = $root;
-		$this->userManager = $userManager;
-		$this->groupManager = $groupManager;
-		$this->appManager = $appManager;
-		$this->notificationManager = $notificationManager;
-		$this->ruleService = $ruleService;
-		$this->activityManager = $activityManager;
-		$this->utilsService = $utilsService;
-		$this->shareManager = $shareManager;
-		$this->l10n = $l10n;
-		$this->appName = $appName;
-		$this->userId = $userId;
-		$this->logger = $logger;
+	public function __construct(
+		string $appName,
+		private ISystemTagObjectMapper $tagObjectMapper,
+		private IRootFolder $root,
+		private IUserManager $userManager,
+		private IGroupManager $groupManager,
+		private IAppManager $appManager,
+		private INotificationManager $notificationManager,
+		private RuleService $ruleService,
+		private ActivityManager $activityManager,
+		private UtilsService $utilsService,
+		private IShareManager $shareManager,
+		private IL10N $l10n,
+		private LoggerInterface $logger,
+		private ?string $userId) {
 	}
 
 	/**

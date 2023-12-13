@@ -28,47 +28,19 @@ use OCP\SystemTag\TagAlreadyExistsException;
 use OCP\SystemTag\TagNotFoundException;
 
 class UtilsService {
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
-	/**
-	 * @var IShareManager
-	 */
-	private $shareManager;
-	/**
-	 * @var IRootFolder
-	 */
-	private $root;
-	/**
-	 * @var ISystemTagManager
-	 */
-	private $tagManager;
-	/**
-	 * @var ICrypto
-	 */
-	private $crypto;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
 
 	/**
 	 * Service providing storage, circles and tags tools
 	 */
-	public function __construct(string $appName,
-		IUserManager $userManager,
-		IShareManager $shareManager,
-		IRootFolder $root,
-		ISystemTagManager $tagManager,
-		IConfig $config,
-		ICrypto $crypto) {
-		$this->userManager = $userManager;
-		$this->shareManager = $shareManager;
-		$this->root = $root;
-		$this->tagManager = $tagManager;
-		$this->crypto = $crypto;
-		$this->config = $config;
+	public function __construct(
+		string $appName,
+		private IUserManager $userManager,
+		private IShareManager $shareManager,
+		private IRootFolder $root,
+		private ISystemTagManager $tagManager,
+		private IConfig $config,
+		private ICrypto $crypto
+	) {
 	}
 
 	/**
