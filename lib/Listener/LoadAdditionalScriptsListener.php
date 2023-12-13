@@ -22,8 +22,8 @@
 
 namespace OCA\Approval\Listener;
 
-use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCA\Approval\AppInfo\Application;
+use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\Util;

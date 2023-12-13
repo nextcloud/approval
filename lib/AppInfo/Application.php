@@ -24,7 +24,6 @@ use OCP\EventDispatcher\IEventDispatcher;
 
 use OCP\SabrePluginEvent;
 use OCP\SystemTag\MapperEvent;
-use OCP\Util;
 
 /**
  * Class Application

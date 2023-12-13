@@ -20,7 +20,6 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 
-use OCP\IUser;
 use OCP\IUserManager;
 
 class ConfigController extends Controller {
