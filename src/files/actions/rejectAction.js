@@ -1,0 +1,32 @@
+import CloseCircleSvgIcon from '@mdi/svg/svg/close-circle.svg'
+import { states } from '../../states.js'
+import { Permission, FileAction } from '@nextcloud/files'
+import { onRejectAction } from '../helpers.js'
+
+export const rejectAction = new FileAction({
+	id: 'approval-reject',
+	displayName: (nodes) => {
+		return t('approval', 'Reject')
+	},
+	enabled(nodes, view) {
+		return !OCA.Approval.actionIgnoreLists.includes(view.id)
+			&& !nodes.some(({ permissions }) => (permissions & Permission.READ) === 0)
+			&& nodes.some(node => node.attributes['approval-state'] === states.APPROVABLE)
+		// && nodes.every(({ type }) => type === FileType.File)
+		// && nodes.every(({ mime }) => mime === 'application/some+type')
+	},
+	iconSvgInline: () => CloseCircleSvgIcon,
+	async exec(node) {
+		console.debug('reject action', node)
+		onRejectAction(node)
+		return null
+	},
+	async execBatch(nodes) {
+		nodes
+			.filter(node => node.attributes['approval-state'] === states.APPROVABLE)
+			.forEach(node => {
+				onRejectAction(node)
+			})
+		return nodes.map(_ => null)
+	},
+})
