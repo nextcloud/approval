@@ -2,7 +2,7 @@ import { generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { emit } from '@nextcloud/event-bus'
 import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
-import Vue from 'vue'
+import { set as vueSet } from 'vue'
 
 export function getApprovalState(node) {
 	const url = generateOcsUrl('apps/approval/api/v1/state/' + node.fileid, 2)
@@ -12,11 +12,11 @@ export function getApprovalState(node) {
 export function updateNodeApprovalState(node) {
 	return getApprovalState(node).then(response => {
 		const state = response.data.ocs.data.state
-		Vue.set(node.attributes, 'approval-state', state)
-		Vue.set(node.attributes, 'approval-rule', response.data.ocs.data.rule)
-		Vue.set(node.attributes, 'approval-timestamp', response.data.ocs.data.timestamp)
-		Vue.set(node.attributes, 'approval-userId', response.data.ocs.data.userId)
-		Vue.set(node.attributes, 'approval-userName', response.data.ocs.data.userName)
+		vueSet(node.attributes, 'approval-state', state)
+		vueSet(node.attributes, 'approval-rule', response.data.ocs.data.rule)
+		vueSet(node.attributes, 'approval-timestamp', response.data.ocs.data.timestamp)
+		vueSet(node.attributes, 'approval-userId', response.data.ocs.data.userId)
+		vueSet(node.attributes, 'approval-userName', response.data.ocs.data.userName)
 		emit('files:node:updated', node)
 	}).catch((error) => {
 		showError(
