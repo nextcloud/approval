@@ -39,7 +39,7 @@ class LoadAdditionalScriptsListener implements IEventListener {
 		}
 
 		Util::addInitScript(Application::APP_ID, Application::APP_ID . '-init');
-		Util::addscript(Application::APP_ID, Application::APP_ID . '-filesplugin');
+		Util::addscript(Application::APP_ID, Application::APP_ID . '-filesPlugin');
 		Util::addStyle(Application::APP_ID, 'files-style');
 	}
 }

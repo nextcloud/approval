@@ -16,7 +16,7 @@ const appId = 'approval'
 webpackConfig.entry = {
 	adminSettings: { import: path.join(__dirname, 'src', 'adminSettings.js'), filename: appId + '-adminSettings.js' },
 	dashboardPending: { import: path.join(__dirname, 'src', 'dashboardPending.js'), filename: appId + '-dashboardPending.js' },
-	filesplugin: { import: path.join(__dirname, 'src', 'files/filesplugin.js'), filename: appId + '-filesplugin.js' },
+	filesPlugin: { import: path.join(__dirname, 'src', 'files/filesPlugin.js'), filename: appId + '-filesPlugin.js' },
 	init: { import: path.join(__dirname, 'src', 'files/init.js'), filename: appId + '-init.js' },
 }
 
