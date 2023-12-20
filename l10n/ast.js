@@ -9,6 +9,7 @@ OC.L10N.register(
     "Cancel" : "Encaboxar",
     "you" : "tu",
     "DocuSign integration" : "Integración con DocuSign",
+    "No recommendations. Start typing." : "Nun hai nenguna recomendación. Comienza a escribir",
     "No result." : "Nun hai nengún resultáu.",
     "Who?" : "¿Quién?"
 },
