@@ -18,15 +18,14 @@ export const approveAction = new FileAction({
 	iconSvgInline: () => CheckCircleSvgIcon,
 	order: 0,
 	async exec(node) {
-		onApproveAction(node)
+		await onApproveAction(node)
 		return null
 	},
 	async execBatch(nodes) {
-		nodes
+		const promises = nodes
 			.filter(node => node.attributes['approval-state'] === states.APPROVABLE)
-			.forEach(node => {
-				onApproveAction(node)
-			})
-		return nodes.map(_ => null)
+			.map(onApproveAction)
+		const results = await Promise.allSettled(promises)
+		return results.map(promise => null)
 	},
 })

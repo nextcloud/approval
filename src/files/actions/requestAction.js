@@ -20,7 +20,7 @@ export const requestAction = new FileAction({
 	iconSvgInline: () => ApprovalSvgIcon,
 	order: 1,
 	async exec(node) {
-		onRequestAction(node)
+		await onRequestAction(node)
 		return null
 	},
 })

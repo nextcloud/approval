@@ -38,9 +38,8 @@ export const inlineAction = new FileAction({
 	},
 	inline: () => true,
 	exec: async (node) => {
-		updateNodeApprovalState(node).then(() => {
-			openApprovalInfoModal(node)
-		})
+		await updateNodeApprovalState(node)
+		await openApprovalInfoModal(node)
 		return null
 	},
 	order: -10,
