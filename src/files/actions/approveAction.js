@@ -16,6 +16,7 @@ export const approveAction = new FileAction({
 		// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},
 	iconSvgInline: () => CheckCircleSvgIcon,
+	order: 0,
 	async exec(node) {
 		onApproveAction(node)
 		return null

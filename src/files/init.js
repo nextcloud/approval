@@ -16,6 +16,6 @@ if (!OCA.Approval) {
 
 registerDavProperty('nc:approval-state', { nc: 'http://nextcloud.org/ns' })
 registerFileAction(inlineAction)
-registerFileAction(requestAction)
 registerFileAction(approveAction)
 registerFileAction(rejectAction)
+registerFileAction(requestAction)

@@ -18,6 +18,7 @@ export const requestAction = new FileAction({
 		// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},
 	iconSvgInline: () => ApprovalSvgIcon,
+	order: 1,
 	async exec(node) {
 		onRequestAction(node)
 		return null

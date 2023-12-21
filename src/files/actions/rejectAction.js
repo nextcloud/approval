@@ -16,6 +16,7 @@ export const rejectAction = new FileAction({
 		// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},
 	iconSvgInline: () => CloseCircleSvgIcon,
+	order: 0,
 	async exec(node) {
 		console.debug('reject action', node)
 		onRejectAction(node)
