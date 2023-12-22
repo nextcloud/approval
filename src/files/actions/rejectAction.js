@@ -28,7 +28,7 @@ export const rejectAction = new FileAction({
 	async execBatch(nodes) {
 		const promises = nodes
 			.filter(node => node.attributes['approval-state'] === states.APPROVABLE)
-			.map(onRejectAction)
+			.map(node => onRejectAction(node, false))
 		const results = await Promise.allSettled(promises)
 		return results.map(promise => promise.status === 'fulfilled')
 	},

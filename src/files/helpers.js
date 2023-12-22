@@ -80,32 +80,40 @@ export async function requestAfterShareCreation(node, ruleId) {
 	}
 }
 
-export async function onApproveAction(node) {
+export async function onApproveAction(node, notify = true) {
 	const fileId = node.fileid
 	const fileName = node.basename
 	const url = generateOcsUrl('apps/approval/api/v1/approve/{fileId}', { fileId })
 	try {
 		await axios.put(url)
-		showSuccess(t('approval', 'You approved {name}', { name: fileName }))
+		if (notify) {
+			showSuccess(t('approval', 'You approved {name}', { name: fileName }))
+		}
 		await updateNodeApprovalState(node)
 	} catch (error) {
 		console.error(error)
-		showError(t('approval', 'Failed to approve {name}', { name: fileName }))
+		if (notify) {
+			showError(t('approval', 'Failed to approve {name}', { name: fileName }))
+		}
 		throw error
 	}
 }
 
-export async function onRejectAction(node) {
+export async function onRejectAction(node, notify = true) {
 	const fileId = node.fileid
 	const fileName = node.basename
 	const url = generateOcsUrl('apps/approval/api/v1/reject/{fileId}', { fileId })
 	try {
 		await axios.put(url)
-		showSuccess(t('approval', 'You rejected {name}', { name: fileName }))
+		if (notify) {
+			showSuccess(t('approval', 'You rejected {name}', { name: fileName }))
+		}
 		await updateNodeApprovalState(node)
 	} catch (error) {
 		console.error(error)
-		showError(t('approval', 'Failed to reject {name}', { name: fileName }))
+		if (notify) {
+			showError(t('approval', 'Failed to reject {name}', { name: fileName }))
+		}
 		throw error
 	}
 }
