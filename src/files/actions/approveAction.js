@@ -18,7 +18,11 @@ export const approveAction = new FileAction({
 	iconSvgInline: () => CheckCircleSvgIcon,
 	order: 0,
 	async exec(node) {
-		await onApproveAction(node)
+		try {
+			await onApproveAction(node)
+		} catch (error) {
+			console.debug('Approve action failed')
+		}
 		return null
 	},
 	async execBatch(nodes) {
@@ -26,6 +30,6 @@ export const approveAction = new FileAction({
 			.filter(node => node.attributes['approval-state'] === states.APPROVABLE)
 			.map(onApproveAction)
 		const results = await Promise.allSettled(promises)
-		return results.map(promise => null)
+		return results.map(promise => promise.status === 'fulfilled')
 	},
 })

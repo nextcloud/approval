@@ -91,6 +91,7 @@ export async function onApproveAction(node) {
 	} catch (error) {
 		console.error(error)
 		showError(t('approval', 'Failed to approve {name}', { name: fileName }))
+		throw error
 	}
 }
 
@@ -105,6 +106,7 @@ export async function onRejectAction(node) {
 	} catch (error) {
 		console.error(error)
 		showError(t('approval', 'Failed to reject {name}', { name: fileName }))
+		throw error
 	}
 }
 
