@@ -6,7 +6,7 @@
 	<description><![CDATA[
 Approve/reject files based on workflows defined by admins.
 ]]></description>
-	<version>1.1.1</version>
+	<version>1.2.0</version>
 	<licence>agpl</licence>
 	<author>Julien Veyssier</author>
 	<namespace>Approval</namespace>
