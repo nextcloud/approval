@@ -19,20 +19,6 @@ return [
 		['name' => 'Config#deleteRule', 'url' => '/rule/{id}', 'verb' => 'DELETE'],
 		['name' => 'Config#createRule', 'url' => '/rule', 'verb' => 'POST'],
 		['name' => 'Config#createTag', 'url' => '/tag', 'verb' => 'POST'],
-
-		/**
-		 * DocuSign
-		 */
-		['name' => 'Docusign#setDocusignConfig', 'url' => '/docusign-config', 'verb' => 'PUT'],
-		['name' => 'Docusign#getDocusignInfo', 'url' => '/docusign/info', 'verb' => 'GET'],
-		['name' => 'Docusign#oauthRedirect', 'url' => '/docusign/oauth-redirect', 'verb' => 'GET'],
-		['name' => 'Docusign#signByApprover', 'url' => '/docusign/approval-sign/{fileId}', 'verb' => 'PUT'],
-		['name' => 'Docusign#signStandalone', 'url' => '/docusign/standalone-sign/{fileId}', 'verb' => 'PUT'],
-
-		/**
-		 * LibreSign
-		 */
-		['name' => 'Config#getLibresignInfo', 'url' => '/libresign/info', 'verb' => 'GET'],
 	],
 	'ocs' => [
 		/**

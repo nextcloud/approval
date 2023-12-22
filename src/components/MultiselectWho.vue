@@ -1,31 +1,41 @@
 <template>
-	<NcMultiselect
+	<NcSelect
 		class="approval-multiselect"
-		label="displayName"
-		track-by="trackKey"
 		:value="value"
 		:multiple="true"
-		:clear-on-select="true"
-		:hide-selected="false"
-		:internal-search="false"
 		:loading="loadingSuggestions"
 		:options="formattedSuggestions"
 		:placeholder="placeholder"
-		:preselect-first="false"
-		:preserve-search="false"
-		:searchable="true"
-		:auto-limit="false"
-		:user-select="true"
+		:clear-search-on-select="true"
+		:close-on-select="true"
+		:clearable="true"
+		:user-select="false"
+		:filterable="false"
+		:append-to-body="false"
 		v-bind="$attrs"
-		@search-change="asyncFind"
-		@update:value="$emit('update:value', $event)">
-		<template #option="{option}">
+		@search="asyncFind"
+		@input="$emit('update:value', $event)">
+		<template #option="option">
+			<div class="select-suggestion">
+				<NcAvatar v-if="option.type === 'user'"
+					:user="option.entityId"
+					:show-user-status="false" />
+				<NcAvatar v-else-if="['group', 'circle', 'email'].includes(option.type)"
+					:display-name="option.displayName"
+					:is-no-user="true"
+					:disable-tooltip="true"
+					:show-user-status="false" />
+				<span class="multiselect-name">
+					{{ option.displayName }}
+				</span>
+				<span :class="{ icon: true, ['icon-' + option.type]: true, 'multiselect-icon': true }" />
+			</div>
+		</template>
+		<template #selected-option="option">
 			<NcAvatar v-if="option.type === 'user'"
-				class="approval-avatar-option"
 				:user="option.entityId"
 				:show-user-status="false" />
 			<NcAvatar v-else-if="['group', 'circle', 'email'].includes(option.type)"
-				class="approval-avatar-option"
 				:display-name="option.displayName"
 				:is-no-user="true"
 				:disable-tooltip="true"
@@ -33,8 +43,7 @@
 			<span class="multiselect-name">
 				{{ option.displayName }}
 			</span>
-			<span v-if="option.icon"
-				:class="{ icon: true, [option.icon]: true, 'multiselect-icon': true }" />
+			<span :class="{ icon: true, ['icon-' + option.type]: true, 'multiselect-icon': true }" />
 		</template>
 		<template #noOptions>
 			{{ t('approval', 'No recommendations. Start typing.') }}
@@ -42,7 +51,7 @@
 		<template #noResult>
 			{{ t('approval', 'No result.') }}
 		</template>
-	</NcMultiselect>
+	</NcSelect>
 </template>
 
 <script>
@@ -52,14 +61,14 @@ import { showError } from '@nextcloud/dialogs'
 import axios from '@nextcloud/axios'
 
 import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
-import NcMultiselect from '@nextcloud/vue/dist/Components/NcMultiselect.js'
+import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
 
 export default {
 	name: 'MultiselectWho',
 
 	components: {
 		NcAvatar,
-		NcMultiselect,
+		NcSelect,
 	},
 
 	props: {
@@ -110,8 +119,7 @@ export default {
 					entityId: s.id,
 					type: 'user',
 					displayName: s.label,
-					icon: 'icon-user',
-					trackKey: 'user-' + s.id,
+					id: 'user-' + s.id,
 				}
 			})
 
@@ -125,8 +133,7 @@ export default {
 					type: 'email',
 					displayName: cleanQuery,
 					email: cleanQuery,
-					icon: 'icon-mail',
-					trackKey: 'email-' + cleanQuery,
+					id: 'email-' + cleanQuery,
 				})
 			}
 
@@ -141,8 +148,7 @@ export default {
 						entityId: this.currentUser.uid,
 						type: 'user',
 						displayName: this.currentUser.displayName,
-						icon: 'icon-user',
-						trackKey: 'user-' + this.currentUser.uid,
+						id: 'user-' + this.currentUser.uid,
 					})
 				}
 			}
@@ -155,8 +161,7 @@ export default {
 					entityId: s.id,
 					type: 'group',
 					displayName: s.label,
-					icon: 'icon-group',
-					trackKey: 'group-' + s.id,
+					id: 'group-' + s.id,
 				}
 			})
 			result.push(...groups)
@@ -169,12 +174,12 @@ export default {
 					entityId: s.id,
 					type: 'circle',
 					displayName: s.label,
-					icon: 'icon-circle',
-					trackKey: 'circle-' + s.id,
+					id: 'circle-' + s.id,
 				}
 			})
 			result.push(...circles)
 
+			/*
 			// always add selected users/groups/circles/emails at the end
 			result.push(...this.value.map((w) => {
 				return w.type === 'user'
@@ -182,33 +187,30 @@ export default {
 						entityId: w.entityId,
 						type: 'user',
 						displayName: w.displayName,
-						icon: 'icon-user',
-						trackKey: 'user-' + w.entityId,
+						id: 'user-' + w.entityId,
 					}
 					: w.type === 'group'
 						? {
 							entityId: w.entityId,
 							type: 'group',
 							displayName: w.displayName,
-							icon: 'icon-group',
-							trackKey: 'group-' + w.entityId,
+							id: 'group-' + w.entityId,
 						}
 						: w.type === 'circle'
 							? {
 								entityId: w.entityId,
 								type: 'circle',
 								displayName: w.displayName,
-								icon: 'icon-circle',
-								trackKey: 'circle-' + w.entityId,
+								id: 'circle-' + w.entityId,
 							}
 							: {
 								type: 'email',
 								displayName: w.displayName,
 								email: w.email,
-								icon: 'icon-mail',
-								trackKey: 'email-' + w.email,
+								id: 'email-' + w.email,
 							}
 			}))
+			*/
 
 			return result
 		},
@@ -266,6 +268,10 @@ export default {
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
 		background-position: center;
+	}
+	.select-suggestion {
+		display: flex;
+		align-items: center;
 	}
 }
 </style>

@@ -15,37 +15,28 @@ use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Service\ApprovalService;
 use OCA\Approval\Service\RuleService;
 
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\OCSController;
 use OCP\IRequest;
 
 class ApprovalController extends OCSController {
-	private $userId;
-	/**
-	 * @var ApprovalService
-	 */
-	private $approvalService;
-	/**
-	 * @var RuleService
-	 */
-	private $ruleService;
 
-	public function __construct(string $appName,
+	public function __construct(
+		string $appName,
 		IRequest $request,
-		ApprovalService $approvalService,
-		RuleService $ruleService,
-		?string $userId) {
+		private ApprovalService $approvalService,
+		private RuleService $ruleService,
+		private ?string $userId
+	) {
 		parent::__construct($appName, $request);
-		$this->approvalService = $approvalService;
-		$this->userId = $userId;
-		$this->ruleService = $ruleService;
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
+	 * @param int|null $fileId
 	 * @return DataResponse
 	 */
+	#[NoAdminRequired]
 	public function getUserRequesterRules(?int $fileId = null): DataResponse {
 		$rules = $this->approvalService->getUserRules($this->userId, 'requesters', $fileId);
 		return new DataResponse($rules);
@@ -53,11 +44,11 @@ class ApprovalController extends OCSController {
 
 	/**
 	 * get file tags
-	 * @NoAdminRequired
 	 *
 	 * @param int $fileId
 	 * @return DataResponse
 	 */
+	#[NoAdminRequired]
 	public function getApprovalState(int $fileId): DataResponse {
 		$state = $this->approvalService->getApprovalState($fileId, $this->userId);
 		if ($state['state'] !== Application::STATE_NOTHING) {
@@ -74,11 +65,10 @@ class ApprovalController extends OCSController {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @param int|null $since
 	 * @return DataResponse
 	 */
+	#[NoAdminRequired]
 	public function getPendingNodes(?int $since = null): DataResponse {
 		$nodes = $this->approvalService->getPendingNodes($this->userId, $since);
 		return new DataResponse($nodes);
@@ -86,11 +76,11 @@ class ApprovalController extends OCSController {
 
 	/**
 	 * Approve a file
-	 * @NoAdminRequired
 	 *
 	 * @param int $fileId
 	 * @return DataResponse
 	 */
+	#[NoAdminRequired]
 	public function approve(int $fileId): DataResponse {
 		$this->approvalService->approve($fileId, $this->userId);
 		return new DataResponse(1);
@@ -98,11 +88,11 @@ class ApprovalController extends OCSController {
 
 	/**
 	 * Reject a file
-	 * @NoAdminRequired
 	 *
 	 * @param int $fileId
 	 * @return DataResponse
 	 */
+	#[NoAdminRequired]
 	public function reject(int $fileId): DataResponse {
 		$this->approvalService->reject($fileId, $this->userId);
 		return new DataResponse(1);
@@ -110,13 +100,13 @@ class ApprovalController extends OCSController {
 
 	/**
 	 * Request approval for a file
-	 * @NoAdminRequired
 	 *
 	 * @param int $fileId
 	 * @param int $ruleId
 	 * @param bool $createShares
 	 * @return DataResponse
 	 */
+	#[NoAdminRequired]
 	public function request(int $fileId, int $ruleId, bool $createShares): DataResponse {
 		$result = $this->approvalService->request($fileId, $ruleId, $this->userId, $createShares);
 		if (isset($result['error'])) {

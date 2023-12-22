@@ -107,7 +107,6 @@
 				</NcButton>
 			</div>
 		</div>
-		<DocuSignSettings />
 	</div>
 </template>
 
@@ -121,7 +120,6 @@ import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 
 import ApprovalRule from './ApprovalRule.vue'
-import DocuSignSettings from './DocuSignSettings.vue'
 
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
@@ -138,7 +136,6 @@ export default {
 		ApprovalRule,
 		NcEmptyContent,
 		NcButton,
-		DocuSignSettings,
 	},
 
 	props: [],
@@ -225,7 +222,7 @@ export default {
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to get approval workflows')
-					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 				)
 				console.debug(error)
 			}).then(() => {
@@ -260,7 +257,7 @@ export default {
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to save approval workflow')
-						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 					)
 					console.error(error)
 					// restore rule values
@@ -315,7 +312,7 @@ export default {
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to create approval workflow')
-						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 					)
 					console.debug(error)
 				}).then(() => {
@@ -331,7 +328,7 @@ export default {
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to delete approval workflow')
-					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 				)
 				console.debug(error)
 			}).then(() => {
@@ -355,7 +352,7 @@ export default {
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to create tag "{name}"', { name: this.newTagName })
-						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? '')
+						+ ': ' + (error.response?.data?.error ?? error.response?.request?.responseText ?? ''),
 					)
 					console.debug(error)
 				}).then(() => {

@@ -20,44 +20,19 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 
-use OCP\IUser;
 use OCP\IUserManager;
 
 class ConfigController extends Controller {
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
-	/**
-	 * @var IAppManager
-	 */
-	private $appManager;
-	/**
-	 * @var RuleService
-	 */
-	private $ruleService;
-	/**
-	 * @var string|null
-	 */
-	private $userId;
-	/**
-	 * @var UtilsService
-	 */
-	private $utilsService;
 
-	public function __construct($AppName,
+	public function __construct(
+		$appName,
 		IRequest $request,
-		IUserManager $userManager,
-		IAppManager $appManager,
-		RuleService $ruleService,
-		UtilsService $utilsService,
-		?string $userId) {
-		parent::__construct($AppName, $request);
-		$this->userManager = $userManager;
-		$this->appManager = $appManager;
-		$this->ruleService = $ruleService;
-		$this->userId = $userId;
-		$this->utilsService = $utilsService;
+		private IUserManager $userManager,
+		private IAppManager $appManager,
+		private RuleService $ruleService,
+		private UtilsService $utilsService,
+		private ?string $userId) {
+		parent::__construct($appName, $request);
 	}
 
 	/**
@@ -175,23 +150,5 @@ class ConfigController extends Controller {
 		return isset($result['error'])
 			? new DataResponse($result, 400)
 			: new DataResponse();
-	}
-
-	/**
-	 *
-	 * @return DataResponse
-	 */
-	public function getLibresignInfo(): DataResponse {
-		$libresignEnabled = $this->appManager->isEnabledForUser('libresign');
-
-		$currentUserEmail = '';
-		$user = $this->userManager->get($this->userId);
-		if ($user instanceof IUser) {
-			$currentUserEmail = $user->getEMailAddress();
-		}
-		return new DataResponse([
-			'libresignEnabled' => $libresignEnabled,
-			'currentUserEmail' => $currentUserEmail,
-		]);
 	}
 }

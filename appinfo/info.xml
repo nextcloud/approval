@@ -5,11 +5,6 @@
 	<summary>Let users approve or reject files</summary>
 	<description><![CDATA[
 Approve/reject files based on workflows defined by admins.
-
-:warning: **This app will be deprecated from Nextcloud 28 onwards.
-If you are a Nextcloud customer and you rely on this app,
-please wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**
-
 ]]></description>
 	<version>1.1.1</version>
 	<licence>agpl</licence>
@@ -30,7 +25,7 @@ please wait with updating to 28 and open a support ticket so we can find a solut
 	<screenshot>https://github.com/nextcloud/approval/raw/main/img/screenshot_2.jpg</screenshot>
 	<screenshot>https://github.com/nextcloud/approval/raw/main/img/screenshot_3.jpg</screenshot>
 	<dependencies>
-		<nextcloud min-version="25" max-version="28"/>
+		<nextcloud min-version="28" max-version="29"/>
 	</dependencies>
 	<settings>
 		<admin>OCA\Approval\Settings\Admin</admin>

@@ -11,6 +11,7 @@ namespace OCA\Approval\AppInfo;
 
 use OCA\Approval\Dashboard\ApprovalPendingWidget;
 use OCA\Approval\Dav\ApprovalPlugin;
+use OCA\Approval\Listener\LoadAdditionalScriptsListener;
 use OCA\Approval\Notification\Notifier;
 use OCA\Approval\Service\ApprovalService;
 
@@ -23,7 +24,6 @@ use OCP\EventDispatcher\IEventDispatcher;
 
 use OCP\SabrePluginEvent;
 use OCP\SystemTag\MapperEvent;
-use OCP\Util;
 
 /**
  * Class Application
@@ -43,9 +43,6 @@ class Application extends App implements IBootstrap {
 	public const TYPE_USER = 0;
 	public const TYPE_GROUP = 1;
 	public const TYPE_CIRCLE = 2;
-	// docusign
-	public const DOCUSIGN_TOKEN_REQUEST_URL = 'https://account-d.docusign.com/oauth/token';
-	public const DOCUSIGN_USER_INFO_REQUEST_URL = 'https://account-d.docusign.com/oauth/userinfo';
 	// DAV
 	public const DAV_PROPERTY_APPROVAL_STATE = '{http://nextcloud.org/ns}approval-state';
 
@@ -60,11 +57,6 @@ class Application extends App implements IBootstrap {
 		$container = $this->getContainer();
 
 		$eventDispatcher = $container->get(IEventDispatcher::class);
-		// load files plugin script
-		$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function () {
-			Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin');
-			Util::addStyle(self::APP_ID, 'files-style');
-		});
 
 		// listen to tag assignments
 		$eventDispatcher->addListener(MapperEvent::EVENT_ASSIGN, function (MapperEvent $event) use ($container) {
@@ -77,6 +69,7 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function register(IRegistrationContext $context): void {
+		$context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalScriptsListener::class);
 		$context->registerNotifierService(Notifier::class);
 		$context->registerDashboardWidget(ApprovalPendingWidget::class);
 	}

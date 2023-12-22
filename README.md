@@ -2,16 +2,10 @@
 
 ✔ Approve or reject files/folders.
 
-:warning: **This app will be deprecated from Nextcloud 28 onwards.
-If you are a Nextcloud customer and you rely on this app,
-please wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**
-
 This app is integrated in the files list (Files app).
 
 Admins can define approval workflows: who can request, who can approve/reject.
 Users can then request approval. Authorized users will be able to approve or reject.
-
-Files can optionally be signed with DocuSign or LibreSign.
 
 ## Settings
 

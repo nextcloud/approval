@@ -23,11 +23,13 @@
 						<span class="icon icon-add" />
 					</span>
 				</span>
-				<NcMultiselectTags class="tag-select"
+				<NcSelectTags class="tag-select"
 					:value="value.tagPending"
-					:label="t('approval', 'Select pending tag')"
+					:placeholder="t('approval', 'Select pending tag')"
 					:multiple="false"
-					:filter="null"
+					:close-on-select="true"
+					:clear-search-on-select="true"
+					:append-to-body="false"
 					@input="update('tagPending', $event)" />
 			</div>
 			<div class="users">
@@ -67,11 +69,12 @@
 						<span class="icon icon-add" />
 					</span>
 				</span>
-				<NcMultiselectTags class="tag-select"
+				<NcSelectTags class="tag-select"
 					:value="value.tagApproved"
-					:label="t('approval', 'Select approved tag')"
+					:placeholder="t('approval', 'Select approved tag')"
 					:multiple="false"
-					:filter="null"
+					:close-on-select="true"
+					:clear-search-on-select="true"
 					@input="update('tagApproved', $event)" />
 			</div>
 			<div class="tag">
@@ -85,11 +88,12 @@
 						<span class="icon icon-add" />
 					</span>
 				</span>
-				<NcMultiselectTags class="tag-select"
+				<NcSelectTags class="tag-select"
 					:value="value.tagRejected"
-					:label="t('approval', 'Select rejected tag')"
+					:placeholder="t('approval', 'Select rejected tag')"
 					:multiple="false"
-					:filter="null"
+					:close-on-select="true"
+					:clear-search-on-select="true"
 					@input="update('tagRejected', $event)" />
 			</div>
 		</div>
@@ -103,7 +107,7 @@
 <script>
 import TagIcon from 'vue-material-design-icons/Tag.vue'
 
-import NcMultiselectTags from '@nextcloud/vue/dist/Components/NcMultiselectTags.js'
+import NcSelectTags from '@nextcloud/vue/dist/Components/NcSelectTags.js'
 
 import { delay } from '../utils.js'
 import MultiselectWho from './MultiselectWho.vue'
@@ -115,7 +119,7 @@ export default {
 	components: {
 		GroupIcon,
 		MultiselectWho,
-		NcMultiselectTags,
+		NcSelectTags,
 		TagIcon,
 	},
 
@@ -168,7 +172,7 @@ export default {
 			}, 2000)()
 		},
 		update(key, value) {
-			console.debug(value)
+			console.debug('update', key, value)
 			if (value) {
 				const backupRule = {
 					...this.value,
@@ -176,9 +180,6 @@ export default {
 					requesters: this.value.requesters.map(e => e),
 				}
 				this.$emit('input', { ...this.value, [key]: value, backupRule })
-				if (['tagPending', 'tagApproved', 'tagRejected'].includes(key)) {
-					this.resetFocus()
-				}
 			}
 		},
 	},
