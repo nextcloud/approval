@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.2.0 – 2023-12-22
+
+### Changed
+
+- reimplement the frontend for Nextcloud >= 28 [#114](https://github.com/nextcloud/approval/pull/114) @julien-nc
+- remove docusign/libresign related code
+
 ## 1.1.1 – 2023-11-29
 
 ### Added
