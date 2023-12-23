@@ -4,8 +4,6 @@
     "You rejected {file}" : "Jūs atmetėte {file}",
     "{user} rejected {file}" : "{user} atmetė {file}",
     "<strong>Approval</strong> events" : "<strong>Patvirtinimo</strong> įvykiai",
-    "Error getting OAuth access token" : "Klaida gaunant „OAuth“ prieigos raktą",
-    "Error during OAuth exchanges" : "Klaida „OAuth“ apsikeitimo metu",
     "A file was approved" : "Failas buvo patvirtintas",
     "A file was rejected" : "Failas buvo atmestas",
     "A directory was approved" : "Katalogas buvo patvirtintas",
@@ -15,9 +13,6 @@
     "{user} approved {node}" : "{user} patvirtino {node}",
     "{user} rejected {node}" : "{user} atmetė {node}",
     "Rule does not exist" : "Taisyklės nėra",
-    "Bad HTTP method" : "Blogas HTTP metodas",
-    "Bad credentials" : "Blogi prisijungimo duomenys",
-    "OAuth access token refused" : "„OAuth“ prieigos raktas atmestas",
     "Create new hidden tag" : "Sukurti naują paslėptą žymę",
     "New tag name" : "Naujos žymės pavadinimas",
     "Create" : "Sukurti",
@@ -28,13 +23,11 @@
     "Reject" : "Atmesti",
     "Approved" : "Patvirtinta",
     "you" : "jūs",
-    "Sign with DocuSign" : "Pasirašyti naudojant „DocuSign“",
-    "Sign with LibreSign" : "Pasirašyti naudojant „LibreSign“",
     "No recommendations. Start typing." : "Rekomendacijų nėra. Pradėkite rašyti.",
     "No result." : "Nėra rezultatų.",
     "Who?" : "Kas?",
-    "Failed to reject {name}" : "Nepavyko atmesti {name}",
+    "Pending approval" : "Laukiama patvirtinimo",
     "Warning" : "Įspėjimas",
-    "Impossible to sign this document" : "Neįmanoma pasirašyti šio dokumento"
+    "Failed to reject {name}" : "Nepavyko atmesti {name}"
 },"pluralForm" :"nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);"
 }

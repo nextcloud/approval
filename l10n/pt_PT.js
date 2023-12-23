@@ -1,9 +1,6 @@
 OC.L10N.register(
     "approval",
     {
-    "Error during OAuth exchanges" : "Erro durante trocas com o OAuth",
-    "Bad HTTP method" : "Método HTTP incorreto",
-    "Bad credentials" : "Credenciais inválidas",
     "Create" : "Criar",
     "Cancel" : "Cancelar",
     "Approve" : "Aprovar",
