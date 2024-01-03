@@ -91,6 +91,8 @@ OC.L10N.register(
     "Failed to get approval pending files" : "No s'han pogut obtenir els fitxers pendents d'aprovació",
     "by {name} at {date}" : "per {name} a {date}",
     "at {date}" : "a {date}",
+    "Waiting for authorized users to approve this file" : "S'està esperant que usuaris autoritzats aprovin aquest fitxer",
+    "Pending approval, you are authorized to approve" : "Pendent d'aprovació, esteu autoritzat a aprovar-lo",
     "Pending approval" : "Pendent d'aprovació",
     "Failed to check approval status" : "No s'ha pogut comprovar l'estat d'aprovació",
     "Approval requested for {name}" : "Aprovació sol·licitada per a {name}",
