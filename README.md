@@ -2,6 +2,9 @@
 
 ✔ Approve or reject files/folders.
 
+**Warning**: The DocuSign integration is no longer part of this app
+and can be installed with [this app](https://apps.nextcloud.com/apps/integration_docusign).
+
 This app is integrated in the files list (Files app).
 
 Admins can define approval workflows: who can request, who can approve/reject.
