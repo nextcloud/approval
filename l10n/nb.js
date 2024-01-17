@@ -30,7 +30,6 @@ OC.L10N.register(
     "Please check my approval request" : "Vennligst sjekk min forespørsel om godkjennelse",
     "Approval workflows" : "Godkjenningsflyt",
     "Let users approve or reject files" : "La brukere godkjenne eller avvise filer",
-    "Approve/reject files based on workflows defined by admins." : "Godkjenne/avvise filer basert på flyt som er bestemt av administratorene.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Hver flyt bestemmer hvem (hvilke brukere, grupper eller sirkler) som kan godkjenne filer for en fastsatt avvente-merkelapp og hvilke godkjennelse-/avvise-merkelapp som da skal bli tildelt.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Alternativt kan en liste med brukere/grupper/sirkler som manuelt kan forespørre godkjenning bli satt opp.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "For at en fil/mappe som har flere avvente-merkelapper skal bli vurdert godkjent, må alle flytene involvert bli godkjent.",

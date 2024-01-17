@@ -30,7 +30,6 @@ OC.L10N.register(
     "Please check my approval request" : "Veuillez consulter ma demande d'approbation",
     "Approval workflows" : "Workflows d'approbation",
     "Let users approve or reject files" : "Permet aux utilisateurs d'approuver ou de refuser des fichiers",
-    "Approve/reject files based on workflows defined by admins." : "Approuver ou refuser des fichiers en respectant les workflows définis par les administrateurs.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Chaque workflow défini qui (quels utilisateurs, groupes ou cercles) peut approuver des fichiers pour une étiquette \"en attente\" donnée et quelles étiquettes doivent être assignées après approbation/rejet.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Une liste d'utilisateurs/groupes/cercles qui peuvent manuellement demander une approbation peut être définie (facultatif).",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Pour être considéré comme approuvé, un fichier/dossier qui a plusieurs étiquettes \"en attente\" doit être approuvé par tous les workflows impliqués.",

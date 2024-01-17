@@ -28,7 +28,6 @@
     "Please check my approval request" : "Podívejte se prosím na moji žádost o schválení",
     "Approval workflows" : "Schvalovací postupy",
     "Let users approve or reject files" : "Nechte uživatele schvalovat či zamítat soubory",
-    "Approve/reject files based on workflows defined by admins." : "Schvalujte/odmítejte soubory na základě postupů, definovaných správci.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Každý postup definuje kdo (kteří uživatelé, skupiny či okruhy) mohou schvalovat soubory pro daný štítek čekající a který štítek schválené/čekající má tím být přiřazen.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Volitelně může být definován seznam uživatelů/skupin/okruhů, které mohou ručně požádat o schválení.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Aby bylo považováno za schválené je třeba, aby soubor/složka, která má přiřazeno vícero štítků čekající, byla schválena ve všech souvisejících postupech.",

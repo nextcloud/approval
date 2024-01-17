@@ -30,7 +30,6 @@ OC.L10N.register(
     "Please check my approval request" : "Lütfen onay isteğimi değerlendirin",
     "Approval workflows" : "Onay iş akışları",
     "Let users approve or reject files" : "Kullanıcılar dosyaları onaylayıp reddebilsin",
-    "Approve/reject files based on workflows defined by admins." : "Dosyalar yöneticiler tarafından belirlenmiş iş akışı kurallarına göre onaylansın/reddedilsin.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Her iş akışı, belirli bir bekleyen etiket için dosyaları kimin (hangi kullanıcıların, grupların ya da çevrelerin) onaylayabileceğini ve ardından hangi onaylandı/reddedildi etiketinin atanması gerektiğini belirler.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "İsteğe bağlı olarak, el ile onay isteğinde bulunabilecek kullanıcıların/grupların/çevrelerin listesi tanımlanabilir.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Birden çok bekleyen etikete sahip bir dosyanın/klasörün onaylanması için, ilgili tüm iş akışları tarafından onaylanması gereklidir.",

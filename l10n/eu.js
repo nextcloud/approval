@@ -30,7 +30,6 @@ OC.L10N.register(
     "Please check my approval request" : "Mesedez, begiratu nire onarpen eskaera",
     "Approval workflows" : "Onarpen lan-fluxuak",
     "Let users approve or reject files" : "Baimendu erabiltzaileei fitxategiak onartu edo ukatzea",
-    "Approve/reject files based on workflows defined by admins." : "Onartu/ukatu fitxategiak, administratzaileak zehaztutako lan-fluxuen arabera.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Lan-fluxu bakoitzak zehazten du nork (zein erabiltzailek, taldek edo zirkuluk) onar ditzakeen fitxategiak ebazteke dauden etiketen artean eta zein onarpen/ukatze etiketa esleituko zaizkien ondoren.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Nahi izanez gero, onarpena eskuz eskatu dezaketen erabiltzaile/talde/zirkuluen zerrenda zehaztu daiteke.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Onarpena jasotzeko, onarpen etiketa ugari ebazteke dauzkaten fitxategi/direktorioek lan-fluxu guztietan jaso behar dute onarpena.",

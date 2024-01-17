@@ -30,7 +30,6 @@ OC.L10N.register(
     "Please check my approval request" : "Ellenőrizze a jóváhagyási kérést",
     "Approval workflows" : "Jóváhagyási munkafolyamatok",
     "Let users approve or reject files" : "Engedélyezés, hogy a felhasználók jóváhagyják vagy elutasítsák a fájlokat",
-    "Approve/reject files based on workflows defined by admins." : "Fájlok jóváhagyása/elutasítása a rendszergazdák által előírt munkafolyamatok szerint.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Minden munkafolyamat leírja, hogy ki (mely felhasználók, csoportok vagy körök) hagyhatja jóvá az adott címkéjű fájlokat, és hogy milyen jóváhagyott/elutasított címke legyen hozzájuk rendelve.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Megadhatja azon felhasználók/csoportok/körök listáját, akik kézi jóváhagyást kérhetnek.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Hogy jóváhagyottnak tekinthető legyen, a több függőben lévő címkével rendelkező fájlt/könyvtárat az összes folyamatnak jóvá kell hagynia.",

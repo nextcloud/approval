@@ -30,7 +30,6 @@ OC.L10N.register(
     "Please check my approval request" : "Prosím skontrolujte moju žiadosť o schválenie",
     "Approval workflows" : "Procesy schvaľovania",
     "Let users approve or reject files" : "Používatelia môžu povoliť alebo zamietnuť súbory",
-    "Approve/reject files based on workflows defined by admins." : "Povoliť/zakázať súbory založené na procesoch definovaných administrátormi.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Každý proces definuje kto (ktorí používatelia, skupiny alebo kruhy) môžu povoliť súbory pre čakajúci štítok a ktorý povolený/zakázaný štítok môže byť potom priradený.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "Zoznam užívateľov/skupín/kruhov ktore môžu manuálne vyžiadať povolenie môžu byť voliteľne definované.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Ak sa má považovať za schválené, musí byť súbor/adresár, ktorý má priradených viac čakajúcich tagov, schválený všetkými zúčastnenými pracovnými tokmi.",

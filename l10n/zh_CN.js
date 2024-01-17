@@ -30,7 +30,6 @@ OC.L10N.register(
     "Please check my approval request" : "请检查我的批准请求",
     "Approval workflows" : "批准流程",
     "Let users approve or reject files" : "让用户批准或拒绝文件",
-    "Approve/reject files based on workflows defined by admins." : "基于管理员定义的工作流批准/拒绝文件",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "每个工作流定义了谁(哪些用户、组或圈子)可以为一个指定的挂起的标签批准文件，然后应该分配哪个已批准/被拒绝的标签。",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "可以选择定义一个可以手动请求批准的用户/组/圈子列表",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "要被认为已被批准，分配了多个挂起标标签的文件/目录必须得到所有相关工作流的批准。",

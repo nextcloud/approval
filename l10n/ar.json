@@ -28,7 +28,6 @@
     "Please check my approval request" : "رجاءً، راجع طلبي بالموافقة",
     "Approval workflows" : "تدفُّقات إجراءات workflows الموافقة",
     "Let users approve or reject files" : "دعِ المستخدمين يوافقون على أو يرفضون الملفات",
-    "Approve/reject files based on workflows defined by admins." : "الموافقة/الرفض للملفات بناءً على تدفُّقات إجرائية workflows سبق تعريفها من المشرفين",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "يحدد كل تدفُّق إجرائي WF مَنْ (مِنَ المستخدمين أو المجموعات أو الدوائر) يمكنه الموافقة على الملفات الموسومة بوسم \"مُعلّق\" pending tag معين، و أي وسم يوضع عليها في حال القبول و أي رسم يوضع عليها في حال الرفض.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "يمكن تحديد قائمة المستخدمين / المجموعات / الدوائر الذين يمكنهم طلب الموافقة يدويًا بشكل اختياري.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "لكي يتم اعتبار الملف أو الدليل الذي يحتوي على عدد من سمات التعليق pending tags  مُوافقاً عليه، يجب أن تتم الموافقة عليه من قِبَل جميع المهام tasks في التدفق الإجرائي WF الذي يتبعه.",

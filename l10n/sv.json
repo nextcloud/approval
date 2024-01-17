@@ -28,7 +28,6 @@
     "Please check my approval request" : "Vänligen kontrollera mina efterfrågningar för godkännande",
     "Approval workflows" : "Arbetsflöde för godkännanden",
     "Let users approve or reject files" : "Möjliggör för användare att godkänna eller underkänna filer",
-    "Approve/reject files based on workflows defined by admins." : "Godkänna/underkänna filer genom arbetsflöden som definierats av administratörerna.",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Varje arbetsflöde definierar vem (användare, grupp eller cirkel) som kan godkänna filer baserat på en given väntande markör samt vilken markör för godkännande/underkännande som därefter skall tilldelas filerna.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "En lista över användare/grupper/cirklar som manuellt kan begära godkännande kan anges om önskvärt.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "För att kunna anses som godkänd, behöver en fil/katalog som har tilldelats flertalet väntande markörer få godkänt från samtliga involverade arbetsflöden.",
