@@ -30,6 +30,7 @@ OC.L10N.register(
     "Please check my approval request" : "Please check my approval request",
     "Approval workflows" : "Approval workflows",
     "Let users approve or reject files" : "Let users approve or reject files",
+    "Approve/reject files based on workflows defined by admins.\n\n**Warning**: The DocuSign integration is no longer part of this app\nand can be installed with [this app](https://apps.nextcloud.com/apps/integration_docusign)." : "Approve/reject files based on workflows defined by admins.\n\n**Warning**: The DocuSign integration is no longer part of this app\nand can be installed with [this app](https://apps.nextcloud.com/apps/integration_docusign).",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned.",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "A list of users/groups/circles who can manually request approval can be optionally defined.",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved.",

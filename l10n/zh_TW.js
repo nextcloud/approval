@@ -30,6 +30,7 @@ OC.L10N.register(
     "Please check my approval request" : "請檢查我的批准請求",
     "Approval workflows" : "批准工作流程",
     "Let users approve or reject files" : "讓使用者批准或回絕檔案",
+    "Approve/reject files based on workflows defined by admins.\n\n**Warning**: The DocuSign integration is no longer part of this app\nand can be installed with [this app](https://apps.nextcloud.com/apps/integration_docusign)." : "以管理員定義的工作流程批准/回絕檔案。\n\n**警告**：DocuSign 整合不再是此應用程式的一部分，\n並可安裝[此應用程式](https://apps.nextcloud.com/apps/integration_docusign)來使用此功能。",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "每個工作流程定義了誰（哪些使用者、群組或小圈圈）可以批准指定擱置中標籤的檔案，然後應該指派哪個批准或回絕標籤。",
     "A list of users/groups/circles who can manually request approval can be optionally defined." : "可以選擇定義誰可以手動請求批准的使用者／群組／小圈圈。",
     "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "要被視為已批准，被指派有多個待處理標籤的檔案／目錄必須被所有相關工作流程批准。",
