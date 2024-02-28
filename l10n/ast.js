@@ -6,6 +6,7 @@ OC.L10N.register(
     "A directory was approved" : "Aprobóse un direutoriu",
     "A directory was rejected" : "Refugóse un direutoriu",
     "{user} rejected {node}" : "{user} refugó «{node}»",
+    "Create" : "Crear",
     "Cancel" : "Encaboxar",
     "Approve" : "Aprobar",
     "Reject" : "Refugar",
