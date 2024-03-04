@@ -24,11 +24,11 @@
 namespace OCA\Approval\Activity;
 
 use Exception;
-use OC\Files\Node\Node;
 use OCA\Approval\AppInfo\Application;
 use OCP\Activity\IEvent;
 use OCP\Activity\IManager;
 use OCP\Files\IRootFolder;
+use OCP\Files\Node;
 use OCP\IL10N;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -148,7 +148,6 @@ class ActivityManager {
 		 */
 		$eventType = Application::APP_ID;
 		$subjectParams = [];
-		$message = null;
 		$objectName = null;
 		switch ($subject) {
 			// No need to enhance parameters since entity already contains the required data
@@ -173,9 +172,6 @@ class ActivityManager {
 			->setSubject($subject, array_merge($subjectParams, $additionalParams))
 			->setTimestamp(time());
 
-		if ($message !== null) {
-			$event->setMessage($message);
-		}
 		return $event;
 	}
 

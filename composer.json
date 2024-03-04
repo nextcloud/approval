@@ -4,18 +4,21 @@
 		"optimize-autoloader": true,
 		"classmap-authoritative": true,
 		"platform": {
-			"php": "7.4"
+			"php": "8.2"
 		}
 	},
 	"scripts": {
 		"cs:fix": "php-cs-fixer fix",
 		"cs:check": "php-cs-fixer fix --dry-run --diff",
 		"lint": "find . -name \\*.php -not -path './vendor/*' -print0 | xargs -0 -n1 php -l",
-		"test:unit": "phpunit -c tests/phpunit.xml --fail-on-warning"
+		"test:unit": "phpunit -c tests/phpunit.xml --fail-on-warning",
+		"psalm": "psalm.phar --no-cache"
 	},
 	"require-dev": {
 		"christophwurst/nextcloud_testing": "^0.12.4",
 		"nextcloud/coding-standard": "^1.1",
-		"phpunit/phpunit": "^9"
+		"phpunit/phpunit": "^9",
+		"psalm/phar": "^5.16",
+		"nextcloud/ocp": "dev-master"
 	}
 }

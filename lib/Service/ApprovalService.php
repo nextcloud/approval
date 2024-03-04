@@ -92,9 +92,9 @@ class ApprovalService {
 				// avoid if it's already pending/approved/rejected for this rule
 				if ($role === 'requesters'
 					&& $fileId !== null
-					&& ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
-						|| $this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])
-						|| $this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])
+					&& ($this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagPending'])
+						|| $this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagApproved'])
+						|| $this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagRejected'])
 					)
 				) {
 					continue;
@@ -228,7 +228,7 @@ class ApprovalService {
 			// $nodes = $userFolder->searchByTag($pendingTagId, $userId);
 			foreach ($nodeIdsWithTag as $nodeId) {
 				// is the node in the user storage (does the user have access to this node)?
-				$nodeInUserStorage = $userFolder->getById($nodeId);
+				$nodeInUserStorage = $userFolder->getById((int) $nodeId);
 				if (count($nodeInUserStorage) > 0 && !isset($pendingNodes[$nodeId])) {
 					$node = $nodeInUserStorage[0];
 					$pendingNodes[$nodeId] = [
@@ -285,7 +285,7 @@ class ApprovalService {
 		// first check if it's approvable
 		foreach ($rules as $id => $rule) {
 			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+				if ($this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagPending'])
 					&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
 					return [
 						'state' => Application::STATE_APPROVABLE,
@@ -299,7 +299,7 @@ class ApprovalService {
 		// then check pending in priority
 		foreach ($rules as $id => $rule) {
 			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])) {
+				if ($this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagPending'])) {
 					return [
 						'state' => Application::STATE_PENDING,
 						'rule' => $rule,
@@ -311,7 +311,7 @@ class ApprovalService {
 		// then rejected
 		foreach ($rules as $id => $rule) {
 			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagRejected'])) {
+				if ($this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagRejected'])) {
 					return [
 						'state' => Application::STATE_REJECTED,
 						'rule' => $rule,
@@ -323,7 +323,7 @@ class ApprovalService {
 		// then approved
 		foreach ($rules as $id => $rule) {
 			try {
-				if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagApproved'])) {
+				if ($this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagApproved'])) {
 					return [
 						'state' => Application::STATE_APPROVED,
 						'rule' => $rule,
@@ -350,10 +350,10 @@ class ApprovalService {
 			$rules = $this->ruleService->getRules();
 			foreach ($rules as $ruleId => $rule) {
 				try {
-					if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+					if ($this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagPending'])
 						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
-						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagApproved']);
-						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
+						$this->tagObjectMapper->assignTags((string) $fileId, 'files', $rule['tagApproved']);
+						$this->tagObjectMapper->unassignTags((string) $fileId, 'files', $rule['tagPending']);
 
 						// store activity in our tables
 						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_APPROVED);
@@ -387,10 +387,10 @@ class ApprovalService {
 			$rules = $this->ruleService->getRules();
 			foreach ($rules as $ruleId => $rule) {
 				try {
-					if ($this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])
+					if ($this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagPending'])
 						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
-						$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagRejected']);
-						$this->tagObjectMapper->unassignTags($fileId, 'files', $rule['tagPending']);
+						$this->tagObjectMapper->assignTags((string) $fileId, 'files', $rule['tagRejected']);
+						$this->tagObjectMapper->unassignTags((string) $fileId, 'files', $rule['tagPending']);
 
 						// store activity in our tables
 						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_REJECTED);
@@ -429,7 +429,7 @@ class ApprovalService {
 
 		if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
 			// only request if it has not yet been requested for this rule
-			if (!$this->tagObjectMapper->haveTag($fileId, 'files', $rule['tagPending'])) {
+			if (!$this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagPending'])) {
 				if ($createShares) {
 					$this->shareWithApprovers($fileId, $rule, $userId);
 					// if shares are auto created, request is actually done in a separated request with $createShares === false
@@ -438,7 +438,7 @@ class ApprovalService {
 				// store activity in our tables
 				$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_PENDING);
 
-				$this->tagObjectMapper->assignTags($fileId, 'files', $rule['tagPending']);
+				$this->tagObjectMapper->assignTags((string) $fileId, 'files', $rule['tagPending']);
 
 				// still produce an activity entry for the user who requests
 				$this->activityManager->triggerEvent(
@@ -719,7 +719,7 @@ class ApprovalService {
 	 *
 	 * @param int $fileId
 	 * @param array $rule
-	 * @param string|null $requestUserId
+	 * @param string $requestUserId
 	 * @return void
 	 */
 	public function sendRequestNotification(int $fileId, array $rule, string $requestUserId, bool $checkAccess): void {
