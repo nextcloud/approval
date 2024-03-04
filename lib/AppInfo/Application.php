@@ -25,11 +25,6 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\SabrePluginEvent;
 use OCP\SystemTag\MapperEvent;
 
-/**
- * Class Application
- *
- * @package OCA\Approval\AppInfo
- */
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'approval';
 	public const ADMIN_SETTINGS_SECTION = 'approval-rules';
@@ -46,11 +41,6 @@ class Application extends App implements IBootstrap {
 	// DAV
 	public const DAV_PROPERTY_APPROVAL_STATE = '{http://nextcloud.org/ns}approval-state';
 
-	/**
-	 * Constructor
-	 *
-	 * @param array $urlParams
-	 */
 	public function __construct(array $urlParams = []) {
 		parent::__construct(self::APP_ID, $urlParams);
 
@@ -63,7 +53,7 @@ class Application extends App implements IBootstrap {
 			if ($event->getObjectType() === 'files') {
 				/** @var ApprovalService $service */
 				$service = $container->get(ApprovalService::class);
-				$service->handleTagAssignmentEvent($event->getObjectId(), $event->getTags());
+				$service->handleTagAssignmentEvent((int) $event->getObjectId(), $event->getTags());
 			}
 		});
 	}

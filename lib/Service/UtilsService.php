@@ -189,7 +189,7 @@ class UtilsService {
 	 */
 	public function deleteTag(int $id): array {
 		try {
-			$this->tagManager->deleteTags($id);
+			$this->tagManager->deleteTags((string) $id);
 			return ['success' => true];
 		} catch (TagNotFoundException $e) {
 			return ['error' => 'Tag not found'];
