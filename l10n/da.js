@@ -10,6 +10,7 @@ OC.L10N.register(
     "you" : "dig",
     "No recommendations. Start typing." : "Ingen anbefalinger. Begynd at skrive.",
     "No result." : "Intet resultat",
+    "Pending approval" : "Afventer godkendelse",
     "Warning" : "Advarsler"
 },
 "nplurals=2; plural=(n != 1);");

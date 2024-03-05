@@ -14,7 +14,6 @@ OC.L10N.register(
     "A file was rejected" : "Tập tin đã bị từ chối",
     "A directory was approved" : "Thư mục đã được chấp nhận",
     "A directory was rejected" : "Thư mục đã bị từ chối",
-    "Bad HTTP method" : "Phương thức HTTP không hợp lệ",
     "Create" : "‎Tạo‎",
     "Cancel" : "Hủy",
     "Approve" : "Chấp thuận",
@@ -26,6 +25,8 @@ OC.L10N.register(
     "Who can request approval" : "Ai có thể yêu cầu phê duyệt",
     "Who can approve" : "Ai có thể phê duyệt",
     "No recommendations. Start typing." : "Không có khuyến nghị. Bắt đầu gõ.",
-    "Warning" : "Cảnh báo"
+    "Pending approval" : "Đang chờ phê duyệt",
+    "Warning" : "Cảnh báo",
+    "Bad HTTP method" : "Phương thức HTTP không hợp lệ"
 },
 "nplurals=1; plural=0;");

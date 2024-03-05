@@ -11,8 +11,6 @@ OC.L10N.register(
     "A guest user" : "ゲストユーザー",
     "Approval" : "承認",
     "<strong>Approval</strong> events" : "<strong>承認</strong> されたとき",
-    "Error getting OAuth access token" : "OAuth アクセストークン取得時のエラー",
-    "Error during OAuth exchanges" : "OAuth 通信中のエラー",
     "Pending approvals" : "承認待機中",
     "A file was approved" : "ファイルが承認されました",
     "A file was rejected" : "とあるファイルが拒否されました",
@@ -21,8 +19,6 @@ OC.L10N.register(
     "%1$s approved %2$s" : "%1$s が%2$s を承認しました",
     "%1$s rejected %2$s" : "%1$s が %2$s を承認しました",
     "{user} approved {node}" : "{user} が {node} を承認しました",
-    "Bad credentials" : "不正な資格情報",
-    "OAuth access token refused" : "OAuth アクセストークンが拒否されました",
     "Create" : "作成",
     "Cancel" : "キャンセル",
     "Tag \"{name}\" created" : "タグ「{name}」が作成しました",
@@ -35,6 +31,9 @@ OC.L10N.register(
     "No recommendations. Start typing." : "推奨事項はありません。 入力を開始します。",
     "No result." : "結果なし",
     "Who?" : "どちら様でしょうか？",
-    "Warning" : "警告"
+    "Pending approval" : "承認待ち",
+    "Warning" : "警告",
+    "Error getting OAuth access token" : "OAuth アクセストークン取得時のエラー",
+    "OAuth access token refused" : "OAuth アクセストークンが拒否されました"
 },
 "nplurals=1; plural=0;");
