@@ -96,6 +96,22 @@
     "You approved {name}" : "Você aprovou {name}",
     "Failed to approve {name}" : "Falha ao aprovar {name}",
     "You rejected {name}" : "Você rejeitou {name}",
-    "Failed to reject {name}" : "Falha ao rejeitar {name}"
+    "Failed to reject {name}" : "Falha ao rejeitar {name}",
+    "Error getting OAuth access token" : "Erro ao obter o token de acesso OAuth",
+    "Bad HTTP method" : "Método HTTP incorreto",
+    "OAuth access token refused" : "Token de acesso OAuth recusado",
+    "Approve/reject files based on workflows defined by admins.\n\n:warning: **This app will be deprecated from Nextcloud 28 onwards.\nIf you are a Nextcloud customer and you rely on this app,\nplease wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**" : "Aprove/rejeite arquivos com base em fluxos de trabalho definidos pelos administradores.\n\n: aviso: ** Este aplicativo será descontinuado a partir do Nextcloud 28.\nSe você é um cliente Nextcloud e confia neste aplicativo,\naguarde a atualização para 28 e abra um ticket de suporte para que possamos encontrar uma solução para seu caso de uso.**",
+    "Sign with DocuSign" : "Assine com DocuSign",
+    "The related approval workflow is:" : "O fluxo de aprovação relacionado é:",
+    "Request a signature via DocuSign" : "Solicite assinatura via DocuSign",
+    "Nextcloud users or email addresses" : "Usuários do Nextcloud ou endereços de e-mail",
+    "Failed to request signature with DocuSign" : "Falha ao solicitar assinatura com DocuSign",
+    "DocuSign integration" : "Integração com DocuSign",
+    "DocuSign is an electronic signature solution." : "DocuSign é uma solução de assinatura eletrônica.",
+    "Application secret key" : "Chave secreta do aplicativo",
+    "Connected as {user} ({email})" : "Conectado como {user} ({email})",
+    "Successfully connected to DocuSign!" : "Conectado com sucesso ao DocuSign!",
+    "{name} signature requested via LibreSign" : "{name} assinatura solicitada via LibreSign",
+    "Show approval details" : "Mostrar detalhes de aprovação"
 },"pluralForm" :"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

@@ -98,6 +98,15 @@ OC.L10N.register(
     "You approved {name}" : "Hai approvato {name}",
     "Failed to approve {name}" : "Approvazione di {name} fallita",
     "You rejected {name}" : "Hai rifiutato {name}",
-    "Failed to reject {name}" : "Negazione di {name} fallita"
+    "Failed to reject {name}" : "Negazione di {name} fallita",
+    "Error getting OAuth access token" : "Errore durante il recupero del token di accesso OAuth",
+    "Bad HTTP method" : "Metodo HTTP non corretto",
+    "OAuth access token refused" : "Token di accesso OAuth rifiutato",
+    "Sign with DocuSign" : "Firma con DocuSign",
+    "Failed to request signature with DocuSign" : "Richiesta della firma con DocuSign fallita",
+    "DocuSign is an electronic signature solution." : "DocuSign è una soluzione di firme elettroniche.",
+    "Connected as {user} ({email})" : "Connesso come {user} ({email})",
+    "Successfully connected to DocuSign!" : "Connesso correttamente a DocuSign!",
+    "Show approval details" : "Mostra dettagli di approvazione"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

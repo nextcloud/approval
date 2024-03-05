@@ -10,6 +10,8 @@ OC.L10N.register(
     "No recommendations. Start typing." : "Engar tillögur. Byrjaðu að skrifa.",
     "No result." : "Engar niðurstöður.",
     "Pending approval" : "Bíður samþykkis",
-    "Warning" : "Aðvörun"
+    "Warning" : "Aðvörun",
+    "Error getting OAuth access token" : "Villa við að ná í OAuth-aðgangsteikn",
+    "OAuth access token refused" : "OAuth-aðgangsteikni hafnað"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

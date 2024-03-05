@@ -91,6 +91,23 @@
     "You approved {name}" : "As aprovadu {name}",
     "Failed to approve {name}" : "No at fatu a aprovare {name}",
     "You rejected {name}" : "As refudadu {name}",
-    "Failed to reject {name}" : "No at fatu a refudare {name}"
+    "Failed to reject {name}" : "No at fatu a refudare {name}",
+    "Error getting OAuth access token" : "Errore recuperende su token de intrada OAuth.",
+    "Bad HTTP method" : "Mètodu HTTP no bàlidu",
+    "OAuth access token refused" : "Token de intrada OAuth refudadu",
+    "Sign with DocuSign" : "Firma cun DocuSign",
+    "The related approval workflow is:" : "Su flussu de traballu de aprovatzione relatzionadu est:",
+    "Request a signature via DocuSign" : "Rechede una firma cun DocuSign",
+    "Nextcloud users or email addresses" : "Utentes de Nextcloud o indiritzos de posta eletrònica",
+    "Failed to request signature with DocuSign" : "No at fatu a rechèdere sa firma cun DocuSign",
+    "DocuSign integration" : "Integratzione DocuSign",
+    "DocuSign is an electronic signature solution." : "DocuSign est una solutzione pro sa firma eletrònica.",
+    "If you want to use DocuSign, create an application in your DocuSign \"My Apps & Keys\" developer account settings and put the client ID (integration key) and secret below." : "Si boles impreare DocuSign, crea un'aplicatzione in is impostatziones de su contu de s'isvilupadore \"Aplicatziones e craes\" de DocuSign e pone s'ID cliente (crae de integratzione) e su segretu in fatu.",
+    "Application secret key" : "Crae segreta de s'aplicatzione",
+    "Secret key of your application" : "Crae segreta de s'aplicatzione tua",
+    "Connected as {user} ({email})" : "In connessione comente {user} ({email})",
+    "Successfully connected to DocuSign!" : "In connessione cun DocuSign!",
+    "{name} signature requested via LibreSign" : "Firma de {name} recherta cun LibreSign",
+    "Show approval details" : "Mustra detàllios de aprovatzione"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

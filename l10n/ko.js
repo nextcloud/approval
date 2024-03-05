@@ -93,6 +93,18 @@ OC.L10N.register(
     "You approved {name}" : "당신이 {이름}(을)를 승인했습니다.",
     "Failed to approve {name}" : "{이름}을 승인하는데 실패했습니다.",
     "You rejected {name}" : "당신이 {이름}(을)를 거부했습니다.",
-    "Failed to reject {name}" : "{이름}을 거부하는데 실패했습니다."
+    "Failed to reject {name}" : "{이름}을 거부하는데 실패했습니다.",
+    "Error getting OAuth access token" : "OAuth 접근을 가져오는데 오류가 발생했습니다.",
+    "Bad HTTP method" : "옳지 않은 HTTP 메소드",
+    "OAuth access token refused" : "OAuth 접근 토큰 거부됨",
+    "Sign with DocuSign" : "DocuSign에 서명하세요.",
+    "The related approval workflow is:" : "관련된 승인 워크플로는: ",
+    "Request a signature via DocuSign" : "DocuSign을 통해 서명을 요청하세요.",
+    "Failed to request signature with DocuSign" : "DocuSign에서 서명을 요청하는데 실패했습니다.",
+    "DocuSign integration" : "DocuSign 통합",
+    "DocuSign is an electronic signature solution." : "DocuSign은 전자 서명 솔루션입니다.",
+    "Connected as {user} ({email})" : "{user} ({email})(으)로 연결됨",
+    "Successfully connected to DocuSign!" : "DocuSign에 성공적으로 연결됐습니다!",
+    "Show approval details" : "승인에 대한 세부 사항을 보여줍니다."
 },
 "nplurals=1; plural=0;");

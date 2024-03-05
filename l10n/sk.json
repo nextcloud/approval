@@ -96,6 +96,23 @@
     "You approved {name}" : "Schválili ste {name}",
     "Failed to approve {name}" : "Zlyhalo povolenie {name}",
     "You rejected {name}" : "Odmietli ste {name}",
-    "Failed to reject {name}" : "Zlyhalo odmietnutie {name}"
+    "Failed to reject {name}" : "Zlyhalo odmietnutie {name}",
+    "Error getting OAuth access token" : "Chyba pri získavaní prístupového tokenu OAuth",
+    "Bad HTTP method" : "Zlá metóda HTTP",
+    "OAuth access token refused" : "Prístupový token OAuth bol zamietnutý",
+    "Sign with DocuSign" : "Prihlásiť cez DocuSign",
+    "The related approval workflow is:" : "Príbuzný schvaľovací proces je:",
+    "Request a signature via DocuSign" : "Vyžiadať podpis cez DocuSign",
+    "Nextcloud users or email addresses" : "Používatelia Nextcloudu alebo emailové adresy",
+    "Failed to request signature with DocuSign" : "Zlyhala žiadosť o podpis od DocuSign",
+    "DocuSign integration" : "Napojenie na DocuSign",
+    "DocuSign is an electronic signature solution." : "DocuSign je riešenie pre elektronický podpis.",
+    "If you want to use DocuSign, create an application in your DocuSign \"My Apps & Keys\" developer account settings and put the client ID (integration key) and secret below." : "Ak chcete používať DocuSign, vytvorte si v nastavení účtu vývojára DocuSign „Moje aplikácie a kľúče“ aplikáciu a nižšie zadajte ID klienta (integračný kľúč) a tajný kód.",
+    "Application secret key" : "Aplikačný tajný kľúč",
+    "Secret key of your application" : "Tajný kľúč vašej aplikácie",
+    "Connected as {user} ({email})" : "Pripojený ako {user} ({email})",
+    "Successfully connected to DocuSign!" : "Úspešne pripojené k DocuSign!",
+    "{name} signature requested via LibreSign" : "{name} podpis bol vyžiadaný od LibreSign",
+    "Show approval details" : "Zobraziť detaily schválenia"
 },"pluralForm" :"nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);"
 }

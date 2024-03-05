@@ -96,6 +96,14 @@
     "You approved {name}" : "Vde. aprobou {name}",
     "Failed to approve {name}" : "Produciuse un fallo ao aprobar {name}",
     "You rejected {name}" : "Vde. rexeitou {name}",
-    "Failed to reject {name}" : "Produciuse un fallo ao rexeitar {name}"
+    "Failed to reject {name}" : "Produciuse un fallo ao rexeitar {name}",
+    "Error getting OAuth access token" : "Produciuse un erro ao obter o testemuño de acceso OAuth",
+    "Bad HTTP method" : "Método HTTP incorrecto",
+    "OAuth access token refused" : "O testemuño de acceso de OAuth foi rexeitado",
+    "Approve/reject files based on workflows defined by admins.\n\n:warning: **This app will be deprecated from Nextcloud 28 onwards.\nIf you are a Nextcloud customer and you rely on this app,\nplease wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**" : "Aprobar/rexeitar ficheiros en función dos fluxos de traballo definidos pola administración do sitio.\n\n:warning: **Esta aplicación quedará obsoleta a partir de Nextcloud 28.\nSe é cliente de Nextcloud e depende desta aplicación,\nagarde coa actualización a 28 e abra un billete de asistencia técnica para que poidamos atopar unha solución para o seu caso de uso.**",
+    "DocuSign is an electronic signature solution." : "DocuSign é unha solución de sinatura electrónica.",
+    "Connected as {user} ({email})" : "Conectado como {user} ({email})",
+    "Successfully connected to DocuSign!" : "Conectou satisfactoriamente con DocuSign!",
+    "Show approval details" : "Amosar os detalles da aprobación"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

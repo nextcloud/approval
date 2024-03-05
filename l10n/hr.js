@@ -93,6 +93,13 @@ OC.L10N.register(
     "You approved {name}" : "Odobrili ste {name}",
     "Failed to approve {name}" : "Odobrenje {name} nije uspjelo",
     "You rejected {name}" : "Odbili ste {name}",
-    "Failed to reject {name}" : "Odbijanje {name} nije uspjelo"
+    "Failed to reject {name}" : "Odbijanje {name} nije uspjelo",
+    "Error getting OAuth access token" : "Pogreška pri dohvaćanju tokena za pristup OAuth",
+    "Bad HTTP method" : "Pogrešna metoda HTTP-a",
+    "OAuth access token refused" : "Odbijen token za pristup OAuth",
+    "DocuSign is an electronic signature solution." : "DocuSign je sustav za elektroničko potpisivanje dokumenata.",
+    "Connected as {user} ({email})" : "Povezan kao {user} ({email})",
+    "Successfully connected to DocuSign!" : "Uspješno povezivanje s DocuSignom!",
+    "Show approval details" : "Prikaži pojedinosti odobrenja"
 },
 "nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;");

@@ -104,6 +104,14 @@
     "You approved {name}" : "Vous avez approuvé {name}",
     "Failed to approve {name}" : "Impossible d'approuver {name}",
     "You rejected {name}" : "Vous avez refusé {name}",
-    "Failed to reject {name}" : "Impossible de rejeter {name}"
+    "Failed to reject {name}" : "Impossible de rejeter {name}",
+    "Error getting OAuth access token" : "Erreur lors de l'obtention du jeton d'accès OAuth",
+    "Bad HTTP method" : "Mauvaise méthode HTTP",
+    "OAuth access token refused" : "Jeton d'accès OAuth refusé",
+    "Approve/reject files based on workflows defined by admins.\n\n:warning: **This app will be deprecated from Nextcloud 28 onwards.\nIf you are a Nextcloud customer and you rely on this app,\nplease wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**" : "Approuver/rejeter des fichiers en fonction de flux de travail définis par les administrateurs.\n\n:warning: **Cette application sera obsolète à partir de Nextcloud 28.\nSi vous êtes un client Nextcloud et que vous utilisez cette application,\nveuillez attendre avant de passer à la version 28 et d'ouvrir un ticket au support afin que nous puissions trouver une solution pour votre cas d'utilisation.**",
+    "DocuSign is an electronic signature solution." : "DocuSign est un service de signature électronique.",
+    "Connected as {user} ({email})" : "Connecté en tant que {user} ({email})",
+    "Successfully connected to DocuSign!" : "Connecté à DocuSign !",
+    "Show approval details" : "Afficher les détails d'approbation"
 },"pluralForm" :"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

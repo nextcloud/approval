@@ -70,6 +70,11 @@ OC.L10N.register(
     "Pending approval" : "Odottaa hyväksyntää",
     "Warning" : "Varoitus",
     "You approved {name}" : "Hyväksyit {name}",
-    "You rejected {name}" : "Hylkäsit {name}"
+    "You rejected {name}" : "Hylkäsit {name}",
+    "Error getting OAuth access token" : "Virhe OAuth-valtuutuksen hakemisessa",
+    "DocuSign is an electronic signature solution." : "DocuSign on sähköisen allekirjoituksen ratkaisu.",
+    "Connected as {user} ({email})" : "Yhdistetty käyttäjänä {user} ({email})",
+    "Successfully connected to DocuSign!" : "Yhdistetty DocuSigniin!",
+    "Show approval details" : "Näytä hyväksynnän tiedot"
 },
 "nplurals=2; plural=(n != 1);");

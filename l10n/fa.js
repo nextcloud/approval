@@ -98,6 +98,11 @@ OC.L10N.register(
     "You approved {name}" : "You approved {name}",
     "Failed to approve {name}" : "Failed to approve {name}",
     "You rejected {name}" : "You rejected {name}",
-    "Failed to reject {name}" : "Failed to reject {name}"
+    "Failed to reject {name}" : "Failed to reject {name}",
+    "Error getting OAuth access token" : "Error getting OAuth access token",
+    "DocuSign is an electronic signature solution." : "DocuSign is an electronic signature solution.",
+    "Connected as {user} ({email})" : "Connected as {user} ({email})",
+    "Successfully connected to DocuSign!" : "Successfully connected to DocuSign!",
+    "Show approval details" : "Show approval details"
 },
 "nplurals=2; plural=(n > 1);");

@@ -30,6 +30,8 @@
     "No result." : "結果なし",
     "Who?" : "どちら様でしょうか？",
     "Pending approval" : "承認待ち",
-    "Warning" : "警告"
+    "Warning" : "警告",
+    "Error getting OAuth access token" : "OAuth アクセストークン取得時のエラー",
+    "OAuth access token refused" : "OAuth アクセストークンが拒否されました"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

@@ -68,6 +68,7 @@ OC.L10N.register(
     "You approved {name}" : "Έχετε εγκρίνει τον/την {name}",
     "Failed to approve {name}" : "Αποτυχία έγκρισης του/της {name}",
     "You rejected {name}" : "Απορρίψατε τον/την {name}",
-    "Failed to reject {name}" : "Αποτυχία απόρριψης του {name}"
+    "Failed to reject {name}" : "Αποτυχία απόρριψης του {name}",
+    "Show approval details" : "Εμφάνιση λεπτομερειών έγκρισης"
 },
 "nplurals=2; plural=(n != 1);");

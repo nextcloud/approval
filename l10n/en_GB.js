@@ -106,6 +106,10 @@ OC.L10N.register(
     "You approved {name}" : "You approved {name}",
     "Failed to approve {name}" : "Failed to approve {name}",
     "You rejected {name}" : "You rejected {name}",
-    "Failed to reject {name}" : "Failed to reject {name}"
+    "Failed to reject {name}" : "Failed to reject {name}",
+    "Approve/reject files based on workflows defined by admins.\n\n:warning: **This app will be deprecated from Nextcloud 28 onwards.\nIf you are a Nextcloud customer and you rely on this app,\nplease wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**" : "Approve/reject files based on workflows defined by admins.\n\n:warning: **This app will be deprecated from Nextcloud 28 onwards.\nIf you are a Nextcloud customer and you rely on this app,\nplease wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**",
+    "DocuSign is an electronic signature solution." : "DocuSign is an electronic signature solution.",
+    "Connected as {user} ({email})" : "Connected as {user} ({email})",
+    "Show approval details" : "Show approval details"
 },
 "nplurals=2; plural=(n != 1);");

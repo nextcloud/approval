@@ -10,6 +10,8 @@ OC.L10N.register(
     "you" : "ти",
     "No recommendations. Start typing." : "Нема препораки. Започнете со пишување.",
     "No result." : "Нема резултати.",
-    "Warning" : "Предупредување"
+    "Warning" : "Предупредување",
+    "OAuth access token refused" : "Одбиен OAuth пристапен токен ",
+    "Connected as {user} ({email})" : "Поврзан како {user} ({email})"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

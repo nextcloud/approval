@@ -98,6 +98,21 @@ OC.L10N.register(
     "You approved {name}" : "Je keurde {name} goed",
     "Failed to approve {name}" : "Kon {name} niet goedkeuren",
     "You rejected {name}" : "Je keurde {name} af",
-    "Failed to reject {name}" : "Kon {name} niet afkeuren"
+    "Failed to reject {name}" : "Kon {name} niet afkeuren",
+    "Error getting OAuth access token" : "Fout bij ophalen OAuth access token",
+    "Bad HTTP method" : "Foute HTTP methode",
+    "OAuth access token refused" : "OAuth toegangstoken geweigerd",
+    "Sign with DocuSign" : "Ondertekenen met DocuSign",
+    "The related approval workflow is:" : "De gerelateerde goedkeuringswerkstroom is:",
+    "Request a signature via DocuSign" : "Vraag ondertekening via DocuSign",
+    "Nextcloud users or email addresses" : "Nextcloud gebruikers of e-mailadressen",
+    "Failed to request signature with DocuSign" : "Aanvraag voor ondertekening via DocuSign mislukt",
+    "DocuSign integration" : "DocuSign integratie",
+    "DocuSign is an electronic signature solution." : "DocuSign is een elektronische ondertekeningstool.",
+    "Application secret key" : "Application secret key",
+    "Connected as {user} ({email})" : "Verbonden als {user} ({email})",
+    "Successfully connected to DocuSign!" : "Succesvol verbonden met DocuSign!",
+    "{name} signature requested via LibreSign" : "{name} ondertekening aangevraagd via LibreSign",
+    "Show approval details" : "Toon goedkeuringsdetails"
 },
 "nplurals=2; plural=(n != 1);");

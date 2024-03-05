@@ -83,6 +83,18 @@
     "Pending approval" : "Potrditev na čakanju",
     "Failed to check approval status" : "Preverjanje stanja potrditve je spodletelo.",
     "Warning" : "Opozorilo",
-    "You rejected {name}" : "Zavrnete {name}"
+    "You rejected {name}" : "Zavrnete {name}",
+    "Error getting OAuth access token" : "Napaka pri pridobivanju žetona OAuth za dostop",
+    "Bad HTTP method" : "Neustrezen način HTTP",
+    "OAuth access token refused" : "Žeton OAuth za dostop je bil zavrnjen",
+    "Sign with DocuSign" : "Podpiši z DocuSign",
+    "Request a signature via DocuSign" : "Zahtevaj podpis z DocuSign",
+    "Nextcloud users or email addresses" : "Uporabniki Nextcloud oziroma elektronski naslovi",
+    "Failed to request signature with DocuSign" : "Zahteva za podpisovanjem z DocuSign je spodletela.",
+    "DocuSign integration" : "Združevalnik DocuSign",
+    "DocuSign is an electronic signature solution." : "DocuSign je orodje za elektronsko podpisovanje dokumentov.",
+    "Application secret key" : "Skrivni ključ programa",
+    "Secret key of your application" : "Koda za program",
+    "Show approval details" : "Pokaži podrobnosti potrjevanja"
 },"pluralForm" :"nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);"
 }

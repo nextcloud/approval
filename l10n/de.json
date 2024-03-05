@@ -96,6 +96,9 @@
     "You approved {name}" : "Du hast {name} genehmigt",
     "Failed to approve {name}" : "Fehler beim Genehmigen von {name}",
     "You rejected {name}" : "Du hast {name} abgelehnt",
-    "Failed to reject {name}" : "Fehler beim Ablehnen von {name}"
+    "Failed to reject {name}" : "Fehler beim Ablehnen von {name}",
+    "Approve/reject files based on workflows defined by admins.\n\n:warning: **This app will be deprecated from Nextcloud 28 onwards.\nIf you are a Nextcloud customer and you rely on this app,\nplease wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**" : "Dateien basierend auf von der Administration definierten Workflows genehmigen oder ablehnen.\n\n:Warnung: **Diese App wird ab Nextcloud 28 nicht mehr unterstützt.\nWenn du Nextcloud-Kunde bist und auf diese App setzt,\nwarte bitte mit der Aktualisierung auf Version 28 und eröffne ein Support-Ticket, damit wir eine Lösung für deinen Anwendungsfall finden können.**",
+    "DocuSign is an electronic signature solution." : "DocuSign ist eine elektronische Signaturlösung.",
+    "Show approval details" : "Genehmigungsdetails anzeigen"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

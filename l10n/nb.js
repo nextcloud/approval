@@ -106,6 +106,18 @@ OC.L10N.register(
     "You approved {name}" : "Du godkjente {name}",
     "Failed to approve {name}" : "Kunne ikke godkjenne {name}",
     "You rejected {name}" : "Du avviste {name}",
-    "Failed to reject {name}" : "Kunne ikke avvise {name}"
+    "Failed to reject {name}" : "Kunne ikke avvise {name}",
+    "Error getting OAuth access token" : "En feil oppsto ved henting av OAuth access token",
+    "Bad HTTP method" : "HTTP-metode er feil",
+    "OAuth access token refused" : "OAuth access token ble avslått",
+    "Sign with DocuSign" : "Signer med DocuSign",
+    "The related approval workflow is:" : "Den relaterte godkjenningsflyten er:",
+    "Request a signature via DocuSign" : "Forespør en signatur via DocuSign",
+    "Failed to request signature with DocuSign" : "Kunne ikke forespørre signatur med DocuSign",
+    "DocuSign integration" : "DocuSign-integrasjon",
+    "DocuSign is an electronic signature solution." : "DocuSign er en elektronisk signaturløsning.",
+    "Connected as {user} ({email})" : "Tilkoblet som {user} ({email})",
+    "Successfully connected to DocuSign!" : "Tilkoblingen til DocuSign er vellykket!",
+    "Show approval details" : "Vis godkjenningsdetaljer"
 },
 "nplurals=2; plural=(n != 1);");

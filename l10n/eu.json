@@ -104,6 +104,12 @@
     "You approved {name}" : "{name} onartu duzu",
     "Failed to approve {name}" : "{name} onartzeak huts egin du",
     "You rejected {name}" : "{name} ukatu duzu",
-    "Failed to reject {name}" : "{name} ukatzeak huts egin du"
+    "Failed to reject {name}" : "{name} ukatzeak huts egin du",
+    "Error getting OAuth access token" : "Errorea OAuth sarbide tokena eskuratzen",
+    "Approve/reject files based on workflows defined by admins.\n\n:warning: **This app will be deprecated from Nextcloud 28 onwards.\nIf you are a Nextcloud customer and you rely on this app,\nplease wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**" : "Onartu/baztertu fitxategiak administratzaileek definitutako lan-fluxuetan oinarrituta.\n\n:abisua: **Aplikazio hau zaharkituta egongo da Nextcloud 28tik aurrera.\nNextcloud bezeroa bazara eta aplikazio honetan oinarritzen bazara,\nMesedez, itxaron 28ra eguneratzearekin eta ireki laguntza-txartel bat, zure erabilera-kasurako irtenbide bat aurkitu ahal izateko.**",
+    "DocuSign is an electronic signature solution." : "DocuSign sinadura elektronikoentzako irtenbide bat da.",
+    "Connected as {user} ({email})" : "{user} ({email}) gisa konektatuta",
+    "Successfully connected to DocuSign!" : "DocuSign-ekin konexioa ondo egin da!",
+    "Show approval details" : "Erakutsi onarpenaren xehetasunak"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

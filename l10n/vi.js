@@ -26,6 +26,7 @@ OC.L10N.register(
     "Who can approve" : "Ai có thể phê duyệt",
     "No recommendations. Start typing." : "Không có khuyến nghị. Bắt đầu gõ.",
     "Pending approval" : "Đang chờ phê duyệt",
-    "Warning" : "Cảnh báo"
+    "Warning" : "Cảnh báo",
+    "Bad HTTP method" : "Phương thức HTTP không hợp lệ"
 },
 "nplurals=1; plural=0;");

@@ -106,6 +106,9 @@ OC.L10N.register(
     "You approved {name}" : "Aprobaste {name}",
     "Failed to approve {name}" : "No se pudo aprobar {name}",
     "You rejected {name}" : "Rechazaste {name}",
-    "Failed to reject {name}" : "No se pudo rechazar {name}"
+    "Failed to reject {name}" : "No se pudo rechazar {name}",
+    "DocuSign is an electronic signature solution." : "DocuSign es una solución de firma electrónica.",
+    "Connected as {user} ({email})" : "Conectado como {user} ({email})",
+    "Show approval details" : "Mostrar detalles de aprobación"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

@@ -34,6 +34,8 @@ OC.L10N.register(
     "you" : "vos",
     "No result." : "Cap de resultat.",
     "Who?" : "Qual ?",
-    "Warning" : "Avertiment"
+    "Warning" : "Avertiment",
+    "Sign with DocuSign" : "Signar amb DocuSign",
+    "DocuSign integration" : "integracion DocuSign"
 },
 "nplurals=2; plural=(n > 1);");

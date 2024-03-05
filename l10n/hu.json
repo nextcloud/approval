@@ -96,6 +96,13 @@
     "You approved {name}" : "Jóváhagyta: {name}",
     "Failed to approve {name}" : "A(z) {name} jóváhagyása sikertelen",
     "You rejected {name}" : "Elutasította: {name}",
-    "Failed to reject {name}" : "A(z) {name} elutasítása sikertelen"
+    "Failed to reject {name}" : "A(z) {name} elutasítása sikertelen",
+    "Error getting OAuth access token" : "Hiba történt az OAuth hozzáférési token lekérése során",
+    "Bad HTTP method" : "Hibás HTTP metódus",
+    "OAuth access token refused" : "Az OAuth hozzáférési token elutasítva",
+    "DocuSign is an electronic signature solution." : "A DocuSign egy elektronikus aláírási megoldás.",
+    "Connected as {user} ({email})" : "Kapcsolódva mint {user} ({email})",
+    "Successfully connected to DocuSign!" : "Sikeresen kapcsolódott a DocuSignhoz.",
+    "Show approval details" : "Jóváhagyás részleteinek megjelenítése"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

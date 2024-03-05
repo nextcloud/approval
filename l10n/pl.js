@@ -98,6 +98,21 @@ OC.L10N.register(
     "You approved {name}" : "Zatwierdziłeś {name}",
     "Failed to approve {name}" : "Nie udało się zatwierdzić {name}",
     "You rejected {name}" : "Odrzuciłeś {name}",
-    "Failed to reject {name}" : "Nie udało się odrzucić {name}"
+    "Failed to reject {name}" : "Nie udało się odrzucić {name}",
+    "Error getting OAuth access token" : "Błąd podczas pobierania tokena dostępu OAuth",
+    "Bad HTTP method" : "Zła metoda HTTP",
+    "OAuth access token refused" : "Odmowa tokena dostępu OAuth",
+    "Sign with DocuSign" : "Podpisz za pomocą DocuSign",
+    "The related approval workflow is:" : "Powiązany przepływ pracy zatwierdzenia to:",
+    "Request a signature via DocuSign" : "Prośba o podpis przez DocuSign",
+    "Nextcloud users or email addresses" : "Użytkownicy Nextcloud lub adresy e-mail",
+    "Failed to request signature with DocuSign" : "Nie udało się poprosić o podpis za pomocą DocuSign",
+    "DocuSign integration" : "Integracja DocuSign",
+    "DocuSign is an electronic signature solution." : "DocuSign to rozwiązanie dla podpisu elektronicznego.",
+    "Application secret key" : "Tajny klucz aplikacji",
+    "Connected as {user} ({email})" : "Połączono jako {user} ({email})",
+    "Successfully connected to DocuSign!" : "Pomyślnie połączono z DocuSign!",
+    "{name} signature requested via LibreSign" : "Prośba o podpis {name} przez LibreSign",
+    "Show approval details" : "Pokaż szczegóły zatwierdzenia"
 },
 "nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);");
