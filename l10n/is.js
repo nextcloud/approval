@@ -12,6 +12,8 @@ OC.L10N.register(
     "Pending approval" : "Bíður samþykkis",
     "Warning" : "Aðvörun",
     "Error getting OAuth access token" : "Villa við að ná í OAuth-aðgangsteikn",
+    "Error during OAuth exchanges" : "Villa í OAuth-samskiptum",
+    "Bad credentials" : "Gölluð auðkenni",
     "OAuth access token refused" : "OAuth-aðgangsteikni hafnað"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

@@ -26,6 +26,7 @@ OC.L10N.register(
     "Reject" : "拒否",
     "Select rejected tag" : "拒否されたタグを選択",
     "Approved" : "承認済み",
+    "Approved by" : "承認者 ",
     "Rejected" : "拒否された",
     "you" : "あなた",
     "No recommendations. Start typing." : "推奨事項はありません。 入力を開始します。",
@@ -34,6 +35,8 @@ OC.L10N.register(
     "Pending approval" : "承認待ち",
     "Warning" : "警告",
     "Error getting OAuth access token" : "OAuth アクセストークン取得時のエラー",
+    "Error during OAuth exchanges" : "OAuth 通信中のエラー",
+    "Bad credentials" : "不正な資格情報",
     "OAuth access token refused" : "OAuth アクセストークンが拒否されました"
 },
 "nplurals=1; plural=0;");
