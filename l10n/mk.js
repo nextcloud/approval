@@ -11,6 +11,8 @@ OC.L10N.register(
     "No recommendations. Start typing." : "Нема препораки. Започнете со пишување.",
     "No result." : "Нема резултати.",
     "Warning" : "Предупредување",
+    "Error during OAuth exchanges" : "Грешка при размена на податоци со OAuth ",
+    "Bad credentials" : "Неточни акредитиви",
     "OAuth access token refused" : "Одбиен OAuth пристапен токен ",
     "Connected as {user} ({email})" : "Поврзан како {user} ({email})"
 },

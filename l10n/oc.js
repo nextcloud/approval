@@ -35,7 +35,11 @@ OC.L10N.register(
     "No result." : "Cap de resultat.",
     "Who?" : "Qual ?",
     "Warning" : "Avertiment",
+    "Signature of %s" : "Signatura de %s",
+    "Bad credentials" : "Marrits identificants",
     "Sign with DocuSign" : "Signar amb DocuSign",
-    "DocuSign integration" : "integracion DocuSign"
+    "Sign with LibreSign" : "Signar amb LibreSign",
+    "DocuSign integration" : "integracion DocuSign",
+    "Connect to DocuSign" : "Se connectar a DocuSign"
 },
 "nplurals=2; plural=(n > 1);");

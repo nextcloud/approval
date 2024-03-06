@@ -53,7 +53,9 @@ OC.L10N.register(
     "This element was approved" : "Aprobóse esti elementu",
     "This element was rejected" : "Refugóse esti elementu",
     "Pending approval" : "Pendiente d'aprobación",
+    "Warning" : "Alvertencia",
     "You approved {name}" : "Aprobesti «{name}»",
-    "You rejected {name}" : "Refuguesti «{name}»"
+    "You rejected {name}" : "Refuguesti «{name}»",
+    "DocuSign integration" : "Integración con DocuSign"
 },
 "nplurals=2; plural=(n != 1);");
