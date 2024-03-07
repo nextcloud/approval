@@ -55,7 +55,10 @@ OC.L10N.register(
     "Pending approval" : "Pendiente d'aprobación",
     "Warning" : "Alvertencia",
     "You approved {name}" : "Aprobesti «{name}»",
+    "Failed to approve {name}" : "Nun se pue aprobar «{name}»",
     "You rejected {name}" : "Refuguesti «{name}»",
+    "Failed to reject {name}" : "Nun se pue refugar «{name}»",
+    "Failed to request signature with DocuSign" : "Nun se pue solicitar la firma con DocuSign",
     "DocuSign integration" : "Integración con DocuSign"
 },
 "nplurals=2; plural=(n != 1);");
