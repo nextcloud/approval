@@ -106,7 +106,7 @@
     "You rejected {name}" : "{name} kullanıcısını reddettiniz",
     "Failed to reject {name}" : "Reddedilemedi {name}",
     "Error getting OAuth access token" : "OAuth erişim kodu alınırken sorun çıktı",
-    "Error during OAuth exchanges" : "OAuth alış verişinde sorun çıktı",
+    "Error during OAuth exchanges" : "OAuth alışverişinde sorun çıktı",
     "Signature of %s" : "%s imzası",
     "Bad HTTP method" : "HTTP yöntemi hatalı",
     "Bad credentials" : "Kimlik doğrulama bilgileri hatalı",
