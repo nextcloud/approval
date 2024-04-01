@@ -113,6 +113,7 @@ OC.L10N.register(
     "Bad HTTP method" : "Método HTTP erróneo",
     "Bad credentials" : "Credenciales erróneas",
     "OAuth access token refused" : "Se ha rechazado el token de acceso OAuth",
+    "Approve/reject files based on workflows defined by admins.\n\n:warning: **This app will be deprecated from Nextcloud 28 onwards.\nIf you are a Nextcloud customer and you rely on this app,\nplease wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**" : "Aprobar/rechazar archivos basándose en flujos de trabajo definidos por los administradores.\n\n:advertencia: **Esta app será retirada a partir de Nextcloud 28 en adelante.\nSi Ud. es cliente de Nextcloud y depende de esta app,\nno actualice a 28 y abra un caso de soporte para conseguir una solución para su caso de uso.**",
     "Sign with DocuSign" : "Firmar con DocuSign",
     "Sign with LibreSign" : "Firmar con LibreSign",
     "Your approval was requested by {name}." : "{name} solicitó tu aprobación.",
