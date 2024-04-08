@@ -49,7 +49,7 @@
     "Failed to save approval workflow" : "Не вдалося зберегти процес затвердження",
     "New approval workflow created" : "Створено новий робочий процес затвердження",
     "Failed to create approval workflow" : "Не вдалося створити робочий процес затвердження",
-    "Approval workflow deleted" : "Робочий процес затвердження видалено",
+    "Approval workflow deleted" : "Процес затвердження вилучено",
     "Failed to delete approval workflow" : "Не вдалося вилучити процес затвердження",
     "Tag \"{name}\" created" : "Мітку \"{name}\" створено",
     "Failed to create tag \"{name}\"" : "Не вдалося створити мітку \"{name}\"",
