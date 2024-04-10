@@ -79,16 +79,16 @@ export async function requestAfterShareCreation(fileId, fileName, ruleId, node =
 	}
 }
 
-export async function onApproveAction(node, notify = true) {
-	const fileId = node.fileid
-	const fileName = node.basename
+export async function approve(fileId, fileName, node = null, notify = true) {
 	const url = generateOcsUrl('apps/approval/api/v1/approve/{fileId}', { fileId })
 	try {
 		await axios.put(url)
 		if (notify) {
 			showSuccess(t('approval', 'You approved {name}', { name: fileName }))
 		}
-		await updateNodeApprovalState(node)
+		if (node) {
+			await updateNodeApprovalState(node)
+		}
 	} catch (error) {
 		console.error(error)
 		if (notify) {
@@ -98,16 +98,16 @@ export async function onApproveAction(node, notify = true) {
 	}
 }
 
-export async function onRejectAction(node, notify = true) {
-	const fileId = node.fileid
-	const fileName = node.basename
+export async function reject(fileId, fileName, node = null, notify = true) {
 	const url = generateOcsUrl('apps/approval/api/v1/reject/{fileId}', { fileId })
 	try {
 		await axios.put(url)
 		if (notify) {
 			showSuccess(t('approval', 'You rejected {name}', { name: fileName }))
 		}
-		await updateNodeApprovalState(node)
+		if (node) {
+			await updateNodeApprovalState(node)
+		}
 	} catch (error) {
 		console.error(error)
 		if (notify) {
@@ -131,7 +131,7 @@ export async function getUserRequesterRules(fileId = null) {
 		: await axios.get(url, req)
 }
 
-export async function onRequestAction(node) {
+export async function onRequestFileAction(node) {
 	const fileId = node.fileid
 	const fileName = node.basename
 	OCA.Approval.FilesRequestModalVue.showModal()

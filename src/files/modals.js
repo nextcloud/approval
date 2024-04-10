@@ -1,6 +1,6 @@
 import FilesRequestModal from '../components/FilesRequestModal.vue'
 import InfoModal from '../components/InfoModal.vue'
-import { requestApproval, onApproveAction, onRejectAction, onRequestAction } from './helpers.js'
+import { requestApproval, approve, reject, onRequestFileAction } from './helpers.js'
 import Vue from 'vue'
 
 export function createFilesRequestModal() {
@@ -33,12 +33,12 @@ export function createInfoModal() {
 		console.debug('[Approval] modal closed')
 	})
 	OCA.Approval.InfoModalVue.$on('approve', (node) => {
-		onApproveAction(node)
+		approve(node.fileid, node.basename, node)
 	})
 	OCA.Approval.InfoModalVue.$on('reject', (node) => {
-		onRejectAction(node)
+		reject(node.fileid, node.basename, node)
 	})
 	OCA.Approval.InfoModalVue.$on('request', (node) => {
-		onRequestAction(node)
+		onRequestFileAction(node)
 	})
 }

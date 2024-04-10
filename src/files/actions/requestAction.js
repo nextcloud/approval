@@ -1,6 +1,6 @@
 import ApprovalSvgIcon from '../../../img/app-dark.svg'
 import { Permission, FileAction } from '@nextcloud/files'
-import { onRequestAction } from '../helpers.js'
+import { onRequestFileAction } from '../helpers.js'
 
 export const requestAction = new FileAction({
 	id: 'approval-request',
@@ -20,7 +20,7 @@ export const requestAction = new FileAction({
 	iconSvgInline: () => ApprovalSvgIcon,
 	order: 1,
 	async exec(node) {
-		await onRequestAction(node)
+		await onRequestFileAction(node)
 		return null
 	},
 })

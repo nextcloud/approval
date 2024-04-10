@@ -1,7 +1,7 @@
 import CloseCircleSvgIcon from '@mdi/svg/svg/close-circle.svg'
 import { states } from '../../states.js'
 import { Permission, FileAction } from '@nextcloud/files'
-import { onRejectAction } from '../helpers.js'
+import { reject } from '../helpers.js'
 
 export const rejectAction = new FileAction({
 	id: 'approval-reject',
@@ -19,7 +19,7 @@ export const rejectAction = new FileAction({
 	order: 0,
 	async exec(node) {
 		try {
-			await onRejectAction(node)
+			await reject(node.fileid, node.basename, node)
 		} catch (error) {
 			console.debug('Reject action failed')
 		}
@@ -28,7 +28,7 @@ export const rejectAction = new FileAction({
 	async execBatch(nodes) {
 		const promises = nodes
 			.filter(node => node.attributes['approval-state'] === states.APPROVABLE)
-			.map(node => onRejectAction(node, false))
+			.map(node => reject(node.fileid, node.basename, node, false))
 		const results = await Promise.allSettled(promises)
 		return results.map(promise => promise.status === 'fulfilled')
 	},

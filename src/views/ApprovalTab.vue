@@ -24,11 +24,7 @@ import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
 import Info from '../components/Info.vue'
 import RequestModal from '../components/RequestModal.vue'
 
-import { getApprovalState, getUserRequesterRules, requestApproval } from '../files/helpers.js'
-
-import { generateOcsUrl } from '@nextcloud/router'
-import { showSuccess, showError } from '@nextcloud/dialogs'
-import axios from '@nextcloud/axios'
+import { getApprovalState, getUserRequesterRules, requestApproval, approve, reject } from '../files/helpers.js'
 
 export default {
 	name: 'ApprovalTab',
@@ -72,6 +68,7 @@ export default {
 
 	methods: {
 		update(fileInfo) {
+			console.debug('[Approval] sidebar tab update', fileInfo)
 			this.fileInfo = fileInfo
 			this.state = null
 			getApprovalState(fileInfo.id).then(response => {
@@ -94,33 +91,15 @@ export default {
 			this.state = null
 			const fileId = this.fileInfo.id
 			const fileName = this.fileInfo.name
-			const url = generateOcsUrl('apps/approval/api/v1/approve/{fileId}', { fileId })
-			try {
-				await axios.put(url)
-				showSuccess(t('approval', 'You approved {name}', { name: fileName }))
-				// await updateNodeApprovalState(node)
-				this.update(this.fileInfo)
-			} catch (error) {
-				console.error(error)
-				showError(t('approval', 'Failed to approve {name}', { name: fileName }))
-				throw error
-			}
+			await approve(fileId, fileName)
+			this.update(this.fileInfo)
 		},
 		async onReject() {
 			this.state = null
 			const fileId = this.fileInfo.id
 			const fileName = this.fileInfo.name
-			const url = generateOcsUrl('apps/approval/api/v1/reject/{fileId}', { fileId })
-			try {
-				await axios.put(url)
-				showSuccess(t('approval', 'You rejected {name}', { name: fileName }))
-				// await updateNodeApprovalState(node)
-				this.update(this.fileInfo)
-			} catch (error) {
-				console.error(error)
-				showError(t('approval', 'Failed to reject {name}', { name: fileName }))
-				throw error
-			}
+			await reject(fileId, fileName)
+			this.update(this.fileInfo)
 		},
 		async onRequestSubmit(ruleId, createShares) {
 			this.showRequestModal = false
