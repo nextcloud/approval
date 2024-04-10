@@ -25,13 +25,15 @@ export default {
 	},
 
 	props: {
+		userRules: {
+			type: Array,
+			required: true,
+		},
 	},
 
 	data() {
 		return {
-			show: false,
-			userRules: [],
-			node: null,
+			show: true,
 		}
 	},
 
@@ -45,24 +47,13 @@ export default {
 	},
 
 	methods: {
-		showModal() {
-			this.show = true
-		},
 		closeModal() {
 			this.show = false
 			this.$emit('close')
-			// this.reset()
-		},
-		setUserRules(rules) {
-			this.userRules = rules
-		},
-		setNode(node) {
-			this.node = node
 		},
 		onRequest(ruleId, createShares) {
 			this.closeModal()
-			this.$emit('request', this.node, ruleId, createShares)
-			// this.requesting = true
+			this.$emit('request', ruleId, createShares)
 		},
 	},
 }

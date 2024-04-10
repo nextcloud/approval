@@ -1,5 +1,5 @@
 <template>
-	<div class="request-modal">
+	<div class="request-form">
 		<h2>
 			{{ title }}
 		</h2>
@@ -114,7 +114,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.request-modal {
+.request-form {
+	>h2 {
+		margin-top: 0;
+	}
+
 	.rule-list {
 		display: flex;
 		flex-direction: column;
