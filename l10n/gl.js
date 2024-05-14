@@ -106,7 +106,7 @@ OC.L10N.register(
     "Bad credentials" : "Credenciais incorrectas",
     "OAuth access token refused" : "O testemuño de acceso de OAuth foi rexeitado",
     "Approve/reject files based on workflows defined by admins.\n\n:warning: **This app will be deprecated from Nextcloud 28 onwards.\nIf you are a Nextcloud customer and you rely on this app,\nplease wait with updating to 28 and open a support ticket so we can find a solution for your use-case.**" : "Aprobar/rexeitar ficheiros en función dos fluxos de traballo definidos pola administración do sitio.\n\n:warning: **Esta aplicación quedará obsoleta a partir de Nextcloud 28.\nSe é cliente de Nextcloud e depende desta aplicación,\nagarde coa actualización a 28 e abra un billete de asistencia técnica para que poidamos atopar unha solución para o seu caso de uso.**",
-    "Sign with DocuSign" : "Asina con DocuSign",
+    "Sign with DocuSign" : "Asinar con DocuSign",
     "Sign with LibreSign" : "Asinar con LibreSign",
     "Your approval was requested by {name}." : "A súa aprobación foi solicitada por {name}.",
     "The related approval workflow is:" : "O fluxo de traballo de aprobación relacionado é:",
