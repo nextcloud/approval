@@ -77,6 +77,7 @@ OC.L10N.register(
     "Approval requested by" : "Prośba o zatwierdzenie przez",
     "Approval requested" : "Prośba o zatwierdzenie",
     "you" : "Ciebie",
+    "The related approval workflow is: {ruleDescription}" : "Powiązany przepływ pracy zatwierdzania to: {ruleDescription}",
     "Your approval was requested." : "Poproszono Ciebie o zatwierdzenie.",
     "No recommendations. Start typing." : "Brak rekomendacji. Możesz napisać.",
     "No result." : "Brak wyników.",
