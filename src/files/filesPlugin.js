@@ -7,12 +7,12 @@
  * See the COPYING-README file.
  *
  */
-import { createInfoModal, createRequestModal } from './modals.js'
+import { createInfoModal, createFilesRequestModal } from './modals.js'
 import { getUserRequesterRules } from './helpers.js'
 import '../bootstrap.js'
 
 createInfoModal()
-createRequestModal()
+createFilesRequestModal()
 
 // on page load: get rules that the current user is able to request with
 getUserRequesterRules().then((response) => {

@@ -1,22 +1,22 @@
-import RequestModal from '../components/RequestModal.vue'
+import FilesRequestModal from '../components/FilesRequestModal.vue'
 import InfoModal from '../components/InfoModal.vue'
-import { requestApproval, onApproveAction, onRejectAction, onRequestAction } from './helpers.js'
+import { requestApproval, approve, reject, onRequestFileAction } from './helpers.js'
 import Vue from 'vue'
 
-export function createRequestModal() {
-	const requestModalId = 'requestApprovalModal'
-	const requestModalElement = document.createElement('div')
-	requestModalElement.id = requestModalId
-	document.body.append(requestModalElement)
+export function createFilesRequestModal() {
+	const filesRequestModalId = 'filesRequestApprovalModal'
+	const filesRequestModalElement = document.createElement('div')
+	filesRequestModalElement.id = filesRequestModalId
+	document.body.append(filesRequestModalElement)
 
-	const RequestModalView = Vue.extend(RequestModal)
-	OCA.Approval.RequestModalVue = new RequestModalView().$mount(requestModalElement)
+	const FilesRequestModalView = Vue.extend(FilesRequestModal)
+	OCA.Approval.FilesRequestModalVue = new FilesRequestModalView().$mount(filesRequestModalElement)
 
-	OCA.Approval.RequestModalVue.$on('close', () => {
+	OCA.Approval.FilesRequestModalVue.$on('close', () => {
 		console.debug('[Approval] modal closed')
 	})
-	OCA.Approval.RequestModalVue.$on('request', (node, ruleId, createShares) => {
-		requestApproval(node, ruleId, createShares)
+	OCA.Approval.FilesRequestModalVue.$on('request', (node, ruleId, createShares) => {
+		requestApproval(node.fileid, node.basename, ruleId, createShares, node)
 	})
 }
 
@@ -33,12 +33,12 @@ export function createInfoModal() {
 		console.debug('[Approval] modal closed')
 	})
 	OCA.Approval.InfoModalVue.$on('approve', (node) => {
-		onApproveAction(node)
+		approve(node.fileid, node.basename, node)
 	})
 	OCA.Approval.InfoModalVue.$on('reject', (node) => {
-		onRejectAction(node)
+		reject(node.fileid, node.basename, node)
 	})
 	OCA.Approval.InfoModalVue.$on('request', (node) => {
-		onRequestAction(node)
+		onRequestFileAction(node)
 	})
 }

@@ -4,16 +4,15 @@ import { emit } from '@nextcloud/event-bus'
 import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
 import { set as vueSet } from 'vue'
 
-export async function getApprovalState(node) {
-	const url = generateOcsUrl('apps/approval/api/v1/state/' + node.fileid)
+export async function getApprovalState(fileId) {
+	const url = generateOcsUrl('apps/approval/api/v1/state/{fileId}', { fileId })
 	return await axios.get(url)
 }
 
 export async function updateNodeApprovalState(node) {
 	try {
-		const response = await getApprovalState(node)
-		const state = response.data.ocs.data.state
-		vueSet(node.attributes, 'approval-state', state)
+		const response = await getApprovalState(node.fileid)
+		vueSet(node.attributes, 'approval-state', response.data.ocs.data.state)
 		vueSet(node.attributes, 'approval-rule', response.data.ocs.data.rule)
 		vueSet(node.attributes, 'approval-timestamp', response.data.ocs.data.timestamp)
 		vueSet(node.attributes, 'approval-userId', response.data.ocs.data.userId)
@@ -27,9 +26,7 @@ export async function updateNodeApprovalState(node) {
 	}
 }
 
-export async function requestApproval(node, ruleId, createShares) {
-	const fileId = node.fileid
-	const fileName = node.basename
+export async function requestApproval(fileId, fileName, ruleId, createShares, node = null) {
 	const req = {
 		createShares,
 	}
@@ -37,15 +34,17 @@ export async function requestApproval(node, ruleId, createShares) {
 	try {
 		const response = await axios.post(url, req)
 		if (createShares) {
-			await requestAfterShareCreation(node, ruleId)
+			await requestAfterShareCreation(fileId, fileName, ruleId, node)
 		} else {
 			showSuccess(t('approval', 'Approval requested for {name}', { name: fileName }))
 			if (response.data?.ocs?.data?.warning) {
 				showWarning(t('approval', 'Warning') + ': ' + response.data.ocs.data.warning)
 			}
-			await updateNodeApprovalState(node)
-			// TODO
-			// reloadTags()
+			if (node) {
+				await updateNodeApprovalState(node)
+				// TODO
+				// reloadTags()
+			}
 		}
 	} catch (error) {
 		showError(
@@ -56,9 +55,7 @@ export async function requestApproval(node, ruleId, createShares) {
 	}
 }
 
-export async function requestAfterShareCreation(node, ruleId) {
-	const fileId = node.fileid
-	const fileName = node.basename
+export async function requestAfterShareCreation(fileId, fileName, ruleId, node = null) {
 	const req = {
 		createShares: false,
 	}
@@ -69,9 +66,11 @@ export async function requestAfterShareCreation(node, ruleId) {
 		if (response.data?.ocs?.data?.warning) {
 			showWarning(t('approval', 'Warning') + ': ' + response.data.ocs.data.warning)
 		}
-		await updateNodeApprovalState(node)
-		// TODO
-		// reloadTags()
+		if (node) {
+			await updateNodeApprovalState(node)
+			// TODO
+			// reloadTags()
+		}
 	} catch (error) {
 		showError(
 			t('approval', 'Failed to request approval for {name}', { name: fileName })
@@ -80,16 +79,16 @@ export async function requestAfterShareCreation(node, ruleId) {
 	}
 }
 
-export async function onApproveAction(node, notify = true) {
-	const fileId = node.fileid
-	const fileName = node.basename
+export async function approve(fileId, fileName, node = null, notify = true) {
 	const url = generateOcsUrl('apps/approval/api/v1/approve/{fileId}', { fileId })
 	try {
 		await axios.put(url)
 		if (notify) {
 			showSuccess(t('approval', 'You approved {name}', { name: fileName }))
 		}
-		await updateNodeApprovalState(node)
+		if (node) {
+			await updateNodeApprovalState(node)
+		}
 	} catch (error) {
 		console.error(error)
 		if (notify) {
@@ -99,16 +98,16 @@ export async function onApproveAction(node, notify = true) {
 	}
 }
 
-export async function onRejectAction(node, notify = true) {
-	const fileId = node.fileid
-	const fileName = node.basename
+export async function reject(fileId, fileName, node = null, notify = true) {
 	const url = generateOcsUrl('apps/approval/api/v1/reject/{fileId}', { fileId })
 	try {
 		await axios.put(url)
 		if (notify) {
 			showSuccess(t('approval', 'You rejected {name}', { name: fileName }))
 		}
-		await updateNodeApprovalState(node)
+		if (node) {
+			await updateNodeApprovalState(node)
+		}
 	} catch (error) {
 		console.error(error)
 		if (notify) {
@@ -132,15 +131,15 @@ export async function getUserRequesterRules(fileId = null) {
 		: await axios.get(url, req)
 }
 
-export async function onRequestAction(node) {
+export async function onRequestFileAction(node) {
 	const fileId = node.fileid
 	const fileName = node.basename
-	OCA.Approval.RequestModalVue.showModal()
+	OCA.Approval.FilesRequestModalVue.showModal()
 	// refresh request rules when opening request modal
 	try {
 		const response = await getUserRequesterRules(fileId)
-		OCA.Approval.RequestModalVue.setUserRules(response.data.ocs.data)
-		OCA.Approval.RequestModalVue.setNode(node)
+		OCA.Approval.FilesRequestModalVue.setUserRules(response.data.ocs.data)
+		OCA.Approval.FilesRequestModalVue.setNode(node)
 		OCA.Approval.userRules = response.data.ocs.data
 	} catch (error) {
 		console.error(error)

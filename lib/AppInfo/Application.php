@@ -12,10 +12,12 @@ namespace OCA\Approval\AppInfo;
 use OCA\Approval\Dashboard\ApprovalPendingWidget;
 use OCA\Approval\Dav\ApprovalPlugin;
 use OCA\Approval\Listener\LoadAdditionalScriptsListener;
+use OCA\Approval\Listener\LoadSidebarScripts;
 use OCA\Approval\Notification\Notifier;
 use OCA\Approval\Service\ApprovalService;
 
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
+use OCA\Files\Event\LoadSidebar;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -60,6 +62,7 @@ class Application extends App implements IBootstrap {
 
 	public function register(IRegistrationContext $context): void {
 		$context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalScriptsListener::class);
+		$context->registerEventListener(LoadSidebar::class, LoadSidebarScripts::class);
 		$context->registerNotifierService(Notifier::class);
 		$context->registerDashboardWidget(ApprovalPendingWidget::class);
 	}

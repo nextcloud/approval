@@ -1,7 +1,7 @@
 import CheckCircleSvgIcon from '@mdi/svg/svg/check-circle.svg'
 import { Permission, FileAction } from '@nextcloud/files'
 import { states } from '../../states.js'
-import { onApproveAction } from '../helpers.js'
+import { approve } from '../helpers.js'
 
 export const approveAction = new FileAction({
 	id: 'approval-approve',
@@ -19,7 +19,7 @@ export const approveAction = new FileAction({
 	order: 0,
 	async exec(node) {
 		try {
-			await onApproveAction(node)
+			await approve(node.fileid, node.basename, node)
 		} catch (error) {
 			console.debug('Approve action failed')
 		}
@@ -28,7 +28,7 @@ export const approveAction = new FileAction({
 	async execBatch(nodes) {
 		const promises = nodes
 			.filter(node => node.attributes['approval-state'] === states.APPROVABLE)
-			.map(node => onApproveAction(node, false))
+			.map(node => approve(node.fileid, node.basename, node, false))
 		const results = await Promise.allSettled(promises)
 		return results.map(promise => promise.status === 'fulfilled')
 	},

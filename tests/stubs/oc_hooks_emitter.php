@@ -13,4 +13,7 @@ namespace OC\Hooks {
 namespace OCA\Files\Event {
 	class LoadAdditionalScriptsEvent extends \OCP\EventDispatcher\Event {
 	}
+
+	class LoadSidebar extends \OCP\EventDispatcher\Event {
+	}
 }
