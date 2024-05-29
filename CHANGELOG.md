@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.3.0 – 2024-05-29
+
+### Added
+
+- Approval files sidebar tab [#159](https://github.com/nextcloud/approval/pull/159) @julien-nc
+- Psalm checks [#145](https://github.com/nextcloud/approval/pull/145) @julien-nc
+
+### Changed
+
+- max NC is now 30
+
 ## 1.2.0 – 2023-12-22
 
 ### Changed
