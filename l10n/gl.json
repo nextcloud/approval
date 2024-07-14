@@ -126,7 +126,7 @@
     "DocuSign integration" : "Integración de DocuSign",
     "DocuSign is an electronic signature solution." : "DocuSign é unha solución de sinatura electrónica.",
     "If you want to use DocuSign, create an application in your DocuSign \"My Apps & Keys\" developer account settings and put the client ID (integration key) and secret below." : "Se quere usar DocuSign, cree unha aplicación nos axustes da súa conta «As miñas aplicacións e chaves» de DocuSign e coloque o ID de cliente (chave de integración) e o segredo a seguir.",
-    "Make sure you set this \"Redirect URI\":" : "Asegúrese de estabelecer este «URI de redirección»:",
+    "Make sure you set this \"Redirect URI\":" : "Asegúrese de definir este «URI de redirección»:",
     "If your DocuSign user is associated with multiple DocuSign accounts, the default one will be used." : "Se o seu usuario de DocuSign está asociado con varias contas de DocuSign, utilizarase a predeterminada.",
     "Client ID (aka integration key)" : "ID de cliente (tamén coñecido como chave de integración)",
     "Client ID of your application" : "ID de cliente da súa aplicación",
