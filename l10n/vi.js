@@ -28,6 +28,7 @@ OC.L10N.register(
     "No result." : "Không có kết quả",
     "Pending approval" : "Đang chờ phê duyệt",
     "Warning" : "Cảnh báo",
-    "Bad HTTP method" : "Phương thức HTTP không hợp lệ"
+    "Bad HTTP method" : "Phương thức HTTP không hợp lệ",
+    "Bad credentials" : "Thông tin đăng nhập không hợp lệ."
 },
 "nplurals=1; plural=0;");
