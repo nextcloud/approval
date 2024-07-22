@@ -1,6 +1,7 @@
 <template>
 	<NcModal v-if="show"
 		size="normal"
+		:name="t('approval', 'Approval information')"
 		@close="closeModal">
 		<Info
 			:state="state"

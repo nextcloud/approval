@@ -1,6 +1,7 @@
 <template>
 	<NcModal v-if="show"
 		size="normal"
+		:name="t('approval', 'Request approval')"
 		@close="closeModal">
 		<div class="request-modal-content">
 			<RequestForm :rules="userRules"
