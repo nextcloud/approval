@@ -1,5 +1,15 @@
 <template>
 	<div class="info-content">
+		<NcButton v-if="canRequestApproval"
+			@click="onRequest">
+			<template #icon>
+				<CheckIcon :size="20" />
+			</template>
+			{{ t('approval', 'Request approval') }}
+		</NcButton>
+		<div v-else-if="stateNothing">
+			{{ t('approval', 'There is no approval workflow allowing you to request approval.') }}
+		</div>
 		<ApprovalButtons v-if="stateApprovable"
 			class="buttons"
 			:approve-text="approveText"
@@ -51,13 +61,6 @@
 			</span>
 			<span v-else>{{ pendingTextWithTime }}</span>
 		</span>
-		<NcButton v-if="canRequestApproval"
-			@click="onRequest">
-			<template #icon>
-				<CheckIcon :size="20" />
-			</template>
-			{{ t('approval', 'Request approval') }}
-		</NcButton>
 		<div class="info">
 			<span>{{ infoText }}</span>
 			<NcUserBubble v-if="stateApprovable && userName"
@@ -181,6 +184,9 @@ export default {
 		},
 		stateApprovable() {
 			return this.state === states.APPROVABLE
+		},
+		stateNothing() {
+			return this.state === states.NOTHING
 		},
 		relativeTime() {
 			return moment.unix(this.timestamp).fromNow()
