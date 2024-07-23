@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 2.0.0 – 2024-07-23
+
+### Changed
+
+- Support Nextcloud 30 only
+
+### Fixed
+
+- Show message in files tab if it's not possible to request approval and there is no workflow related with the file @julien-nc [#205](https://github.com/nextcloud/approval/pull/205)
+
 ## 1.3.0 – 2024-05-29
 
 ### Added
