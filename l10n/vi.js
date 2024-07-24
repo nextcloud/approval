@@ -25,8 +25,10 @@ OC.L10N.register(
     "Who can request approval" : "Ai có thể yêu cầu phê duyệt",
     "Who can approve" : "Ai có thể phê duyệt",
     "No recommendations. Start typing." : "Không có khuyến nghị. Bắt đầu gõ.",
+    "No result." : "Không có kết quả",
     "Pending approval" : "Đang chờ phê duyệt",
     "Warning" : "Cảnh báo",
-    "Bad HTTP method" : "Phương thức HTTP không hợp lệ"
+    "Bad HTTP method" : "Phương thức HTTP không hợp lệ",
+    "Bad credentials" : "Thông tin đăng nhập không hợp lệ."
 },
 "nplurals=1; plural=0;");
