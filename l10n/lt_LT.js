@@ -30,14 +30,6 @@ OC.L10N.register(
     "Who?" : "Kas?",
     "Pending approval" : "Laukiama patvirtinimo",
     "Warning" : "Įspėjimas",
-    "Failed to reject {name}" : "Nepavyko atmesti {name}",
-    "Error getting OAuth access token" : "Klaida gaunant „OAuth“ prieigos raktą",
-    "Error during OAuth exchanges" : "Klaida „OAuth“ apsikeitimo metu",
-    "Bad HTTP method" : "Blogas HTTP metodas",
-    "Bad credentials" : "Blogi prisijungimo duomenys",
-    "OAuth access token refused" : "„OAuth“ prieigos raktas atmestas",
-    "Sign with DocuSign" : "Pasirašyti naudojant „DocuSign“",
-    "Sign with LibreSign" : "Pasirašyti naudojant „LibreSign“",
-    "Impossible to sign this document" : "Neįmanoma pasirašyti šio dokumento"
+    "Failed to reject {name}" : "Nepavyko atmesti {name}"
 },
 "nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);");

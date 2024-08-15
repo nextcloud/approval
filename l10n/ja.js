@@ -33,10 +33,6 @@ OC.L10N.register(
     "No result." : "結果なし",
     "Who?" : "どちら様でしょうか？",
     "Pending approval" : "承認待ち",
-    "Warning" : "警告",
-    "Error getting OAuth access token" : "OAuth アクセストークン取得時のエラー",
-    "Error during OAuth exchanges" : "OAuth 通信中のエラー",
-    "Bad credentials" : "不正な資格情報",
-    "OAuth access token refused" : "OAuth アクセストークンが拒否されました"
+    "Warning" : "警告"
 },
 "nplurals=1; plural=0;");
