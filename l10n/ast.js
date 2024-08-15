@@ -67,14 +67,6 @@ OC.L10N.register(
     "You approved {name}" : "Aprobesti «{name}»",
     "Failed to approve {name}" : "Nun se pue aprobar «{name}»",
     "You rejected {name}" : "Refuguesti «{name}»",
-    "Failed to reject {name}" : "Nun se pue refugar «{name}»",
-    "Failed to request signature with DocuSign" : "Nun se pue solicitar la firma con DocuSign",
-    "DocuSign integration" : "Integración con DocuSign",
-    "Client ID (aka integration key)" : "ID de veceru (tamien llamada, clave d'integración)",
-    "Client ID of your application" : "La ID de veceru de la to aplicación",
-    "Application secret key" : "Clave secreta de l'aplicación",
-    "Secret key of your application" : "La clave secreata de la to aplicación",
-    "Approval signature" : "Firma d'aprobación",
-    "Impossible to sign this document" : "Ye imposible firmar esti documentu"
+    "Failed to reject {name}" : "Nun se pue refugar «{name}»"
 },
 "nplurals=2; plural=(n != 1);");

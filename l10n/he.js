@@ -17,11 +17,6 @@ OC.L10N.register(
     "No recommendations. Start typing." : "אין המלצות. נא להתחיל להקליד.",
     "No result." : "אין תוצאות.",
     "Pending approval" : "בהמתנה לאישור",
-    "Warning" : "אזהרה",
-    "Error getting OAuth access token" : "שגיאה בקבלת אסימון גישה עם OAuth",
-    "Error during OAuth exchanges" : "שגיאה במהלך החלפות OAuth",
-    "Bad HTTP method" : "שגיאה במתודת HTTP",
-    "Bad credentials" : "פרטי גישה שגויים",
-    "OAuth access token refused" : "אסימון הגישה ב־OAuth סורב"
+    "Warning" : "אזהרה"
 },
 "nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: 2;");
