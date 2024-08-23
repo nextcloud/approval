@@ -100,7 +100,7 @@ OC.L10N.register(
     "This element was approved" : "Dieses Element wurde genehmigt.",
     "This element was rejected" : "Dieses Element wurde zurückgewiesen",
     "Pending approval" : "Ausstehende Genehmigung",
-    "Waiting for your approval" : "Warte auf Überprüfung",
+    "Waiting for your approval" : "Warte auf deine Überprüfung",
     "Failed to check approval status" : "Fehler beim Überprüfen des Genehmigungsstatus",
     "Approval requested for {name}" : "Genehmigung für {name} angefragt",
     "Warning" : "Warnung",
