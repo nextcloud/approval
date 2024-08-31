@@ -68,6 +68,7 @@
     "Workflow title" : "Название процесса",
     "What is the purpose of this workflow?" : "Какова цель данного процесса?",
     "Request approval" : "Запросить согласование",
+    "There is no approval workflow allowing you to request approval." : "Не существует рабочего процесса утверждения, позволяющего вам запросить утверждение.",
     "Approved" : "Согласовано",
     "Approved by" : "Согласовал(а): ",
     "Rejected" : "Отклонено",
