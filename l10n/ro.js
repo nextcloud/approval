@@ -7,6 +7,7 @@ OC.L10N.register(
     "Reject" : "Respinge",
     "Approved" : "Aprobat",
     "you" : "tu",
+    "No recommendations. Start typing." : "Nu am găsit recomandări. Începeți să scrieți.",
     "No result." : "Niciun rezultat.",
     "Pending approval" : "Aprobare în așteptare",
     "Warning" : "Atenție"
