@@ -19,7 +19,7 @@ OC.L10N.register(
     "%1$s approved %2$s" : "%1$s وافق على%2$s",
     "%1$s rejected %2$s" : "%1$s رفض %2$s",
     "{user} approved {node}" : "{user} وافق على {node}",
-    "{user} rejected {node}" : "{user} رفض {file}",
+    "{user} rejected {node}" : "{user} رفض {node}",
     "Your approval was requested" : "تمّ طلب موافقتك",
     "%2$s requested your approval for %1$s" : "%2$s طلب موافقتك على %1$s",
     "{user} requested your approval for {node}" : "{user} طلب موافقتك على {node}",
