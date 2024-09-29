@@ -4,6 +4,7 @@ OC.L10N.register(
     "Create" : "Criar",
     "Cancel" : "Cancelar",
     "Approve" : "Aprovar",
+    "Reject" : "Rejeitar",
     "Approved" : "Aprovado",
     "you" : "Você",
     "No recommendations. Start typing." : "Nenhuma recomendação. Comece a escrever ",
