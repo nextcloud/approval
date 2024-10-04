@@ -18,12 +18,10 @@ import './bootstrap.js'
 import DashboardPending from './views/DashboardPending.vue'
 
 document.addEventListener('DOMContentLoaded', function() {
-
 	OCA.Dashboard.register('approval_pending', (el, { widget }) => {
 		const View = Vue.extend(DashboardPending)
 		new View({
 			propsData: { title: widget.title },
 		}).$mount(el)
 	})
-
 })
