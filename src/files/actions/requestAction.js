@@ -1,4 +1,4 @@
-import ApprovalSvgIcon from '../../../img/app-dark.svg'
+import CheckSvgIcon from '@mdi/svg/svg/check.svg'
 import { Permission, FileAction } from '@nextcloud/files'
 import { onRequestFileAction } from '../helpers.js'
 
@@ -17,7 +17,7 @@ export const requestAction = new FileAction({
 		// && nodes.every(({ type }) => type === FileType.File)
 		// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},
-	iconSvgInline: () => ApprovalSvgIcon,
+	iconSvgInline: () => CheckSvgIcon,
 	order: 1,
 	async exec(node) {
 		await onRequestFileAction(node)

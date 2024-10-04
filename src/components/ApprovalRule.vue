@@ -30,6 +30,7 @@
 					:close-on-select="true"
 					:clear-search-on-select="true"
 					:append-to-body="false"
+					:aria-label-combobox="pendingLabel"
 					@input="update('tagPending', $event)" />
 			</div>
 			<div class="users">
@@ -42,6 +43,7 @@
 						class="approval-user-input"
 						:value="value.requesters"
 						:placeholder="t('approval', 'Who can request approval?')"
+						:aria-label-combobox="whoRequestLabel"
 						@update:value="update('requesters', $event)" />
 				</div>
 			</div>
@@ -55,6 +57,7 @@
 						class="approval-user-input"
 						:value="value.approvers"
 						:placeholder="t('approval', 'Who can approve?')"
+						:aria-label-combobox="whoApproveLabel"
 						@update:value="update('approvers', $event)" />
 				</div>
 			</div>
@@ -75,6 +78,7 @@
 					:multiple="false"
 					:close-on-select="true"
 					:clear-search-on-select="true"
+					:aria-label-combobox="approvedLabel"
 					@input="update('tagApproved', $event)" />
 			</div>
 			<div class="tag">
@@ -94,6 +98,7 @@
 					:multiple="false"
 					:close-on-select="true"
 					:clear-search-on-select="true"
+					:aria-label-combobox="rejectedLabel"
 					@input="update('tagRejected', $event)" />
 			</div>
 		</div>
