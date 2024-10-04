@@ -76,7 +76,7 @@ class ApprovalService {
 	 *
 	 * @param string $userId
 	 * @param string $role
-	 * @param int|null $fileId
+	 * @param int|null $fileId the file id
 	 * @return array
 	 */
 	public function getUserRules(string $userId, string $role = 'requesters', ?int $fileId = null): array {
