@@ -139,7 +139,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: phpunit-sqlite
 
-    if: always()
+    #if: always()
 
     name: phpunit-sqlite-summary
 

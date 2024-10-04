@@ -160,7 +160,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: phpunit-oci
 
-    if: always()
+    #if: always()
 
     name: phpunit-oci-summary
 

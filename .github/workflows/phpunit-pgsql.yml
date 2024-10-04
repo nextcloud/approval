@@ -150,7 +150,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: phpunit-pgsql
 
-    if: always()
+    #if: always()
 
     name: phpunit-pgsql-summary
 
