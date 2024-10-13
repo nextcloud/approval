@@ -77,6 +77,7 @@ OC.L10N.register(
     "Approval requested by" : "Schválení vyžádal(a)",
     "Approval requested" : "Vyžádáno schválení",
     "you" : "vy",
+    "This user requested your approval" : "Tento uživatel si vyžádal schválení od vás",
     "Your approval was requested." : "Bylo požádáno o vaše schválení.",
     "Approval information" : "Informace o schválení",
     "No recommendations. Start typing." : "Žádná doporučení. Pište.",
