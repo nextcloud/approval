@@ -71,7 +71,7 @@ OC.L10N.register(
     "Workflow title" : "عنوان أتمتة سير العمل",
     "What is the purpose of this workflow?" : "ما الغاية من أتمتة سير العمل هذه؟",
     "Request approval" : "طلب موافقة",
-    "There is no approval workflow allowing you to request approval." : "لا يوجد سير عمل مُعرّف للموافقات ليسمح لك بطلب الموافقة",
+    "There is no approval workflow allowing you to request approval." : "لا يوجد سير عمل للموافقات ليسمح لك بطلب الموافقة",
     "Approved" : "مُوافَقٌ عليه",
     "Approved by" : "تمّ قبوله من قِبَل ",
     "Rejected" : "مرفوضٌ",
