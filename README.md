@@ -12,7 +12,7 @@ Users can then request approval. Authorized users will be able to approve or rej
 
 ## Settings
 
-There is an Approval admin settings section where you define workflows.
+After installing the app, in Administration settings, there is a section "Approval workflows" where you define workflows.
 
 Workflow definition:
 
