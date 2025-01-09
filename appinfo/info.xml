@@ -9,7 +9,7 @@ Approve/reject files based on workflows defined by admins.
 **Warning**: The DocuSign integration is no longer part of this app
 and can be installed with [this app](https://apps.nextcloud.com/apps/integration_docusign).
 ]]></description>
-	<version>2.0.0</version>
+	<version>2.1.0</version>
 	<licence>agpl</licence>
 	<author>Julien Veyssier</author>
 	<namespace>Approval</namespace>
