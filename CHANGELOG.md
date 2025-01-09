@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 2.1.0 – 2025-01-09
+
+### Changed
+
+- Support Nextcloud 31
+
+### Fixed
+
+- Request action icon was black in dark theme @julien-nc [#228](https://github.com/nextcloud/approval/pull/228)
+- Notifications: Notifier::prepare() threw \InvalidArgumentException which is deprecated @nickvergessen [#249](https://github.com/nextcloud/approval/pull/249)
+
 ## 2.0.0 – 2024-07-23
 
 ### Changed
