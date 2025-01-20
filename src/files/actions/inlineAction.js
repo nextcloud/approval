@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 import PendingIconSvg from '@mdi/svg/svg/dots-horizontal-circle.svg'
 import ApprovedIconSvg from '../../../img/checkmark-green.svg'
 import RejectedIconSvg from '../../../img/close-red.svg'

@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 import CloseCircleSvgIcon from '@mdi/svg/svg/close-circle.svg'
 import { states } from '../../states.js'
 import { Permission, FileAction } from '@nextcloud/files'

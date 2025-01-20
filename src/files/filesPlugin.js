@@ -1,12 +1,8 @@
-/*
- * Copyright (c) 2023 Julien Veyssier <julien-nc@posteo.net>
- *
- * This file is licensed under the Affero General Public License version 3
- * or later.
- *
- * See the COPYING-README file.
- *
+/**
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: AGPL-3.0-or-later
  */
+
 import { createInfoModal, createFilesRequestModal } from './modals.js'
 import { getUserRequesterRules } from './helpers.js'
 import '../bootstrap.js'
