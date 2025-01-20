@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 import FilesRequestModal from '../components/FilesRequestModal.vue'
 import InfoModal from '../components/InfoModal.vue'
 import { requestApproval, approve, reject, onRequestFileAction } from './helpers.js'

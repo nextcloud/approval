@@ -1,4 +1,10 @@
+<!--
+  - SPDX-FileCopyrightText: 2021 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 # Files approval
+
+[![REUSE status](https://api.reuse.software/badge/github.com/nextcloud/approval)](https://api.reuse.software/info/github.com/nextcloud/approval)
 
 ✔ Approve or reject files/folders.
 

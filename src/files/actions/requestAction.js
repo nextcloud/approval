@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 import CheckSvgIcon from '@mdi/svg/svg/check.svg'
 import { Permission, FileAction } from '@nextcloud/files'
 import { onRequestFileAction } from '../helpers.js'

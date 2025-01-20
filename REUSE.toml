@@ -1,0 +1,22 @@
+version = 1
+SPDX-PackageName = "approval"
+SPDX-PackageSupplier = "Nextcloud <info@nextcloud.com>"
+SPDX-PackageDownloadLocation = "https://github.com/nextcloud/approval"
+
+[[annotations]]
+path = ["l10n/**.js", "l10n/**.json"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021-2024 Nextcloud translators"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = [".tx/config", "composer.json", "composer.lock", "package-lock.json", "package.json"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 Nextcloud GmbH and Nextcloud contributors"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = ["img/app.svg", "img/app-dark.svg", "img/checkmark-green.svg", "img/close-red.svg"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2018-2024 Google LLC"
+SPDX-License-Identifier = "Apache-2.0"
