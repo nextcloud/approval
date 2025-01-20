@@ -4,6 +4,8 @@
 -->
 # Files approval
 
+[![REUSE status](https://api.reuse.software/badge/github.com/nextcloud/approval)](https://api.reuse.software/info/github.com/nextcloud/approval)
+
 ✔ Approve or reject files/folders.
 
 **Warning**: The DocuSign integration is no longer part of this app
