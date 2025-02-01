@@ -18,7 +18,7 @@
 		"christophwurst/nextcloud_testing": "^0.12.4",
 		"nextcloud/coding-standard": "^1.1",
 		"phpunit/phpunit": "^9",
-		"psalm/phar": "^5.16",
+		"psalm/phar": "^6.1",
 		"nextcloud/ocp": "dev-master"
 	}
 }
