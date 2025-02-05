@@ -19,6 +19,7 @@ OC.L10N.register(
     "%1$s approved %2$s" : "%1$s が%2$s を承認しました",
     "%1$s rejected %2$s" : "%1$s が %2$s を承認しました",
     "{user} approved {node}" : "{user} が {node} を承認しました",
+    "{user} rejected {node}" : "{user}が{node}を拒否しました",
     "Create" : "作成",
     "Cancel" : "キャンセル",
     "Tag \"{name}\" created" : "タグ「{name}」が作成しました",
