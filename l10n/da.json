@@ -101,7 +101,7 @@
     "Waiting for your approval" : "Afventer din godkendelse",
     "Failed to check approval status" : "Kunne ikke kontrollere godkendelsesstatus",
     "Approval requested for {name}" : "Godkendelse efterspurgt for {name}",
-    "Warning" : "Advarsler",
+    "Warning" : "Advarsel",
     "Failed to request approval for {name}" : "Kunne ikke efterspørge godkendelse for {name}",
     "You approved {name}" : "Du godkendte {name}",
     "Failed to approve {name}" : "Kunne ikke godkende {name}",
