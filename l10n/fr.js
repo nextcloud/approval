@@ -10,7 +10,7 @@ OC.L10N.register(
     "You requested approval on {file}" : "Vous avez demandé l'approbation du fichier {file}",
     "A guest user" : "Un utilisateur invité",
     "Approval" : "Approbation",
-    "<strong>Approval</strong> events" : "Activité d'<strong>Approbation</strong> ",
+    "<strong>Approval</strong> events" : "Activité d'<strong>approbation</strong> ",
     "Pending approvals" : "Approbations en attente",
     "A file was approved" : "Un fichier a été approuvé",
     "A file was rejected" : "Un fichier a été rejeté",
