@@ -1,8 +1,8 @@
 OC.L10N.register(
     "approval",
     {
-    "Create" : "Creu",
     "Cancel" : "Diddymu",
+    "Create" : "Creu",
     "Approve" : "Cymeradwyo",
     "Reject" : "Gwrthod",
     "Pending approval" : "Yn aros am gymeradwyaeth",

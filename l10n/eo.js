@@ -1,8 +1,8 @@
 OC.L10N.register(
     "approval",
     {
-    "Create" : "Krei",
     "Cancel" : "Nuligi",
+    "Create" : "Krei",
     "Approve" : "Aprobi",
     "Reject" : "Rifuzi",
     "Approved" : "Aprobita",

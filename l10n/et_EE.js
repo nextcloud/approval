@@ -1,8 +1,8 @@
 OC.L10N.register(
     "approval",
     {
-    "Create" : "Loo",
     "Cancel" : "Loobu",
+    "Create" : "Loo",
     "Approve" : "Kinnita",
     "Reject" : "Keeldu",
     "Approved" : "Heaks kiidetud",

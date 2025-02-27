@@ -1,8 +1,8 @@
 OC.L10N.register(
     "approval",
     {
-    "Create" : "Búa til",
     "Cancel" : "Hætta við",
+    "Create" : "Búa til",
     "Approve" : "Samþykkja",
     "Reject" : "Hafna",
     "Approved" : "Samþykkt",

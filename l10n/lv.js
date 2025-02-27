@@ -1,8 +1,8 @@
 OC.L10N.register(
     "approval",
     {
-    "Create" : "Izveidot",
     "Cancel" : "Atcelt",
+    "Create" : "Izveidot",
     "Reject" : "Noraidīt",
     "Approved" : "Apstiprināts",
     "you" : "Jūs",

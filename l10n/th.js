@@ -1,8 +1,8 @@
 OC.L10N.register(
     "approval",
     {
-    "Create" : "สร้าง",
     "Cancel" : "ยกเลิก",
+    "Create" : "สร้าง",
     "Reject" : "ปฏิเสธ",
     "Approved" : "ได้รับการอนุมัติ",
     "you" : "คุณ",

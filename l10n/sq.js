@@ -1,8 +1,8 @@
 OC.L10N.register(
     "approval",
     {
-    "Create" : "Krijo",
     "Cancel" : "Anullo",
+    "Create" : "Krijo",
     "Approve" : "Mirato",
     "Approved" : "Të miratuara",
     "you" : "ju",

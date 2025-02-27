@@ -1,8 +1,8 @@
 OC.L10N.register(
     "approval",
     {
-    "Create" : "Buat",
     "Cancel" : "Membatalkan",
+    "Create" : "Buat",
     "Approve" : "Menyetujui",
     "Reject" : "Ditolak",
     "Approved" : "Disetujui",

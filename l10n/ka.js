@@ -1,8 +1,8 @@
 OC.L10N.register(
     "approval",
     {
-    "Create" : "Create",
     "Cancel" : "Cancel",
+    "Create" : "Create",
     "Approve" : "Approve",
     "Reject" : "Reject",
     "No recommendations. Start typing." : "No recommendations. Start typing.",

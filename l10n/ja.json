@@ -18,9 +18,9 @@
     "%1$s rejected %2$s" : "%1$s が %2$s を承認しました",
     "{user} approved {node}" : "{user} が {node} を承認しました",
     "{user} rejected {node}" : "{user}が{node}を拒否しました",
-    "Create" : "作成",
     "Cancel" : "キャンセル",
     "Tag \"{name}\" created" : "タグ「{name}」が作成しました",
+    "Create" : "作成",
     "Approve" : "承認",
     "Reject" : "拒否",
     "Select rejected tag" : "拒否されたタグを選択",
@@ -28,9 +28,9 @@
     "Approved by" : "承認者 ",
     "Rejected" : "拒否された",
     "you" : "あなた",
+    "Who?" : "どちら様でしょうか？",
     "No recommendations. Start typing." : "推奨事項はありません。 入力を開始します。",
     "No result." : "結果なし",
-    "Who?" : "どちら様でしょうか？",
     "Pending approval" : "承認待ち",
     "Warning" : "警告"
 },"pluralForm" :"nplurals=1; plural=0;"

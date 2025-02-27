@@ -19,11 +19,11 @@ OC.L10N.register(
     "{user} approved {node}" : "{user} validèt {node}",
     "{user} rejected {node}" : "{user} regetèt {node}",
     "Your approval was requested" : "Qualqu’un demanda vòstra aprovacion",
-    "Create" : "Crear",
     "Cancel" : "Anullar",
     "All fields are required" : "Totes los camps son obligatòris",
     "All tags must be different" : "Totas las etiquetas devon èsser diferentas",
     "Tag \"{name}\" created" : "Etiqueta « {name} » creada",
+    "Create" : "Crear",
     "Approve" : "Validar",
     "Reject" : "Regetar",
     "Who can approve?" : "Qual pòt validar ?",
@@ -32,8 +32,8 @@ OC.L10N.register(
     "Rejected" : "Regetat",
     "Rejected by" : "Regetat per",
     "you" : "vos",
-    "No result." : "Cap de resultat.",
     "Who?" : "Qual ?",
+    "No result." : "Cap de resultat.",
     "Warning" : "Avertiment"
 },
 "nplurals=2; plural=(n > 1);");

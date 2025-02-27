@@ -2,8 +2,8 @@ OC.L10N.register(
     "approval",
     {
     "A guest user" : "Корисник гостин",
-    "Create" : "Креирај",
     "Cancel" : "Откажи",
+    "Create" : "Креирај",
     "Approve" : "Одобри",
     "Reject" : "Одбиј",
     "Approved" : "Одобрен",
