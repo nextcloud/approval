@@ -32,7 +32,7 @@
 				<span class="multiselect-name">
 					{{ option.displayName }}
 				</span>
-				<span :class="{ icon: true, ['icon-' + option.type]: true, 'multiselect-icon': true }" />
+				<span :class="{ icon: true, [typeIconClass[option.type]]: true, 'multiselect-icon': true }" />
 			</div>
 		</template>
 		<template #selected-option="option">
@@ -47,7 +47,7 @@
 			<span class="multiselect-name">
 				{{ option.displayName }}
 			</span>
-			<span :class="{ icon: true, ['icon-' + option.type]: true, 'multiselect-icon': true }" />
+			<span :class="{ icon: true, [typeIconClass[option.type]]: true, 'multiselect-icon': true }" />
 		</template>
 		<template #noOptions>
 			{{ t('approval', 'No recommendations. Start typing.') }}
@@ -66,6 +66,12 @@ import axios from '@nextcloud/axios'
 
 import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
 import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
+
+const typeIconClass = {
+	user: 'icon-user',
+	group: 'icon-group',
+	circle: 'icon-circles',
+}
 
 export default {
 	name: 'MultiselectWho',
@@ -86,8 +92,7 @@ export default {
 			default: () => [
 				0,
 				1,
-				// wait until new circle stuff is more stable
-				// 7,
+				7,
 			],
 		},
 		placeholder: {
@@ -102,6 +107,7 @@ export default {
 
 	data() {
 		return {
+			typeIconClass,
 			loadingSuggestions: false,
 			suggestions: [],
 			query: '',
@@ -266,12 +272,7 @@ export default {
 	}
 	.multiselect-icon {
 		opacity: 0.5;
-	}
-	.icon-circle {
-		background-image: var(--icon-contacts-circles-000);
-		background-size: 100% 100%;
-		background-repeat: no-repeat;
-		background-position: center;
+		margin-left: 4px;
 	}
 	.select-suggestion {
 		display: flex;
