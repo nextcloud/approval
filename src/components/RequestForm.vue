@@ -109,7 +109,7 @@ export default {
 			if (entity.type === 'group') {
 				return 'icon-group'
 			} else if (entity.type === 'circle') {
-				return 'icon-circle'
+				return 'icon-circles'
 			}
 			return undefined
 		},
@@ -184,15 +184,6 @@ export default {
 		.spacer {
 			flex-grow: 1;
 		}
-	}
-}
-
-:deep(.user-bubble) {
-	.icon-circle {
-		background-image: var(--icon-circles-circles-000);
-		background-size: 100% 100%;
-		background-repeat: no-repeat;
-		background-position: center;
 	}
 }
 </style>
