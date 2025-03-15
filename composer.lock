@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "318fbb5536699e165051925868e663c4",
+    "content-hash": "9a7eeaa337ef57ef1cba2c84db46f774",
     "packages": [],
     "packages-dev": [
         {
@@ -986,20 +986,20 @@
         },
         {
             "name": "psalm/phar",
-            "version": "5.25.0",
+            "version": "6.8.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/phar.git",
-                "reference": "d42708449bd2d99ec6509924332fd94263974b20"
+                "reference": "948dd3848c61b2f90d76d4118383a9e3555279cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/phar/zipball/d42708449bd2d99ec6509924332fd94263974b20",
-                "reference": "d42708449bd2d99ec6509924332fd94263974b20",
+                "url": "https://api.github.com/repos/psalm/phar/zipball/948dd3848c61b2f90d76d4118383a9e3555279cf",
+                "reference": "948dd3848c61b2f90d76d4118383a9e3555279cf",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1 || ^8.0"
+                "php": "^8.2"
             },
             "conflict": {
                 "vimeo/psalm": "*"
@@ -1015,9 +1015,9 @@
             "description": "Composer-based Psalm Phar",
             "support": {
                 "issues": "https://github.com/psalm/phar/issues",
-                "source": "https://github.com/psalm/phar/tree/5.25.0"
+                "source": "https://github.com/psalm/phar/tree/6.8.9"
             },
-            "time": "2024-06-19T20:02:02+00:00"
+            "time": "2025-03-11T19:23:24+00:00"
         },
         {
             "name": "psr/clock",
@@ -2387,5 +2387,5 @@
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
