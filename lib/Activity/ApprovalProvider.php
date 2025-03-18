@@ -116,9 +116,10 @@ class ApprovalProvider implements IProvider {
 
 			$file = [
 				'type' => 'file',
-				'id' => $event->getObjectId(),
+				'id' => (string)$event->getObjectId(),
 				'name' => $event->getObjectName(),
-				'path' => $path,
+				'path' => trim($path, '/'),
+				'link' => $this->urlGenerator->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileid' => $event->getObjectId()])
 			];
 			$params['file'] = $file;
 		}
