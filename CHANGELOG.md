@@ -10,6 +10,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 2.2.0 – 2025-03-19
+
+### Added
+
+- REUSE headers and GitHub actions to check @AndyScherzinger [#253](https://github.com/nextcloud/approval/pull/253)
+
+### Changed
+
+- Add link to activity rich parameter for file/folder @julien-nc [#269](https://github.com/nextcloud/approval/pull/269)
+
+### Fixed
+
+- Fix circles/teams support @julien-nc [#270](https://github.com/nextcloud/approval/pull/270)
+- Fix activity rich parameter ID @julien-nc [#269](https://github.com/nextcloud/approval/pull/269)
+
 ## 2.1.0 – 2025-01-09
 
 ### Changed
