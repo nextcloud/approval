@@ -9,6 +9,7 @@ OC.L10N.register(
     "you" : "sina",
     "No recommendations. Start typing." : "Soovitusi pole. Alusta trükkimist.",
     "No result." : "Vasteid ei leitud.",
+    "Pending approval" : "Heakskiidu ootel",
     "Warning" : "Hoiatus"
 },
 "nplurals=2; plural=(n != 1);");
