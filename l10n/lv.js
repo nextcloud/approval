@@ -2,6 +2,7 @@ OC.L10N.register(
     "approval",
     {
     "Cancel" : "Atcelt",
+    "Failed to delete approval workflow" : "Neizdevās izdzēst apstiprināšanas darbplūsmu",
     "Create" : "Izveidot",
     "Reject" : "Noraidīt",
     "Approved" : "Apstiprināts",
