@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import ApprovalSvgIcon from '../img/app-dark.svg'
+import ApprovalSvgIcon from '../img/app-no-color.svg'
 import { getRequestToken } from '@nextcloud/auth'
 import Vue from 'vue'
 import ApprovalTab from './views/ApprovalTab.vue'
