@@ -26,11 +26,6 @@
 			<span v-if="userId && timestamp"
 				class="details">
 				<strong>{{ approvedByText }}</strong>
-				<NcUserBubble
-					class="user-bubble"
-					:user="userId"
-					:display-name="notMe ? userName : you"
-					:size="24" />
 				{{ relativeTime }}
 			</span>
 			<span v-else>{{ approvedText }}</span>
@@ -41,11 +36,6 @@
 			<span v-if="userId && timestamp"
 				class="details">
 				<strong>{{ rejectedByText }}</strong>
-				<NcUserBubble
-					class="user-bubble"
-					:user="userId"
-					:display-name="notMe ? userName : you"
-					:size="24" />
 				{{ relativeTime }}
 			</span>
 			<span v-else>{{ rejectedText }}</span>
@@ -56,11 +46,6 @@
 			<span v-if="userId && timestamp"
 				class="details">
 				<strong>{{ requestedByText }}</strong>
-				<NcUserBubble
-					class="user-bubble"
-					:user="userId"
-					:display-name="notMe ? userName : you"
-					:size="24" />
 				{{ relativeTime }}
 			</span>
 			<span v-else>{{ pendingTextWithTime }}</span>
@@ -143,21 +128,9 @@ export default {
 			type: String,
 			default: t('approval', 'Approved'),
 		},
-		approvedByText: {
-			type: String,
-			default: t('approval', 'Approved by'),
-		},
 		rejectedText: {
 			type: String,
 			default: t('approval', 'Rejected'),
-		},
-		rejectedByText: {
-			type: String,
-			default: t('approval', 'Rejected by'),
-		},
-		requestedByText: {
-			type: String,
-			default: t('approval', 'Approval requested by'),
 		},
 		pendingText: {
 			type: String,
@@ -216,6 +189,15 @@ export default {
 				}
 			}
 			return ''
+		},
+		approvedByText() {
+			return t('approval', 'Approved by {user}', { user: this.notMe ? this.userName : this.you })
+		},
+		rejectedByText() {
+			return t('approval', 'Rejected by {user}', { user: this.notMe ? this.userName : this.you })
+		},
+		requestedByText() {
+			return t('approval', 'Approval requested by {user}', { user: this.notMe ? this.userName : this.you })
 		},
 	},
 
