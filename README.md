@@ -31,7 +31,10 @@ Workflow definition:
 
 A pending tag can only be used in one approval workflow.
 Workflows can be chained. For example, if the approved tag of a workflow A is used as the pending tag of another workflow B,
-then once a file is approved by the workflow A, it becomes pending for the B one.
+then once a file is approved by the workflow A, it becomes pending for the B one. For an example of a chain involving a leave
+request that needs to be approved by a manager and then the department head, there is a screenshot below.
+
+![Workflow chain](https://github.com/nextcloud/approval/raw/main/img/workflow_chained.jpg)
 
 ## Tag assignment
 
