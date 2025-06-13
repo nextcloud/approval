@@ -191,13 +191,13 @@ export default {
 			return ''
 		},
 		approvedByText() {
-			return t('approval', 'Approved by {user}', { user: this.notMe ? this.userName : this.you })
+			return this.notMe ? t('approval', 'Approved by {user}', { user: this.userName }) : t('approval', 'Approved by you')
 		},
 		rejectedByText() {
-			return t('approval', 'Rejected by {user}', { user: this.notMe ? this.userName : this.you })
+			return this.notMe ? t('approval', 'Rejected by {user}', { user: this.userName }) : t('approval', 'Rejected by you')
 		},
 		requestedByText() {
-			return t('approval', 'Approval requested by {user}', { user: this.notMe ? this.userName : this.you })
+			return this.notMe ? t('approval', 'Approval requested by {user}', { user: this.userName }) : t('approval', 'Approval requested by you')
 		},
 	},
 
