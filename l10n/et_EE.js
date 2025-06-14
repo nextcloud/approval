@@ -6,7 +6,6 @@ OC.L10N.register(
     "Approve" : "Kinnita",
     "Reject" : "Keeldu",
     "Approved" : "Heaks kiidetud",
-    "Approved by" : "kuupäev",
     "you" : "sina",
     "Who?" : "Kes?",
     "Impossible to get user/group/circle list" : "Kasutajate, gruppide või tiimide loendi laadimine ei õnnestu",
