@@ -8,12 +8,17 @@
 namespace OCA\Approval\Service;
 
 use Exception;
+use OC;
 use OCA\Approval\AppInfo\Application;
+use OCA\Circles\CirclesManager;
+use OCA\Circles\Exceptions\CircleNotFoundException;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\IConfig;
 
+use OCP\IGroup;
+use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Security\ICrypto;
@@ -31,6 +36,7 @@ class UtilsService {
 	public function __construct(
 		string $appName,
 		private IUserManager $userManager,
+		private IGroupManager $groupManager,
 		private IShareManager $shareManager,
 		private IRootFolder $root,
 		private ISystemTagManager $tagManager,
@@ -121,11 +127,11 @@ class UtilsService {
 	 * @return bool
 	 */
 	public function isUserInCircle(string $userId, string $circleId): bool {
-		$circlesManager = \OC::$server->get(\OCA\Circles\CirclesManager::class);
+		$circlesManager = OC::$server->get(CirclesManager::class);
 		$circlesManager->startSuperSession();
 		try {
 			$circle = $circlesManager->getCircle($circleId);
-		} catch (\OCA\Circles\Exceptions\CircleNotFoundException $e) {
+		} catch (CircleNotFoundException $e) {
 			$circlesManager->stopSession();
 			return false;
 		}
@@ -167,6 +173,54 @@ class UtilsService {
 	}
 
 	/**
+	 * Return false if this folder and no parents are shared with that group
+	 *
+	 * @param string $userId
+	 * @param Node $fileNode
+	 * @param string|null $groupId
+	 * @return bool
+	 */
+	public function groupHasAccessTo(string $userId, Node $fileNode, ?string $groupId): bool {
+		$groupShares = $this->shareManager->getSharesBy($userId, ISHARE::TYPE_GROUP, $fileNode);
+		foreach ($groupShares as $groupShare) {
+			if ($groupShare->getSharedWith() === $groupId) {
+				return true;
+			}
+		}
+		$folderNode = $fileNode->getParent();
+		while ($folderNode->getParentId() !== -1) {
+			$groupShares = $this->shareManager->getSharesBy($userId, ISHARE::TYPE_GROUP, $folderNode);
+			foreach ($groupShares as $groupShare) {
+				if ($groupShare->getSharedWith() === $groupId) {
+					return true;
+				}
+			}
+			$folderNode = $folderNode->getParent();
+		}
+		return false;
+	}
+
+	/**
+	 * Return true if this folder and no parents are shared with anyone
+	 *
+	 * @param Node $node
+	 * @return bool
+	 */
+	public function isShared(Node $node): bool {
+		$userId = $node->getOwner()->getUID();
+		do {
+			if (!empty($this->shareManager->getSharesBy($userId, ISHARE::TYPE_GROUP, $node))) {
+				return true;
+			}
+			if (!empty($this->shareManager->getSharesBy($userId, ISHARE::TYPE_USER, $node))) {
+				return true;
+			}
+			$node = $node->getParent();
+		} while ($node->getParentId() !== -1);
+		return false;
+	}
+
+	/**
 	 * @param string $name of the new tag
 	 * @return array
 	 */
@@ -190,5 +244,29 @@ class UtilsService {
 		} catch (TagNotFoundException $e) {
 			return ['error' => 'Tag not found'];
 		}
+	}
+
+	/**
+	 * Find users that need a file to be shared with, so all members of the group have it
+	 * Also says if group share is the correct choice.
+	 *
+	 * @param int $fileId of the file to check what
+	 * @param string|null $groupId the id of the group
+	 * @return array
+	 */
+	public function usersNeedShare(int $fileId, ?string $groupId): array {
+		$groupShare = true;
+		$users = [];
+		$group = $this->groupManager->get($groupId);
+		if ($group instanceof IGroup) {
+			foreach ($group->getUsers() as $groupUser) {
+				if ($this->userHasAccessTo($fileId, $groupUser->getUID())) {
+					$groupShare = false;
+				} else {
+					$users[] = $groupUser->getUID();
+				}
+			}
+		}
+		return ['groupShare' => $groupShare, 'users' => $users];
 	}
 }
