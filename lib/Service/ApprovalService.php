@@ -536,7 +536,7 @@ class ApprovalService {
 					$sharesNeeded = ['groupShare' => true, 'users' => []];
 					// Only when the file is shared do you need to find a list of users the document needs to be shared with
 					if ($this->utilsService->isShared($node)) {
-						$sharesNeeded = $this->utilsService->usersNeedShare($fileId, $approver['entityId']);
+						$sharesNeeded = $this->utilsService->usersNeedShare($node, $approver['entityId']);
 					}
 					if ($sharesNeeded['groupShare'] === true) {
 						if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $fileOwner, $label)) {
