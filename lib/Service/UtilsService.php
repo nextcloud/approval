@@ -181,22 +181,15 @@ class UtilsService {
 	 * @return bool
 	 */
 	public function groupHasAccessTo(string $userId, Node $fileNode, ?string $groupId): bool {
-		$groupShares = $this->shareManager->getSharesBy($userId, ISHARE::TYPE_GROUP, $fileNode);
-		foreach ($groupShares as $groupShare) {
-			if ($groupShare->getSharedWith() === $groupId) {
-				return true;
-			}
-		}
-		$folderNode = $fileNode->getParent();
-		while ($folderNode->getParentId() !== -1) {
-			$groupShares = $this->shareManager->getSharesBy($userId, ISHARE::TYPE_GROUP, $folderNode);
+		do {
+			$groupShares = $this->shareManager->getSharesBy($userId, ISHARE::TYPE_GROUP, $fileNode);
 			foreach ($groupShares as $groupShare) {
 				if ($groupShare->getSharedWith() === $groupId) {
 					return true;
 				}
 			}
-			$folderNode = $folderNode->getParent();
-		}
+			$fileNode = $fileNode->getParent();
+		} while ($fileNode->getParentId() !== -1);
 		return false;
 	}
 
@@ -250,22 +243,50 @@ class UtilsService {
 	 * Find users that need a file to be shared with, so all members of the group have it
 	 * Also says if group share is the correct choice.
 	 *
-	 * @param int $fileId of the file to check what
+	 * @param Node $node of the file to check
 	 * @param string|null $groupId the id of the group
 	 * @return array
 	 */
-	public function usersNeedShare(int $fileId, ?string $groupId): array {
-		$groupShare = true;
-		$users = [];
+	public function usersNeedShare(Node $node, ?string $groupId): array {
 		$group = $this->groupManager->get($groupId);
-		if ($group instanceof IGroup) {
-			foreach ($group->getUsers() as $groupUser) {
-				if ($this->userHasAccessTo($fileId, $groupUser->getUID())) {
-					$groupShare = false;
-				} else {
-					$users[] = $groupUser->getUID();
+		$groupUsers = $group->getUsers();
+		$usersSet = [];
+		$groupsSet = []; // Stores the user if a share does not exist directly otherwise it is false
+		foreach ($groupUsers as $groupUser) {
+			$usersSet[$groupUser->getUID()] = $groupUser;
+		}
+		$ownerid = $node->getOwner()->getUID();
+		do {
+			foreach ($this->shareManager->getSharesBy($ownerid, ISHARE::TYPE_GROUP, $node) as $share) {
+				$groupsSet[$share->getSharedWith()] = true;
+			}
+			foreach ($this->shareManager->getSharesBy($ownerid, ISHARE::TYPE_USER, $node) as $share) {
+				if (isset($usersSet[$share->getSharedWith()])) {
+					$usersSet[$share->getSharedWith()] = false;
 				}
 			}
+			$node = $node->getParent();
+		} while ($node->getParentId() !== -1);
+
+		$groupShare = true;
+		$users = [];
+		foreach ($usersSet as $uid => $hasShare) {
+			if ($hasShare !== false) { // User has no share
+				// Checks if the user is in a group that is being shared with
+				$groupList = $this->groupManager->getUserGroupIds($hasShare);
+				$groupFound = false;
+				foreach ($groupList as $groupId) {
+					if (isset($groups[$groupId])) {
+						$groupFound = true;
+						break;
+					}
+				}
+				if (!$groupFound) { // User is not in a group that is being shared with
+					$users[] = $uid;
+					continue;
+				}
+			}
+			$groupShare = false;
 		}
 		return ['groupShare' => $groupShare, 'users' => $users];
 	}
