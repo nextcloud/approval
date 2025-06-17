@@ -27,7 +27,8 @@ class ConfigController extends Controller {
 		private IAppManager $appManager,
 		private RuleService $ruleService,
 		private UtilsService $utilsService,
-		private ?string $userId) {
+		private ?string $userId,
+	) {
 		parent::__construct($appName, $request);
 	}
 
