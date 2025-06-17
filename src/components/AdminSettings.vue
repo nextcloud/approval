@@ -90,7 +90,7 @@
 				</template>
 				{{ t('approval', 'New workflow') }}
 			</NcButton>
-			<div class="create-tag">
+			<div v-if="isAdmin" class="create-tag">
 				<label for="create-tag-input">
 					<TagIcon :size="16" />
 					{{ t('approval', 'Create new hidden tag') }}
@@ -128,6 +128,7 @@ import ApprovalRule from './ApprovalRule.vue'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
+import { loadState } from '@nextcloud/initial-state'
 
 export default {
 	name: 'AdminSettings',
@@ -146,6 +147,7 @@ export default {
 
 	data() {
 		return {
+			isAdmin: loadState('approval', 'is-admin'),
 			showRules: true,
 			newTagName: '',
 			rules: {},
