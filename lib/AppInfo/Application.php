@@ -11,6 +11,7 @@ use OCA\Approval\Dashboard\ApprovalPendingWidget;
 use OCA\Approval\Dav\ApprovalPlugin;
 use OCA\Approval\Listener\LoadAdditionalScriptsListener;
 use OCA\Approval\Listener\LoadSidebarScripts;
+use OCA\Approval\Listener\UpdateFilesListener;
 use OCA\Approval\Notification\Notifier;
 use OCA\Approval\Service\ApprovalService;
 
@@ -22,6 +23,7 @@ use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\EventDispatcher\IEventDispatcher;
 
+use OCP\FilesMetadata\Event\MetadataLiveEvent;
 use OCP\SabrePluginEvent;
 use OCP\SystemTag\MapperEvent;
 
@@ -63,6 +65,7 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(LoadSidebar::class, LoadSidebarScripts::class);
 		$context->registerNotifierService(Notifier::class);
 		$context->registerDashboardWidget(ApprovalPendingWidget::class);
+		$context->registerEventListener(MetadataLiveEvent::class, UpdateFilesListener::class);
 	}
 
 	public function boot(IBootContext $context): void {

@@ -815,4 +815,20 @@ class ApprovalService {
 			}
 		);
 	}
+
+	/**
+	 * Remove approval tag from a file
+	 *
+	 * @param int $fileId
+	 */
+	public function removeApprovalTags(int $fileId): void {
+		$fileTags = $this->tagObjectMapper->getTagIdsForObjects([$fileId], 'files');
+		$fileTags = $fileTags[$fileId] ?? [];
+		if (count($fileTags) > 0) {
+			$tags = $this->ruleService->filterApprovalTags($fileTags);
+			foreach ($tags as $tag) {
+				$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $tag);
+			}
+		}
+	}
 }
