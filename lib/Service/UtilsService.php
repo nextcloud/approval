@@ -250,6 +250,9 @@ class UtilsService {
 	public function usersNeedShare(Node $node, ?string $groupId): array {
 		$group = $this->groupManager->get($groupId);
 		$groupUsers = $group->getUsers();
+		if (count($groupUsers) > 10) { // Ensure that this potentially slow operation is not done for big groups
+			return ['groupShare' => true, 'users' => []];
+		}
 		$usersSet = [];
 		$groupsSet = []; // Stores the user if a share does not exist directly otherwise it is false
 		foreach ($groupUsers as $groupUser) {
@@ -268,7 +271,7 @@ class UtilsService {
 			$node = $node->getParent();
 		} while ($node->getParentId() !== -1);
 
-		$groupShare = true;
+		$groupShare = true; // true if no user has a share, false otherwise
 		$users = [];
 		foreach ($usersSet as $uid => $hasShare) {
 			if ($hasShare !== false) { // User has no share
