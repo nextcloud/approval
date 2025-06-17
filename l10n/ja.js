@@ -27,7 +27,6 @@ OC.L10N.register(
     "Reject" : "拒否",
     "Select rejected tag" : "拒否されたタグを選択",
     "Approved" : "承認済み",
-    "Approved by" : "承認者 ",
     "Rejected" : "拒否された",
     "you" : "あなた",
     "Who?" : "どちら様でしょうか？",

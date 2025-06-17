@@ -237,7 +237,7 @@ export default {
 
 		.text {
 			input {
-				width: 250px;
+				width: 310px;
 			}
 		}
 
@@ -245,7 +245,7 @@ export default {
 			display: flex;
 			align-items: center;
 			margin-right: 5px;
-			width: 250px;
+			width: 310px;
 			.spacer {
 				flex-grow: 1;
 			}
@@ -256,7 +256,7 @@ export default {
 		}
 
 		.tag-select {
-			width: 250px;
+			width: 310px;
 		}
 
 		.add-tag-button {
@@ -287,7 +287,7 @@ export default {
 		margin: 0;
 	}
 	.approval-user-input {
-		width: 250px;
+		width: 310px;
 	}
 }
 </style>
