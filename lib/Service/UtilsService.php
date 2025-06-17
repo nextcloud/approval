@@ -17,7 +17,6 @@ use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\IConfig;
 
-use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -279,7 +278,7 @@ class UtilsService {
 				$groupList = $this->groupManager->getUserGroupIds($hasShare);
 				$groupFound = false;
 				foreach ($groupList as $groupId) {
-					if (isset($groups[$groupId])) {
+					if (isset($groupsSet[$groupId])) {
 						$groupFound = true;
 						break;
 					}
