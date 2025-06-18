@@ -53,7 +53,7 @@ class Application extends App implements IBootstrap {
 			if ($event->getObjectType() === 'files') {
 				/** @var ApprovalService $service */
 				$service = $container->get(ApprovalService::class);
-				$service->handleTagAssignmentEvent((int) $event->getObjectId(), $event->getTags());
+				$service->handleTagAssignmentEvent((int)$event->getObjectId(), $event->getTags());
 			}
 		});
 	}

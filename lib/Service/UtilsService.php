@@ -35,7 +35,7 @@ class UtilsService {
 		private IRootFolder $root,
 		private ISystemTagManager $tagManager,
 		private IConfig $config,
-		private ICrypto $crypto
+		private ICrypto $crypto,
 	) {
 	}
 
@@ -185,7 +185,7 @@ class UtilsService {
 	 */
 	public function deleteTag(int $id): array {
 		try {
-			$this->tagManager->deleteTags((string) $id);
+			$this->tagManager->deleteTags((string)$id);
 			return ['success' => true];
 		} catch (TagNotFoundException $e) {
 			return ['error' => 'Tag not found'];

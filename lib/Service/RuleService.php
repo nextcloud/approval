@@ -26,7 +26,7 @@ class RuleService {
 		string $appName,
 		private IDBConnection $db,
 		private IUserManager $userManager,
-		private IAppManager $appManager
+		private IAppManager $appManager,
 	) {
 		$this->strTypeToInt = [
 			'user' => Application::TYPE_USER,
@@ -322,9 +322,9 @@ class RuleService {
 			);
 		$req = $qb->executeQuery();
 		while ($row = $req->fetch()) {
-			$tagPending = (int) $row['tag_pending'];
-			$tagApproved = (int) $row['tag_approved'];
-			$tagRejected = (int) $row['tag_rejected'];
+			$tagPending = (int)$row['tag_pending'];
+			$tagApproved = (int)$row['tag_approved'];
+			$tagRejected = (int)$row['tag_rejected'];
 			$description = $row['description'];
 			$rule = [
 				'id' => $id,
@@ -486,7 +486,7 @@ class RuleService {
 		while ($row = $req->fetch()) {
 			$activity = [
 				'userId' => $row['user_id'],
-				'timestamp' => (int) $row['timestamp'],
+				'timestamp' => (int)$row['timestamp'],
 			];
 			break;
 		}

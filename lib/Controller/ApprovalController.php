@@ -23,7 +23,7 @@ class ApprovalController extends OCSController {
 		IRequest $request,
 		private ApprovalService $approvalService,
 		private RuleService $ruleService,
-		private ?string $userId
+		private ?string $userId,
 	) {
 		parent::__construct($appName, $request);
 	}

@@ -29,7 +29,7 @@ class Version010013Date20230522103817 extends SimpleMigrationStep {
 
 	public function __construct(
 		IConfig $config,
-		UtilsService $utilsService
+		UtilsService $utilsService,
 	) {
 		$this->config = $config;
 		$this->utilsService = $utilsService;
