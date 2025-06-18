@@ -131,6 +131,7 @@ class RuleService {
 		);
 		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
+		$this->clearRuleCaches();
 
 		$rule = $this->getRule($id);
 
@@ -240,6 +241,7 @@ class RuleService {
 			]);
 		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
+		$this->clearRuleCaches();
 
 		$insertedRuleId = $qb->getLastInsertId();
 
@@ -308,6 +310,7 @@ class RuleService {
 			);
 		$qb->executeStatement();
 		$qb->resetQueryParts();
+		$this->clearRuleCaches();
 
 		return [];
 	}
@@ -546,5 +549,12 @@ class RuleService {
 		return array_filter($tags, function ($tag) use ($approvalTags) {
 			return in_array($tag, $approvalTags);
 		});
+	}
+	/**
+	 * Clear caches based on rule changes
+	 */
+	public function clearRuleCaches(): void {
+		$cache = $this->cacheFactory->createDistributed('integration_overleaf');
+		$cache->remove('approval_tags');
 	}
 }
