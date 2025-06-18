@@ -35,6 +35,7 @@
 					:clear-search-on-select="true"
 					:append-to-body="false"
 					:aria-label-combobox="pendingLabel"
+					:limit="null"
 					@input="update('tagPending', $event)" />
 			</div>
 			<div class="users">
@@ -83,6 +84,7 @@
 					:close-on-select="true"
 					:clear-search-on-select="true"
 					:aria-label-combobox="approvedLabel"
+					:limit="null"
 					@input="update('tagApproved', $event)" />
 			</div>
 			<div class="tag">
@@ -103,6 +105,7 @@
 					:close-on-select="true"
 					:clear-search-on-select="true"
 					:aria-label-combobox="rejectedLabel"
+					:limit="null"
 					@input="update('tagRejected', $event)" />
 			</div>
 		</div>
