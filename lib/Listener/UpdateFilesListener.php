@@ -26,8 +26,7 @@ class UpdateFilesListener implements IEventListener {
 		if (!($event instanceof MetadataBackgroundEvent)) {
 			return;
 		}
-		$fileId = $event->getNode()->getId();
-		$mTime = $event->getNode()->getMTime();
-		$this->approvalService->removeApprovalTags($fileId, $mTime);
+		$fileNode = $event->getNode();
+		$this->approvalService->removeApprovalTags($fileNode);
 	}
 }

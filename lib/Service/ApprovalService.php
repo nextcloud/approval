@@ -14,6 +14,7 @@ use OCA\DAV\Connector\Sabre\Node as SabreNode;
 use OCP\App\IAppManager;
 use OCP\Files\FileInfo;
 use OCP\Files\IRootFolder;
+use OCP\Files\Node;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IUser;
@@ -819,15 +820,16 @@ class ApprovalService {
 	/**
 	 * Remove approval tag from a file
 	 *
-	 * @param int $fileId
-	 * @param int $mTime
+	 * @param Node $file
 	 */
-	public function removeApprovalTags(int $fileId, int $mTime): void {
+	public function removeApprovalTags(Node $file): void {
+		$fileId = $file->getId();
 		$fileTags = $this->tagObjectMapper->getTagIdsForObjects([$fileId], 'files');
 		$fileTags = $fileTags[$fileId] ?? [];
 		if (count($fileTags) > 0) {
 			$tags = $this->ruleService->filterApprovalTags($fileTags);
 			foreach ($tags as $tag) {
+				$mTime = $file->getMTime();
 				if ($this->ruleService->wasApprovedAfter($fileId, $mTime)) {
 					$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $tag);
 				}
