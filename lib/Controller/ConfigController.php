@@ -7,14 +7,14 @@
 
 namespace OCA\Approval\Controller;
 
-use OCA\Approval\Attribute\RequireApprovalAdmin;
 use OCA\Approval\Service\RuleService;
 use OCA\Approval\Service\UtilsService;
 
+use OCA\Approval\Settings\Admin;
 use OCP\App\IAppManager;
 
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\AuthorizedAdminSetting;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 
@@ -53,8 +53,7 @@ class ConfigController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	#[NoAdminRequired]
-	#[RequireApprovalAdmin]
+	#[AuthorizedAdminSetting(settings: Admin::class)]
 	public function getRules(): DataResponse {
 		$circlesEnabled = $this->appManager->isEnabledForUser('circles') && class_exists(\OCA\Circles\CirclesManager::class);
 		if ($circlesEnabled) {
@@ -116,8 +115,7 @@ class ConfigController extends Controller {
 	 * @param string $description
 	 * @return DataResponse
 	 */
-	#[NoAdminRequired]
-	#[RequireApprovalAdmin]
+	#[AuthorizedAdminSetting(settings: Admin::class)]
 	public function createRule(int $tagPending, int $tagApproved, int $tagRejected,
 		array $approvers, array $requesters, string $description): DataResponse {
 		$result = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $approvers, $requesters, $description);
@@ -136,8 +134,7 @@ class ConfigController extends Controller {
 	 * @param string $description
 	 * @return DataResponse
 	 */
-	#[NoAdminRequired]
-	#[RequireApprovalAdmin]
+	#[AuthorizedAdminSetting(settings: Admin::class)]
 	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected,
 		array $approvers, array $requesters, string $description): DataResponse {
 		$result = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $approvers, $requesters, $description);
@@ -150,8 +147,7 @@ class ConfigController extends Controller {
 	 * @param int $id
 	 * @return DataResponse
 	 */
-	#[NoAdminRequired]
-	#[RequireApprovalAdmin]
+	#[AuthorizedAdminSetting(settings: Admin::class)]
 	public function deleteRule(int $id): DataResponse {
 		$result = $this->ruleService->deleteRule($id);
 		return isset($result['error'])
