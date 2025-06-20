@@ -9,9 +9,9 @@ namespace OCA\Approval\Listener;
 use OCA\Approval\Service\ApprovalService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
-use OCP\FilesMetadata\Event\MetadataLiveEvent;
+use OCP\FilesMetadata\Event\MetadataBackgroundEvent;
 
-/** @template-implements IEventListener<MetadataLiveEvent> */
+/** @template-implements IEventListener<MetadataBackgroundEvent> */
 class UpdateFilesListener implements IEventListener {
 
 	public function __construct(
@@ -23,10 +23,11 @@ class UpdateFilesListener implements IEventListener {
 	 * @inheritDoc
 	 */
 	public function handle(Event $event): void {
-		if (!($event instanceof MetadataLiveEvent)) {
+		if (!($event instanceof MetadataBackgroundEvent)) {
 			return;
 		}
 		$fileId = $event->getNode()->getId();
-		$this->approvalService->removeApprovalTags($fileId);
+		$mTime = $event->getNode()->getMTime();
+		$this->approvalService->removeApprovalTags($fileId, $mTime);
 	}
 }

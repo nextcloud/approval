@@ -23,7 +23,7 @@ use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\EventDispatcher\IEventDispatcher;
 
-use OCP\FilesMetadata\Event\MetadataLiveEvent;
+use OCP\FilesMetadata\Event\MetadataBackgroundEvent;
 use OCP\SabrePluginEvent;
 use OCP\SystemTag\MapperEvent;
 
@@ -65,7 +65,7 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(LoadSidebar::class, LoadSidebarScripts::class);
 		$context->registerNotifierService(Notifier::class);
 		$context->registerDashboardWidget(ApprovalPendingWidget::class);
-		$context->registerEventListener(MetadataLiveEvent::class, UpdateFilesListener::class);
+		$context->registerEventListener(MetadataBackgroundEvent::class, UpdateFilesListener::class);
 	}
 
 	public function boot(IBootContext $context): void {

@@ -557,4 +557,31 @@ class RuleService {
 		$cache = $this->cacheFactory->createDistributed('integration_overleaf');
 		$cache->remove('approval_tags');
 	}
+
+	/**
+	 * Checks that the approval of the file was after the time given.
+	 * This does not verify that the file was actually approved.
+	 *
+	 * @param int $fileId
+	 * @param int $time
+	 * @return bool
+	 */
+	public function wasApprovedAfter(int $fileId, int $time): bool {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('timestamp')
+			->from('approval_activity')
+			->where(
+				$qb->expr()->eq('file_id', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('new_state', $qb->createNamedParameter(Application::STATE_APPROVED, IQueryBuilder::PARAM_INT))
+			);
+		$req = $qb->executeQuery();
+		$timestamp = $req->fetchOne();
+		$req->closeCursor();
+		if (!$timestamp) {
+			return true;
+		}
+		return $timestamp < $time;
+	}
 }

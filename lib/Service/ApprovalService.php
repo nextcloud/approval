@@ -820,14 +820,17 @@ class ApprovalService {
 	 * Remove approval tag from a file
 	 *
 	 * @param int $fileId
+	 * @param int $mTime
 	 */
-	public function removeApprovalTags(int $fileId): void {
+	public function removeApprovalTags(int $fileId, int $mTime): void {
 		$fileTags = $this->tagObjectMapper->getTagIdsForObjects([$fileId], 'files');
 		$fileTags = $fileTags[$fileId] ?? [];
 		if (count($fileTags) > 0) {
 			$tags = $this->ruleService->filterApprovalTags($fileTags);
 			foreach ($tags as $tag) {
-				$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $tag);
+				if ($this->ruleService->wasApprovedAfter($fileId, $mTime)) {
+					$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $tag);
+				}
 			}
 		}
 	}
