@@ -13,6 +13,7 @@ use OCA\Approval\Activity\ActivityManager;
 use OCA\Approval\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\Files\IRootFolder;
+use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IGroupManager;
@@ -114,7 +115,8 @@ class ApprovalServiceTest extends TestCase {
 			'approval',
 			$c->get(IDBConnection::class),
 			$c->get(IUserManager::class),
-			$c->get(IAppManager::class)
+			$c->get(IAppManager::class),
+			$c->get(ICacheFactory::class)
 		);
 		$this->approvalService = new ApprovalService(
 			'approval',
@@ -157,7 +159,7 @@ class ApprovalServiceTest extends TestCase {
 		$this->description1 = 'desc1';
 		$r = $this->ruleService->createRule(
 			$this->idTagPending1, $this->idTagApproved1, $this->idTagRejected1,
-			$this->approvers1, $this->requesters1, $this->description1
+			$this->approvers1, $this->requesters1, $this->description1, false
 		);
 		$this->idRule1 = $r['id'];
 	}
@@ -229,7 +231,7 @@ class ApprovalServiceTest extends TestCase {
 		$description2 = 'desc2';
 		$r = $this->ruleService->createRule(
 			$idTagPending2, $idTagApproved2, $idTagRejected2,
-			$approvers2, $requesters2, $description2
+			$approvers2, $requesters2, $description2, false
 		);
 		$idRule2 = $r['id'];
 
@@ -297,10 +299,10 @@ class ApprovalServiceTest extends TestCase {
 		$this->assertEquals(Application::STATE_REJECTED, $state['state']);
 
 		// failure because tag does not exist
-		$this->ruleService->saveRule($this->idRule1, -1, -2, -3, $this->approvers1, $this->requesters1, $this->description1);
+		$this->ruleService->saveRule($this->idRule1, -1, -2, -3, $this->approvers1, $this->requesters1, $this->description1, false);
 		$state = $this->approvalService->getApprovalState($file1->getId(), 'user1');
 		$this->assertEquals(Application::STATE_NOTHING, $state['state']);
-		$this->ruleService->saveRule($this->idRule1, $this->idTagPending1, $this->idTagApproved1, $this->idTagRejected1, $this->approvers1, $this->requesters1, $this->description1);
+		$this->ruleService->saveRule($this->idRule1, $this->idTagPending1, $this->idTagApproved1, $this->idTagRejected1, $this->approvers1, $this->requesters1, $this->description1, false);
 	}
 
 	// test request/approve/reject
@@ -337,9 +339,10 @@ class ApprovalServiceTest extends TestCase {
 			],
 		];
 		$description = 'desc3';
+		$unapproveWhenModified = false;
 		$r = $this->ruleService->createRule(
 			$idTagPending3, $idTagApproved3, $idTagRejected3,
-			$approvers, $requesters, $description
+			$approvers, $requesters, $description, $unapproveWhenModified
 		);
 		$idRule3 = $r['id'];
 
@@ -371,10 +374,10 @@ class ApprovalServiceTest extends TestCase {
 				'type' => 'user',
 			],
 		];
-		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approversFailure, $requesters, $description);
+		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approversFailure, $requesters, $description, $unapproveWhenModified);
 		$result = $this->approvalService->request($otherFile->getId(), $idRule3, 'user1', false);
 		$this->assertTrue(isset($result['warning']));
-		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approvers, $requesters, $description);
+		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approvers, $requesters, $description, $unapproveWhenModified);
 
 		// get state
 		$stateForUser1 = $this->approvalService->getApprovalState($fileToApprove->getId(), 'user1');
@@ -391,10 +394,10 @@ class ApprovalServiceTest extends TestCase {
 
 		// approve failures
 		// tag does not exist
-		$this->ruleService->saveRule($idRule3, $idTagPending3, -1, $idTagRejected3, $approvers, $requesters, $description);
+		$this->ruleService->saveRule($idRule3, $idTagPending3, -1, $idTagRejected3, $approvers, $requesters, $description, $unapproveWhenModified);
 		$result = $this->approvalService->approve($fileToReject->getId(), 'user1');
 		$this->assertFalse($result);
-		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approvers, $requesters, $description);
+		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approvers, $requesters, $description, $unapproveWhenModified);
 
 		// approve
 		$this->approvalService->approve($fileToApprove->getId(), 'user1');
@@ -403,10 +406,10 @@ class ApprovalServiceTest extends TestCase {
 
 		// reject failures
 		// tag does not exist
-		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, -1, $approvers, $requesters, $description);
+		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, -1, $approvers, $requesters, $description, $unapproveWhenModified);
 		$result = $this->approvalService->reject($fileToReject->getId(), 'user1');
 		$this->assertFalse($result);
-		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approvers, $requesters, $description);
+		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approvers, $requesters, $description, $unapproveWhenModified);
 
 		// reject
 		$this->approvalService->reject($fileToReject->getId(), 'user1');
