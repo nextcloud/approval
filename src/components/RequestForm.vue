@@ -61,8 +61,8 @@
 <script>
 import CheckIcon from 'vue-material-design-icons/Check.vue'
 
-import NcUserBubble from '@nextcloud/vue/dist/Components/NcUserBubble.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcUserBubble from '@nextcloud/vue/components/NcUserBubble'
+import NcButton from '@nextcloud/vue/components/NcButton'
 
 export default {
 	name: 'RequestForm',

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
+import NcModal from '@nextcloud/vue/components/NcModal'
 
 import RequestForm from './RequestForm.vue'
 

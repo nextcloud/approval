@@ -29,7 +29,7 @@
 				class="rules">
 				<ApprovalRule v-for="(rule, id) in rules"
 					:key="id"
-					v-model="rules[id]"
+					:value.sync="rules[id]"
 					class="approval-rule"
 					delete-icon="icon-delete"
 					@input="onRuleInput(id, $event)"
@@ -54,7 +54,7 @@
 				</NcEmptyContent>
 				<div v-if="newRule" class="new-rule">
 					<ApprovalRule
-						v-model="newRule"
+						:value.sync="newRule"
 						:delete-rule-label="newRuleDeleteLabel"
 						:focus="true"
 						@add-tag="onAddTagClick">
@@ -120,8 +120,8 @@ import TagIcon from 'vue-material-design-icons/Tag.vue'
 import DeleteIcon from 'vue-material-design-icons/Delete.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
+import NcButton from '@nextcloud/vue/components/NcButton'
 
 import ApprovalRule from './ApprovalRule.vue'
 

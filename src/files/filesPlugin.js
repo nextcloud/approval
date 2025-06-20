@@ -5,7 +5,6 @@
 
 import { createInfoModal, createFilesRequestModal } from './modals.js'
 import { getUserRequesterRules } from './helpers.js'
-import '../bootstrap.js'
 
 createInfoModal()
 createFilesRequestModal()
