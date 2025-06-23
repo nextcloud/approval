@@ -81,6 +81,8 @@ OC.L10N.register(
     "Approved by you" : "Approuvé par vous",
     "Rejected by {user}" : "Rejeté par {user}",
     "Rejected by you" : "Rejeté par vous",
+    "Approval requested by {user}" : "Approbation demandée par {user}",
+    "Approval requested by you" : "Approbation demandée par vous",
     "Request approval" : "Demander l'approbation",
     "There is no approval workflow allowing you to request approval." : "Il n'y a pas de processus d'approbation qui vous permette de demander l'approbation.",
     "Approval information" : "Information sur l'approbation",
