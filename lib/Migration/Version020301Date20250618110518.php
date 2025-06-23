@@ -46,7 +46,10 @@ class Version020301Date20250618110518 extends SimpleMigrationStep {
 		if ($schema->hasTable('approval_rules')) {
 			$table = $schema->getTable('approval_rules');
 			if (!$table->hasColumn('unapprove_when_modified')) {
-				$table->addColumn('unapprove_when_modified', Types::SMALLINT, ['default' => 0, 'notnull' => true]);
+				$table->addColumn('unapprove_when_modified', Types::SMALLINT, [
+					'default' => 0,
+					'notnull' => true
+				]);
 			}
 		}
 
@@ -61,6 +64,8 @@ class Version020301Date20250618110518 extends SimpleMigrationStep {
 	public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options): void {
 		// Not sure if this is needed, but it can't hurt
 		$qbUpdate = $this->connection->getQueryBuilder();
-		$qbUpdate->update('approval_rules')->set('unapprove_when_modified', $qbUpdate->expr()->literal(0))->executeStatement();
+		$qbUpdate->update('approval_rules')
+			->set('unapprove_when_modified', $qbUpdate->expr()->literal(0))
+			->executeStatement();
 	}
 }

@@ -518,7 +518,7 @@ class RuleService {
 	 * @return array of filtered approval tags
 	 */
 	public function getApprovalTags(): array {
-		$cache = $this->cacheFactory->createDistributed('integration_overleaf');
+		$cache = $this->cacheFactory->createDistributed(Application::APP_ID);
 		if ($cached = $cache->get('approval_tags')) {
 			return $cached;
 		}
@@ -554,7 +554,7 @@ class RuleService {
 	 * Clear caches based on rule changes
 	 */
 	public function clearRuleCaches(): void {
-		$cache = $this->cacheFactory->createDistributed('integration_overleaf');
+		$cache = $this->cacheFactory->createDistributed(Application::APP_ID);
 		$cache->remove('approval_tags');
 	}
 
