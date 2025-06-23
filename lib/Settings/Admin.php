@@ -10,12 +10,17 @@ namespace OCA\Approval\Settings;
 use OCA\Approval\AppInfo\Application;
 use OCP\AppFramework\Http\TemplateResponse;
 
-use OCP\Settings\ISettings;
+use OCP\AppFramework\Services\IInitialState;
+use OCP\IGroupManager;
+use OCP\Settings\IDelegatedSettings;
 
-class Admin implements ISettings {
+class Admin implements IDelegatedSettings {
 
 	public function __construct(
 		private string $appName,
+		private IGroupManager $groupManager,
+		private IInitialState $initialStateService,
+		private ?string $userId,
 	) {
 	}
 
@@ -23,6 +28,7 @@ class Admin implements ISettings {
 	 * @return TemplateResponse
 	 */
 	public function getForm(): TemplateResponse {
+		$this->initialStateService->provideInitialState('is-admin', $this->groupManager->isAdmin($this->userId));
 		return new TemplateResponse(Application::APP_ID, 'adminSettings');
 	}
 
@@ -32,5 +38,13 @@ class Admin implements ISettings {
 
 	public function getPriority(): int {
 		return 1;
+	}
+
+	public function getName(): ?string {
+		return null;
+	}
+
+	public function getAuthorizedAppConfig(): array {
+		return [];
 	}
 }
