@@ -3,10 +3,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+import { createApp } from 'vue'
 import FilesRequestModal from '../components/FilesRequestModal.vue'
 import InfoModal from '../components/InfoModal.vue'
 import { requestApproval, approve, reject, onRequestFileAction } from './helpers.js'
-import Vue from 'vue'
+import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 
 export function createFilesRequestModal() {
 	const filesRequestModalId = 'filesRequestApprovalModal'
@@ -14,15 +15,17 @@ export function createFilesRequestModal() {
 	filesRequestModalElement.id = filesRequestModalId
 	document.body.append(filesRequestModalElement)
 
-	const FilesRequestModalView = Vue.extend(FilesRequestModal)
-	OCA.Approval.FilesRequestModalVue = new FilesRequestModalView().$mount(filesRequestModalElement)
-
-	OCA.Approval.FilesRequestModalVue.$on('close', () => {
-		console.debug('[Approval] modal closed')
+	const app = createApp(FilesRequestModal, {
+		onClose: () => {
+			console.debug('[Approval] modal closed')
+		},
+		onRequest: (node, ruleId, createShares) => {
+			requestApproval(node.fileid, node.basename, ruleId, createShares, node)
+		},
 	})
-	OCA.Approval.FilesRequestModalVue.$on('request', (node, ruleId, createShares) => {
-		requestApproval(node.fileid, node.basename, ruleId, createShares, node)
-	})
+	app.mixin({ methods: { t, n } })
+	OCA.Approval.FilesRequestModalVue = app.mount(filesRequestModalElement)
+	return app
 }
 
 export function createInfoModal() {
@@ -31,19 +34,23 @@ export function createInfoModal() {
 	infoModalElement.id = infoModalId
 	document.body.append(infoModalElement)
 
-	const InfoModalView = Vue.extend(InfoModal)
-	OCA.Approval.InfoModalVue = new InfoModalView().$mount(infoModalElement)
+	const app = createApp(InfoModal, {
+		onClose: () => {
+			console.debug('[Approval] modal closed')
+		},
+		onApprove: (node) => {
+			approve(node.fileid, node.basename, node)
+		},
+		onReject: (node) => {
+			reject(node.fileid, node.basename, node)
+		},
+		onRequest: (node) => {
+			onRequestFileAction(node)
+		},
+	})
+	app.mixin({ methods: { t, n } })
+	OCA.Approval.InfoModalVue = app.mount(infoModalElement)
 
-	OCA.Approval.InfoModalVue.$on('close', () => {
-		console.debug('[Approval] modal closed')
-	})
-	OCA.Approval.InfoModalVue.$on('approve', (node) => {
-		approve(node.fileid, node.basename, node)
-	})
-	OCA.Approval.InfoModalVue.$on('reject', (node) => {
-		reject(node.fileid, node.basename, node)
-	})
-	OCA.Approval.InfoModalVue.$on('request', (node) => {
-		onRequestFileAction(node)
-	})
+	// Return the app instance for potential cleanup
+	return app
 }

@@ -3,15 +3,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import ApprovalSvgIcon from '../img/app-no-color.svg'
-import { getRequestToken } from '@nextcloud/auth'
-import Vue from 'vue'
+import ApprovalSvgIcon from '../img/app-no-color.svg?raw'
+import { createApp } from 'vue'
+import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import ApprovalTab from './views/ApprovalTab.vue'
 
-__webpack_nonce__ = btoa(getRequestToken()) // eslint-disable-line
-Vue.mixin({ methods: { t, n } })
-
-const View = Vue.extend(ApprovalTab)
 // Init approval tab component
 let TabInstance = null
 const approvalTab = new OCA.Files.Sidebar.Tab({
@@ -21,22 +17,27 @@ const approvalTab = new OCA.Files.Sidebar.Tab({
 
 	async mount(el, fileInfo, context) {
 		if (TabInstance) {
-			TabInstance.$destroy()
+			TabInstance.unmount()
 		}
-		TabInstance = new View({
-			// Better integration with vue parent component
-			parent: context,
-		})
+		const Tab = createApp(ApprovalTab)
+		Tab.mixin({ methods: { t, n } })
+
+		TabInstance = Tab.mount(el)
 		// Only mount after we have all the info we need
 		await TabInstance.update(fileInfo)
-		TabInstance.$mount(el)
 	},
+
 	update(fileInfo) {
-		TabInstance.update(fileInfo)
+		if (TabInstance && typeof TabInstance.update === 'function') {
+			TabInstance.update(fileInfo)
+		}
 	},
+
 	destroy() {
-		TabInstance.$destroy()
-		TabInstance = null
+		if (TabInstance) {
+			TabInstance.unmount()
+			TabInstance = null
+		}
 	},
 })
 

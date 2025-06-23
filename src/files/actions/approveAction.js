@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import CheckCircleSvgIcon from '@mdi/svg/svg/check-circle.svg'
+import CheckCircleSvgIcon from '@mdi/svg/svg/check-circle.svg?raw'
 import { Permission, FileAction } from '@nextcloud/files'
 import { states } from '../../states.js'
 import { approve } from '../helpers.js'

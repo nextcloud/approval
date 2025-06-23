@@ -22,6 +22,8 @@ export default {
 	props: {
 	},
 
+	emits: ['request', 'close'],
+
 	data() {
 		return {
 			show: false,

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
+import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
 
 import Info from '../components/Info.vue'
 import RequestModal from '../components/RequestModal.vue'
@@ -59,9 +59,6 @@ export default {
 	},
 
 	watch: {
-	},
-
-	beforeDestroy() {
 	},
 
 	beforeMount() {

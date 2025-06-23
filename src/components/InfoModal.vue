@@ -3,7 +3,8 @@
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 <template>
-	<NcModal v-if="show"
+	<NcModal
+		v-if="show"
 		size="normal"
 		:name="t('approval', 'Approval information')"
 		@close="closeModal">
@@ -21,7 +22,7 @@
 </template>
 
 <script>
-import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
+import NcModal from '@nextcloud/vue/components/NcModal'
 
 import Info from './Info.vue'
 
@@ -33,8 +34,7 @@ export default {
 		NcModal,
 	},
 
-	props: {
-	},
+	props: {},
 
 	data() {
 		return {
@@ -62,11 +62,9 @@ export default {
 		},
 	},
 
-	watch: {
-	},
+	watch: {},
 
-	mounted() {
-	},
+	mounted() {},
 
 	methods: {
 		showModal() {
