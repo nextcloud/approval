@@ -108,6 +108,13 @@
 					:limit="null"
 					@input="update('tagRejected', $event)" />
 			</div>
+			<div class="checkbox">
+				<NcCheckboxRadioSwitch :checked="value.unapproveWhenModified"
+					type="switch"
+					@update:checked="update('unapproveWhenModified', $event)">
+					{{ checkboxLabel }}
+				</NcCheckboxRadioSwitch>
+			</div>
 		</div>
 		<div class="buttons">
 			<slot name="extra-buttons" />
@@ -120,6 +127,7 @@
 import TagIcon from 'vue-material-design-icons/Tag.vue'
 
 import NcSelectTags from '@nextcloud/vue/dist/Components/NcSelectTags.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
 import { delay } from '../utils.js'
 import MultiselectWho from './MultiselectWho.vue'
@@ -133,6 +141,7 @@ export default {
 		MultiselectWho,
 		NcSelectTags,
 		TagIcon,
+		NcCheckboxRadioSwitch,
 	},
 
 	props: {
@@ -159,6 +168,7 @@ export default {
 			rejectedLabel: t('approval', 'Tag set on rejection'),
 			descriptionLabel: t('approval', 'Workflow title'),
 			descriptionPlaceholder: t('approval', 'What is the purpose of this workflow?'),
+			checkboxLabel: t('approval', 'Remove file approval when file is modified'),
 		}
 	},
 
@@ -185,7 +195,7 @@ export default {
 		},
 		update(key, value) {
 			console.debug('update', key, value)
-			if (value) {
+			if (value || value === false) {
 				const backupRule = {
 					...this.value,
 					approvers: this.value.approvers.map(e => e),
@@ -228,6 +238,7 @@ export default {
 
 		.tag,
 		.text,
+		.checkbox,
 		.users {
 			display: flex;
 			flex-direction: column;

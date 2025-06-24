@@ -11,6 +11,7 @@ use DateTime;
 use OCA\Approval\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\ICacheFactory;
 use OCP\IDBConnection;
 
 use OCP\IUserManager;
@@ -27,6 +28,7 @@ class RuleService {
 		private IDBConnection $db,
 		private IUserManager $userManager,
 		private IAppManager $appManager,
+		private ICacheFactory $cacheFactory,
 	) {
 		$this->strTypeToInt = [
 			'user' => Application::TYPE_USER,
@@ -102,11 +104,12 @@ class RuleService {
 	 * @param array $approvers
 	 * @param array $requesters
 	 * @param string $description
+	 * @param bool $unapproveWhenModified
 	 * @return array Error string or id of saved rule
 	 * @throws \OCP\DB\Exception
 	 */
 	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected,
-		array $approvers, array $requesters, string $description): array {
+		array $approvers, array $requesters, string $description, bool $unapproveWhenModified): array {
 		$this->cachedRules = null;
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Invalid rule'];
@@ -122,11 +125,13 @@ class RuleService {
 		$qb->set('tag_approved', $qb->createNamedParameter($tagApproved, IQueryBuilder::PARAM_INT));
 		$qb->set('tag_rejected', $qb->createNamedParameter($tagRejected, IQueryBuilder::PARAM_INT));
 		$qb->set('description', $qb->createNamedParameter($description, IQueryBuilder::PARAM_STR));
+		$qb->set('unapprove_when_modified', $qb->createNamedParameter($unapproveWhenModified ? 1 : 0, IQueryBuilder::PARAM_INT));
 		$qb->where(
 			$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 		);
 		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
+		$this->clearRuleCaches();
 
 		$rule = $this->getRule($id);
 
@@ -211,10 +216,11 @@ class RuleService {
 	 * @param array $approvers
 	 * @param array $requesters
 	 * @param string $description
+	 * @param bool $unapproveWhenModified
 	 * @return array id of created rule or error string
 	 */
 	public function createRule(int $tagPending, int $tagApproved, int $tagRejected,
-		array $approvers, array $requesters, string $description): array {
+		array $approvers, array $requesters, string $description, bool $unapproveWhenModified): array {
 		$this->cachedRules = null;
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Rule is invalid'];
@@ -231,9 +237,11 @@ class RuleService {
 				'tag_approved' => $qb->createNamedParameter($tagApproved, IQueryBuilder::PARAM_INT),
 				'tag_rejected' => $qb->createNamedParameter($tagRejected, IQueryBuilder::PARAM_INT),
 				'description' => $qb->createNamedParameter($description, IQueryBuilder::PARAM_STR),
+				'unapprove_when_modified' => $qb->createNamedParameter($unapproveWhenModified ? 1 : 0, IQueryBuilder::PARAM_INT),
 			]);
 		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
+		$this->clearRuleCaches();
 
 		$insertedRuleId = $qb->getLastInsertId();
 
@@ -302,6 +310,7 @@ class RuleService {
 			);
 		$qb->executeStatement();
 		$qb->resetQueryParts();
+		$this->clearRuleCaches();
 
 		return [];
 	}
@@ -377,6 +386,7 @@ class RuleService {
 					'description' => $description,
 					'approvers' => [],
 					'requesters' => [],
+					'unapproveWhenModified' => (int)$row['unapprove_when_modified'] === 1,
 				];
 			}
 			$req->closeCursor();
@@ -499,5 +509,79 @@ class RuleService {
 			$activity['userName'] = $user ? $user->getDisplayName() : $activity['userId'];
 		}
 		return $activity;
+	}
+
+	/**
+	 * Gets all approval tags that should be unapproved when a file is modified
+	 *
+	 * @param array $tags
+	 * @return array of filtered approval tags
+	 */
+	public function getApprovalTags(): array {
+		$cache = $this->cacheFactory->createDistributed(Application::APP_ID);
+		if ($cached = $cache->get('approval_tags')) {
+			return $cached;
+		}
+		$qb = $this->db->getQueryBuilder();
+		$qb->selectDistinct('tag_approved')->from('approval_rules')
+			->where($qb->expr()
+				->eq('unapprove_when_modified', $qb->expr()->literal(1))
+			);
+		$req = $qb->executeQuery();
+		$approvalTags = $req->fetchAll();
+		$approvalTags = array_map(function ($tag) {
+			return $tag['tag_approved'];
+		}, $approvalTags);
+		$req->closeCursor();
+		$cache->set('approval_tags', $approvalTags, 3600);
+		return $approvalTags;
+	}
+
+	/**
+	 * Check if a list of tags contains an approval tags that should be unapproved
+	 * when the file is modified
+	 *
+	 * @param array $tags
+	 * @return array of filtered approval tags
+	 */
+	public function filterApprovalTags(array $tags): array {
+		$approvalTags = $this->getApprovalTags();
+		return array_filter($tags, function ($tag) use ($approvalTags) {
+			return in_array($tag, $approvalTags);
+		});
+	}
+	/**
+	 * Clear caches based on rule changes
+	 */
+	public function clearRuleCaches(): void {
+		$cache = $this->cacheFactory->createDistributed(Application::APP_ID);
+		$cache->remove('approval_tags');
+	}
+
+	/**
+	 * Checks that the approval of the file was after the time given.
+	 * This does not verify that the file was actually approved.
+	 *
+	 * @param int $fileId
+	 * @param int $time
+	 * @return bool
+	 */
+	public function wasApprovedAfter(int $fileId, int $time): bool {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('timestamp')
+			->from('approval_activity')
+			->where(
+				$qb->expr()->eq('file_id', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('new_state', $qb->createNamedParameter(Application::STATE_APPROVED, IQueryBuilder::PARAM_INT))
+			);
+		$req = $qb->executeQuery();
+		$timestamp = $req->fetchOne();
+		$req->closeCursor();
+		if (!$timestamp) {
+			return true;
+		}
+		return $timestamp < $time;
 	}
 }
