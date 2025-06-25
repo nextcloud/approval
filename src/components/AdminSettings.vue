@@ -285,7 +285,7 @@ export default {
 				description: '',
 				approvers: [],
 				requesters: [],
-				unapproveWhenModified: 'false',
+				unapproveWhenModified: false,
 			}
 		},
 		onNewRuleDelete() {
