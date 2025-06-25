@@ -4,47 +4,46 @@
 -->
 <template>
 	<div class="info-content">
-		<NcButton v-if="canRequestApproval"
-			@click="onRequest">
+		<NcButton v-if="canRequestApproval" @click="onRequest">
 			<template #icon>
 				<CheckIcon :size="20" />
 			</template>
-			{{ t('approval', 'Request approval') }}
+			{{ t("approval", "Request approval") }}
 		</NcButton>
 		<div v-else-if="stateNothing">
-			{{ t('approval', 'There is no approval workflow allowing you to request approval.') }}
+			{{
+				t(
+					"approval",
+					"There is no approval workflow allowing you to request approval."
+				)
+			}}
 		</div>
-		<ApprovalButtons v-if="stateApprovable"
+		<ApprovalButtons
+			v-if="stateApprovable"
 			class="buttons"
 			:approve-text="approveText"
 			:reject-text="rejectText"
 			@approve="onApprove"
 			@reject="onReject" />
-		<span v-if="stateApproved"
-			class="state-label approved-label">
+		<span v-if="stateApproved" class="state-label approved-label">
 			<CheckCircleIcon class="approved" :size="32" />
-			<span v-if="userId && timestamp"
-				class="details">
+			<span v-if="userId && timestamp" class="details">
 				<strong>{{ approvedByText }}</strong>
 				{{ relativeTime }}
 			</span>
 			<span v-else>{{ approvedText }}</span>
 		</span>
-		<span v-if="stateRejected"
-			class="state-label rejected-label">
+		<span v-if="stateRejected" class="state-label rejected-label">
 			<CloseCircleIcon class="rejected" :size="32" />
-			<span v-if="userId && timestamp"
-				class="details">
+			<span v-if="userId && timestamp" class="details">
 				<strong>{{ rejectedByText }}</strong>
 				{{ relativeTime }}
 			</span>
 			<span v-else>{{ rejectedText }}</span>
 		</span>
-		<span v-if="statePending"
-			class="state-label pending-label">
+		<span v-if="statePending" class="state-label pending-label">
 			<DotsHorizontalCircleIcon class="pending" :size="32" />
-			<span v-if="userId && timestamp"
-				class="details">
+			<span v-if="userId && timestamp" class="details">
 				<strong>{{ requestedByText }}</strong>
 				{{ relativeTime }}
 			</span>
@@ -52,7 +51,8 @@
 		</span>
 		<div class="info">
 			<span>{{ infoText }}</span>
-			<NcUserBubble v-if="stateApprovable && userName"
+			<NcUserBubble
+				v-if="stateApprovable && userName"
 				class="user-bubble"
 				:user="userId"
 				:display-name="notMe ? userName : you"
@@ -68,8 +68,8 @@ import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
 import DotsHorizontalCircleIcon from 'vue-material-design-icons/DotsHorizontalCircle.vue'
 import CloseCircleIcon from 'vue-material-design-icons/CloseCircle.vue'
 
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcUserBubble from '@nextcloud/vue/dist/Components/NcUserBubble.js'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcUserBubble from '@nextcloud/vue/components/NcUserBubble'
 
 import ApprovalButtons from './ApprovalButtons.vue'
 
@@ -138,6 +138,8 @@ export default {
 		},
 	},
 
+	emits: ['request', 'approve', 'reject'],
+
 	data() {
 		return {
 			you: t('approval', 'you'),
@@ -175,8 +177,19 @@ export default {
 			return this.userRules.length > 0
 		},
 		ruleText() {
-			if ([states.APPROVED, states.PENDING, states.REJECTED, states.APPROVABLE].includes(this.state)) {
-				return t('approval', 'The related approval workflow is: {ruleDescription}', { ruleDescription: this.rule.description })
+			if (
+				[
+					states.APPROVED,
+					states.PENDING,
+					states.REJECTED,
+					states.APPROVABLE,
+				].includes(this.state)
+			) {
+				return t(
+					'approval',
+					'The related approval workflow is: {ruleDescription}',
+					{ ruleDescription: this.rule.description },
+				)
 			}
 			return ''
 		},
@@ -191,21 +204,25 @@ export default {
 			return ''
 		},
 		approvedByText() {
-			return this.notMe ? t('approval', 'Approved by {user}', { user: this.userName }) : t('approval', 'Approved by you')
+			return this.notMe
+				? t('approval', 'Approved by {user}', { user: this.userName })
+				: t('approval', 'Approved by you')
 		},
 		rejectedByText() {
-			return this.notMe ? t('approval', 'Rejected by {user}', { user: this.userName }) : t('approval', 'Rejected by you')
+			return this.notMe
+				? t('approval', 'Rejected by {user}', { user: this.userName })
+				: t('approval', 'Rejected by you')
 		},
 		requestedByText() {
-			return this.notMe ? t('approval', 'Approval requested by {user}', { user: this.userName }) : t('approval', 'Approval requested by you')
+			return this.notMe
+				? t('approval', 'Approval requested by {user}', { user: this.userName })
+				: t('approval', 'Approval requested by you')
 		},
 	},
 
-	watch: {
-	},
+	watch: {},
 
-	mounted() {
-	},
+	mounted() {},
 
 	methods: {
 		onApprove() {
@@ -223,36 +240,36 @@ export default {
 
 <style scoped lang="scss">
 .info-content {
-	padding: 16px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 8px;
-	.state-label {
-		display: flex;
-		align-items: center;
-		gap: 4px;
-		.details {
-			display: flex;
-			align-items: center;
-			gap: 4px;
-		}
-	}
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  .state-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    .details {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
 
-	.buttons {
-		justify-content: center;
-	}
+  .buttons {
+    justify-content: center;
+  }
 
-	.approved {
-		color: var(--color-success);
-	}
+  .approved {
+    color: var(--color-success);
+  }
 
-	.rejected {
-		color: var(--color-error);
-	}
+  .rejected {
+    color: var(--color-error);
+  }
 
-	.pending {
-		color: var(--color-warning);
-	}
+  .pending {
+    color: var(--color-warning);
+  }
 }
 </style>

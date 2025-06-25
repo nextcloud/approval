@@ -29,7 +29,8 @@
 				class="rules">
 				<ApprovalRule v-for="(rule, id) in rules"
 					:key="id"
-					v-model="rules[id]"
+					v-model:value="rules[id]"
+					:is-admin="isAdmin"
 					class="approval-rule"
 					delete-icon="icon-delete"
 					@input="onRuleInput(id, $event)"
@@ -54,7 +55,8 @@
 				</NcEmptyContent>
 				<div v-if="newRule" class="new-rule">
 					<ApprovalRule
-						v-model="newRule"
+						v-model:value="newRule"
+						:is-admin="isAdmin"
 						:delete-rule-label="newRuleDeleteLabel"
 						:focus="true"
 						@add-tag="onAddTagClick">
@@ -64,7 +66,7 @@
 								{{ newRuleDeleteLabel }}
 							</NcButton>
 							<NcButton
-								type="success"
+								variant="success"
 								:disabled="!newRuleIsValid"
 								@click="onValidateNewRule">
 								<template #icon>
@@ -120,8 +122,8 @@ import TagIcon from 'vue-material-design-icons/Tag.vue'
 import DeleteIcon from 'vue-material-design-icons/Delete.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
+import NcButton from '@nextcloud/vue/components/NcButton'
 
 import ApprovalRule from './ApprovalRule.vue'
 
@@ -168,6 +170,7 @@ export default {
 		},
 		invalidRuleMessage() {
 			const newRule = this.newRule
+			console.debug(newRule)
 			const noMissingField = newRule.description
 				&& newRule.tagPending
 				&& newRule.tagApproved
@@ -282,7 +285,7 @@ export default {
 				description: '',
 				approvers: [],
 				requesters: [],
-				unapproveWhenModified: 'false',
+				unapproveWhenModified: false,
 			}
 		},
 		onNewRuleDelete() {
@@ -317,7 +320,7 @@ export default {
 					showSuccess(t('approval', 'New approval workflow created'))
 					const id = response.data
 					this.newRule = null
-					this.$set(this.rules, id, rule)
+					this.rules[id] = rule
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to create approval workflow')
@@ -333,7 +336,7 @@ export default {
 			const url = generateUrl('/apps/approval/rule/' + id)
 			axios.delete(url).then((response) => {
 				showSuccess(t('approval', 'Approval workflow deleted'))
-				this.$delete(this.rules, id)
+				delete this.rules[id]
 			}).catch((error) => {
 				showError(
 					t('approval', 'Failed to delete approval workflow')

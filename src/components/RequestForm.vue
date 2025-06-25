@@ -46,7 +46,7 @@
 			</NcButton>
 			<div class="spacer" />
 			<NcButton
-				type="primary"
+				variant="primary"
 				:disabled="!selectedRule"
 				@click="$emit('request', selectedRule, true)">
 				<template #icon>
@@ -61,8 +61,8 @@
 <script>
 import CheckIcon from 'vue-material-design-icons/Check.vue'
 
-import NcUserBubble from '@nextcloud/vue/dist/Components/NcUserBubble.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcUserBubble from '@nextcloud/vue/components/NcUserBubble'
+import NcButton from '@nextcloud/vue/components/NcButton'
 
 export default {
 	name: 'RequestForm',
@@ -79,6 +79,8 @@ export default {
 			required: true,
 		},
 	},
+
+	emits: ['request', 'cancel'],
 
 	data() {
 		return {

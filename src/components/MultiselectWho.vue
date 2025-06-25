@@ -5,7 +5,7 @@
 <template>
 	<NcSelect
 		class="approval-multiselect"
-		:value="value"
+		:model-value="value"
 		:multiple="true"
 		:loading="loadingSuggestions"
 		:options="formattedSuggestions"
@@ -18,13 +18,15 @@
 		:append-to-body="false"
 		v-bind="$attrs"
 		@search="asyncFind"
-		@input="$emit('update:value', $event)">
+		@update:model-value="$emit('update:value', $event)">
 		<template #option="option">
 			<div class="select-suggestion">
-				<NcAvatar v-if="option.type === 'user'"
+				<NcAvatar
+					v-if="option.type === 'user'"
 					:user="option.entityId"
 					:show-user-status="false" />
-				<NcAvatar v-else-if="['group', 'circle', 'email'].includes(option.type)"
+				<NcAvatar
+					v-else-if="['group', 'circle', 'email'].includes(option.type)"
 					:display-name="option.displayName"
 					:is-no-user="true"
 					:disable-tooltip="true"
@@ -32,14 +34,21 @@
 				<span class="multiselect-name">
 					{{ option.displayName }}
 				</span>
-				<span :class="{ icon: true, [typeIconClass[option.type]]: true, 'multiselect-icon': true }" />
+				<span
+					:class="{
+						icon: true,
+						[typeIconClass[option.type]]: true,
+						'multiselect-icon': true,
+					}" />
 			</div>
 		</template>
 		<template #selected-option="option">
-			<NcAvatar v-if="option.type === 'user'"
+			<NcAvatar
+				v-if="option.type === 'user'"
 				:user="option.entityId"
 				:show-user-status="false" />
-			<NcAvatar v-else-if="['group', 'circle', 'email'].includes(option.type)"
+			<NcAvatar
+				v-else-if="['group', 'circle', 'email'].includes(option.type)"
 				:display-name="option.displayName"
 				:is-no-user="true"
 				:disable-tooltip="true"
@@ -47,13 +56,18 @@
 			<span class="multiselect-name">
 				{{ option.displayName }}
 			</span>
-			<span :class="{ icon: true, [typeIconClass[option.type]]: true, 'multiselect-icon': true }" />
+			<span
+				:class="{
+					icon: true,
+					[typeIconClass[option.type]]: true,
+					'multiselect-icon': true,
+				}" />
 		</template>
 		<template #noOptions>
-			{{ t('approval', 'No recommendations. Start typing.') }}
+			{{ t("approval", "No recommendations. Start typing.") }}
 		</template>
 		<template #noResult>
-			{{ t('approval', 'No result.') }}
+			{{ t("approval", "No result.") }}
 		</template>
 	</NcSelect>
 </template>
@@ -64,8 +78,8 @@ import { generateOcsUrl } from '@nextcloud/router'
 import { showError } from '@nextcloud/dialogs'
 import axios from '@nextcloud/axios'
 
-import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
-import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
+import NcAvatar from '@nextcloud/vue/components/NcAvatar'
+import NcSelect from '@nextcloud/vue/components/NcSelect'
 
 const typeIconClass = {
 	user: 'icon-user',
@@ -89,11 +103,7 @@ export default {
 		types: {
 			type: Array,
 			// users, groups and circles
-			default: () => [
-				0,
-				1,
-				7,
-			],
+			default: () => [0, 1, 7],
 		},
 		placeholder: {
 			type: String,
@@ -104,6 +114,8 @@ export default {
 			default: false,
 		},
 	},
+
+	emits: ['update:value'],
 
 	data() {
 		return {
@@ -122,22 +134,28 @@ export default {
 		},
 		formattedSuggestions() {
 			// users suggestions (avoid selected users)
-			const result = this.suggestions.filter((s) => {
-				return s.source === 'users' && !this.value.find(u => u.type === 'user' && u.entityId === s.id)
-			}).map((s) => {
-				return {
-					entityId: s.id,
-					type: 'user',
-					displayName: s.label,
-					id: 'user-' + s.id,
-				}
-			})
+			const result = this.suggestions
+				.filter((s) => {
+					return (
+						s.source === 'users'
+            && !this.value.find((u) => u.type === 'user' && u.entityId === s.id)
+					)
+				})
+				.map((s) => {
+					return {
+						entityId: s.id,
+						type: 'user',
+						displayName: s.label,
+						id: 'user-' + s.id,
+					}
+				})
 
 			// email suggestion
 			const cleanQuery = this.query.replace(/\s+/g, '')
-			if (this.enableEmails
-				&& /^\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/.test(cleanQuery)
-				&& !this.value.find(i => i.type === 'email' && i.email === cleanQuery)
+			if (
+				this.enableEmails
+        && /^\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/.test(cleanQuery)
+        && !this.value.find((i) => i.type === 'email' && i.email === cleanQuery)
 			) {
 				result.push({
 					type: 'email',
@@ -153,7 +171,12 @@ export default {
 				const lowerCurrent = this.currentUser.displayName.toLowerCase()
 				const lowerQuery = this.query.toLowerCase()
 				// don't add it if it's selected
-				if (lowerCurrent.match(lowerQuery) && !this.value.find(u => u.type === 'user' && u.entityId === this.currentUser.uid)) {
+				if (
+					lowerCurrent.match(lowerQuery)
+          && !this.value.find(
+			  (u) => u.type === 'user' && u.entityId === this.currentUser.uid,
+          )
+				) {
 					result.push({
 						entityId: this.currentUser.uid,
 						type: 'user',
@@ -164,29 +187,39 @@ export default {
 			}
 
 			// groups suggestions (avoid selected ones)
-			const groups = this.suggestions.filter((s) => {
-				return s.source === 'groups' && !this.value.find(u => u.type === 'group' && u.entityId === s.id)
-			}).map((s) => {
-				return {
-					entityId: s.id,
-					type: 'group',
-					displayName: s.label,
-					id: 'group-' + s.id,
-				}
-			})
+			const groups = this.suggestions
+				.filter((s) => {
+					return (
+						s.source === 'groups'
+            && !this.value.find((u) => u.type === 'group' && u.entityId === s.id)
+					)
+				})
+				.map((s) => {
+					return {
+						entityId: s.id,
+						type: 'group',
+						displayName: s.label,
+						id: 'group-' + s.id,
+					}
+				})
 			result.push(...groups)
 
 			// circles suggestions (avoid selected ones)
-			const circles = this.suggestions.filter((s) => {
-				return s.source === 'circles' && !this.value.find(u => u.type === 'circle' && u.entityId === s.id)
-			}).map((s) => {
-				return {
-					entityId: s.id,
-					type: 'circle',
-					displayName: s.label,
-					id: 'circle-' + s.id,
-				}
-			})
+			const circles = this.suggestions
+				.filter((s) => {
+					return (
+						s.source === 'circles'
+            && !this.value.find((u) => u.type === 'circle' && u.entityId === s.id)
+					)
+				})
+				.map((s) => {
+					return {
+						entityId: s.id,
+						type: 'circle',
+						displayName: s.label,
+						id: 'circle-' + s.id,
+					}
+				})
 			result.push(...circles)
 
 			/*
@@ -226,11 +259,9 @@ export default {
 		},
 	},
 
-	watch: {
-	},
+	watch: {},
 
-	mounted() {
-	},
+	mounted() {},
 
 	methods: {
 		asyncFind(query) {
@@ -241,22 +272,26 @@ export default {
 			}
 			this.loadingSuggestions = true
 			const url = generateOcsUrl('core/autocomplete/get', 2).replace(/\/$/, '')
-			axios.get(url, {
-				params: {
-					format: 'json',
-					search: query,
-					itemType: ' ',
-					itemId: ' ',
-					shareTypes: this.types,
-				},
-			}).then((response) => {
-				this.suggestions = response.data.ocs.data
-			}).catch((error) => {
-				showError(t('approval', 'Impossible to get user/group/circle list'))
-				console.error(error)
-			}).then(() => {
-				this.loadingSuggestions = false
-			})
+			axios
+				.get(url, {
+					params: {
+						format: 'json',
+						search: query,
+						itemType: ' ',
+						itemId: ' ',
+						shareTypes: this.types,
+					},
+				})
+				.then((response) => {
+					this.suggestions = response.data.ocs.data
+				})
+				.catch((error) => {
+					showError(t('approval', 'Impossible to get user/group/circle list'))
+					console.error(error)
+				})
+				.then(() => {
+					this.loadingSuggestions = false
+				})
 		},
 	},
 }
@@ -264,19 +299,19 @@ export default {
 
 <style scoped lang="scss">
 .approval-multiselect {
-	.multiselect-name {
-		flex-grow: 1;
-		margin-left: 10px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.multiselect-icon {
-		opacity: 0.5;
-		margin-left: 4px;
-	}
-	.select-suggestion {
-		display: flex;
-		align-items: center;
-	}
+  .multiselect-name {
+    flex-grow: 1;
+    margin-left: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .multiselect-icon {
+    opacity: 0.5;
+    margin-left: 4px;
+  }
+  .select-suggestion {
+    display: flex;
+    align-items: center;
+  }
 }
 </style>

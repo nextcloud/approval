@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import Vue from 'vue'
-import './bootstrap.js'
+import { createApp } from 'vue'
 import AdminSettings from './components/AdminSettings.vue'
-import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip.js'
-Vue.directive('tooltip', Tooltip)
+import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 
-const View = Vue.extend(AdminSettings)
-new View().$mount('#approval_prefs')
+const app = createApp(AdminSettings)
+
+app.mixin({ methods: { t, n } })
+app.mount('#approval_prefs')

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import CloseCircleSvgIcon from '@mdi/svg/svg/close-circle.svg'
+import CloseCircleSvgIcon from '@mdi/svg/svg/close-circle.svg?raw'
 import { states } from '../../states.js'
 import { Permission, FileAction } from '@nextcloud/files'
 import { reject } from '../helpers.js'

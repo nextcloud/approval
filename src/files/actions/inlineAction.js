@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import PendingIconSvg from '@mdi/svg/svg/dots-horizontal-circle.svg'
-import ApprovedIconSvg from '../../../img/checkmark-green.svg'
-import RejectedIconSvg from '../../../img/close-red.svg'
+import PendingIconSvg from '@mdi/svg/svg/dots-horizontal-circle.svg?raw'
+import ApprovedIconSvg from '../../../img/checkmark-green.svg?raw'
+import RejectedIconSvg from '../../../img/close-red.svg?raw'
 import { Permission, FileAction } from '@nextcloud/files'
 import { states } from '../../states.js'
 import { openApprovalInfoModal, updateNodeApprovalState } from '../helpers.js'

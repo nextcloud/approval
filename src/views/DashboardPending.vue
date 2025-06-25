@@ -3,12 +3,12 @@
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 <template>
-	<DashboardWidget :items="items"
+	<NcDashboardWidget :items="items"
 		:show-more-url="showMoreUrl"
 		:show-more-text="title"
 		:loading="state === 'loading'">
 		<template #default="{ item }">
-			<DashboardWidgetItem
+			<NcDashboardWidgetItem
 				:id="item.id"
 				:target-url="item.targetUrl"
 				:avatar-url="item.avatarUrl"
@@ -18,7 +18,7 @@
 					<div class="thumbnail"
 						:style="{ 'background-image': 'url(' + avatarUrl + ')' }" />
 				</template>
-			</DashboardWidgetItem>
+			</NcDashboardWidgetItem>
 		</template>
 		<template #empty-content>
 			<NcEmptyContent
@@ -29,7 +29,7 @@
 				</template>
 			</NcEmptyContent>
 		</template>
-	</DashboardWidget>
+	</NcDashboardWidget>
 </template>
 
 <script>
@@ -39,15 +39,16 @@ import axios from '@nextcloud/axios'
 import { generateOcsUrl, generateUrl } from '@nextcloud/router'
 import { showError } from '@nextcloud/dialogs'
 import moment from '@nextcloud/moment'
-import { DashboardWidget, DashboardWidgetItem } from '@nextcloud/vue-dashboard'
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
+import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
+import NcDashboardWidget from '@nextcloud/vue/components/NcDashboardWidget'
+import NcDashboardWidgetItem from '@nextcloud/vue/components/NcDashboardWidgetItem'
 
 export default {
 	name: 'DashboardPending',
 
 	components: {
-		DashboardWidget,
-		DashboardWidgetItem,
+		NcDashboardWidget,
+		NcDashboardWidgetItem,
 		NcEmptyContent,
 		CheckIcon,
 	},
@@ -108,7 +109,7 @@ export default {
 		},
 	},
 
-	beforeDestroy() {
+	beforeUnmount() {
 		document.removeEventListener('visibilitychange', this.changeWindowVisibility)
 	},
 
