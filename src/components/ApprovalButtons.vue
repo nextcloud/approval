@@ -44,6 +44,9 @@ export default {
 			default: t('approval', 'Reject'),
 		},
 	},
+
+	emits: ['approve', 'reject'],
+
 	data() {
 		return {}
 	},

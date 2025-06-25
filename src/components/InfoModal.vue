@@ -36,6 +36,8 @@ export default {
 
 	props: {},
 
+	emits: ['approve', 'reject', 'request', 'close'],
+
 	data() {
 		return {
 			show: false,

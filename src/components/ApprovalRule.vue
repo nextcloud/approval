@@ -173,6 +173,8 @@ export default {
 		},
 	},
 
+	emits: ['add-tag', 'input', 'update:value'],
+
 	data() {
 		return {
 			whoRequestLabel: t('approval', 'Who can request approval'),

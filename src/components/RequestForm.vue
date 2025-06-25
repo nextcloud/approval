@@ -80,6 +80,8 @@ export default {
 		},
 	},
 
+	emits: ['request', 'cancel'],
+
 	data() {
 		return {
 			selectedRule: null,

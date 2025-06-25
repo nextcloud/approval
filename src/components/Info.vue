@@ -138,6 +138,8 @@ export default {
 		},
 	},
 
+	emits: ['request', 'approve', 'reject'],
+
 	data() {
 		return {
 			you: t('approval', 'you'),
