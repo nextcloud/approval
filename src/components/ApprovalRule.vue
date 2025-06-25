@@ -22,7 +22,8 @@
 					{{ pendingLabel }}
 					<div class="spacer" />
 					<span
-						v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
+						v-if="isAdmin"
+						:title="t('approval', 'Create new hidden tag')"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
 						<span class="icon icon-add" />
@@ -74,7 +75,8 @@
 					{{ approvedLabel }}
 					<div class="spacer" />
 					<span
-						v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
+						v-if="isAdmin"
+						:title="t('approval', 'Create new hidden tag')"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
 						<span class="icon icon-add" />
@@ -97,7 +99,8 @@
 					{{ rejectedLabel }}
 					<div class="spacer" />
 					<span
-						v-tooltip.top="{ content: t('approval', 'Create new hidden tag') }"
+						v-if="isAdmin"
+						:title="t('approval', 'Create new hidden tag')"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
 						<span class="icon icon-add" />
@@ -163,6 +166,10 @@ export default {
 		focus: {
 			type: Boolean,
 			default: false,
+		},
+		isAdmin: {
+			type: Boolean,
+			default: true,
 		},
 	},
 

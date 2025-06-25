@@ -30,6 +30,7 @@
 				<ApprovalRule v-for="(rule, id) in rules"
 					:key="id"
 					v-model:value="rules[id]"
+					:is-admin="isAdmin"
 					class="approval-rule"
 					delete-icon="icon-delete"
 					@input="onRuleInput(id, $event)"
@@ -55,6 +56,7 @@
 				<div v-if="newRule" class="new-rule">
 					<ApprovalRule
 						v-model:value="newRule"
+						:is-admin="isAdmin"
 						:delete-rule-label="newRuleDeleteLabel"
 						:focus="true"
 						@add-tag="onAddTagClick">
