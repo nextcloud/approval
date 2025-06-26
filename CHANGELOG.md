@@ -8,7 +8,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## 2.3.0 - 2025-06-26
+
+### Added
+
+- Add an example of a chained workflow in readme @lukasdotcom [#301](https://github.com/nextcloud/approval/pull/301)
+- Allow workflow to unapprove files after they are modified @lukasdotcom [#309](https://github.com/nextcloud/approval/pull/309)
+- Support delegated settings to allow admin to delegate workflow settings @lukasdotcom [#310](https://github.com/nextcloud/approval/pull/310)
+
+### Changed
+
+- Support Nextcloud 32
+- Made the workflow input field wider @lukasdotcom [#303](https://github.com/nextcloud/approval/pull/303)
+- Remove the limit of five tags for tag selector @lukasdotcom [#307](https://github.com/nextcloud/approval/pull/307)
+- Use vue 3 and vite @lukasdotcom [#314](https://github.com/nextcloud/approval/pull/314)
+
+### Fixed
+
+- Cleanup test bootstrap @come-nc [#292](https://github.com/nextcloud/approval/pull/292)
+- Fix translations @lukasdotcom [#304](https://github.com/nextcloud/approval/pull/304)
 
 ## 2.2.0 – 2025-03-19
 
