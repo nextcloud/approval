@@ -62,6 +62,7 @@
     "Tag set on approval" : "Tag set on approval",
     "Tag set on rejection" : "Tag set on rejection",
     "Workflow title" : "Workflow title",
+    "Remove file approval when file is modified" : "Remove file approval when file is modified",
     "What is the purpose of this workflow?" : "What is the purpose of this workflow?",
     "Select pending tag" : "Select pending tag",
     "Who can request approval?" : "Who can request approval?",

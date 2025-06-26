@@ -62,6 +62,7 @@
     "Tag set on approval" : "Markör som anges vid godkännande",
     "Tag set on rejection" : "Markör som anges vid avvisning",
     "Workflow title" : "Rubrik på arbetsflödet",
+    "Remove file approval when file is modified" : "Ta bort filgodkännande när filen ändras",
     "What is the purpose of this workflow?" : "Vad är syftet med detta arbetsflöde?",
     "Select pending tag" : "Välj väntande markör",
     "Who can request approval?" : "Vem kan begära godkännande?",

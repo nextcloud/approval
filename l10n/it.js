@@ -64,6 +64,7 @@ OC.L10N.register(
     "Tag set on approval" : "Etichetta impostata all'approvazione",
     "Tag set on rejection" : "Etichetta impostata al rifiuto",
     "Workflow title" : "Titolo del flusso di lavoro",
+    "Remove file approval when file is modified" : "Rimuovi l'approvazione del file quando il file viene modificato",
     "What is the purpose of this workflow?" : "Qual è lo scopo di questo flusso di lavoro?",
     "Select pending tag" : "Seleziona un'etichetta pendente",
     "Who can request approval?" : "Chi può richiedere l'approvazione?",

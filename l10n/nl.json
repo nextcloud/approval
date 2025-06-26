@@ -62,6 +62,7 @@
     "Tag set on approval" : "Tag ingesteld na goedkeuring",
     "Tag set on rejection" : "Tag ingesteld na afwijzing",
     "Workflow title" : "Werkstroomtitel",
+    "Remove file approval when file is modified" : "Bestandgoedkeuring verwijderen als het bestand is gewijzigd",
     "What is the purpose of this workflow?" : "Wat is het doel van deze werkstroom?",
     "Select pending tag" : "Select onderhanden tag",
     "Who can request approval?" : "Wie kan goedkeuring vragen?",

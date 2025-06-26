@@ -64,6 +64,7 @@ OC.L10N.register(
     "Tag set on approval" : "批准時設定的標籤",
     "Tag set on rejection" : "回絕時設定的標籤",
     "Workflow title" : "工作流程標題",
+    "Remove file approval when file is modified" : "修改檔案時移除檔案核准",
     "What is the purpose of this workflow?" : "此工作流程的目的是什麼？",
     "Select pending tag" : "選取待處理的標籤",
     "Who can request approval?" : "誰可以請求批准？",
