@@ -32,7 +32,7 @@ and can be installed with [this app](https://apps.nextcloud.com/apps/integration
 	<screenshot>https://github.com/nextcloud/approval/raw/main/img/screenshot_2.jpg</screenshot>
 	<screenshot>https://github.com/nextcloud/approval/raw/main/img/screenshot_3.jpg</screenshot>
 	<dependencies>
-		<nextcloud min-version="30" max-version="31"/>
+		<nextcloud min-version="30" max-version="32"/>
 	</dependencies>
 	<settings>
 		<admin>OCA\Approval\Settings\Admin</admin>
