@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.3.1 - 2025-06-26
+
+### Fixed
+
+- The version number for db migration was set to 2.3.1 @lukasdotcom
+
 ## 2.3.0 - 2025-06-26
 
 ### Added
