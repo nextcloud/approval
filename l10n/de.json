@@ -62,7 +62,7 @@
     "Tag set on approval" : "Schlagwort bei Genehmigung festgelegt",
     "Tag set on rejection" : "Schlagwort bei Ablehnung festgelegt ",
     "Workflow title" : "Workflow Titel",
-    "Remove file approval when file is modified" : "Dateifreigabe entfernen, wenn die Datei geändert wird",
+    "Remove file approval when file is modified" : "Dateigenehmigung entfernen, wenn die Datei geändert wird",
     "What is the purpose of this workflow?" : "Was ist der Zweck dieses Workflows?",
     "Select pending tag" : "Ausstehendes Schlagwort auswählen",
     "Who can request approval?" : "Wer kann Genehmigungen anfragen?",

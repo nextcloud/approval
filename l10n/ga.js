@@ -64,6 +64,7 @@ OC.L10N.register(
     "Tag set on approval" : "Clib socraithe ar cheadú",
     "Tag set on rejection" : "Clib socraithe ar dhiúltú",
     "Workflow title" : "Teideal sreabhadh oibre",
+    "Remove file approval when file is modified" : "Bain ceadú comhaid nuair a dhéantar comhad a mhodhnú",
     "What is the purpose of this workflow?" : "Cad é cuspóir an tsreafa oibre seo?",
     "Select pending tag" : "Roghnaigh clib ar feitheamh",
     "Who can request approval?" : "Cé atá in ann cead a iarraidh?",
