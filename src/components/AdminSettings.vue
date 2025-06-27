@@ -32,7 +32,6 @@
 					v-model:value="rules[id]"
 					:is-admin="isAdmin"
 					class="approval-rule"
-					delete-icon="icon-delete"
 					@input="onRuleInput(id, $event)"
 					@add-tag="onAddTagClick">
 					<template #extra-buttons>
@@ -40,7 +39,7 @@
 							type="error"
 							@click="onRuleDelete(id)">
 							<template #icon>
-								<DeleteIcon :size="20" />
+								<DeleteOutlineIcon :size="20" />
 							</template>
 							{{ t('approval', 'Delete workflow') }}
 						</NcButton>
@@ -119,7 +118,7 @@
 <script>
 import CheckIcon from 'vue-material-design-icons/Check.vue'
 import TagIcon from 'vue-material-design-icons/Tag.vue'
-import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import DeleteOutlineIcon from 'vue-material-design-icons/DeleteOutline.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
 
 import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
@@ -139,7 +138,7 @@ export default {
 		CheckIcon,
 		TagIcon,
 		PlusIcon,
-		DeleteIcon,
+		DeleteOutlineIcon,
 		ApprovalRule,
 		NcEmptyContent,
 		NcButton,

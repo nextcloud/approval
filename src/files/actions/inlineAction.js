@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import PendingIconSvg from '@mdi/svg/svg/dots-horizontal-circle.svg?raw'
+import PendingIconSvg from '@mdi/svg/svg/dots-horizontal-circle-outline.svg?raw'
 import ApprovedIconSvg from '../../../img/checkmark-green.svg?raw'
 import RejectedIconSvg from '../../../img/close-red.svg?raw'
 import { Permission, FileAction } from '@nextcloud/files'

@@ -159,10 +159,6 @@ export default {
 			type: Object,
 			required: true,
 		},
-		deleteIcon: {
-			type: String,
-			default: '',
-		},
 		focus: {
 			type: Boolean,
 			default: false,
