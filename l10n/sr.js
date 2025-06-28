@@ -64,6 +64,7 @@ OC.L10N.register(
     "Tag set on approval" : "Ознака постављена у случају одобравања",
     "Tag set on rejection" : "Ознака постављена у случају одбијања",
     "Workflow title" : "Наслов процеса рада",
+    "Remove file approval when file is modified" : "Уклони одобрење за фајл када се фајл измени",
     "What is the purpose of this workflow?" : "Шта је сврха овог процеса рада?",
     "Select pending tag" : "Изаберите ознаку на чекању",
     "Who can request approval?" : "Ко може да захтева одобравање?",

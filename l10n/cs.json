@@ -62,6 +62,7 @@
     "Tag set on approval" : "Štítek nastavený při schválení",
     "Tag set on rejection" : "Štítek nastavený při zamítnutí",
     "Workflow title" : "Název postupu",
+    "Remove file approval when file is modified" : "Pokud bude změněn, odebrat schválení souboru",
     "What is the purpose of this workflow?" : "Jaký je účel tohoto postupu?",
     "Select pending tag" : "Vybrat štítek čekající na schválení",
     "Who can request approval?" : "Kdo může požádat o schválení?",
