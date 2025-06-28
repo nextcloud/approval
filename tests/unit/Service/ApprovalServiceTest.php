@@ -105,6 +105,7 @@ class ApprovalServiceTest extends TestCase {
 		$this->utilsService = new UtilsService(
 			'approval',
 			$c->get(IUserManager::class),
+			$c->get(IGroupManager::class),
 			$c->get(IShareManager::class),
 			$c->get(IRootFolder::class),
 			$c->get(ISystemTagManager::class),

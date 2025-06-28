@@ -8,12 +8,16 @@
 namespace OCA\Approval\Service;
 
 use Exception;
+use OC;
 use OCA\Approval\AppInfo\Application;
+use OCA\Circles\CirclesManager;
+use OCA\Circles\Exceptions\CircleNotFoundException;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\IConfig;
 
+use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Security\ICrypto;
@@ -31,6 +35,7 @@ class UtilsService {
 	public function __construct(
 		string $appName,
 		private IUserManager $userManager,
+		private IGroupManager $groupManager,
 		private IShareManager $shareManager,
 		private IRootFolder $root,
 		private ISystemTagManager $tagManager,
@@ -121,11 +126,11 @@ class UtilsService {
 	 * @return bool
 	 */
 	public function isUserInCircle(string $userId, string $circleId): bool {
-		$circlesManager = \OC::$server->get(\OCA\Circles\CirclesManager::class);
+		$circlesManager = OC::$server->get(CirclesManager::class);
 		$circlesManager->startSuperSession();
 		try {
 			$circle = $circlesManager->getCircle($circleId);
-		} catch (\OCA\Circles\Exceptions\CircleNotFoundException $e) {
+		} catch (CircleNotFoundException $e) {
 			$circlesManager->stopSession();
 			return false;
 		}
@@ -167,6 +172,47 @@ class UtilsService {
 	}
 
 	/**
+	 * Return false if this folder and no parents are shared with that group
+	 *
+	 * @param string $userId
+	 * @param Node $fileNode
+	 * @param string|null $groupId
+	 * @return bool
+	 */
+	public function groupHasAccessTo(string $userId, Node $fileNode, ?string $groupId): bool {
+		do {
+			$groupShares = $this->shareManager->getSharesBy($userId, ISHARE::TYPE_GROUP, $fileNode);
+			foreach ($groupShares as $groupShare) {
+				if ($groupShare->getSharedWith() === $groupId) {
+					return true;
+				}
+			}
+			$fileNode = $fileNode->getParent();
+		} while ($fileNode->getParentId() !== -1);
+		return false;
+	}
+
+	/**
+	 * Return true if this folder and no parents are shared with anyone
+	 *
+	 * @param Node $node
+	 * @return bool
+	 */
+	public function isShared(Node $node): bool {
+		$userId = $node->getOwner()->getUID();
+		do {
+			if (!empty($this->shareManager->getSharesBy($userId, ISHARE::TYPE_GROUP, $node))) {
+				return true;
+			}
+			if (!empty($this->shareManager->getSharesBy($userId, ISHARE::TYPE_USER, $node))) {
+				return true;
+			}
+			$node = $node->getParent();
+		} while ($node->getParentId() !== -1);
+		return false;
+	}
+
+	/**
 	 * @param string $name of the new tag
 	 * @return array
 	 */
@@ -190,5 +236,60 @@ class UtilsService {
 		} catch (TagNotFoundException $e) {
 			return ['error' => 'Tag not found'];
 		}
+	}
+
+	/**
+	 * Find users that need a file to be shared with, so all members of the group have it
+	 * Also says if group share is the correct choice.
+	 *
+	 * @param Node $node of the file to check
+	 * @param string|null $groupId the id of the group
+	 * @return array
+	 */
+	public function usersNeedShare(Node $node, ?string $groupId): array {
+		$group = $this->groupManager->get($groupId);
+		$groupUsers = $group->getUsers();
+		if (count($groupUsers) > 10) { // Ensure that this potentially slow operation is not done for big groups
+			return ['groupShare' => true, 'users' => []];
+		}
+		$usersSet = [];
+		$groupsSet = []; // Stores the user if a share does not exist directly otherwise it is false
+		foreach ($groupUsers as $groupUser) {
+			$usersSet[$groupUser->getUID()] = $groupUser;
+		}
+		$ownerid = $node->getOwner()->getUID();
+		do {
+			foreach ($this->shareManager->getSharesBy($ownerid, ISHARE::TYPE_GROUP, $node) as $share) {
+				$groupsSet[$share->getSharedWith()] = true;
+			}
+			foreach ($this->shareManager->getSharesBy($ownerid, ISHARE::TYPE_USER, $node) as $share) {
+				if (isset($usersSet[$share->getSharedWith()])) {
+					$usersSet[$share->getSharedWith()] = false;
+				}
+			}
+			$node = $node->getParent();
+		} while ($node->getParentId() !== -1);
+
+		$groupShare = true; // true if no user has a share, false otherwise
+		$users = [];
+		foreach ($usersSet as $uid => $hasShare) {
+			if ($hasShare !== false) { // User has no share
+				// Checks if the user is in a group that is being shared with
+				$groupList = $this->groupManager->getUserGroupIds($hasShare);
+				$groupFound = false;
+				foreach ($groupList as $groupId) {
+					if (isset($groupsSet[$groupId])) {
+						$groupFound = true;
+						break;
+					}
+				}
+				if (!$groupFound) { // User is not in a group that is being shared with
+					$users[] = $uid;
+					continue;
+				}
+			}
+			$groupShare = false;
+		}
+		return ['groupShare' => $groupShare, 'users' => $users];
 	}
 }
