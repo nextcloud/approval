@@ -172,7 +172,7 @@ class UtilsService {
 	 */
 	public function createTag(string $name): array {
 		try {
-			$tag = $this->tagManager->createTag($name, false, false);
+			$tag = $this->tagManager->createTag($name, true, false);
 			return ['id' => $tag->getId()];
 		} catch (TagAlreadyExistsException $e) {
 			return ['error' => 'Tag already exists'];
