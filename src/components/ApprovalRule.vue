@@ -22,7 +22,6 @@
 					{{ pendingLabel }}
 					<div class="spacer" />
 					<span
-						v-if="isAdmin"
 						:title="t('approval', 'Create new hidden tag')"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
@@ -75,7 +74,6 @@
 					{{ approvedLabel }}
 					<div class="spacer" />
 					<span
-						v-if="isAdmin"
 						:title="t('approval', 'Create new hidden tag')"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
@@ -99,7 +97,6 @@
 					{{ rejectedLabel }}
 					<div class="spacer" />
 					<span
-						v-if="isAdmin"
 						:title="t('approval', 'Create new hidden tag')"
 						class="add-tag-button"
 						@click="$emit('add-tag')">
@@ -162,10 +159,6 @@ export default {
 		focus: {
 			type: Boolean,
 			default: false,
-		},
-		isAdmin: {
-			type: Boolean,
-			default: true,
 		},
 	},
 

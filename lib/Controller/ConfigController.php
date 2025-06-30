@@ -40,6 +40,7 @@ class ConfigController extends Controller {
 	 * @param string $name of the new tag
 	 * @return DataResponse
 	 */
+	#[AuthorizedAdminSetting(settings: Admin::class)]
 	public function createTag(string $name): DataResponse {
 		$result = $this->utilsService->createTag($name);
 		if (isset($result['error'])) {

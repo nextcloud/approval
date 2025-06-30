@@ -30,7 +30,6 @@
 				<ApprovalRule v-for="(rule, id) in rules"
 					:key="id"
 					v-model:value="rules[id]"
-					:is-admin="isAdmin"
 					class="approval-rule"
 					@input="onRuleInput(id, $event)"
 					@add-tag="onAddTagClick">
@@ -55,7 +54,6 @@
 				<div v-if="newRule" class="new-rule">
 					<ApprovalRule
 						v-model:value="newRule"
-						:is-admin="isAdmin"
 						:delete-rule-label="newRuleDeleteLabel"
 						:focus="true"
 						@add-tag="onAddTagClick">
@@ -91,10 +89,10 @@
 				</template>
 				{{ t('approval', 'New workflow') }}
 			</NcButton>
-			<div v-if="isAdmin" class="create-tag">
+			<div class="create-tag">
 				<label for="create-tag-input">
 					<TagIcon :size="16" />
-					{{ t('approval', 'Create new hidden tag') }}
+					{{ t('approval', 'Create new restricted tag') }}
 				</label>
 				<input id="create-tag-input"
 					ref="createTagInput"
@@ -129,7 +127,6 @@ import ApprovalRule from './ApprovalRule.vue'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import { loadState } from '@nextcloud/initial-state'
 
 export default {
 	name: 'AdminSettings',
@@ -148,7 +145,6 @@ export default {
 
 	data() {
 		return {
-			isAdmin: loadState('approval', 'is-admin'),
 			showRules: true,
 			newTagName: '',
 			rules: {},
