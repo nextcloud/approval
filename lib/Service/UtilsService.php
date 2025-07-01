@@ -8,7 +8,10 @@
 namespace OCA\Approval\Service;
 
 use Exception;
+use OC;
 use OCA\Approval\AppInfo\Application;
+use OCA\Circles\CirclesManager;
+use OCA\Circles\Exceptions\CircleNotFoundException;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
@@ -121,11 +124,11 @@ class UtilsService {
 	 * @return bool
 	 */
 	public function isUserInCircle(string $userId, string $circleId): bool {
-		$circlesManager = \OC::$server->get(\OCA\Circles\CirclesManager::class);
+		$circlesManager = OC::$server->get(CirclesManager::class);
 		$circlesManager->startSuperSession();
 		try {
 			$circle = $circlesManager->getCircle($circleId);
-		} catch (\OCA\Circles\Exceptions\CircleNotFoundException $e) {
+		} catch (CircleNotFoundException $e) {
 			$circlesManager->stopSession();
 			return false;
 		}
@@ -163,6 +166,27 @@ class UtilsService {
 			$found = $userFolder->getById($fileId);
 			return count($found) > 0;
 		}
+		return false;
+	}
+
+	/**
+	 * Return false if this folder and no parents are shared with that group
+	 *
+	 * @param string $userId
+	 * @param Node $fileNode
+	 * @param string|null $groupId
+	 * @return bool
+	 */
+	public function groupHasAccessTo(string $userId, Node $fileNode, ?string $groupId): bool {
+		do {
+			$groupShares = $this->shareManager->getSharesBy($userId, ISHARE::TYPE_GROUP, $fileNode);
+			foreach ($groupShares as $groupShare) {
+				if ($groupShare->getSharedWith() === $groupId) {
+					return true;
+				}
+			}
+			$fileNode = $fileNode->getParent();
+		} while ($fileNode->getParentId() !== -1);
 		return false;
 	}
 
