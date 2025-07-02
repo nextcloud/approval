@@ -532,9 +532,27 @@ class ApprovalService {
 		}
 		if ($this->shareManager->allowGroupSharing()) {
 			foreach ($rule['approvers'] as $approver) {
-				if ($approver['type'] === 'group') {
-					if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $fileOwner, $label)) {
-						$createdShares[] = $approver;
+				if ($approver['type'] === 'group' && !$this->utilsService->groupHasAccessTo($fileOwner, $node, $approver['entityId'])) {
+					$sharesNeeded = ['groupShare' => true, 'users' => []];
+					// Only when the file is shared do you need to find a list of users the document needs to be shared with
+					if ($this->utilsService->isShared($node)) {
+						$sharesNeeded = $this->utilsService->usersNeedShare($node, $approver['entityId']);
+					}
+					if ($sharesNeeded['groupShare'] === true) {
+						if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $fileOwner, $label)) {
+							$createdShares[] = $approver;
+						}
+					} elseif ($sharesNeeded['groupShare'] === false) {
+						// Goes through every user that doesn't have access and creates a share (very expensive)
+						$success = true;
+						foreach ($sharesNeeded['users'] as $user) {
+							if (!$this->utilsService->createShare($node, IShare::TYPE_USER, $user, $fileOwner, $label)) {
+								$success = false;
+							}
+						}
+						if ($success === true) {
+							$createdShares[] = $approver;
+						}
 					}
 				}
 			}
