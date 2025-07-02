@@ -53,6 +53,7 @@ OC.L10N.register(
     "Delete workflow" : "Excluir fluxo",
     "No workflow yet" : "Sem fluxo ainda",
     "New workflow" : "Novo fluxo",
+    "Create new restricted tag" : "Criar nova etiqueta restringida",
     "New tag name" : "Novo nome de etiqueta",
     "Create" : "Criar",
     "Approve" : "Aprovar",

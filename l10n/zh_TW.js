@@ -53,6 +53,7 @@ OC.L10N.register(
     "Delete workflow" : "刪除工作流程",
     "No workflow yet" : "目前尚未有工作流程",
     "New workflow" : "新工作流程",
+    "Create new restricted tag" : "建立新的限制標籤",
     "New tag name" : "新標籤名稱",
     "Create" : "建立",
     "Approve" : "批准",

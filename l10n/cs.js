@@ -53,6 +53,7 @@ OC.L10N.register(
     "Delete workflow" : "Smazat postup",
     "No workflow yet" : "Zatím žádný postup",
     "New workflow" : "Nový postup",
+    "Create new restricted tag" : "Vytvořit nový omezený štítek",
     "New tag name" : "Název pro nový štítek",
     "Create" : "Vytvořit",
     "Approve" : "Schválit",

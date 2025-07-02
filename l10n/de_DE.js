@@ -53,6 +53,7 @@ OC.L10N.register(
     "Delete workflow" : "Arbeitsablauf löschen",
     "No workflow yet" : "Noch kein Arbeitsablauf vorhanden",
     "New workflow" : "Neuer Arbeitsablauf",
+    "Create new restricted tag" : "Neues eingeschränktes Schlagwort erstellen",
     "New tag name" : "Neuer Schlagwortname",
     "Create" : "Erstellen",
     "Approve" : "Genehmigen",

@@ -53,6 +53,7 @@ OC.L10N.register(
     "Delete workflow" : "Ta bort arbetsflöde",
     "No workflow yet" : "Inga arbetsflöden ännu",
     "New workflow" : "Nytt arbetsflöde",
+    "Create new restricted tag" : "Skapa ny begränsad tagg",
     "New tag name" : "Namn på ny markör",
     "Create" : "Skapa",
     "Approve" : "Godkänn",
