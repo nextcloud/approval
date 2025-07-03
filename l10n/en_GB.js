@@ -53,6 +53,7 @@ OC.L10N.register(
     "Delete workflow" : "Delete workflow",
     "No workflow yet" : "No workflow yet",
     "New workflow" : "New workflow",
+    "Create new restricted tag" : "Create new restricted tag",
     "New tag name" : "New tag name",
     "Create" : "Create",
     "Approve" : "Approve",

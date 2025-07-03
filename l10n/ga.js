@@ -53,6 +53,7 @@ OC.L10N.register(
     "Delete workflow" : "Scrios sreabhadh oibre",
     "No workflow yet" : "Níl aon sreabhadh oibre fós",
     "New workflow" : "Sreabhadh oibre nua",
+    "Create new restricted tag" : "Cruthaigh clib srianta nua",
     "New tag name" : "Ainm clib nua",
     "Create" : "Cruthaigh",
     "Approve" : "Cheadaigh",
