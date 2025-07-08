@@ -7,6 +7,9 @@ OC.L10N.register(
     "Reject" : "Noraidīt",
     "Approved" : "Apstiprināts",
     "you" : "Jūs",
+    "Who?" : "Kurš?",
+    "Impossible to get user/group/circle list" : "Nav iespējams iegūt lieotāju/kopu/loku sarakstu",
+    "No recommendations. Start typing." : "Nav ieteikumu. Jāsāk rakstīt.",
     "No result." : "Nav iznākuma.",
     "Warning" : "Brīdinājums"
 },
