@@ -53,6 +53,7 @@ OC.L10N.register(
     "Delete workflow" : "Обриши процес рада",
     "No workflow yet" : "Још увек нема процеса рада",
     "New workflow" : "Нови процес рада",
+    "Create new restricted tag" : "Креирај нову ограничену ознаку",
     "New tag name" : "Име нове ознаке",
     "Create" : "Направи",
     "Approve" : "Одобри",
