@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Cancel" : "Cancel",
     "Create" : "Tengeneza",
+    "Approve" : "Approve",
     "Reject" : "Kataa",
     "Who?" : "Nani?",
     "Impossible to get user/group/circle list" : "Impossible to get user/group/circle list",
