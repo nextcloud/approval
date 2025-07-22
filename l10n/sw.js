@@ -8,6 +8,7 @@ OC.L10N.register(
     "Who?" : "Nani?",
     "Impossible to get user/group/circle list" : "Impossible to get user/group/circle list",
     "No recommendations. Start typing." : "Hakuna maoni. Anza kuchapisha",
+    "No result." : "Hakuna matokeo",
     "Warning" : "Onyo"
 },
 "nplurals=2; plural=(n != 1);");
