@@ -9,34 +9,36 @@ import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import ApprovalTab from './views/ApprovalTab.vue'
 
 // Init approval tab component
-let TabInstance = null
+let tabView = null
+let tabApp = null
 const approvalTab = new OCA.Files.Sidebar.Tab({
 	id: 'approval',
 	name: t('approval', 'Approval'),
 	iconSvg: ApprovalSvgIcon,
 
 	async mount(el, fileInfo, context) {
-		if (TabInstance) {
-			TabInstance.unmount()
+		if (tabApp !== null) {
+			tabApp.unmount()
 		}
-		const Tab = createApp(ApprovalTab)
-		Tab.mixin({ methods: { t, n } })
+		tabApp = createApp(ApprovalTab)
+		tabApp.mixin({ methods: { t, n } })
 
-		TabInstance = Tab.mount(el)
+		tabView = tabApp.mount(el)
 		// Only mount after we have all the info we need
-		await TabInstance.update(fileInfo)
+		await tabView.update(fileInfo)
 	},
 
 	update(fileInfo) {
-		if (TabInstance && typeof TabInstance.update === 'function') {
-			TabInstance.update(fileInfo)
+		if (tabView && typeof tabView.update === 'function') {
+			tabView.update(fileInfo)
 		}
 	},
 
 	destroy() {
-		if (TabInstance) {
-			TabInstance.unmount()
-			TabInstance = null
+		if (tabApp) {
+			tabApp.unmount()
+			tabView = null
+			tabApp = null
 		}
 	},
 })
