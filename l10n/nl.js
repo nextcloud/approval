@@ -53,6 +53,7 @@ OC.L10N.register(
     "Delete workflow" : "Verwijder werkstroom",
     "No workflow yet" : "Nog geen werkstromen",
     "New workflow" : "Nieuwe werkstroom",
+    "Create new restricted tag" : "Nieuw beperkt label aanmaken",
     "New tag name" : "Nieuwe naam tag",
     "Create" : "Creëren",
     "Approve" : "Goedkeuren",
