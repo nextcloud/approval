@@ -8,6 +8,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.4.0 - 2025-08-18
+
+### Added
+
+- Use outlined icons @julien-nc [#318](https://github.com/nextcloud/approval/pull/318)
+- Don't share file with group if already shared with the group @lukasdotcom [#320](https://github.com/nextcloud/approval/pull/320)
+
+### Changed
+
+- Create restricted instead of hidden tags for tag creator @lukasdotcom [#319](https://github.com/nextcloud/approval/pull/319)
+- Update screenshots @julien-nc [#324](https://github.com/nextcloud/approval/pull/324)
+
+### Fixed
+
+- Unmount was being called on the app instead of the view @julien-nc [#324](https://github.com/nextcloud/approval/pull/324)
+
 ## 2.3.0 - 2025-06-26
 
 ### Added
