@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Cancel" : "Скасаваць",
     "Create" : "Стварыць",
+    "Approve" : "Ухваліць",
     "Reject" : "Адхіліць",
     "No recommendations. Start typing." : "Няма рэкамендацый. Пачніце друкаваць.",
     "No result." : "Няма выніку.",
