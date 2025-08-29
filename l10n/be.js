@@ -2,6 +2,7 @@ OC.L10N.register(
     "approval",
     {
     "Cancel" : "Скасаваць",
+    "New tag name" : "Назва новага тэга",
     "Create" : "Стварыць",
     "Approve" : "Ухваліць",
     "Reject" : "Адхіліць",
