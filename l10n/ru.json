@@ -28,6 +28,7 @@
     "Please check my approval request" : "Пожалуйста рассмотрите мой запрос на согласование",
     "Approval workflows" : "Согласования",
     "Let users approve or reject files" : "Позволяет пользователям согласовывать или отклонять файлы",
+    "Approve/reject files based on workflows defined by admins.\n\n**Warning**: The DocuSign integration is no longer part of this app\nand can be installed with [this app](https://apps.nextcloud.com/apps/integration_docusign)." : "Утвердить/отклонить файлы в соответствии с рабочими процессами, определенными администрацией.\n\n**Предупреждение**: интеграция DocuSign больше не является частью этого приложения и может быть установлена [вот этим приложением](https://apps.nextcloud.com/apps/integration_docusign).",
     "Cancel" : "Отмена",
     "All fields are required" : "Все поля обязательны к заполнению",
     "All tags must be different" : "Все метки должны быть разными",
