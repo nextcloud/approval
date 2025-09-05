@@ -26,7 +26,7 @@ OC.L10N.register(
     "Rule does not exist" : "A regra non existe",
     "This element is not shared with any user who is authorized to approve it" : "Este elemento non se comparte con ningún usuario que estea autorizado para aprobalo",
     "Approval has already been requested with this rule for this file" : "Xa foi solicitada a aprobación con esta regra para este ficheiro",
-    "You are not authorized to request with this rule" : "Non ten autorización para facer unha solicitude con esta regra",
+    "You are not authorized to request with this rule" : "Vde. non ten autorización para facer unha solicitude con esta regra",
     "Please check my approval request" : "Comprobe a miña solicitude de aprobación",
     "Approval workflows" : "Fluxos de traballo das aprobacións",
     "Let users approve or reject files" : "Permite aos usuarios aprobar ou rexeitar ficheiros",

@@ -6,6 +6,8 @@ OC.L10N.register(
     "Create" : "Стварыць",
     "Approve" : "Ухваліць",
     "Reject" : "Адхіліць",
+    "you" : "вы",
+    "Who?" : "Хто?",
     "No recommendations. Start typing." : "Няма рэкамендацый. Пачніце друкаваць.",
     "No result." : "Няма выніку.",
     "Warning" : "Папярэджанне"
