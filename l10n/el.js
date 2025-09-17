@@ -51,6 +51,7 @@ OC.L10N.register(
     "you" : "εσυ",
     "Request approval" : "Αίτηση έγκρισης",
     "Who?" : "Ποιος;",
+    "Impossible to get user/group/circle list" : "Αδυναμία λήψης λίστας χρηστών/ομάδων/κύκλων",
     "No recommendations. Start typing." : "Δεν υπάρχουν συστάσεις. Αρχίστε να πληκτρολογείτε.",
     "No result." : "Κανένα αποτέλεσμα.",
     "More files to approve" : "Περισσότερα αρχεία προς έγκριση",
