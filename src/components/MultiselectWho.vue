@@ -24,13 +24,13 @@
 				<NcAvatar
 					v-if="option.type === 'user'"
 					:user="option.entityId"
-					:show-user-status="false" />
+					:hide-status="true" />
 				<NcAvatar
 					v-else-if="['group', 'circle', 'email'].includes(option.type)"
 					:display-name="option.displayName"
 					:is-no-user="true"
 					:disable-tooltip="true"
-					:show-user-status="false" />
+					:hide-status="true" />
 				<span class="multiselect-name">
 					{{ option.displayName }}
 				</span>
@@ -46,13 +46,13 @@
 			<NcAvatar
 				v-if="option.type === 'user'"
 				:user="option.entityId"
-				:show-user-status="false" />
+				:hide-status="true" />
 			<NcAvatar
 				v-else-if="['group', 'circle', 'email'].includes(option.type)"
 				:display-name="option.displayName"
 				:is-no-user="true"
 				:disable-tooltip="true"
-				:show-user-status="false" />
+				:hide-status="true" />
 			<span class="multiselect-name">
 				{{ option.displayName }}
 			</span>
