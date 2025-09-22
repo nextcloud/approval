@@ -83,10 +83,10 @@ export async function requestAfterShareCreation(fileId, fileName, ruleId, node =
 	}
 }
 
-export async function approve(fileId, fileName, node = null, notify = true) {
+export async function approve(fileId, fileName, node = null, notify = true, message = '') {
 	const url = generateOcsUrl('apps/approval/api/v1/approve/{fileId}', { fileId })
 	try {
-		await axios.put(url)
+		await axios.put(url, { message })
 		if (notify) {
 			showSuccess(t('approval', 'You approved {name}', { name: fileName }))
 		}
@@ -102,10 +102,10 @@ export async function approve(fileId, fileName, node = null, notify = true) {
 	}
 }
 
-export async function reject(fileId, fileName, node = null, notify = true) {
+export async function reject(fileId, fileName, node = null, notify = true, message = '') {
 	const url = generateOcsUrl('apps/approval/api/v1/reject/{fileId}', { fileId })
 	try {
-		await axios.put(url)
+		await axios.put(url, { message })
 		if (notify) {
 			showSuccess(t('approval', 'You rejected {name}', { name: fileName }))
 		}

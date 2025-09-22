@@ -18,6 +18,7 @@
 				)
 			}}
 		</div>
+		<NcInputField v-if="stateApprovable" v-model="newMessage" :label="t('approval', 'Reason (optional)')" />
 		<ApprovalButtons
 			v-if="stateApprovable"
 			class="buttons"
@@ -40,6 +41,9 @@
 				{{ relativeTime }}
 			</span>
 			<span v-else>{{ rejectedText }}</span>
+		</span>
+		<span v-if="message" class="state-label">
+			<MessageDrawIcon />{{ messageText }}
 		</span>
 		<span v-if="statePending" class="state-label pending-label">
 			<DotsHorizontalCircleIcon class="pending" :size="32" />
@@ -67,9 +71,11 @@ import CheckIcon from 'vue-material-design-icons/Check.vue'
 import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
 import DotsHorizontalCircleIcon from 'vue-material-design-icons/DotsHorizontalCircle.vue'
 import CloseCircleIcon from 'vue-material-design-icons/CloseCircle.vue'
+import MessageDrawIcon from 'vue-material-design-icons/MessageDraw.vue'
 
 import NcButton from '@nextcloud/vue/components/NcButton'
 import NcUserBubble from '@nextcloud/vue/components/NcUserBubble'
+import NcInputField from '@nextcloud/vue/components/NcInputField'
 
 import ApprovalButtons from './ApprovalButtons.vue'
 
@@ -85,10 +91,12 @@ export default {
 		ApprovalButtons,
 		NcButton,
 		NcUserBubble,
+		NcInputField,
 		CheckCircleIcon,
 		CloseCircleIcon,
 		CheckIcon,
 		DotsHorizontalCircleIcon,
+		MessageDrawIcon,
 	},
 
 	props: {
@@ -99,6 +107,10 @@ export default {
 		timestamp: {
 			type: [Number, null],
 			default: null,
+		},
+		message: {
+			type: String,
+			default: '',
 		},
 		userName: {
 			type: [String, null],
@@ -143,6 +155,7 @@ export default {
 	data() {
 		return {
 			you: t('approval', 'you'),
+			newMessage: '',
 		}
 	},
 
@@ -218,6 +231,15 @@ export default {
 				? t('approval', 'Approval requested by {user}', { user: this.userName })
 				: t('approval', 'Approval requested by you')
 		},
+		messageText() {
+			if (this.stateApproved) {
+				return t('approval', 'Reason for approval: {message}', { message: this.message })
+			}
+			if (this.stateRejected) {
+				return t('approval', 'Reason for rejection: {message}', { message: this.message })
+			}
+			return this.message
+		},
 	},
 
 	watch: {},
@@ -226,10 +248,10 @@ export default {
 
 	methods: {
 		onApprove() {
-			this.$emit('approve')
+			this.$emit('approve', this.newMessage)
 		},
 		onReject() {
-			this.$emit('reject')
+			this.$emit('reject', this.newMessage)
 		},
 		onRequest() {
 			this.$emit('request')
