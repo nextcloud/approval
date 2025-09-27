@@ -441,9 +441,10 @@ class RuleService {
 	 * @param int $ruleId
 	 * @param string $userId
 	 * @param int $newState
+	 * @param string $message
 	 * @return void
 	 */
-	public function storeAction(int $fileId, int $ruleId, string $userId, int $newState): void {
+	public function storeAction(int $fileId, int $ruleId, string $userId, int $newState, string $message = ''): void {
 		$qb = $this->db->getQueryBuilder();
 		$qb->delete('approval_activity')
 			->where(
@@ -463,6 +464,7 @@ class RuleService {
 				'user_id' => $qb->createNamedParameter($userId, IQueryBuilder::PARAM_STR),
 				'new_state' => $qb->createNamedParameter($newState, IQueryBuilder::PARAM_INT),
 				'timestamp' => $qb->createNamedParameter($timestamp, IQueryBuilder::PARAM_INT),
+				'message' => $qb->createNamedParameter($message, IQueryBuilder::PARAM_STR),
 			]);
 		$qb->executeStatement();
 		$qb->resetQueryParts();
@@ -497,6 +499,7 @@ class RuleService {
 			$activity = [
 				'userId' => $row['user_id'],
 				'timestamp' => (int)$row['timestamp'],
+				'message' => $row['message'] ?? '',
 			];
 			break;
 		}

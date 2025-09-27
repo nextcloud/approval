@@ -82,13 +82,13 @@ export default {
 		setUserRules(rules) {
 			this.userRules = rules
 		},
-		onApprove() {
+		onApprove(message) {
 			this.closeModal()
-			this.$emit('approve', this.node)
+			this.$emit('approve', this.node, message)
 		},
-		onReject() {
+		onReject(message) {
 			this.closeModal()
-			this.$emit('reject', this.node)
+			this.$emit('reject', this.node, message)
 		},
 		onRequest() {
 			this.closeModal()
