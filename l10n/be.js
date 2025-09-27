@@ -6,6 +6,7 @@ OC.L10N.register(
     "Create" : "Стварыць",
     "Approve" : "Ухваліць",
     "Reject" : "Адхіліць",
+    "Create new hidden tag" : "Стварыць новы схаваны тэг",
     "you" : "вы",
     "Who?" : "Хто?",
     "No recommendations. Start typing." : "Няма рэкамендацый. Пачніце друкаваць.",
