@@ -53,6 +53,7 @@ OC.L10N.register(
     "Delete workflow" : "Munkafolyamat törlése",
     "No workflow yet" : "Még nincs munkafolyamat",
     "New workflow" : "Új munkafolyamat",
+    "Create new restricted tag" : "Új korlátozott címke létrehozása",
     "New tag name" : "Új címke neve",
     "Create" : "Létrehozás",
     "Approve" : "Jóváhagyás",
