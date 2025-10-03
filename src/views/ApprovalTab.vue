@@ -8,6 +8,7 @@
 		<Info v-else
 			:state="state"
 			:timestamp="timestamp"
+			:message="message"
 			:user-name="userName"
 			:user-id="userId"
 			:rule="rule"
@@ -50,6 +51,7 @@ export default {
 			userName: null,
 			userId: null,
 			rule: null,
+			message: '',
 			userRules: [],
 			showRequestModal: false,
 		}
@@ -75,6 +77,7 @@ export default {
 			getApprovalState(fileInfo.id).then(response => {
 				this.state = response.data.ocs.data.state
 				this.timestamp = response.data.ocs.data.timestamp
+				this.message = response.data.ocs.data.message
 				this.userId = response.data.ocs.data.userId
 				this.userName = response.data.ocs.data.userName
 				this.rule = response.data.ocs.data.rule
@@ -88,18 +91,18 @@ export default {
 				this.userRules = response.data.ocs.data
 			})
 		},
-		async onApprove() {
+		async onApprove(message) {
 			this.state = null
 			const fileId = this.fileInfo.id
 			const fileName = this.fileInfo.name
-			await approve(fileId, fileName)
+			await approve(fileId, fileName, null, true, message)
 			this.update(this.fileInfo)
 		},
-		async onReject() {
+		async onReject(message) {
 			this.state = null
 			const fileId = this.fileInfo.id
 			const fileName = this.fileInfo.name
-			await reject(fileId, fileName)
+			await reject(fileId, fileName, null, true, message)
 			this.update(this.fileInfo)
 		},
 		async onRequestSubmit(ruleId, createShares) {

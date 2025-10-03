@@ -7,6 +7,7 @@ import { registerFileAction, registerDavProperty } from '@nextcloud/files'
 
 import { inlineAction } from './actions/inlineAction.js'
 import { requestAction } from './actions/requestAction.js'
+import { respondAction } from './actions/respondAction.js'
 import { approveAction } from './actions/approveAction.js'
 import { rejectAction } from './actions/rejectAction.js'
 
@@ -24,3 +25,4 @@ registerFileAction(inlineAction)
 registerFileAction(approveAction)
 registerFileAction(rejectAction)
 registerFileAction(requestAction)
+registerFileAction(respondAction)

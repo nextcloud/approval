@@ -21,7 +21,7 @@ export const inlineAction = new FileAction({
 		return state === states.PENDING
 			? t('approval', 'Waiting for authorized users to approve this file')
 			: state === states.APPROVABLE
-				? t('approval', 'Pending approval, you are authorized to approve')
+				? t('approval', 'Pending approval, click to approve/reject')
 				: state === states.APPROVED
 					? t('approval', 'This element was approved')
 					: t('approval', 'This element was rejected')

@@ -17,6 +17,7 @@ export const approveAction = new FileAction({
 		return !OCA.Approval.actionIgnoreLists.includes(view.id)
 			&& !nodes.some(({ permissions }) => (permissions & Permission.READ) === 0)
 			&& nodes.some(node => node.attributes['approval-state'] === states.APPROVABLE)
+			&& nodes.length > 1
 		// && nodes.every(({ type }) => type === FileType.File)
 		// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},
