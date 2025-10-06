@@ -55,6 +55,7 @@ class ApprovalController extends OCSController {
 				$state['userId'] = $activity['userId'];
 				$state['userName'] = $activity['userName'];
 				$state['timestamp'] = $activity['timestamp'];
+				$state['message'] = $activity['message'];
 			}
 		}
 		return new DataResponse($state);
@@ -74,11 +75,12 @@ class ApprovalController extends OCSController {
 	 * Approve a file
 	 *
 	 * @param int $fileId
+	 * @param string|null $message
 	 * @return DataResponse
 	 */
 	#[NoAdminRequired]
-	public function approve(int $fileId): DataResponse {
-		$this->approvalService->approve($fileId, $this->userId);
+	public function approve(int $fileId, ?string $message = ''): DataResponse {
+		$this->approvalService->approve($fileId, $this->userId, $message);
 		return new DataResponse(1);
 	}
 
@@ -86,11 +88,12 @@ class ApprovalController extends OCSController {
 	 * Reject a file
 	 *
 	 * @param int $fileId
+	 * @param string|null $message
 	 * @return DataResponse
 	 */
 	#[NoAdminRequired]
-	public function reject(int $fileId): DataResponse {
-		$this->approvalService->reject($fileId, $this->userId);
+	public function reject(int $fileId, ?string $message = ''): DataResponse {
+		$this->approvalService->reject($fileId, $this->userId, $message);
 		return new DataResponse(1);
 	}
 

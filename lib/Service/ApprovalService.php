@@ -339,9 +339,10 @@ class ApprovalService {
 	 *
 	 * @param int $fileId
 	 * @param string|null $userId
+	 * @param string $message
 	 * @return bool success
 	 */
-	public function approve(int $fileId, ?string $userId): bool {
+	public function approve(int $fileId, ?string $userId, string $message = ''): bool {
 		$fileState = $this->getApprovalState($fileId, $userId);
 		// if file has pending tag and user is authorized to approve it
 		if ($fileState['state'] === Application::STATE_APPROVABLE) {
@@ -354,7 +355,7 @@ class ApprovalService {
 						$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $rule['tagPending']);
 
 						// store activity in our tables
-						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_APPROVED);
+						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_APPROVED, $message);
 
 						$this->sendApprovalNotification($fileId, $userId, true);
 						$this->activityManager->triggerEvent(
@@ -376,9 +377,10 @@ class ApprovalService {
 	 *
 	 * @param int $fileId
 	 * @param string|null $userId
+	 * @param string $message
 	 * @return bool success
 	 */
-	public function reject(int $fileId, ?string $userId): bool {
+	public function reject(int $fileId, ?string $userId, string $message = ''): bool {
 		$fileState = $this->getApprovalState($fileId, $userId);
 		// if file has pending tag and user is authorized to approve it
 		if ($fileState['state'] === Application::STATE_APPROVABLE) {
@@ -391,7 +393,7 @@ class ApprovalService {
 						$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $rule['tagPending']);
 
 						// store activity in our tables
-						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_REJECTED);
+						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_REJECTED, $message);
 
 						$this->sendApprovalNotification($fileId, $userId, false);
 						$this->activityManager->triggerEvent(

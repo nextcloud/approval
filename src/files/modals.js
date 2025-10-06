@@ -38,11 +38,11 @@ export function createInfoModal() {
 		onClose: () => {
 			console.debug('[Approval] modal closed')
 		},
-		onApprove: (node) => {
-			approve(node.fileid, node.basename, node)
+		onApprove: (node, message) => {
+			approve(node.fileid, node.basename, node, true, message)
 		},
-		onReject: (node) => {
-			reject(node.fileid, node.basename, node)
+		onReject: (node, message) => {
+			reject(node.fileid, node.basename, node, true, message)
 		},
 		onRequest: (node) => {
 			onRequestFileAction(node)
