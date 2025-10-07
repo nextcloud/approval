@@ -91,7 +91,6 @@
     "by {name} at {date}" : "من قِبَل {name} عند {date}",
     "at {date}" : "في {date}",
     "Waiting for authorized users to approve this file" : "في انتظار المستخدِمين المخولين للموافقة على هذا الملف",
-    "Pending approval, you are authorized to approve" : "في انتظار الموافقة؛ و أنت مُخوَّل بالموافقة",
     "This element was approved" : "هذا العنصر تمّت الموافقة على",
     "This element was rejected" : "هذا العنصر تمّ رفضه",
     "Pending approval" : "في انتظار الموافقة",

@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "le {name} ag {date}",
     "at {date}" : "ag {date}",
     "Waiting for authorized users to approve this file" : "Ag fanacht le húsáideoirí údaraithe an comhad seo a cheadú",
-    "Pending approval, you are authorized to approve" : "Ar feitheamh ceadaithe, tá tú údaraithe a cheadú",
     "This element was approved" : "Ceadaíodh an eilimint seo",
     "This element was rejected" : "Diúltaíodh don eilimint seo",
     "Pending approval" : "Le ceadú",

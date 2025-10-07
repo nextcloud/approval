@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "tőle: {name}, ekkor: {date}",
     "at {date}" : "ekkor: {date}",
     "Waiting for authorized users to approve this file" : "Várakozás az engedélyezett felhasználókra a fájl jóváhagyását illetően",
-    "Pending approval, you are authorized to approve" : "Függőben lévő jóváhagyás, Ön jogosult a jóváhagyásra",
     "This element was approved" : "Az elem jóvá lett hagyva",
     "This element was rejected" : "Az elem el lett utasítva",
     "Pending approval" : "Függő jóváhagyás",

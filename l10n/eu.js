@@ -93,7 +93,6 @@ OC.L10N.register(
     "by {name} at {date}" : "{name}(e)k {date} egunean",
     "at {date}" : "{date} egunean",
     "Waiting for authorized users to approve this file" : "Baimendutako erabiltzaileek fitxategi hau onartzeko zain",
-    "Pending approval, you are authorized to approve" : "Ebazteke dagoen onarpena, onartzeko baimena daukazu",
     "This element was approved" : "Elementu hau onartu da",
     "This element was rejected" : "Elementu hau baztertu da",
     "Pending approval" : "Onarpenaren zain",

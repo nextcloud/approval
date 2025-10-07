@@ -91,7 +91,6 @@
     "by {name} at {date}" : "per {name} a {date}",
     "at {date}" : "a {date}",
     "Waiting for authorized users to approve this file" : "S'està esperant que usuaris autoritzats aprovin aquest fitxer",
-    "Pending approval, you are authorized to approve" : "Pendent d'aprovació, esteu autoritzat a aprovar-lo",
     "This element was approved" : "Aquest element ha estat aprovat",
     "This element was rejected" : "Aquest element va ser rebutjat",
     "Pending approval" : "Pendent d'aprovació",

@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "na {name} katika {date}",
     "at {date}" : "katika {date}",
     "Waiting for authorized users to approve this file" : "Inasubiri watumiaji walioidhinishwa kuidhinisha faili hii",
-    "Pending approval, you are authorized to approve" : "Inasubiri idhini, umeidhinishwa kuidhinisha",
     "This element was approved" : "Kipengele hiki kiliidhinishwa",
     "This element was rejected" : "Kipengele hiki kilikataliwa",
     "Pending approval" : "Idhini inayosubiri",

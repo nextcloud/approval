@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "由 {name} 於 {date}",
     "at {date}" : "於 {date}",
     "Waiting for authorized users to approve this file" : "等待授權的使用者批准此檔案",
-    "Pending approval, you are authorized to approve" : "擱置中的批准，您有權批准",
     "This element was approved" : "此元素已批准",
     "This element was rejected" : "此元素已回絕",
     "Pending approval" : "等待批准",

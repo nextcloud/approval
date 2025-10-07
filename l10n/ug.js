@@ -93,7 +93,6 @@ OC.L10N.register(
     "by {name} at {date}" : "by {name} at {date}",
     "at {date}" : "at {date}",
     "Waiting for authorized users to approve this file" : "ھوقۇق بېرىلگەن ئىشلەتكۈچىلەرنىڭ بۇ ھۆججەتنى تەستىقلىشىنى ساقلاش",
-    "Pending approval, you are authorized to approve" : "تەستىقلىنىش ئالدىدا ، تەستىقلاشقا ھوقۇقلۇق",
     "This element was approved" : "بۇ ئېلېمېنت تەستىقلاندى",
     "This element was rejected" : "بۇ ئېلېمېنت رەت قىلىندى",
     "Pending approval" : "تەستىقلىنىۋاتىدۇ",

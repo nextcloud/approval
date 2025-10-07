@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "{name} дана {date}",
     "at {date}" : "дана {date}",
     "Waiting for authorized users to approve this file" : "Чека се да овлашћени корисници одобре овај фајл",
-    "Pending approval, you are authorized to approve" : "Одобрење на чекању, имате право да одобрите",
     "This element was approved" : "Овај елемент је одобрен",
     "This element was rejected" : "Овај елемент је одбијен",
     "Pending approval" : "Чека на одобрење",

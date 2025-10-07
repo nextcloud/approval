@@ -99,7 +99,6 @@
     "by {name} at {date}" : "por {name} em {date}",
     "at {date}" : "em {date}",
     "Waiting for authorized users to approve this file" : "Aguardando que usuários autorizados aprovem esse arquivo",
-    "Pending approval, you are authorized to approve" : "Aprovação pendente, você está autorizado a aprovar",
     "This element was approved" : "Este elemento foi aprovado",
     "This element was rejected" : "Este elemento foi rejeitado",
     "Pending approval" : "Aprovação pendente",

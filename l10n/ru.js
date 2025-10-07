@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "кем: {name}, когда: {date}",
     "at {date}" : "когда: {date}",
     "Waiting for authorized users to approve this file" : "Ожидание одобрения этого файла авторизованными пользователями",
-    "Pending approval, you are authorized to approve" : "Ожидание одобрения, вы имеете право одобрить",
     "This element was approved" : "Этот элемент одобрен",
     "This element was rejected" : "Этот элемент отклонен",
     "Pending approval" : "Ожидает подтверждения",

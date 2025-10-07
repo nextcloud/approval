@@ -91,7 +91,6 @@
     "by {name} at {date}" : "{date}에 {name}에 의해 ",
     "at {date}" : "{date}에",
     "Waiting for authorized users to approve this file" : "권한을 보유한 사용자가 이 파일을 승인하기를 기다리는 중",
-    "Pending approval, you are authorized to approve" : "보류 중인 승인, 당신은 승인할 권한이 있습니다.",
     "This element was approved" : "이 요소는 승인되었습니다.",
     "This element was rejected" : "이 요소는 거부되었습니다.",
     "Pending approval" : "승인 대기중",

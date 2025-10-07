@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "przez {name} w {date}",
     "at {date}" : "w {date}",
     "Waiting for authorized users to approve this file" : "Oczekiwanie na zatwierdzenie tego pliku przez autoryzowanych użytkowników",
-    "Pending approval, you are authorized to approve" : "W oczekiwaniu na zatwierdzenie, masz prawo zatwierdzić",
     "This element was approved" : "Ten element został zatwierdzony",
     "This element was rejected" : "Ten element został odrzucony",
     "Pending approval" : "Oczekuje na zatwierdzenie",

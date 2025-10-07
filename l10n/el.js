@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "από τον {name} στις {date}",
     "at {date}" : "στις {date}",
     "Waiting for authorized users to approve this file" : "Αναμονή για εξουσιοδοτημένους χρήστες να εγκρίνουν αυτό το αρχείο",
-    "Pending approval, you are authorized to approve" : "Εκκρεμεί έγκριση, είστε εξουσιοδοτημένος να εγκρίνετε",
     "This element was approved" : "Αυτό το στοιχείο εγκρίθηκε",
     "This element was rejected" : "Αυτό το στοιχείο απορρίφθηκε",
     "Pending approval" : "Εκκρεμεί έγκριση",

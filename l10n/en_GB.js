@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "by {name} at {date}",
     "at {date}" : "at {date}",
     "Waiting for authorized users to approve this file" : "Waiting for authorized users to approve this file",
-    "Pending approval, you are authorized to approve" : "Pending approval, you are authorized to approve",
     "This element was approved" : "This element was approved",
     "This element was rejected" : "This element was rejected",
     "Pending approval" : "Pending approval",

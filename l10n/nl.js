@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "door {name}, op {date}",
     "at {date}" : "op {date}",
     "Waiting for authorized users to approve this file" : "Wacht op geautoriseerde gebruikers om dit bestand goed te keuren",
-    "Pending approval, you are authorized to approve" : "In afwachting van goedkeuring, jij mag goedkeuren.",
     "This element was approved" : "Dit element is goedgekeurd",
     "This element was rejected" : "Dit element was afgekeurd",
     "Pending approval" : "Wacht op goedkeuring",

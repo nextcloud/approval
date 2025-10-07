@@ -91,7 +91,6 @@
     "by {name} at {date}" : "od {name} v {date}",
     "at {date}" : "v {date}",
     "Waiting for authorized users to approve this file" : "Čaká sa na autorizovaných užívateľov aby schválili tento súbor",
-    "Pending approval, you are authorized to approve" : "Čaká na schválenie, ste autorizovaný schváliť",
     "This element was approved" : "Tento prvok bol schválený",
     "This element was rejected" : "Tento prvok nebol schválený",
     "Pending approval" : "Čaká na schválenie",

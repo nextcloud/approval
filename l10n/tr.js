@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "{name} tarafından {date} tarihinde",
     "at {date}" : "{date} tarihinde",
     "Waiting for authorized users to approve this file" : "Yetkili kullanıcıların bu dosyayı onaylaması bekleniyor",
-    "Pending approval, you are authorized to approve" : "Onay bekleniyor, onaylama yetkiniz var",
     "This element was approved" : "Bileşen onaylandı",
     "This element was rejected" : "Bileşen reddedildi",
     "Pending approval" : "Onay bekleyen",

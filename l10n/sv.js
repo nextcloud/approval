@@ -101,7 +101,6 @@ OC.L10N.register(
     "by {name} at {date}" : "av {name} den {date}",
     "at {date}" : "den {date}",
     "Waiting for authorized users to approve this file" : "Väntar på att behöriga användare ska godkänna den här filen",
-    "Pending approval, you are authorized to approve" : "Inväntar godkännande, du har behörighet att godkänna",
     "This element was approved" : "Detta element godkändes",
     "This element was rejected" : "Detta element avvisades",
     "Pending approval" : "Inväntar godkännande",
