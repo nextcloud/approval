@@ -8,6 +8,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.5.0 - 2025-10-08
+
+### Added
+
+- Allow for custom messages when approving or rejecting a file @lukasdotcom [#330](https://github.com/nextcloud/approval/pull/330)
+
+### Changed
+
+- Bump node dependencies @lukasdotcom [#332](https://github.com/nextcloud/approval/pull/332)
+
+### Fixed
+
+- Hide user status correctly in rules @lukasdotcom [#329](https://github.com/nextcloud/approval/pull/329)
+- File ownership @lukasdotcom [#334](https://github.com/nextcloud/approval/pull/334)
+
 ## 2.4.0 - 2025-08-18
 
 ### Added
