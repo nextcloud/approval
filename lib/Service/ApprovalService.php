@@ -422,6 +422,10 @@ class ApprovalService {
 	 * @throws \OC\User\NoUserException
 	 */
 	public function request(int $fileId, int $ruleId, ?string $userId, bool $createShares): array {
+		if (!$this->utilsService->userHasAccessTo($fileId, $userId)) {
+			return ['error' => $this->l10n->t('You do not have access to this file')];
+		}
+
 		$rule = $this->ruleService->getRule($ruleId);
 		if (is_null($rule)) {
 			return ['error' => $this->l10n->t('Rule does not exist')];
