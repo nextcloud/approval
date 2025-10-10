@@ -1,6 +1,7 @@
 OC.L10N.register(
     "approval",
     {
+    "You do not have access to this file" : "У вас няма доступу да гэтага файла",
     "Cancel" : "Скасаваць",
     "New tag name" : "Назва новага тэга",
     "Create" : "Стварыць",

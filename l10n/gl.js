@@ -23,6 +23,7 @@ OC.L10N.register(
     "Your approval was requested" : "Foi solicitada a súa aprobación",
     "%2$s requested your approval for %1$s" : "%2$s solicitou a súa aprobación para %1$s",
     "{user} requested your approval for {node}" : "{user} solicitou a súa aprobación para {node}",
+    "You do not have access to this file" : "Vde. non ten acceso a este ficheiro",
     "Rule does not exist" : "A regra non existe",
     "This element is not shared with any user who is authorized to approve it" : "Este elemento non se comparte con ningún usuario que estea autorizado para aprobalo",
     "Approval has already been requested with this rule for this file" : "Xa foi solicitada a aprobación con esta regra para este ficheiro",

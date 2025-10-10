@@ -23,6 +23,7 @@ OC.L10N.register(
     "Your approval was requested" : "Onayınız istendi",
     "%2$s requested your approval for %1$s" : "%2$s, %1$s için onayınızı istedi",
     "{user} requested your approval for {node}" : "{user}, {node} düğümü için onayınızı istedi",
+    "You do not have access to this file" : "Bu dosyaya erişme izniniz yok",
     "Rule does not exist" : "Kural bulunamadı",
     "This element is not shared with any user who is authorized to approve it" : "Bu bileşen, onu onaylama yetkisi olan herhangi bir kullanıcıyla paylaşılmaz",
     "Approval has already been requested with this rule for this file" : "Bu dosya için zaten bu kuralla onay istendi",
