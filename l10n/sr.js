@@ -23,6 +23,7 @@ OC.L10N.register(
     "Your approval was requested" : "Од вас се захтева одобрење",
     "%2$s requested your approval for %1$s" : "%2$s од вас захтева одобрење за %1$s",
     "{user} requested your approval for {node}" : "{user} је од вас захтевао одобрење за {node}",
+    "You do not have access to this file" : "Немате приступ овом фајлу",
     "Rule does not exist" : "Правило не постоји",
     "This element is not shared with any user who is authorized to approve it" : "Овај елемент се не дели ни са једним корисником који има право да га одобри",
     "Approval has already been requested with this rule for this file" : "За овај фајл је већ захтевано одобрење са овим правилом",

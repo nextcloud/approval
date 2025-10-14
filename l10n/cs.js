@@ -85,6 +85,7 @@ OC.L10N.register(
     "Rejected by you" : "Odmítnuto vámi",
     "Approval requested by {user}" : "O schválení požádal/a {user}",
     "Approval requested by you" : "O schválení jste požádali vy",
+    "Reason (optional)" : "Důvod (volitelné)",
     "Request approval" : "Požádat o schválení",
     "There is no approval workflow allowing you to request approval." : "Neexistuje žádný pracovní postup schvalování, který by vám umožnil zažádat o schválení.",
     "Approval information" : "Informace o schválení",
