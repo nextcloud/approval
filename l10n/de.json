@@ -103,7 +103,7 @@
     "by {name} at {date}" : "von {name} am {date}",
     "at {date}" : "am {date}",
     "Waiting for authorized users to approve this file" : "Warte auf die Genehmigung dieser Datei durch einen berechtigten Benutzer",
-    "Pending approval, click to approve/reject" : "Überprüfung steht aus, klicken um zu genehmigen/abzulehnen",
+    "Pending approval, click to approve/reject" : "Genehmigung steht aus, klicken um zu genehmigen/abzulehnen",
     "This element was approved" : "Dieses Element wurde genehmigt.",
     "This element was rejected" : "Dieses Element wurde zurückgewiesen",
     "Pending approval" : "Ausstehende Genehmigung",
