@@ -23,6 +23,7 @@ OC.L10N.register(
     "Your approval was requested" : "Idhini yako iliombwa",
     "%2$s requested your approval for %1$s" : "%2$s aliomba idhini yako kwa %1$s",
     "{user} requested your approval for {node}" : "{user} aliomba idhini yako kwa {node}",
+    "You do not have access to this file" : "Huna idhini ya kufikia faili hii",
     "Rule does not exist" : "Kanuni haipo",
     "This element is not shared with any user who is authorized to approve it" : "Kipengele hiki hakishirikiwi na mtumiaji yeyote ambaye ameidhinishwa kukiidhinisha",
     "Approval has already been requested with this rule for this file" : "Uidhinishaji tayari umeombwa na sheria hii kwa faili hii",
