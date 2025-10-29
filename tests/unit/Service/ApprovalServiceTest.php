@@ -14,14 +14,12 @@ use OCA\Approval\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\Files\IRootFolder;
 use OCP\ICacheFactory;
-use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IUserManager;
 use OCP\Notification\IManager as INotificationManager;
 
-use OCP\Security\ICrypto;
 use OCP\Share\IManager as IShareManager;
 
 use OCP\SystemTag\ISystemTagManager;
@@ -107,9 +105,7 @@ class ApprovalServiceTest extends TestCase {
 			$c->get(IUserManager::class),
 			$c->get(IShareManager::class),
 			$c->get(IRootFolder::class),
-			$c->get(ISystemTagManager::class),
-			$c->get(IConfig::class),
-			$c->get(ICrypto::class)
+			$c->get(ISystemTagManager::class)
 		);
 		$this->ruleService = new RuleService(
 			'approval',

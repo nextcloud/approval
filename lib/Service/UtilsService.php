@@ -9,17 +9,14 @@ namespace OCA\Approval\Service;
 
 use Exception;
 use OC;
-use OCA\Approval\AppInfo\Application;
 use OCA\Circles\CirclesManager;
 use OCA\Circles\Exceptions\CircleNotFoundException;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
-use OCP\IConfig;
 
 use OCP\IUser;
 use OCP\IUserManager;
-use OCP\Security\ICrypto;
 use OCP\Share\IManager as IShareManager;
 use OCP\Share\IShare;
 use OCP\SystemTag\ISystemTagManager;
@@ -37,38 +34,7 @@ class UtilsService {
 		private IShareManager $shareManager,
 		private IRootFolder $root,
 		private ISystemTagManager $tagManager,
-		private IConfig $config,
-		private ICrypto $crypto,
 	) {
-	}
-
-	/**
-	 * Get decrypted app value
-	 *
-	 * @return string
-	 * @throws Exception
-	 */
-	public function getEncryptedAppValue(string $key): string {
-		$storedValue = $this->config->getAppValue(Application::APP_ID, $key);
-		if ($storedValue === '') {
-			return '';
-		}
-		return $this->crypto->decrypt($storedValue);
-	}
-
-	/**
-	 * Store encrypted client secret
-	 *
-	 * @param string $value
-	 * @return void
-	 */
-	public function setEncryptedAppValue(string $key, string $value): void {
-		if ($value === '') {
-			$this->config->setAppValue(Application::APP_ID, $key, '');
-		} else {
-			$encryptedClientSecret = $this->crypto->encrypt($value);
-			$this->config->setAppValue(Application::APP_ID, $key, $encryptedClientSecret);
-		}
 	}
 
 	/**
