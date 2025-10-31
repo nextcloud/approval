@@ -280,54 +280,49 @@ class ApprovalService {
 
 		$rules = $this->ruleService->getRules();
 
+		// Get all tags a file has to prevent needing to check for each tag in every rule
+		$tags = $this->tagObjectMapper->getTagIdsForObjects([$fileId], 'files');
+		if (!array_key_exists($fileId, $tags)) {
+			return ['state' => Application::STATE_NOTHING];
+		}
+		$tags = $tags[$fileId];
+
 		// first check if it's approvable
 		foreach ($rules as $id => $rule) {
-			try {
-				if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagPending'])
-					&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
-					return [
-						'state' => Application::STATE_APPROVABLE,
-						'rule' => $rule,
-					];
-				}
-			} catch (TagNotFoundException $e) {
+			if (in_array($rule['tagPending'], $tags)
+				&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
+				return [
+					'state' => Application::STATE_APPROVABLE,
+					'rule' => $rule,
+				];
 			}
 		}
 
 		// then check pending in priority
 		foreach ($rules as $id => $rule) {
-			try {
-				if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagPending'])) {
-					return [
-						'state' => Application::STATE_PENDING,
-						'rule' => $rule,
-					];
-				}
-			} catch (TagNotFoundException $e) {
+			if (in_array($rule['tagPending'], $tags)) {
+				return [
+					'state' => Application::STATE_PENDING,
+					'rule' => $rule,
+				];
 			}
 		}
 		// then rejected
 		foreach ($rules as $id => $rule) {
-			try {
-				if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagRejected'])) {
-					return [
-						'state' => Application::STATE_REJECTED,
-						'rule' => $rule,
-					];
-				}
-			} catch (TagNotFoundException $e) {
+			if (in_array($rule['tagRejected'], $tags)) {
+				return [
+					'state' => Application::STATE_REJECTED,
+					'rule' => $rule,
+				];
 			}
 		}
 		// then approved
 		foreach ($rules as $id => $rule) {
-			try {
-				if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagApproved'])) {
-					return [
-						'state' => Application::STATE_APPROVED,
-						'rule' => $rule,
-					];
-				}
-			} catch (TagNotFoundException $e) {
+			if (in_array($rule['tagApproved'], $tags)) {
+				return [
+					'state' => Application::STATE_APPROVED,
+					'rule' => $rule,
+				];
 			}
 		}
 
