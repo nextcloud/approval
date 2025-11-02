@@ -76,7 +76,7 @@ OC.L10N.register(
     "Approved" : "已批准",
     "Rejected" : "已拒绝",
     "Approval requested" : "请求审批",
-    "you" : "你",
+    "you" : "您",
     "The related approval workflow is: {ruleDescription}" : "相关的审批流程为：{ruleDescription}",
     "This user requested your approval" : "此用户请求你的批准",
     "Your approval was requested." : "你的批准被请求",
