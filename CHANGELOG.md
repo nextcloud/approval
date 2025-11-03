@@ -8,6 +8,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.6.0 - 2025-11-03
+
+### Added
+
+- Support for nextcloud 33 and migrate away from IConfig @lukasdotcom [#338](https://github.com/nextcloud/approval/pull/338)
+
+### Fixed
+
+- Improve performance of getApprovalState when there are a lot of rules @lukasdotcom [#340](https://github.com/nextcloud/approval/pull/340)
+- Store approval and rejection message before changing state of tags @lukasdotcom [#341](https://github.com/nextcloud/approval/pull/341)
+
 ## 2.5.0 - 2025-10-08
 
 ### Added
