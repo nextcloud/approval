@@ -351,11 +351,11 @@ class ApprovalService {
 				try {
 					if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagPending'])
 						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
-						$this->tagObjectMapper->assignTags((string)$fileId, 'files', $rule['tagApproved']);
-						$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $rule['tagPending']);
-
 						// store activity in our tables
 						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_APPROVED, $message);
+						// Change tags
+						$this->tagObjectMapper->assignTags((string)$fileId, 'files', $rule['tagApproved']);
+						$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $rule['tagPending']);
 
 						$this->sendApprovalNotification($fileId, $userId, true);
 						$this->activityManager->triggerEvent(
@@ -389,11 +389,12 @@ class ApprovalService {
 				try {
 					if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagPending'])
 						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
-						$this->tagObjectMapper->assignTags((string)$fileId, 'files', $rule['tagRejected']);
-						$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $rule['tagPending']);
-
 						// store activity in our tables
 						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_REJECTED, $message);
+
+						// Change tags
+						$this->tagObjectMapper->assignTags((string)$fileId, 'files', $rule['tagRejected']);
+						$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $rule['tagPending']);
 
 						$this->sendApprovalNotification($fileId, $userId, false);
 						$this->activityManager->triggerEvent(
