@@ -63,7 +63,7 @@ class ApprovalProvider implements IProvider {
 
 		$subjectIdentifier = $event->getSubject();
 		$subjectParams = $event->getSubjectParameters();
-		$ownActivity = ($event->getAuthor() === $this->userId);
+		$ownActivity = ($event->getAuthor() === $event->getAffectedUser());
 
 		$params = [];
 
@@ -74,7 +74,7 @@ class ApprovalProvider implements IProvider {
 			$params = [
 				'user' => [
 					'type' => 'user',
-					'id' => 0,
+					'id' => '0',
 					'name' => $subjectParams['author']
 				],
 			];
@@ -101,7 +101,7 @@ class ApprovalProvider implements IProvider {
 				$event->setObject($event->getObjectType(), $event->getObjectId(), $subjectParams['node']['name']);
 			}
 			// get file path for current user
-			$userFolder = $this->root->getUserFolder($this->userId);
+			$userFolder = $this->root->getUserFolder($event->getAffectedUser());
 			$found = $userFolder->getById($event->getObjectId());
 			if (count($found) === 0) {
 				// this avoids the event if user does not have access anymore
