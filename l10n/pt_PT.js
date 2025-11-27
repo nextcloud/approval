@@ -2,6 +2,9 @@ OC.L10N.register(
     "approval",
     {
     "Cancel" : "Cancelar",
+    "All tags must be different" : "Todas as etiquetas devem ser diferentes",
+    "To be considered approved, a file/directory having multiple pending tags assigned must be approved by all the workflows involved." : "Para ser considerado aprovado, um ficheiro/diretório que tem várias etiquetas pendentes precisam ser aprovados por todos os fluxos de trabalho envolvidos",
+    "All tags must be different in a workflow. A pending tag can only be used in one workflow." : "Num fluxo de trabalho, todas as etiquetas devem ser diferentes. Uma etiqueta \"pendente\" só pode ser utilizada num fluxo de trabalho.",
     "Create" : "Criar",
     "Approve" : "Aprovar",
     "Reject" : "Rejeitar",
