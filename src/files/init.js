@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import { registerFileAction, registerDavProperty } from '@nextcloud/files'
+import { registerFileAction } from '@nextcloud/files'
+import { registerDavProperty } from '@nextcloud/files/dav'
 
 import { inlineAction } from './actions/inlineAction.js'
 import { requestAction } from './actions/requestAction.js'

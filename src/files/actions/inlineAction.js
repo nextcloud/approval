@@ -12,7 +12,7 @@ import { openApprovalInfoModal, updateNodeApprovalState } from '../helpers.js'
 
 export const inlineAction = new FileAction({
 	id: 'approval-inline',
-	title: (nodes) => {
+	title: ({ nodes }) => {
 		if (nodes.length !== 1) {
 			return ''
 		}
@@ -26,7 +26,7 @@ export const inlineAction = new FileAction({
 					? t('approval', 'This element was approved')
 					: t('approval', 'This element was rejected')
 	},
-	displayName: (nodes) => {
+	displayName: ({ nodes }) => {
 		if (nodes.length !== 1) {
 			return ''
 		}
@@ -42,13 +42,14 @@ export const inlineAction = new FileAction({
 					: t('approval', 'Rejected')
 	},
 	inline: () => true,
-	exec: async (node) => {
+	exec: async ({ nodes }) => {
+		const node = nodes[0]
 		await updateNodeApprovalState(node)
 		await openApprovalInfoModal(node)
 		return null
 	},
 	order: -10,
-	iconSvgInline(nodes) {
+	iconSvgInline({ nodes }) {
 		const node = nodes[0]
 
 		const state = node.attributes['approval-state']
@@ -58,7 +59,7 @@ export const inlineAction = new FileAction({
 				? ApprovedIconSvg
 				: RejectedIconSvg
 	},
-	enabled(nodes) {
+	enabled({ nodes }) {
 		// Only works on single node
 		if (nodes.length !== 1) {
 			return false

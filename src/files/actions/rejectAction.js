@@ -10,10 +10,10 @@ import { reject } from '../helpers.js'
 
 export const rejectAction = new FileAction({
 	id: 'approval-reject',
-	displayName: (nodes) => {
+	displayName: ({ nodes }) => {
 		return t('approval', 'Reject')
 	},
-	enabled(nodes, view) {
+	enabled({ nodes, view }) {
 		return !OCA.Approval.actionIgnoreLists.includes(view.id)
 			&& !nodes.some(({ permissions }) => (permissions & Permission.READ) === 0)
 			&& nodes.some(node => node.attributes['approval-state'] === states.APPROVABLE)
@@ -23,7 +23,8 @@ export const rejectAction = new FileAction({
 	},
 	iconSvgInline: () => CloseCircleSvgIcon,
 	order: 0,
-	async exec(node) {
+	async exec({ nodes }) {
+		const node = nodes[0]
 		try {
 			await reject(node.fileid, node.basename, node)
 		} catch (error) {
@@ -31,7 +32,7 @@ export const rejectAction = new FileAction({
 		}
 		return null
 	},
-	async execBatch(nodes) {
+	async execBatch({ nodes }) {
 		const promises = nodes
 			.filter(node => node.attributes['approval-state'] === states.APPROVABLE)
 			.map(node => reject(node.fileid, node.basename, node, false))

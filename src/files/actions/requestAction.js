@@ -12,7 +12,7 @@ export const requestAction = new FileAction({
 	displayName: (nodes) => {
 		return t('approval', 'Request approval')
 	},
-	enabled(nodes, view) {
+	enabled({ nodes, view }) {
 		if (nodes.length !== 1) {
 			return false
 		}
@@ -24,8 +24,8 @@ export const requestAction = new FileAction({
 	},
 	iconSvgInline: () => CheckSvgIcon,
 	order: 1,
-	async exec(node) {
-		await onRequestFileAction(node)
+	async exec({ nodes }) {
+		await onRequestFileAction(nodes[0])
 		return null
 	},
 })
