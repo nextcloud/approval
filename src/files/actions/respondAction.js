@@ -10,10 +10,10 @@ import { openApprovalInfoModal, updateNodeApprovalState } from '../helpers.js'
 
 export const respondAction = new FileAction({
 	id: 'approval-respond',
-	displayName: (nodes) => {
+	displayName: ({ nodes }) => {
 		return t('approval', 'Approve or Reject')
 	},
-	enabled(nodes, view) {
+	enabled({ nodes, view }) {
 		return !OCA.Approval.actionIgnoreLists.includes(view.id)
 			&& !nodes.some(({ permissions }) => (permissions & Permission.READ) === 0)
 			&& nodes.some(node => node.attributes['approval-state'] === states.APPROVABLE)
@@ -23,7 +23,8 @@ export const respondAction = new FileAction({
 	},
 	iconSvgInline: () => PendingIconSvg,
 	order: 0,
-	async exec(node) {
+	async exec({ nodes }) {
+		const node = nodes[0]
 		try {
 			await updateNodeApprovalState(node)
 			await openApprovalInfoModal(node)
