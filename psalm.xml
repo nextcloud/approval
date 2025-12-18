@@ -67,5 +67,6 @@
 	<stubs>
 		<file name="tests/stubs/oc_hooks_emitter.php" />
 		<file name="tests/stubs/sabre_dav_serverplugin.php" />
+		<file name="tests/stubs/oca_dav_events_sabrepluginaddevent.php" />
 	</stubs>
 </psalm>

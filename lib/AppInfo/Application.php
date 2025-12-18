@@ -15,6 +15,7 @@ use OCA\Approval\Listener\UpdateFilesListener;
 use OCA\Approval\Notification\Notifier;
 use OCA\Approval\Service\ApprovalService;
 
+use OCA\DAV\Events\SabrePluginAddEvent;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCA\Files\Event\LoadSidebar;
 use OCP\AppFramework\App;
@@ -24,8 +25,8 @@ use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\EventDispatcher\IEventDispatcher;
 
 use OCP\FilesMetadata\Event\MetadataBackgroundEvent;
-use OCP\SabrePluginEvent;
-use OCP\SystemTag\MapperEvent;
+use OCP\SystemTag\TagAssignedEvent;
+use Override;
 
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'approval';
@@ -51,15 +52,19 @@ class Application extends App implements IBootstrap {
 		$eventDispatcher = $container->get(IEventDispatcher::class);
 
 		// listen to tag assignments
-		$eventDispatcher->addListener(MapperEvent::EVENT_ASSIGN, function (MapperEvent $event) use ($container) {
+		$eventDispatcher->addListener(TagAssignedEvent::class, function (TagAssignedEvent $event) use ($container) {
 			if ($event->getObjectType() === 'files') {
 				/** @var ApprovalService $service */
 				$service = $container->get(ApprovalService::class);
-				$service->handleTagAssignmentEvent((int)$event->getObjectId(), $event->getTags());
+				foreach ($event->getObjectIds() as $objectId) {
+					$service->handleTagAssignmentEvent((int)$objectId, $event->getTags());
+				}
 			}
 		});
 	}
 
+
+	#[Override]
 	public function register(IRegistrationContext $context): void {
 		$context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalScriptsListener::class);
 		$context->registerEventListener(LoadSidebar::class, LoadSidebarScripts::class);
@@ -68,20 +73,18 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(MetadataBackgroundEvent::class, UpdateFilesListener::class);
 	}
 
+	#[Override]
 	public function boot(IBootContext $context): void {
 		// $context->injectFn(Closure::fromCallable([$this, 'registerHooks']));
 
 		$eventDispatcher = $context->getServerContainer()->get(IEventDispatcher::class);
-		$eventDispatcher->addListener('OCA\DAV\Connector\Sabre::addPlugin', function (SabrePluginEvent $event) use ($context) {
+		$eventDispatcher->addListener(SabrePluginAddEvent::class, function (SabrePluginAddEvent $event) use ($context): void {
 			$eventServer = $event->getServer();
-
-			if ($eventServer !== null) {
-				// We have to register the ApprovalPlugin here and not info.xml,
-				// because info.xml plugins are loaded, after the
-				// beforeMethod:* hook has already been emitted.
-				$plugin = $context->getAppContainer()->get(ApprovalPlugin::class);
-				$eventServer->addPlugin($plugin);
-			}
+			// We have to register the ApprovalPlugin here and not info.xml,
+			// because info.xml plugins are loaded, after the
+			// beforeMethod:* hook has already been emitted.
+			$plugin = $context->getAppContainer()->get(ApprovalPlugin::class);
+			$eventServer->addPlugin($plugin);
 		});
 	}
 }
