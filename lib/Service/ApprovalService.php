@@ -665,7 +665,7 @@ class ApprovalService {
 	 * Called when a tag is assigned
 	 *
 	 * @param int $fileId
-	 * @param array $tags
+	 * @param list<int> $tags
 	 * @return void
 	 */
 	public function handleTagAssignmentEvent(int $fileId, array $tags): void {
