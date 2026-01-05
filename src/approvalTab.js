@@ -28,8 +28,6 @@ registerSidebarTab({
 			return false
 		}
 		*/
-		// setup tab
-		setupTab()
 		return true
 	},
 	tagName,
@@ -48,3 +46,6 @@ function setupTab() {
 		shadowRoot: false,
 	}))
 }
+document.addEventListener('DOMContentLoaded', () => {
+	setupTab()
+})
