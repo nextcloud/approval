@@ -43,7 +43,6 @@ export default {
 	data() {
 		return {
 			show: true,
-			t,
 		}
 	},
 
@@ -57,6 +56,7 @@ export default {
 	},
 
 	methods: {
+		t,
 		closeModal() {
 			this.show = false
 			this.$emit('close')

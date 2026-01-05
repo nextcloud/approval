@@ -93,7 +93,6 @@ export default {
 			createShares: false,
 			createShareHint: t('approval', 'File will be automatically shared with everybody allowed to approve.'),
 			approversLabel: t('approval', 'Can be approved by'),
-			t,
 		}
 	},
 
@@ -110,6 +109,7 @@ export default {
 	},
 
 	methods: {
+		t,
 		getAvatarImageClass(entity) {
 			if (entity.type === 'group') {
 				return 'icon-group'

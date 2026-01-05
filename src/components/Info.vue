@@ -155,7 +155,6 @@ export default {
 
 	data() {
 		return {
-			t,
 			you: t('approval', 'you'),
 			newMessage: '',
 		}
@@ -249,6 +248,7 @@ export default {
 	mounted() {},
 
 	methods: {
+		t,
 		onApprove() {
 			this.$emit('approve', this.newMessage)
 		},
