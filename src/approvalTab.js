@@ -4,47 +4,47 @@
  */
 
 import ApprovalSvgIcon from '../img/app-no-color.svg?raw'
-import { createApp } from 'vue'
-import { translate as t, translatePlural as n } from '@nextcloud/l10n'
-import ApprovalTab from './views/ApprovalTab.vue'
+import { defineAsyncComponent, defineCustomElement } from 'vue'
+import {
+	// FileType,
+	registerSidebarTab,
+} from '@nextcloud/files'
+import { isPublicShare } from '@nextcloud/sharing/public'
 
-// Init approval tab component
-let tabView = null
-let tabApp = null
-const approvalTab = new OCA.Files.Sidebar.Tab({
+const tagName = 'approval_sidebar-tab'
+const ApprovalTab = defineAsyncComponent(() => import('./views/ApprovalTab.vue'))
+
+registerSidebarTab({
 	id: 'approval',
-	name: t('approval', 'Approval'),
-	iconSvg: ApprovalSvgIcon,
-
-	async mount(el, fileInfo, context) {
-		if (tabApp !== null) {
-			tabApp.unmount()
+	order: 90,
+	displayName: t('approval', 'Approval'),
+	iconSvgInline: ApprovalSvgIcon,
+	enabled({ node }) {
+		if (isPublicShare()) {
+			return false
 		}
-		tabApp = createApp(ApprovalTab)
-		tabApp.mixin({ methods: { t, n } })
-
-		tabView = tabApp.mount(el)
-		// Only mount after we have all the info we need
-		await tabView.update(fileInfo)
-	},
-
-	update(fileInfo) {
-		if (tabView && typeof tabView.update === 'function') {
-			tabView.update(fileInfo)
+		/*
+		if (node.type !== FileType.File) {
+			return false
 		}
+		*/
+		// setup tab
+		setupTab()
+		return true
 	},
-
-	destroy() {
-		if (tabApp) {
-			tabApp.unmount()
-			tabView = null
-			tabApp = null
-		}
-	},
+	tagName,
 })
 
-window.addEventListener('DOMContentLoaded', () => {
-	if (OCA.Files && OCA.Files.Sidebar) {
-		OCA.Files.Sidebar.registerTab(approvalTab)
+/**
+ * Setup the custom element for the Approval sidebar tab.
+ */
+function setupTab() {
+	if (window.customElements.get(tagName)) {
+		// already defined
+		return
 	}
-})
+
+	window.customElements.define(tagName, defineCustomElement(ApprovalTab, {
+		shadowRoot: false,
+	}))
+}

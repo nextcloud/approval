@@ -83,6 +83,7 @@ import { states } from '../states.js'
 
 import { getCurrentUser } from '@nextcloud/auth'
 import moment from '@nextcloud/moment'
+import { t } from '@nextcloud/l10n'
 
 export default {
 	name: 'Info',
@@ -154,6 +155,7 @@ export default {
 
 	data() {
 		return {
+			t,
 			you: t('approval', 'you'),
 			newMessage: '',
 		}

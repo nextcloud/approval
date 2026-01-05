@@ -64,6 +64,8 @@ import CheckIcon from 'vue-material-design-icons/Check.vue'
 import NcUserBubble from '@nextcloud/vue/components/NcUserBubble'
 import NcButton from '@nextcloud/vue/components/NcButton'
 
+import { t } from '@nextcloud/l10n'
+
 export default {
 	name: 'RequestForm',
 
@@ -91,6 +93,7 @@ export default {
 			createShares: false,
 			createShareHint: t('approval', 'File will be automatically shared with everybody allowed to approve.'),
 			approversLabel: t('approval', 'Can be approved by'),
+			t,
 		}
 	},
 

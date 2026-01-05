@@ -21,6 +21,8 @@ import NcModal from '@nextcloud/vue/components/NcModal'
 
 import RequestForm from './RequestForm.vue'
 
+import { t } from '@nextcloud/l10n'
+
 export default {
 	name: 'RequestModal',
 
@@ -41,6 +43,7 @@ export default {
 	data() {
 		return {
 			show: true,
+			t,
 		}
 	},
 

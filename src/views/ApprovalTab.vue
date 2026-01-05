@@ -41,11 +41,22 @@ export default {
 	},
 
 	props: {
+		node: {
+			type: Object,
+			required: true,
+		},
+		folder: {
+			type: Object,
+			required: true,
+		},
+		view: {
+			type: Object,
+			required: true,
+		},
 	},
 
 	data() {
 		return {
-			fileInfo: null,
 			state: null,
 			timestamp: null,
 			userName: null,
@@ -58,23 +69,32 @@ export default {
 	},
 
 	computed: {
+		fileId() {
+			return this.node.fileid
+		},
+		fileName() {
+			return this.node.basename
+		},
 	},
 
 	watch: {
+		node() {
+			this.update()
+		},
 	},
 
 	beforeMount() {
 	},
 
 	mounted() {
+		this.update()
 	},
 
 	methods: {
-		update(fileInfo) {
-			console.debug('[Approval] sidebar tab update', fileInfo)
-			this.fileInfo = fileInfo
+		update() {
+			console.debug('[Approval] sidebar tab update', this.fileId, this.fileName)
 			this.state = null
-			getApprovalState(fileInfo.id).then(response => {
+			getApprovalState(this.fileId).then(response => {
 				this.state = response.data.ocs.data.state
 				this.timestamp = response.data.ocs.data.timestamp
 				this.message = response.data.ocs.data.message
@@ -84,31 +104,27 @@ export default {
 			}).catch(error => {
 				console.error(error)
 			})
-			this.updateUserRules(fileInfo.id)
+			this.updateUserRules()
 		},
-		updateUserRules(fileId) {
-			getUserRequesterRules(fileId).then(response => {
+		updateUserRules() {
+			getUserRequesterRules(this.fileId).then(response => {
 				this.userRules = response.data.ocs.data
 			})
 		},
 		async onApprove(message) {
 			this.state = null
-			const fileId = this.fileInfo.id
-			const fileName = this.fileInfo.name
-			await approve(fileId, fileName, null, true, message)
-			this.update(this.fileInfo)
+			await approve(this.fileId, this.fileName, null, true, message)
+			this.update()
 		},
 		async onReject(message) {
 			this.state = null
-			const fileId = this.fileInfo.id
-			const fileName = this.fileInfo.name
-			await reject(fileId, fileName, null, true, message)
-			this.update(this.fileInfo)
+			await reject(this.fileId, this.fileName, null, true, message)
+			this.update()
 		},
 		async onRequestSubmit(ruleId, createShares) {
 			this.showRequestModal = false
-			await requestApproval(this.fileInfo.id, this.fileInfo.name, ruleId, createShares)
-			this.update(this.fileInfo)
+			await requestApproval(this.fileId, this.fileName, ruleId, createShares)
+			this.update()
 		},
 	},
 }
