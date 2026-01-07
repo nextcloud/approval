@@ -64,6 +64,8 @@ import CheckIcon from 'vue-material-design-icons/Check.vue'
 import NcUserBubble from '@nextcloud/vue/components/NcUserBubble'
 import NcButton from '@nextcloud/vue/components/NcButton'
 
+import { t } from '@nextcloud/l10n'
+
 export default {
 	name: 'RequestForm',
 
@@ -107,6 +109,7 @@ export default {
 	},
 
 	methods: {
+		t,
 		getAvatarImageClass(entity) {
 			if (entity.type === 'group') {
 				return 'icon-group'
