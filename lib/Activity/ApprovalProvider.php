@@ -8,8 +8,8 @@
 namespace OCA\Approval\Activity;
 
 use Exception;
-use InvalidArgumentException;
 use OCA\Approval\AppInfo\Application;
+use OCP\Activity\Exceptions\UnknownActivityException;
 use OCP\Activity\IEvent;
 use OCP\Activity\IProvider;
 use OCP\Files\IRootFolder;
@@ -19,44 +19,17 @@ use OCP\IUserManager;
 
 class ApprovalProvider implements IProvider {
 
-	/** @var string */
-	private $userId;
-	/** @var IURLGenerator */
-	private $urlGenerator;
-	/** @var ActivityManager */
-	private $activityManager;
-	/** @var IUserManager */
-	private $userManager;
-	/**
-	 * @var IRootFolder
-	 */
-	private $root;
-
-	public function __construct(IURLGenerator $urlGenerator,
-		IRootFolder $root,
-		ActivityManager $activityManager,
-		IUserManager $userManager,
-		?string $userId) {
-		$this->userId = $userId;
-		$this->urlGenerator = $urlGenerator;
-		$this->activityManager = $activityManager;
-		$this->userManager = $userManager;
-		$this->root = $root;
+	public function __construct(
+		private IURLGenerator $urlGenerator,
+		private IRootFolder $root,
+		private ActivityManager $activityManager,
+		private IUserManager $userManager,
+	) {
 	}
 
-	/**
-	 * @param string $language The language which should be used for translating, e.g. "en"
-	 * @param IEvent $event The current event which should be parsed
-	 * @param IEvent|null $previousEvent A potential previous event which you can combine with the current one.
-	 *                                   To do so, simply use setChildEvent($previousEvent) after setting the
-	 *                                   combined subject on the current event.
-	 * @return IEvent
-	 * @throws InvalidArgumentException Should be thrown if your provider does not know this event
-	 * @since 11.0.0
-	 */
 	public function parse($language, IEvent $event, ?IEvent $previousEvent = null): IEvent {
 		if ($event->getApp() !== Application::APP_ID) {
-			throw new InvalidArgumentException();
+			throw new UnknownActivityException();
 		}
 
 		$event = $this->getIcon($event);
