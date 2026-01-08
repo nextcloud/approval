@@ -78,6 +78,10 @@ class ApprovalService {
 	 * @return array
 	 */
 	public function getUserRules(string $userId, string $role = 'requesters', ?int $fileId = null): array {
+		if ($fileId !== null && !$this->utilsService->userHasAccessTo($fileId, $userId)) {
+			throw new \InvalidArgumentException('File not found');
+		}
+
 		$userRules = [];
 		$rules = $this->ruleService->getRules();
 
