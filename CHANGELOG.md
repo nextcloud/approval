@@ -8,6 +8,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.7.0 - 2026-01-08
+
+### Changed
+
+- Support NC 30, 31 and 32 only
+
+### Fixed
+
+- Check access permission when requesting rules related with a file @julien-nc [#358](https://github.com/nextcloud/approval/pull/358)
+
 ## 2.6.0 - 2025-11-03
 
 ### Added
