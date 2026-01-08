@@ -8,6 +8,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.0.0 - 2026-01-08
+
+### Changed
+
+- Use modern events in listerners @CarlSchwan [#351](https://github.com/nextcloud/approval/pull/351)
+
+### Fixed
+
+- Email notifications were not sent @lukasdotcom [#343](https://github.com/nextcloud/approval/pull/343)
+- Adjust to the breaking changes in nc/files on file actions @julien-nc [#350](https://github.com/nextcloud/approval/pull/350)
+- Adjust to the breaking changes about sidebar tab registration @julien-nc [#355](https://github.com/nextcloud/approval/pull/355)
+- Throw the proper exception when an activity is not known by our provider @julien-nc [#353](https://github.com/nextcloud/approval/pull/353)
+- Check access permission when requesting rules related with a file @julien-nc [#356](https://github.com/nextcloud/approval/pull/356)
+
 ## 2.6.0 - 2025-11-03
 
 ### Added
