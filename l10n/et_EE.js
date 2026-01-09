@@ -28,6 +28,7 @@ OC.L10N.register(
     "Who can approve?" : "Kes võib seda heaks kiita?",
     "Select approved tag" : "Vali kinnitamise silt",
     "Approved" : "Kinnitatud",
+    "Rejected" : "Tagasilükatud",
     "Approval requested" : "Kinnituspäring",
     "you" : "sina",
     "Approved by {user}" : "{user} kasutaja kinnitatud",
