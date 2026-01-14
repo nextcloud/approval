@@ -7,7 +7,7 @@
 .vscode-upload.json
 .*.sw*
 node_modules
-vendor
+vendor/
 js/*hot-update.*
 build
 .php-cs-fixer.cache
