@@ -6,6 +6,7 @@ OC.L10N.register(
     "Approve" : "Menyetujui",
     "Reject" : "Ditolak",
     "Approved" : "Disetujui",
+    "Rejected" : "Ditolak",
     "you" : "Anda",
     "No recommendations. Start typing." : "Tidak ada saran. Mulai mengetik.",
     "No result." : "Tidak ada hasil.",
