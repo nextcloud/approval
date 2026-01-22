@@ -180,7 +180,7 @@ class ApprovalService {
 		}));
 
 		// if user is in rule's user list
-		if (in_array($userId, $ruleUserIds)) {
+		if (in_array($userId, $ruleUserIds, true)) {
 			return true;
 		} else {
 			// if user is member of one rule's group list
@@ -293,7 +293,7 @@ class ApprovalService {
 
 		// first check if it's approvable
 		foreach ($rules as $id => $rule) {
-			if (in_array($rule['tagPending'], $tags)
+			if (in_array($rule['tagPending'], $tags, true)
 				&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
 				return [
 					'state' => Application::STATE_APPROVABLE,
@@ -304,7 +304,7 @@ class ApprovalService {
 
 		// then check pending in priority
 		foreach ($rules as $id => $rule) {
-			if (in_array($rule['tagPending'], $tags)) {
+			if (in_array($rule['tagPending'], $tags, true)) {
 				return [
 					'state' => Application::STATE_PENDING,
 					'rule' => $rule,
@@ -313,7 +313,7 @@ class ApprovalService {
 		}
 		// then rejected
 		foreach ($rules as $id => $rule) {
-			if (in_array($rule['tagRejected'], $tags)) {
+			if (in_array($rule['tagRejected'], $tags, true)) {
 				return [
 					'state' => Application::STATE_REJECTED,
 					'rule' => $rule,
@@ -322,7 +322,7 @@ class ApprovalService {
 		}
 		// then approved
 		foreach ($rules as $id => $rule) {
-			if (in_array($rule['tagApproved'], $tags)) {
+			if (in_array($rule['tagApproved'], $tags, true)) {
 				return [
 					'state' => Application::STATE_APPROVED,
 					'rule' => $rule,
@@ -626,7 +626,7 @@ class ApprovalService {
 		$ruleUserIds = [];
 		foreach ($rule[$role] as $approver) {
 			if ($approver['type'] === 'user') {
-				if (!in_array($approver['entityId'], $ruleUserIds)) {
+				if (!in_array($approver['entityId'], $ruleUserIds, true)) {
 					$ruleUserIds[] = $approver['entityId'];
 				}
 			} elseif ($approver['type'] === 'group') {
@@ -634,7 +634,7 @@ class ApprovalService {
 				if ($this->groupManager->groupExists($groupId)) {
 					$users = $this->groupManager->get($groupId)->getUsers();
 					foreach ($users as $user) {
-						if ($user instanceof IUser && !in_array($user->getUID(), $ruleUserIds)) {
+						if ($user instanceof IUser && !in_array($user->getUID(), $ruleUserIds, true)) {
 							$ruleUserIds[] = $user->getUID();
 						}
 					}
@@ -650,7 +650,7 @@ class ApprovalService {
 							continue;
 						}
 						$memberUserId = $member->getUserId();
-						if (!in_array($memberUserId, $ruleUserIds)) {
+						if (!in_array($memberUserId, $ruleUserIds, true)) {
 							$ruleUserIds[] = $memberUserId;
 						}
 					}
@@ -678,7 +678,7 @@ class ApprovalService {
 		$rules = $this->ruleService->getRules();
 		foreach ($rules as $id => $rule) {
 			// rule matches tags
-			if (in_array($rule['tagPending'], $tags)) {
+			if (in_array($rule['tagPending'], $tags, true)) {
 				$ruleInvolded = $rule;
 				break;
 			}
@@ -731,7 +731,7 @@ class ApprovalService {
 		$rulesUserIds = [];
 		$thisRuleUserIds = $this->getRuleAuthorizedUserIds($rule, 'approvers');
 		foreach ($thisRuleUserIds as $userId) {
-			if (!in_array($userId, $rulesUserIds)) {
+			if (!in_array($userId, $rulesUserIds, true)) {
 				$rulesUserIds[] = $userId;
 			}
 		}
