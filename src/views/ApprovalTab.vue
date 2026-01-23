@@ -113,12 +113,12 @@ export default {
 		},
 		async onApprove(message) {
 			this.state = null
-			await approve(this.fileId, this.fileName, null, true, message)
+			await approve(this.node, true, message)
 			this.update()
 		},
 		async onReject(message) {
 			this.state = null
-			await reject(this.fileId, this.fileName, null, true, message)
+			await reject(this.node, true, message)
 			this.update()
 		},
 		async onRequestSubmit(ruleId, createShares) {
