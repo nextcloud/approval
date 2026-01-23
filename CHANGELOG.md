@@ -8,6 +8,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.0 - 2026-01-23
+
+### Changed
+
+- Use new settings components @lukasdotcom [#364](https://github.com/nextcloud/approval/pull/364)
+
+### Fixed
+
+- Add better error message on users side for failed approval @lukasdotcom [#365](https://github.com/nextcloud/approval/pull/365)
+
 ## 3.0.0 - 2026-01-08
 
 ### Changed
