@@ -40,7 +40,7 @@
     "New approval workflow created" : "Nuovo workflow di approvazione creato",
     "Failed to create approval workflow" : "Errore nella creazione del nuovo workflow di approvazione",
     "Approval workflow deleted" : "Workflow di approvazione eliminato",
-    "Failed to delete approval workflow" : "Errore nella cancellazione del workflow di approvazione",
+    "Failed to delete approval workflow" : "Eliminazione del flusso di approvazione non riuscita",
     "Tag \"{name}\" created" : "Etichetta \"{name}\" creata",
     "Failed to create tag \"{name}\"" : "Creazione dell'etichetta \"{name}\" non riuscita",
     "Each workflow defines who (which users, groups or circles) can approve files for a given pending tag and which approved/rejected tag should then be assigned." : "Ciascun workflow definisce chi (quali utenti, gruppi o cerchie) può approvare i file per una data etichetta pendente e quale etichetta approvata/rifiutata dovrebbe quindi essere assegnato.",
