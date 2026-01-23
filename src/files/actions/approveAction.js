@@ -26,7 +26,7 @@ export const approveAction = new FileAction({
 	async exec({ nodes }) {
 		const node = nodes[0]
 		try {
-			await approve(node.fileid, node.basename, node)
+			await approve(node)
 		} catch (error) {
 			console.debug('Approve action failed')
 		}
@@ -35,7 +35,7 @@ export const approveAction = new FileAction({
 	async execBatch({ nodes }) {
 		const promises = nodes
 			.filter(node => node.attributes['approval-state'] === states.APPROVABLE)
-			.map(node => approve(node.fileid, node.basename, node, false))
+			.map(node => approve(node, false))
 		const results = await Promise.allSettled(promises)
 		return results.map(promise => promise.status === 'fulfilled')
 	},
