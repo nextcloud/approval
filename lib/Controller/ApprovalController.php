@@ -8,12 +8,14 @@
 namespace OCA\Approval\Controller;
 
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\Exceptions\OutdatedEtagException;
 use OCA\Approval\Service\ApprovalService;
 use OCA\Approval\Service\RuleService;
-
+use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\OCSController;
+use OCP\IL10N;
 use OCP\IRequest;
 
 class ApprovalController extends OCSController {
@@ -23,6 +25,7 @@ class ApprovalController extends OCSController {
 		IRequest $request,
 		private ApprovalService $approvalService,
 		private RuleService $ruleService,
+		private IL10N $l10n,
 		private ?string $userId,
 	) {
 		parent::__construct($appName, $request);
@@ -76,12 +79,19 @@ class ApprovalController extends OCSController {
 	 *
 	 * @param int $fileId
 	 * @param string|null $message
+	 * @param string|null $etag
 	 * @return DataResponse
 	 */
 	#[NoAdminRequired]
-	public function approve(int $fileId, ?string $message = ''): DataResponse {
-		$this->approvalService->approve($fileId, $this->userId, $message);
-		return new DataResponse(1);
+	public function approve(int $fileId, ?string $message = '', ?string $etag = ''): DataResponse {
+		try {
+			if ($this->approvalService->approve($fileId, $this->userId, $message, $etag)) {
+				return new DataResponse([]);
+			}
+			return new DataResponse([], Http::STATUS_BAD_REQUEST);
+		} catch (OutdatedEtagException) {
+			return new DataResponse(['error' => $this->l10n->t('The file/folder you tried to approve has an outdated content, please reload and review it again')], Http::STATUS_BAD_REQUEST);
+		}
 	}
 
 	/**
@@ -89,12 +99,19 @@ class ApprovalController extends OCSController {
 	 *
 	 * @param int $fileId
 	 * @param string|null $message
+	 * @param string|null $etag
 	 * @return DataResponse
 	 */
 	#[NoAdminRequired]
-	public function reject(int $fileId, ?string $message = ''): DataResponse {
-		$this->approvalService->reject($fileId, $this->userId, $message);
-		return new DataResponse(1);
+	public function reject(int $fileId, ?string $message = '', ?string $etag = ''): DataResponse {
+		try {
+			if ($this->approvalService->reject($fileId, $this->userId, $message, $etag)) {
+				return new DataResponse([]);
+			}
+			return new DataResponse([], Http::STATUS_BAD_REQUEST);
+		} catch (OutdatedEtagException) {
+			return new DataResponse(['error' => $this->l10n->t('The file/folder you tried to reject has an outdated content, please reload and review it again')], Http::STATUS_BAD_REQUEST);
+		}
 	}
 
 	/**

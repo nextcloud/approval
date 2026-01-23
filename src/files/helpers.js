@@ -83,39 +83,37 @@ export async function requestAfterShareCreation(fileId, fileName, ruleId, node =
 	}
 }
 
-export async function approve(fileId, fileName, node = null, notify = true, message = '') {
-	const url = generateOcsUrl('apps/approval/api/v1/approve/{fileId}', { fileId })
+export async function approve(node, notify = true, message = '', updateNode = true) {
+	const url = generateOcsUrl('apps/approval/api/v1/approve/{fileId}', { fileId: node.fileid })
 	try {
-		await axios.put(url, { message })
+		await axios.put(url, { message, etag: node.attributes.etag })
 		if (notify) {
-			showSuccess(t('approval', 'You approved {name}', { name: fileName }))
+			showSuccess(t('approval', 'You approved {name}', { name: node.basename }))
 		}
-		if (node) {
+		if (updateNode) {
 			await updateNodeApprovalState(node)
 		}
 	} catch (error) {
 		console.error(error)
 		if (notify) {
-			showError(t('approval', 'Failed to approve {name}', { name: fileName }))
+			showError(error.response.data?.ocs?.data?.error ?? t('approval', 'Failed to approve {name}', { name: node.basename }))
 		}
 		throw error
 	}
 }
 
-export async function reject(fileId, fileName, node = null, notify = true, message = '') {
-	const url = generateOcsUrl('apps/approval/api/v1/reject/{fileId}', { fileId })
+export async function reject(node, notify = true, message = '') {
+	const url = generateOcsUrl('apps/approval/api/v1/reject/{fileId}', { fileId: node.fileid })
 	try {
-		await axios.put(url, { message })
+		await axios.put(url, { message, etag: node.attributes.etag })
 		if (notify) {
-			showSuccess(t('approval', 'You rejected {name}', { name: fileName }))
+			showSuccess(t('approval', 'You rejected {name}', { name: node.basename }))
 		}
-		if (node) {
-			await updateNodeApprovalState(node)
-		}
+		await updateNodeApprovalState(node)
 	} catch (error) {
 		console.error(error)
 		if (notify) {
-			showError(t('approval', 'Failed to reject {name}', { name: fileName }))
+			showError(error.response.data?.ocs?.data?.error ?? t('approval', 'Failed to reject {name}', { name: node.basename }))
 		}
 		throw error
 	}
