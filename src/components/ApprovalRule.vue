@@ -115,12 +115,12 @@
 					@update:model-value="update('tagRejected', $event)" />
 			</div>
 			<div class="checkbox">
-				<NcCheckboxRadioSwitch
+				<NcFormBoxSwitch
 					:model-value="value.unapproveWhenModified"
 					type="switch"
 					@update:model-value="update('unapproveWhenModified', $event)">
 					{{ checkboxLabel }}
-				</NcCheckboxRadioSwitch>
+				</NcFormBoxSwitch>
 			</div>
 		</div>
 		<div class="buttons">
@@ -134,7 +134,7 @@
 import TagIcon from 'vue-material-design-icons/Tag.vue'
 
 import NcSelectTags from '@nextcloud/vue/components/NcSelectTags'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
+import NcFormBoxSwitch from '@nextcloud/vue/components/NcFormBoxSwitch'
 
 import { delay } from '../utils.js'
 import MultiselectWho from './MultiselectWho.vue'
@@ -148,7 +148,7 @@ export default {
 		MultiselectWho,
 		NcSelectTags,
 		TagIcon,
-		NcCheckboxRadioSwitch,
+		NcFormBoxSwitch,
 	},
 
 	props: {
