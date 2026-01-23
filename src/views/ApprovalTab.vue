@@ -58,6 +58,13 @@ export default {
 	},
 
 	computed: {
+		node() {
+			const result = {}
+			result.fileid = this.fileInfo.id
+			result.basename = this.fileInfo.basename
+			result.attributes = this.fileInfo.attributes
+			return result
+		},
 	},
 
 	watch: {
@@ -93,16 +100,12 @@ export default {
 		},
 		async onApprove(message) {
 			this.state = null
-			const fileId = this.fileInfo.id
-			const fileName = this.fileInfo.name
-			await approve(fileId, fileName, null, true, message)
+			await approve(this.node, true, message, false)
 			this.update(this.fileInfo)
 		},
 		async onReject(message) {
 			this.state = null
-			const fileId = this.fileInfo.id
-			const fileName = this.fileInfo.name
-			await reject(fileId, fileName, null, true, message)
+			await reject(this.node, true, message, false)
 			this.update(this.fileInfo)
 		},
 		async onRequestSubmit(ruleId, createShares) {

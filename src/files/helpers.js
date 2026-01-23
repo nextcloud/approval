@@ -83,14 +83,16 @@ export async function requestAfterShareCreation(fileId, fileName, ruleId, node =
 	}
 }
 
-export async function approve(node, notify = true, message = '') {
+export async function approve(node, notify = true, message = '', updateNode = true) {
 	const url = generateOcsUrl('apps/approval/api/v1/approve/{fileId}', { fileId: node.fileid })
 	try {
 		await axios.put(url, { message, etag: node.attributes.etag })
 		if (notify) {
 			showSuccess(t('approval', 'You approved {name}', { name: node.basename }))
 		}
-		await updateNodeApprovalState(node)
+		if (updateNode) {
+			await updateNodeApprovalState(node)
+		}
 	} catch (error) {
 		console.error(error)
 		if (notify) {
