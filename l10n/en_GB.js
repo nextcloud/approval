@@ -11,6 +11,8 @@ OC.L10N.register(
     "A guest user" : "A guest user",
     "Approval" : "Approval",
     "<strong>Approval</strong> events" : "<strong>Approval</strong> events",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "The file/folder you tried to approve has an outdated content, please reload and review it again",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "The file/folder you tried to reject has an outdated content, please reload and review it again",
     "Pending approvals" : "Pending approvals",
     "A file was approved" : "A file was approved",
     "A file was rejected" : "A file was rejected",

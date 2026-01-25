@@ -9,6 +9,8 @@
     "A guest user" : "Ein Gastbenutzer",
     "Approval" : "Genehmigung",
     "<strong>Approval</strong> events" : "Ereignisse für <strong>Genehmigung</strong>",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "Der Inhalt der Datei/des Ordners, den du genehmigen wolltest, ist veraltet. Bitte neu laden und erneut überprüfen",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "Der Inhalt der Datei/des Ordners, den du ablehnen wolltest, ist veraltet. Bitte neu laden und erneut überprüfen",
     "Pending approvals" : "Ausstehende Genehmigungen",
     "A file was approved" : "Eine Datei wurde genehmigt",
     "A file was rejected" : "Eine Datei wurde abgelehnt",
