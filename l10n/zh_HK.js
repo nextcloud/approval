@@ -11,6 +11,8 @@ OC.L10N.register(
     "A guest user" : "訪客用戶",
     "Approval" : "審批",
     "<strong>Approval</strong> events" : "<strong>審批</strong> 活動",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "您嘗試批准的檔案/資料夾內容已過時，請重新加載並再次審核。",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "您嘗試拒絕的檔案/資料夾內容已過時，請重新加載並再次審核。",
     "Pending approvals" : "待定審批",
     "A file was approved" : "檔案已獲批准",
     "A file was rejected" : "檔案未獲批准",
