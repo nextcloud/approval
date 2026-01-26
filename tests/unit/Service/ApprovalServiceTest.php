@@ -28,49 +28,19 @@ use OCP\SystemTag\ISystemTagObjectMapper;
 use Psr\Log\LoggerInterface;
 
 class ApprovalServiceTest extends TestCase {
-
-	/**
-	 * @var RuleService
-	 */
-	private $ruleService;
-	/**
-	 * @var ApprovalService
-	 */
-	private $approvalService;
-	/**
-	 * @var UtilsService
-	 */
-	private $utilsService;
-	/**
-	 * @var IRootFolder
-	 */
-	private $root;
-	/**
-	 * @var int
-	 */
-	private $idTagPending1;
-	/**
-	 * @var int
-	 */
-	private $idTagApproved1;
-	/**
-	 * @var int
-	 */
-	private $idTagRejected1;
-	/**
-	 * @var int
-	 */
-	private $idRule1;
-	/**
-	 * @var ISystemTagObjectMapper
-	 */
-	private $tagObjectMapper;
-	/**
-	 * @var string[][]
-	 */
-	private $approvers1;
-	private $requesters1;
-	private $description1;
+	private RuleService $ruleService;
+	private ApprovalService $approvalService;
+	private UtilsService $utilsService;
+	private IRootFolder $root;
+	private int $idTagPending1;
+	private int $idTagApproved1;
+	private int $idTagRejected1;
+	private int $idRule1;
+	private ISystemTagObjectMapper $tagObjectMapper;
+	/** @var string[][] */
+	private array $approvers1;
+	private array $requesters1;
+	private string $description1;
 
 	public static function setUpBeforeClass(): void {
 		$app = new Application();
@@ -271,7 +241,7 @@ class ApprovalServiceTest extends TestCase {
 		$this->assertEquals('user1', $uidRequesters[0]);
 	}
 
-	public function testGetApprovalState() {
+	public function testGetApprovalState(): void {
 		$uf = $this->root->getUserFolder('user1');
 		$file1 = $uf->newFile('file1.txt', 'content');
 		$state = $this->approvalService->getApprovalState($file1->getId(), 'user1');
