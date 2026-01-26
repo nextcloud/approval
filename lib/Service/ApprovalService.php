@@ -31,6 +31,9 @@ use Psr\Log\LoggerInterface;
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 
+/**
+ * @psalm-import-type Rule from RuleService
+ */
 class ApprovalService {
 
 	public function __construct(
@@ -164,7 +167,7 @@ class ApprovalService {
 	 * Check if a user is authorized to approve or request by a given rule
 	 *
 	 * @param string $userId
-	 * @param array $rule
+	 * @param Rule $rule
 	 * @param string $role
 	 * @return bool
 	 */
@@ -285,11 +288,11 @@ class ApprovalService {
 		$rules = $this->ruleService->getRules();
 
 		// Get all tags a file has to prevent needing to check for each tag in every rule
-		$tags = $this->tagObjectMapper->getTagIdsForObjects([$fileId], 'files');
-		if (!array_key_exists($fileId, $tags)) {
+		$tags = $this->tagObjectMapper->getTagIdsForObjects([(string)$fileId], 'files');
+		if (!array_key_exists((string)$fileId, $tags)) {
 			return ['state' => Application::STATE_NOTHING];
 		}
-		$tags = $tags[$fileId];
+		$tags = array_map(static fn ($tag): string => (string)$tag, $tags[(string)$fileId]);
 
 		// first check if it's approvable
 		foreach ($rules as $id => $rule) {
@@ -502,7 +505,7 @@ class ApprovalService {
 	 * Share file with everybody who can approve with given rule and have no access yet
 	 *
 	 * @param int $fileId
-	 * @param array $rule
+	 * @param Rule $rule
 	 * @param string $userId
 	 * @return array list of created shares
 	 * @throws \OCP\Files\NotPermittedException
@@ -722,7 +725,7 @@ class ApprovalService {
 	 * Send it to all users who are authorized to approve it
 	 *
 	 * @param int $fileId
-	 * @param array $rule
+	 * @param Rule $rule
 	 * @param string $requestUserId
 	 * @return void
 	 */

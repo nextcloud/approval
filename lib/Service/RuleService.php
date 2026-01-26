@@ -16,6 +16,18 @@ use OCP\IDBConnection;
 
 use OCP\IUserManager;
 
+/**
+ * @psalm-type Rule = array{
+ *      id: int,
+ *      tagPending: string,
+ *      tagApproved: string,
+ *      tagRejected: string,
+ *      description: string,
+ *      approvers: array,
+ *      requesters: array,
+ *      unapproveWhenModified: bool,
+ *  }
+ */
 class RuleService {
 	/** @var array */
 	private $strTypeToInt;
@@ -318,7 +330,7 @@ class RuleService {
 	/**
 	 * Get a rule by id
 	 * @param int $id the rule id
-	 * @return array|null the rule or null if not found
+	 * @return Rule|null the rule or null if not found
 	 */
 	public function getRule(int $id): ?array {
 		$rule = null;
@@ -331,9 +343,9 @@ class RuleService {
 			);
 		$req = $qb->executeQuery();
 		while ($row = $req->fetch()) {
-			$tagPending = (int)$row['tag_pending'];
-			$tagApproved = (int)$row['tag_approved'];
-			$tagRejected = (int)$row['tag_rejected'];
+			$tagPending = (string)$row['tag_pending'];
+			$tagApproved = (string)$row['tag_approved'];
+			$tagRejected = (string)$row['tag_rejected'];
 			$description = $row['description'];
 			$rule = [
 				'id' => $id,
@@ -362,7 +374,7 @@ class RuleService {
 	/**
 	 * Get all rules
 	 *
-	 * @return array
+	 * @return array<int, Rule>
 	 */
 	public function getRules(): array {
 		if ($this->cachedRules === null) {
@@ -374,9 +386,9 @@ class RuleService {
 			$req = $qb->executeQuery();
 			while ($row = $req->fetch()) {
 				$id = (int)$row['id'];
-				$tagPending = (int)$row['tag_pending'];
-				$tagApproved = (int)$row['tag_approved'];
-				$tagRejected = (int)$row['tag_rejected'];
+				$tagPending = (string)$row['tag_pending'];
+				$tagApproved = (string)$row['tag_approved'];
+				$tagRejected = (string)$row['tag_rejected'];
 				$description = $row['description'];
 				$rules[$id] = [
 					'id' => $id,
