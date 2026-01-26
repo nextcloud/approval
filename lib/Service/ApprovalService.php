@@ -288,7 +288,7 @@ class ApprovalService {
 	 * @param int $fileId
 	 * @param string|null $userId
 	 * @param bool $userHasAccessChecked whether we already checked if a user has access
-	 * @return array state and rule id
+	 * @return array{state: Application::STATE_*, rule?: Rule} state and rule id
 	 */
 	public function getApprovalState(int $fileId, ?string $userId, bool $userHasAccessChecked = false): array {
 		if (is_null($userId) || !($userHasAccessChecked || $this->utilsService->userHasAccessTo($fileId, $userId))) {
@@ -304,42 +304,39 @@ class ApprovalService {
 		}
 		$tags = array_map(static fn ($tag): string => (string)$tag, $tags[(string)$fileId]);
 
-		// first check if it's approvable
-		foreach ($rules as $id => $rule) {
-			if (in_array($rule['tagPending'], $tags, true)
-				&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
-				return [
-					'state' => Application::STATE_APPROVABLE,
-					'rule' => $rule,
-				];
-			}
-		}
+		foreach ($rules as $rule) {
+			foreach ($tags as $tag) {
+				if ($rule['tagPending'] === $tag) {
+					// first check if it's approvable
+					if ($this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
+						return [
+							'state' => Application::STATE_APPROVABLE,
+							'rule' => $rule,
+						];
+					}
 
-		// then check pending in priority
-		foreach ($rules as $id => $rule) {
-			if (in_array($rule['tagPending'], $tags, true)) {
-				return [
-					'state' => Application::STATE_PENDING,
-					'rule' => $rule,
-				];
-			}
-		}
-		// then rejected
-		foreach ($rules as $id => $rule) {
-			if (in_array($rule['tagRejected'], $tags, true)) {
-				return [
-					'state' => Application::STATE_REJECTED,
-					'rule' => $rule,
-				];
-			}
-		}
-		// then approved
-		foreach ($rules as $id => $rule) {
-			if (in_array($rule['tagApproved'], $tags, true)) {
-				return [
-					'state' => Application::STATE_APPROVED,
-					'rule' => $rule,
-				];
+					// then check pending in priority
+					return [
+						'state' => Application::STATE_PENDING,
+						'rule' => $rule,
+					];
+				}
+
+				// then rejected
+				if ($rule['tagRejected'] === $tag) {
+					return [
+						'state' => Application::STATE_REJECTED,
+						'rule' => $rule,
+					];
+				}
+
+				// then approved
+				if ($rule['tagApproved'] === $tag) {
+					return [
+						'state' => Application::STATE_APPROVED,
+						'rule' => $rule,
+					];
+				}
 			}
 		}
 
