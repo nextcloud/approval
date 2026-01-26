@@ -9,6 +9,8 @@
     "A guest user" : "Aoi-úsáideoir",
     "Approval" : "Ceadú",
     "<strong>Approval</strong> events" : "<strong>Cead</strong> imeachta",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "Tá ábhar atá as dáta sa chomhad/fhillteán ar iarraigh tú a cheadú, athlódáil agus déan athbhreithniú air arís le do thoil",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "Tá ábhar atá as dáta sa chomhad/fhillteán ar iarraigh tú a dhiúltú, athlódáil agus déan athbhreithniú air arís le do thoil",
     "Pending approvals" : "Ceaduithe ar feitheamh",
     "A file was approved" : "Ceadaíodh comhad",
     "A file was rejected" : "Diúltaíodh comhad",
