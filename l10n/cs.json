@@ -9,6 +9,8 @@
     "A guest user" : "Uživatel-host",
     "Approval" : "Schválení",
     "<strong>Approval</strong> events" : "<strong>Schválení</strong> událostí",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "Soubor/Složka kterou se snažíte odsouhlasit zobrazuje zastaralý obsah, načtěte a zkontrolujte ji znovu",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "Soubor/Složka kterou se snažíte zamítnout zobrazuje zastaralý obsah, načtěte a zkontrolujte ji znovu",
     "Pending approvals" : "Čekající schválení",
     "A file was approved" : "Soubor byl schválen",
     "A file was rejected" : "Soubor byl odmítnut",
