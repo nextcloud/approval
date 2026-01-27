@@ -9,6 +9,8 @@
     "A guest user" : "訪客使用者",
     "Approval" : "批准",
     "<strong>Approval</strong> events" : "<strong>批准</strong>活動",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "您嘗試核准的檔案/資料夾內容已過時，請重新載入並再次審閱",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "您嘗試回絕的檔案/資料夾內容已過時，請重新載入並再次審閱",
     "Pending approvals" : "待批准",
     "A file was approved" : "檔案已獲批准",
     "A file was rejected" : "檔案未獲批准",
