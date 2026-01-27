@@ -9,6 +9,8 @@
     "A guest user" : "Um usuário convidado",
     "Approval" : "Aprovação",
     "<strong>Approval</strong> events" : "<strong>Aprovação</strong> eventos",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "O arquivo/pasta que você tentou aprovar tem um conteúdo desatualizado. Recarregue e revise novamente",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "O arquivo/pasta que você tentou rejeitar tem um conteúdo desatualizado. Recarregue e revise novamente",
     "Pending approvals" : "Aprovações pendentes",
     "A file was approved" : "O arquivo foi aprovado.",
     "A file was rejected" : "O arquivo foi rejeitado",
