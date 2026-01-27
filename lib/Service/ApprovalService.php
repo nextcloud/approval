@@ -11,7 +11,6 @@ use DateTime;
 use OCA\Approval\Activity\ActivityManager;
 use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Exceptions\OutdatedEtagException;
-use OCA\DAV\Connector\Sabre\Node as SabreNode;
 use OCP\App\IAppManager;
 use OCP\Files\FileInfo;
 use OCP\Files\IRootFolder;
@@ -26,13 +25,12 @@ use OCP\Share\IShare;
 use OCP\SystemTag\ISystemTagObjectMapper;
 use OCP\SystemTag\TagNotFoundException;
 use Psr\Log\LoggerInterface;
-use Sabre\DAV\INode;
-use Sabre\DAV\PropFind;
 
 /**
  * @psalm-import-type Rule from RuleService
  */
 class ApprovalService {
+	private array $cachedStates;
 
 	public function __construct(
 		string $appName,
@@ -288,21 +286,31 @@ class ApprovalService {
 	 * @param int $fileId
 	 * @param string|null $userId
 	 * @param bool $userHasAccessChecked whether we already checked if a user has access
+	 * @param array|null $tags preloaded tags
 	 * @return array state and rule id
 	 */
-	public function getApprovalState(int $fileId, ?string $userId, bool $userHasAccessChecked = false): array {
+	public function getApprovalState(int $fileId, ?string $userId, bool $userHasAccessChecked = false, ?array $tags = null): array {
+		if (isset($this->cachedStates[$userId][$fileId])) {
+			return $this->cachedStates[$userId][$fileId];
+		}
 		if (is_null($userId) || !($userHasAccessChecked || $this->utilsService->userHasAccessTo($fileId, $userId))) {
 			return ['state' => Application::STATE_NOTHING];
 		}
 
-		$rules = $this->ruleService->getRules();
-
-		// Get all tags a file has to prevent needing to check for each tag in every rule
-		$tags = $this->tagObjectMapper->getTagIdsForObjects([(string)$fileId], 'files');
+		// Get all tags a file has to prevent needing to check for each tag in every rule and uses preloaded tags when possible
+		if (is_null($tags)) {
+			$tags = $this->tagObjectMapper->getTagIdsForObjects([(string)$fileId], 'files');
+		}
 		if (!array_key_exists((string)$fileId, $tags)) {
 			return ['state' => Application::STATE_NOTHING];
 		}
 		$tags = array_map(static fn ($tag): string => (string)$tag, $tags[(string)$fileId]);
+
+		if (empty($tags)) {
+			return ['state' => Application::STATE_NOTHING];
+		}
+
+		$rules = $this->ruleService->getRules();
 
 		// first check if it's approvable
 		foreach ($rules as $id => $rule) {
@@ -828,22 +836,33 @@ class ApprovalService {
 	/**
 	 * Get approval state as a WebDav attribute
 	 *
-	 * @param PropFind $propFind
-	 * @param INode $node
+	 * @param int $nodeId
+	 * @return int
+	 */
+	public function propFind(int $nodeId): int {
+		$state = $this->getApprovalState($nodeId, $this->userId, true);
+		return $state['state'];
+	}
+
+
+	/**
+	 * Get approval state for multiple files and loads all the tags at once
+	 *
+	 * @param array $fileIds
 	 * @return void
 	 */
-	public function propFind(PropFind $propFind, INode $node): void {
-		if (!$node instanceof SabreNode) {
+	public function preloadApprovalStates(array $fileIds): void {
+		$userId = $this->userId;
+		if (is_null($userId)) {
 			return;
 		}
-		$nodeId = $node->getId();
-
-		$propFind->handle(
-			Application::DAV_PROPERTY_APPROVAL_STATE, function () use ($nodeId) {
-				$state = $this->getApprovalState($nodeId, $this->userId, true);
-				return $state['state'];
-			}
-		);
+		$tags = $this->tagObjectMapper->getTagIdsForObjects($fileIds, 'files');
+		if (!isset($this->cachedStates[$userId])) {
+			$this->cachedStates[$userId] = [];
+		}
+		foreach ($fileIds as $fileId) {
+			$this->cachedStates[$userId][$fileId] = $this->getApprovalState($fileId, $userId, true, $tags);
+		}
 	}
 
 	/**
