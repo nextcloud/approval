@@ -11,6 +11,8 @@ OC.L10N.register(
     "A guest user" : "Mtumiaji mgeni",
     "Approval" : "Idhini",
     "<strong>Approval</strong> events" : "<strong>Idhini </strong> matukio",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "Faili/folda uliyojaribu kuidhinisha ina maudhui yaliyopitwa na wakati, tafadhali pakia upya na uikague tena",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "Faili/folda uliyojaribu kukataa ina maudhui yaliyopitwa na wakati, tafadhali pakia upya na uikague tena",
     "Pending approvals" : "idhini zinazosubiri",
     "A file was approved" : "Faili iliidhinishwa",
     "A file was rejected" : "Faili ilikataliwa",

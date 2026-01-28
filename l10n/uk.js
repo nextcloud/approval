@@ -29,7 +29,7 @@ OC.L10N.register(
     "You are not authorized to request with this rule" : "Ви не маєте права надсилати запити за цим правилом",
     "Please check my approval request" : "Будь ласка, перевірте мій запит на схвалення",
     "Approval workflows" : "Робочі процеси затвердження",
-    "Let users approve or reject files" : "Дозвольте користувачам схвалювати або відхиляти файли",
+    "Let users approve or reject files" : "Дозволити користувачам схвалювати або відхиляти файли",
     "Approve/reject files based on workflows defined by admins.\n\n**Warning**: The DocuSign integration is no longer part of this app\nand can be installed with [this app](https://apps.nextcloud.com/apps/integration_docusign)." : "Схвалюйте/відхиляйте файли на основі робочих процесів, визначених адміністраторами.\n\n**Попередження**: Інтеграція DocuSign більше не є частиною цього додатка\nі може бути встановлена за допомогою [цього додатка](https://apps.nextcloud.com/apps/integration_docusign).",
     "Cancel" : "Скасувати",
     "All fields are required" : "Всі поля обов'язкові для заповнення",
