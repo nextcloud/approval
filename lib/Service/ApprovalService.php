@@ -13,6 +13,7 @@ use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Exceptions\OutdatedEtagException;
 use OCA\DAV\Connector\Sabre\Node as SabreNode;
 use OCP\App\IAppManager;
+use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
@@ -218,6 +219,7 @@ class ApprovalService {
 	 * @return array
 	 */
 	public function getPendingNodes(string $userId, ?int $since = null): array {
+		/** @var array<int, array{node: Node, ruleId: int}> $pendingNodes */
 		$pendingNodes = [];
 		// get pending tags i can approve
 		$rules = $this->getBasicUserRules($userId, 'approvers');
@@ -230,27 +232,29 @@ class ApprovalService {
 			// this actually does not work with tag IDs, only with tag names (not even sure it's about system tags...)
 			// $nodes = $userFolder->searchByTag($pendingTagId, $userId);
 			foreach ($nodeIdsWithTag as $nodeId) {
+				$nodeId = (int)$nodeId;
+				if (isset($pendingNodes[$nodeId])) {
+					continue;
+				}
 				// is the node in the user storage (does the user have access to this node)?
-				$nodeInUserStorage = $userFolder->getById((int)$nodeId);
-				if (count($nodeInUserStorage) > 0 && !isset($pendingNodes[$nodeId])) {
-					$node = $nodeInUserStorage[0];
+				$nodeInUserStorage = $userFolder->getFirstNodeById($nodeId);
+				if ($nodeInUserStorage === null) {
 					$pendingNodes[$nodeId] = [
-						'node' => $node,
+						'node' => $nodeInUserStorage,
 						'ruleId' => $ruleId,
 					];
 				}
 			}
 		}
 		// get extra information
-		$that = $this;
-		$result = array_map(function ($pendingNode) use ($that) {
+		$result = array_map(function (array $pendingNode): array {
 			$node = $pendingNode['node'];
 			$ruleId = $pendingNode['ruleId'];
 			return [
 				'file_id' => $node->getId(),
 				'file_name' => $node->getName(),
 				'mimetype' => $node->getMimetype(),
-				'activity' => $that->ruleService->getLastAction($node->getId(), $ruleId, Application::STATE_PENDING),
+				'activity' => $this->ruleService->getLastAction($node->getId(), $ruleId, Application::STATE_PENDING),
 
 			];
 		}, array_values($pendingNodes));
@@ -271,10 +275,6 @@ class ApprovalService {
 		return $result;
 	}
 
-	/**
-	 * @param int $fileId
-	 * @return string
-	 */
 	public function getEtag(int $fileId): string {
 		$file = $this->root->getFirstNodeById($fileId);
 		if ($file !== null) {
@@ -535,18 +535,16 @@ class ApprovalService {
 		$createdShares = [];
 		// get node
 		$userFolder = $this->root->getUserFolder($userId);
-		$nodeResults = $userFolder->getById($fileId);
-		if (count($nodeResults) > 0) {
-			$node = $nodeResults[0];
-			// get the node again from the owner's storage to avoid sharing permission issues
-			$ownerId = $node->getOwner()->getUID();
-			$ownerFolder = $this->root->getUserFolder($ownerId);
-			$ownerNodeResults = $ownerFolder->getById($fileId);
-			if (count($ownerNodeResults) > 0) {
-				$node = $ownerNodeResults[0];
-			}
-		} else {
+		$node = $userFolder->getFirstNodeById($fileId);
+		if ($node === null) {
 			return [];
+		}
+		// get the node again from the owner's storage to avoid sharing permission issues
+		$ownerId = $node->getOwner()->getUID();
+		$ownerFolder = $this->root->getUserFolder($ownerId);
+		$ownerNode = $ownerFolder->getFirstNodeById($fileId);
+		if ($ownerNode !== null) {
+			$node = $ownerNode;
 		}
 		$label = $this->l10n->t('Please check my approval request');
 		$fileOwner = $node->getOwner()->getUID();
@@ -599,9 +597,8 @@ class ApprovalService {
 			$thisUserId = $user->getUID();
 			if ($thisUserId !== $approverId) {
 				$userFolder = $root->getUserFolder($thisUserId);
-				$found = $userFolder->getById($fileId);
-				if (count($found) > 0) {
-					$node = $found[0];
+				$node = $userFolder->getFirstNodeById($fileId);
+				if ($node !== null) {
 					$path = $userFolder->getRelativePath($node->getPath());
 					$type = $node->getType() === FileInfo::TYPE_FILE
 						? 'file'
@@ -718,10 +715,8 @@ class ApprovalService {
 		// if there is no activity, the tag was assigned manually (or via auto-tagging flows)
 		// => perform the request here (share, store action and trigger activity event)
 		if ($activity === null) {
-			$found = $this->root->getById($fileId);
-			if (count($found) > 0) {
-				$node = $found[0];
-			} else {
+			$node = $this->root->getFirstNodeById($fileId);
+			if ($node === null) {
 				$this->logger->error('Could not request approval of file ' . $fileId . ': file not found.', ['app' => Application::APP_ID]);
 				return;
 			}
@@ -771,9 +766,8 @@ class ApprovalService {
 			// only notify users having access to the file
 			foreach ($rulesUserIds as $userId) {
 				$userFolder = $root->getUserFolder($userId);
-				$found = $userFolder->getById($fileId);
-				if (count($found) > 0) {
-					$node = $found[0];
+				$node = $userFolder->getFirstNodeById($fileId);
+				if ($node !== null) {
 					$path = $userFolder->getRelativePath($node->getPath());
 					$type = $node->getType() === FileInfo::TYPE_FILE
 						? 'file'
@@ -790,9 +784,8 @@ class ApprovalService {
 			// we don't check if users have access to the file because they might not have yet (share is not effective yet)
 			// => notify every approver
 			foreach ($rulesUserIds as $userId) {
-				$found = $root->getById($fileId);
-				if (count($found) > 0) {
-					$node = $found[0];
+				$node = $root->getFirstNodeById($fileId);
+				if ($node !== null) {
 					// we don't know the path in user storage
 					$path = '';
 					$type = $node->getType() === FileInfo::TYPE_FILE

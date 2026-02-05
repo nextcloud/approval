@@ -75,12 +75,11 @@ class ApprovalProvider implements IProvider {
 			}
 			// get file path for current user
 			$userFolder = $this->root->getUserFolder($event->getAffectedUser());
-			$found = $userFolder->getById($event->getObjectId());
-			if (count($found) === 0) {
+			$node = $userFolder->getFirstNodeById((int)$event->getObjectId());
+			if ($node === null) {
 				// this avoids the event if user does not have access anymore
 				return $event;
 			}
-			$node = $found[0];
 			$path = $userFolder->getRelativePath($node->getPath());
 
 			$file = [
