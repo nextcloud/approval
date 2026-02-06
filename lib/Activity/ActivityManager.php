@@ -97,7 +97,7 @@ class ActivityManager {
 		return $subject;
 	}
 
-	public function triggerEvent($objectType, $entity, $subject, $additionalParams = [], $author = null) {
+	public function triggerEvent($objectType, int $entity, $subject, $additionalParams = [], $author = null): void {
 		try {
 			$event = $this->createEvent($objectType, $entity, $subject, $additionalParams, $author);
 			if ($event !== null) {
@@ -117,13 +117,11 @@ class ActivityManager {
 	 * @return IEvent|null
 	 * @throws Exception
 	 */
-	private function createEvent($objectType, $entity, $subject, array $additionalParams = [], ?string $author = null): ?IEvent {
-		$found = $this->root->getById($entity);
-		if (count($found) === 0) {
+	private function createEvent($objectType, int $entity, $subject, array $additionalParams = [], ?string $author = null): ?IEvent {
+		$node = $this->root->getFirstNodeById($entity);
+		if ($node === null) {
 			$this->logger->error('Could not create activity entry for ' . $entity . '. Node not found.', ['app' => Application::APP_ID]);
 			return null;
-		} else {
-			$node = $found[0];
 		}
 
 		/**
@@ -152,7 +150,7 @@ class ActivityManager {
 		$event->setApp(Application::APP_ID)
 			->setType($eventType)
 			->setAuthor($author === null ? $this->userId ?? '' : $author)
-			->setObject($objectType, (int)$entity, $objectName)
+			->setObject($objectType, $entity, $objectName)
 			->setSubject($subject, array_merge($subjectParams, $additionalParams))
 			->setTimestamp(time());
 
@@ -188,8 +186,8 @@ class ActivityManager {
 			$this->userManager->callForSeenUsers(function (IUser $user) use ($event, $root, $entity, &$userIds) {
 				$userId = $user->getUID();
 				$userFolder = $root->getUserFolder($userId);
-				$found = $userFolder->getById($entity);
-				if (count($found) > 0) {
+				$found = $userFolder->getFirstNodeById($entity) !== null;
+				if ($found) {
 					$userIds[] = $userId;
 				}
 			});
