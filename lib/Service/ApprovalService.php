@@ -693,6 +693,8 @@ class ApprovalService {
 	 * @return void
 	 */
 	public function handleTagAssignmentEvent(int $fileId, array $tags): void {
+		$tags = array_map('strval', $tags);
+
 		// which rule is involved?
 		$ruleInvolded = null;
 		$rules = $this->ruleService->getRules();

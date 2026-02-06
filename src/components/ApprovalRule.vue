@@ -30,7 +30,7 @@
 				</span>
 				<NcSelectTags
 					class="tag-select"
-					:model-value="value.tagPending"
+					:model-value="tagPendingAsString"
 					:placeholder="t('approval', 'Select pending tag')"
 					:multiple="false"
 					:close-on-select="true"
@@ -82,7 +82,7 @@
 				</span>
 				<NcSelectTags
 					class="tag-select"
-					:model-value="value.tagApproved"
+					:model-value="tagApprovedAsString"
 					:placeholder="t('approval', 'Select approved tag')"
 					:multiple="false"
 					:close-on-select="true"
@@ -105,7 +105,7 @@
 				</span>
 				<NcSelectTags
 					class="tag-select"
-					:model-value="value.tagRejected"
+					:model-value="tagRejectedAsString"
 					:placeholder="t('approval', 'Select rejected tag')"
 					:multiple="false"
 					:close-on-select="true"
@@ -180,7 +180,17 @@ export default {
 		}
 	},
 
-	computed: {},
+	computed: {
+		tagPendingAsString() {
+			return parseInt(this.value.tagPending, 10)
+		},
+		tagApprovedAsString() {
+			return parseInt(this.value.tagApproved, 10)
+		},
+		tagRejectedAsString() {
+			return parseInt(this.value.tagRejected, 10)
+		},
+	},
 
 	watch: {},
 
