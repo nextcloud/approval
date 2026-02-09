@@ -238,7 +238,7 @@ class ApprovalService {
 				}
 				// is the node in the user storage (does the user have access to this node)?
 				$nodeInUserStorage = $userFolder->getFirstNodeById($nodeId);
-				if ($nodeInUserStorage === null) {
+				if ($nodeInUserStorage !== null) {
 					$pendingNodes[$nodeId] = [
 						'node' => $nodeInUserStorage,
 						'ruleId' => $ruleId,
