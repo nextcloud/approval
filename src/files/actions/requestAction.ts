@@ -4,12 +4,13 @@
  */
 
 import CheckSvgIcon from '@mdi/svg/svg/check.svg?raw'
-import { Permission, FileAction } from '@nextcloud/files'
+import { Permission } from '@nextcloud/files'
+import type { IFileAction } from '@nextcloud/files'
 import { onRequestFileAction } from '../helpers.js'
 
-export const requestAction = new FileAction({
+export const requestAction: IFileAction = {
 	id: 'approval-request',
-	displayName: (nodes) => {
+	displayName: () => {
 		return t('approval', 'Request approval')
 	},
 	enabled({ nodes, view }) {
@@ -28,4 +29,4 @@ export const requestAction = new FileAction({
 		await onRequestFileAction(nodes[0])
 		return null
 	},
-})
+}
