@@ -5,12 +5,13 @@
 
 import PendingIconSvg from '@mdi/svg/svg/dots-horizontal-circle-outline.svg?raw'
 import { Permission } from '@nextcloud/files'
+import type { IFileAction } from '@nextcloud/files'
 import { states } from '../../states.js'
 import { openApprovalInfoModal, updateNodeApprovalState } from '../helpers.js'
 
-export const respondAction = {
+export const respondAction: IFileAction = {
 	id: 'approval-respond',
-	displayName: ({ nodes }) => {
+	displayName: () => {
 		return t('approval', 'Approve or Reject')
 	},
 	enabled({ nodes, view }) {
@@ -33,6 +34,6 @@ export const respondAction = {
 		}
 		return null
 	},
-	async execBatch(nodes) {
+	async execBatch() {
 	},
 }

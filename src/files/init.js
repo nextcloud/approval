@@ -6,11 +6,11 @@
 import { registerFileAction } from '@nextcloud/files'
 import { registerDavProperty } from '@nextcloud/files/dav'
 
-import { inlineAction } from './actions/inlineAction.js'
-import { requestAction } from './actions/requestAction.js'
-import { respondAction } from './actions/respondAction.js'
-import { approveAction } from './actions/approveAction.js'
-import { rejectAction } from './actions/rejectAction.js'
+import { inlineAction } from './actions/inlineAction.ts'
+import { requestAction } from './actions/requestAction.ts'
+import { respondAction } from './actions/respondAction.ts'
+import { approveAction } from './actions/approveAction.ts'
+import { rejectAction } from './actions/rejectAction.ts'
 
 if (!OCA.Approval) {
 	OCA.Approval = {

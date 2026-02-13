@@ -3,15 +3,16 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import CheckCircleSvgIcon from '@mdi/svg/svg/check-circle.svg?raw'
-import { Permission } from '@nextcloud/files'
+import CloseCircleSvgIcon from '@mdi/svg/svg/close-circle.svg?raw'
 import { states } from '../../states.js'
-import { approve } from '../helpers.js'
+import { Permission } from '@nextcloud/files'
+import type { IFileAction } from '@nextcloud/files'
+import { reject } from '../helpers.js'
 
-export const approveAction = {
-	id: 'approval-approve',
-	displayName: ({ nodes }) => {
-		return t('approval', 'Approve')
+export const rejectAction: IFileAction = {
+	id: 'approval-reject',
+	displayName: () => {
+		return t('approval', 'Reject')
 	},
 	enabled({ nodes, view }) {
 		return !OCA.Approval.actionIgnoreLists.includes(view.id)
@@ -21,21 +22,21 @@ export const approveAction = {
 		// && nodes.every(({ type }) => type === FileType.File)
 		// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},
-	iconSvgInline: () => CheckCircleSvgIcon,
+	iconSvgInline: () => CloseCircleSvgIcon,
 	order: 0,
 	async exec({ nodes }) {
 		const node = nodes[0]
 		try {
-			await approve(node)
+			await reject(node)
 		} catch (error) {
-			console.debug('Approve action failed')
+			console.debug('Reject action failed')
 		}
 		return null
 	},
 	async execBatch({ nodes }) {
 		const promises = nodes
 			.filter(node => node.attributes['approval-state'] === states.APPROVABLE)
-			.map(node => approve(node, false))
+			.map(node => reject(node, false))
 		const results = await Promise.allSettled(promises)
 		return results.map(promise => promise.status === 'fulfilled')
 	},

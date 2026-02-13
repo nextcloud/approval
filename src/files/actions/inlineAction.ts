@@ -7,10 +7,11 @@ import PendingIconSvg from '@mdi/svg/svg/dots-horizontal-circle-outline.svg?raw'
 import ApprovedIconSvg from '../../../img/checkmark-green.svg?raw'
 import RejectedIconSvg from '../../../img/close-red.svg?raw'
 import { Permission } from '@nextcloud/files'
+import type { IFileAction } from '@nextcloud/files'
 import { states } from '../../states.js'
 import { openApprovalInfoModal, updateNodeApprovalState } from '../helpers.js'
 
-export const inlineAction = {
+export const inlineAction: IFileAction = {
 	id: 'approval-inline',
 	title: ({ nodes }) => {
 		if (nodes.length !== 1) {
