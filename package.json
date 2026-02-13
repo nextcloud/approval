@@ -7,8 +7,9 @@
     "build": "NODE_ENV=production vite --mode production build",
     "dev": "NODE_ENV=development vite --mode development build",
     "watch": "NODE_ENV=development vite --mode development build --watch",
-    "lint": "eslint --ext .js,.vue src",
-    "lint:fix": "eslint --ext .js,.vue src --fix",
+    "lint": "eslint --ext .js,.ts,.vue src vite.config.js",
+    "lint:fix": "eslint --ext .js,.ts,.vue src vite.config.js --fix",
+    "check-types": "tsc --noEmit",
     "stylelint": "stylelint src/**/*.vue src/**/*.scss src/**/*.css",
     "stylelint:fix": "stylelint src/**/*.vue src/**/*.scss src/**/*.css --fix"
   },
@@ -50,6 +51,7 @@
     "vue-material-design-icons": "^5.1.1"
   },
   "devDependencies": {
+    "@types/node": "^24.0.0",
     "@nextcloud/babel-config": "^1.2.0",
     "@nextcloud/browserslist-config": "^3.0.1",
     "@nextcloud/eslint-config": "^8.4.2",
