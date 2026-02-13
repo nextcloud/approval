@@ -4,11 +4,11 @@
  */
 
 import CheckCircleSvgIcon from '@mdi/svg/svg/check-circle.svg?raw'
-import { Permission, FileAction } from '@nextcloud/files'
+import { Permission } from '@nextcloud/files'
 import { states } from '../../states.js'
 import { approve } from '../helpers.js'
 
-export const approveAction = new FileAction({
+export const approveAction = {
 	id: 'approval-approve',
 	displayName: ({ nodes }) => {
 		return t('approval', 'Approve')
@@ -39,4 +39,4 @@ export const approveAction = new FileAction({
 		const results = await Promise.allSettled(promises)
 		return results.map(promise => promise.status === 'fulfilled')
 	},
-})
+}

@@ -5,10 +5,10 @@
 
 import CloseCircleSvgIcon from '@mdi/svg/svg/close-circle.svg?raw'
 import { states } from '../../states.js'
-import { Permission, FileAction } from '@nextcloud/files'
+import { Permission } from '@nextcloud/files'
 import { reject } from '../helpers.js'
 
-export const rejectAction = new FileAction({
+export const rejectAction = {
 	id: 'approval-reject',
 	displayName: ({ nodes }) => {
 		return t('approval', 'Reject')
@@ -39,4 +39,4 @@ export const rejectAction = new FileAction({
 		const results = await Promise.allSettled(promises)
 		return results.map(promise => promise.status === 'fulfilled')
 	},
-})
+}
