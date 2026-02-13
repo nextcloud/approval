@@ -19,7 +19,7 @@ export const requestAction: IFileAction = {
 		}
 		return !OCA.Approval.actionIgnoreLists.includes(view.id)
 			&& !nodes.some(({ permissions }) => (permissions & Permission.READ) === 0)
-			&& OCA.Approval.userRules && OCA.Approval.userRules.length > 0
+			&& !!OCA.Approval.userRules?.length
 		// && nodes.every(({ type }) => type === FileType.File)
 		// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},

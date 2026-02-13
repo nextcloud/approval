@@ -2,8 +2,11 @@
  * SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
+// eslint-disable-next-line n/no-unpublished-import
 import { createAppConfig } from '@nextcloud/vite-config'
+// eslint-disable-next-line n/no-unpublished-import
 import eslint from 'vite-plugin-eslint'
+// eslint-disable-next-line n/no-unpublished-import
 import stylelint from 'vite-plugin-stylelint'
 import { join } from 'path'
 
