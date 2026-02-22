@@ -1,0 +1,12 @@
+{ "translations": {
+    "Cancel" : "болиулах",
+    "Create" : "Үүсгэх",
+    "Approve" : "Зөвшөөрөх",
+    "Reject" : "Татгалзах",
+    "you" : "та",
+    "Who?" : "Хэн?",
+    "No recommendations. Start typing." : "Санал байхгүй. Бичиж эхлээрэй.",
+    "No result." : "Үр дүн байхгүй.",
+    "Warning" : "Warning"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
