@@ -9,6 +9,8 @@
     "A guest user" : "Bir konuk kullanıcı",
     "Approval" : "Onay",
     "<strong>Approval</strong> events" : "<strong>Onay</strong> işlemleri",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "Onaylamaya çalıştığınız dosyanın veya klasörün içeriği güncel değil. Lütfen yeniden yükleyip yeniden gözden geçirin",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "Reddetmeye çalıştığınız dosyanın veya klasörün içeriği güncel değil. Lütfen yeniden yükleyip yeniden gözden geçirin",
     "Pending approvals" : "Onay bekleyen",
     "A file was approved" : "Bir dosya onaylandı",
     "A file was rejected" : "Bir dosya reddedildi",
