@@ -55,6 +55,8 @@ or for production:
 make build
 ```
 
+Release tarballs are hosted at [https://github.com/nextcloud-releases/calendar/releases](https://github.com/nextcloud-releases/approval).
+
 ## Screenshots
 
 ![1](https://github.com/nextcloud/approval/raw/main/img/screenshot_1.jpg)
