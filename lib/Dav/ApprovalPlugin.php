@@ -11,15 +11,19 @@ namespace OCA\Approval\Dav;
 
 use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Service\ApprovalService;
+use OCA\DAV\Connector\Sabre\Directory as SabreDirectory;
+use OCA\DAV\Connector\Sabre\Node as SabreNode;
+use Sabre\DAV\ICollection;
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
-
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 
 class ApprovalPlugin extends ServerPlugin {
 	/** @var Server */
 	protected $server;
+	protected ApprovalService $approvalService;
+	private array $cachedDirectories;
 
 	/**
 	 * Initializes the plugin and registers event handlers
@@ -29,7 +33,9 @@ class ApprovalPlugin extends ServerPlugin {
 	 */
 	public function initialize(Server $server) {
 		$this->server = $server;
-		$server->on('propFind', [$this, 'getApprovalState']);
+		$this->approvalService = \OC::$server->get(ApprovalService::class);
+		$server->on('propFind', [$this, 'propFind']);
+		$server->on('preloadCollection', $this->preloadCollection(...));
 	}
 
 
@@ -37,10 +43,16 @@ class ApprovalPlugin extends ServerPlugin {
 	 * @param PropFind $propFind
 	 * @param INode $node
 	 */
-	public function getApprovalState(PropFind $propFind, INode $node) {
-		// we instantiate the ApprovalService here to make sure sabre auth backend was triggered
-		$approvalService = \OC::$server->get(ApprovalService::class);
-		$approvalService->propFind($propFind, $node);
+	public function propFind(PropFind $propFind, INode $node) {
+		if (!$node instanceof SabreNode) {
+			return;
+		}
+		$nodeId = $node->getId();
+		$propFind->handle(
+			Application::DAV_PROPERTY_APPROVAL_STATE, function () use ($nodeId) {
+				return $this->approvalService->propFind($nodeId);
+			}
+		);
 	}
 
 	/**
@@ -71,5 +83,30 @@ class ApprovalPlugin extends ServerPlugin {
 			'name' => $this->getPluginName(),
 			'description' => 'Provides approval state in PROPFIND WebDav requests',
 		];
+	}
+
+	/**
+	 * @param PropFind $propFind
+	 * @param ICollection $collection
+	 * @return void
+	 */
+	public function preloadCollection(PropFind $propFind, ICollection $collection): void {
+		if (!($collection instanceof SabreNode)) {
+			return;
+		}
+		// need prefetch ?
+		if ($collection instanceof SabreDirectory
+			&& !isset($this->cachedDirectories[$collection->getPath()])
+			&& (!is_null($propFind->getStatus(Application::DAV_PROPERTY_APPROVAL_STATE))
+			)) {
+			// note: pre-fetching only supported for depth <= 1
+			$folderContent = $collection->getChildren();
+			$fileIds = [(int)$collection->getId()];
+			foreach ($folderContent as $info) {
+				$fileIds[] = (int)$info->getId();
+			}
+			$this->approvalService->preloadApprovalStates($fileIds);
+			$this->cachedDirectories[$collection->getPath()] = true;
+		}
 	}
 }
