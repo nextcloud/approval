@@ -34,7 +34,4 @@ export const respondAction: IFileAction = {
 		}
 		return null
 	},
-	async execBatch() {
-		return []
-	},
 }
