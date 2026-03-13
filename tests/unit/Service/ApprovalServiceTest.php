@@ -12,6 +12,7 @@ use ChristophWurst\Nextcloud\Testing\TestCase;
 use OCA\Approval\Activity\ActivityManager;
 use OCA\Approval\AppInfo\Application;
 use OCP\App\IAppManager;
+use OCP\Files\Config\IUserMountCache;
 use OCP\Files\IRootFolder;
 use OCP\ICacheFactory;
 use OCP\IDBConnection;
@@ -130,7 +131,8 @@ class ApprovalServiceTest extends TestCase {
 			$c->get(IShareManager::class),
 			$c->get(IL10N::class),
 			$c->get(LoggerInterface::class),
-			'user1'
+			'user1',
+			$c->get(IUserMountCache::class)
 		);
 
 		// add some tags

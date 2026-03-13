@@ -46,6 +46,7 @@ class ApprovalService {
 		private IL10N $l10n,
 		private LoggerInterface $logger,
 		private ?string $userId,
+		private IUserMountCache $userMountCache,
 	) {
 	}
 
@@ -552,8 +553,12 @@ class ApprovalService {
 		$label = $this->l10n->t('Please check my approval request');
 		$fileOwner = $node->getOwner()->getUID();
 
+		// Gets all users that have access to the file
+		$mounts = $this->userMountCache->getMountsForFileId($fileId);
+		$userIdsWithAccess = array_unique(array_map(static fn (ICachedMountFileInfo $fileInfo) => $fileInfo->getUser()->getUID(), $mounts));
+
 		foreach ($rule['approvers'] as $approver) {
-			if ($approver['type'] === 'user' && !$this->utilsService->userHasAccessTo($fileId, $approver['entityId'])) {
+			if ($approver['type'] === 'user' && !in_array($approver['entityId'], $userIdsWithAccess, true)) {
 				// create user share
 				if ($this->utilsService->createShare($node, IShare::TYPE_USER, $approver['entityId'], $fileOwner, $label)) {
 					$createdShares[] = $approver;
@@ -562,9 +567,26 @@ class ApprovalService {
 		}
 		if ($this->shareManager->allowGroupSharing()) {
 			foreach ($rule['approvers'] as $approver) {
-				if ($approver['type'] === 'group' && !$this->utilsService->groupHasAccessTo($fileOwner, $node, $approver['entityId'])) {
-					if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $fileOwner, $label)) {
-						$createdShares[] = $approver;
+				if ($approver['type'] === 'group' && $this->groupManager->groupExists($approver['entityId'])) {
+					$groupMembers = $this->groupManager->get($approver['entityId'])->getUsers();
+					$groupMemberIds = array_map(static fn (IUser $user) => $user->getUID(), $groupMembers);
+					$groupMembersThatNeedAccess = array_diff($groupMemberIds, $userIdsWithAccess);
+					// Create group share if everyone in the group needs access
+					if (count($groupMembersThatNeedAccess) === count($groupMemberIds)) {
+						if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $fileOwner, $label)) {
+							$createdShares[] = $approver;
+						}
+					} elseif (count($groupMembersThatNeedAccess) > 0) {
+						// Create user shares for each member that needs access
+						$success = true;
+						foreach ($groupMembersThatNeedAccess as $groupMemberId) {
+							if (!$this->utilsService->createShare($node, IShare::TYPE_USER, $groupMemberId, $fileOwner, $label)) {
+								$success = false;
+							}
+						}
+						if ($success) {
+							$createdShares[] = $approver;
+						}
 					}
 				}
 			}
