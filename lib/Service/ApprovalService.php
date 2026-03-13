@@ -529,17 +529,16 @@ class ApprovalService {
 	 * @param int $fileId
 	 * @param Rule $rule
 	 * @param string $userId
-	 * @return array list of created shares
+	 * @return void
 	 * @throws \OCP\Files\NotPermittedException
 	 * @throws \OC\User\NoUserException
 	 */
-	private function shareWithApprovers(int $fileId, array $rule, string $userId): array {
-		$createdShares = [];
+	private function shareWithApprovers(int $fileId, array $rule, string $userId): void {
 		// get node
 		$userFolder = $this->root->getUserFolder($userId);
 		$node = $userFolder->getFirstNodeById($fileId);
 		if ($node === null) {
-			return [];
+			return;
 		}
 		// get the node again from the owner's storage to avoid sharing permission issues
 		$ownerId = $node->getOwner()->getUID();
@@ -558,8 +557,8 @@ class ApprovalService {
 		foreach ($rule['approvers'] as $approver) {
 			if ($approver['type'] === 'user' && !in_array($approver['entityId'], $userIdsWithAccess, true)) {
 				// create user share
-				if ($this->utilsService->createShare($node, IShare::TYPE_USER, $approver['entityId'], $fileOwner, $label)) {
-					$createdShares[] = $approver;
+				if (!$this->utilsService->createShare($node, IShare::TYPE_USER, $approver['entityId'], $fileOwner, $label)) {
+					$this->logger->warning('Failed to create user share for file {fileId} with approver {approverId}', ['fileId' => $fileId, 'approverId' => $approver['entityId']]);
 				}
 			}
 		}
@@ -571,19 +570,15 @@ class ApprovalService {
 					$groupMembersThatNeedAccess = array_diff($groupMemberIds, $userIdsWithAccess);
 					// Create group share if everyone in the group needs access
 					if (count($groupMembersThatNeedAccess) === count($groupMemberIds)) {
-						if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $fileOwner, $label)) {
-							$createdShares[] = $approver;
+						if (!$this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $fileOwner, $label)) {
+							$this->logger->warning('Failed to create group share for file {fileId} with approver {approverId}', ['fileId' => $fileId, 'approverId' => $approver['entityId']]);
 						}
 					} elseif (count($groupMembersThatNeedAccess) > 0) {
 						// Create user shares for each member that needs access
-						$success = true;
 						foreach ($groupMembersThatNeedAccess as $groupMemberId) {
 							if (!$this->utilsService->createShare($node, IShare::TYPE_USER, $groupMemberId, $fileOwner, $label)) {
-								$success = false;
+								$this->logger->warning('Failed to create user share for file {fileId} with approver {approverId}', ['fileId' => $fileId, 'approverId' => $groupMemberId]);
 							}
-						}
-						if ($success) {
-							$createdShares[] = $approver;
 						}
 					}
 				}
@@ -594,14 +589,12 @@ class ApprovalService {
 		if ($circlesEnabled) {
 			foreach ($rule['approvers'] as $approver) {
 				if ($approver['type'] === 'circle') {
-					if ($this->utilsService->createShare($node, IShare::TYPE_CIRCLE, $approver['entityId'], $fileOwner, $label)) {
-						$createdShares[] = $approver;
+					if (!$this->utilsService->createShare($node, IShare::TYPE_CIRCLE, $approver['entityId'], $fileOwner, $label)) {
+						$this->logger->warning('Failed to create circle share for file {fileId} with approver {approverId}', ['fileId' => $fileId, 'approverId' => $approver['entityId']]);
 					}
 				}
 			}
 		}
-
-		return $createdShares;
 	}
 
 	/**
