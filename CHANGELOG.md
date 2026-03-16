@@ -8,6 +8,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.2.0 – 2026-03-16
+
+### Added
+
+- Only share to users and groups when necessary [#389](https://github.com/nextcloud/approval/pull/389) @lukasdotcom
+- Add support for Nextcloud 34
+
+### Changed
+
+- Implement typescript [#381](https://github.com/nextcloud/approval/pull/381) @lukasdotcom
+
+### Fixed
+
+- Improve testing [#392](https://github.com/nextcloud/approval/pull/392) @lukasdotcom
+- Ensure rich parameters are strings [#391](https://github.com/nextcloud/approval/pull/391) @SystemKeeper
+- Update README.md [#387](https://github.com/nextcloud/approval/pull/387) @Jerome-Herbinet
+- Hide batch action for respondAction [#382](https://github.com/nextcloud/approval/pull/382) @lukasdotcom
+- FileAction class was removed from @nextcloud/files [#380](https://github.com/nextcloud/approval/pull/380) @julien-nc
+- Show selected tags in workflow admin / Fix workflow when manually triggered via tag assignment [#376](https://github.com/nextcloud/approval/pull/376) @kesselb
+- Replace getById with getFirstNodeById [#375](https://github.com/nextcloud/approval/pull/375) @CarlSchwan
+
 ## 3.1.0 - 2026-01-23
 
 ### Changed

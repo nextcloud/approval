@@ -868,8 +868,8 @@ class ApprovalService {
 	 */
 	public function removeApprovalTags(Node $file): void {
 		$fileId = $file->getId();
-		$fileTags = $this->tagObjectMapper->getTagIdsForObjects([$fileId], 'files');
-		$fileTags = $fileTags[$fileId] ?? [];
+		$fileTags = $this->tagObjectMapper->getTagIdsForObjects([(string)$fileId], 'files');
+		$fileTags = $fileTags[(string)$fileId] ?? [];
 		if (count($fileTags) > 0) {
 			$tags = $this->ruleService->filterApprovalTags($fileTags);
 			foreach ($tags as $tag) {
