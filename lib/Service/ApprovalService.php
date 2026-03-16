@@ -446,6 +446,10 @@ class ApprovalService {
 			return ['error' => $this->l10n->t('You do not have access to this file')];
 		}
 
+		if ($createShares && !$this->utilsService->userCanShareFile($fileId, $userId)) {
+			return ['error' => $this->l10n->t('You can not share this file')];
+		}
+
 		$rule = $this->ruleService->getRule($ruleId);
 		if (is_null($rule)) {
 			return ['error' => $this->l10n->t('Rule does not exist')];
