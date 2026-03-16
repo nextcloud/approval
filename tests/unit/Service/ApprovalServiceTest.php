@@ -23,6 +23,8 @@ use OCP\Notification\IManager as INotificationManager;
 
 use OCP\Share\IManager as IShareManager;
 
+use OCP\Share\IShare;
+
 use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\ISystemTagObjectMapper;
 
@@ -383,5 +385,42 @@ class ApprovalServiceTest extends TestCase {
 		$this->approvalService->reject($fileToReject->getId(), 'user1');
 		$stateForUser1 = $this->approvalService->getApprovalState($fileToReject->getId(), 'user1');
 		$this->assertEquals(Application::STATE_REJECTED, $stateForUser1['state']);
+	}
+
+	public function testRequestWithCreateSharesWhenUserCannotShareReturnsError(): void {
+		// Share a file from user1 to user2 with read-only (no share permission).
+		// user2 has access but cannot share -> request with createShares true must return error.
+		$uf1 = $this->root->getUserFolder('user1');
+		$file = $uf1->newFile('file_no_share.txt', 'content');
+		$shared = $this->utilsService->createShare(
+			$file,
+			IShare::TYPE_USER,
+			'user2',
+			'user1',
+			'label'
+		);
+		$this->assertTrue($shared);
+
+		// Add some tags
+		$r = $this->utilsService->createTag('pending4');
+		$idTagPending4 = $r['id'];
+		$r = $this->utilsService->createTag('approved4');
+		$idTagApproved4 = $r['id'];
+		$r = $this->utilsService->createTag('rejected4');
+		$idTagRejected4 = $r['id'];
+
+		$r = $this->ruleService->createRule(
+			$idTagPending4, $idTagApproved4, $idTagRejected4,
+			[['entityId' => 'user3', 'type' => 'user']],
+			[['entityId' => 'user2', 'type' => 'user']],
+			'user 2 request, 3 approves',
+			false
+		);
+		$ruleId = $r['id'];
+
+		$result = $this->approvalService->request($file->getId(), $ruleId, 'user2', true);
+		$this->assertArrayHasKey('error', $result);
+
+		$this->ruleService->deleteRule($ruleId);
 	}
 }
