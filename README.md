@@ -34,6 +34,8 @@ Workflows can be chained. For example, if the approved tag of a workflow A is us
 then once a file is approved by the workflow A, it becomes pending for the B one. For an example of a chain involving a leave
 request that needs to be approved by a manager and then the department head, there is a screenshot below.
 
+**Notice**: If the approvers are a group the file may be shared with the individual users of the group instead of the group.
+
 ![Workflow chain](https://github.com/nextcloud/approval/raw/main/img/screenshot_chained.jpg)
 
 ## Tag assignment

@@ -14,7 +14,6 @@ use OCA\Circles\Exceptions\CircleNotFoundException;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
-
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Share\IManager as IShareManager;
@@ -132,27 +131,6 @@ class UtilsService {
 			$node = $userFolder->getFirstNodeById($fileId);
 			return $node !== null;
 		}
-		return false;
-	}
-
-	/**
-	 * Return false if this folder and no parents are shared with that group
-	 *
-	 * @param string $userId
-	 * @param Node $fileNode
-	 * @param string|null $groupId
-	 * @return bool
-	 */
-	public function groupHasAccessTo(string $userId, Node $fileNode, ?string $groupId): bool {
-		do {
-			$groupShares = $this->shareManager->getSharesBy($userId, ISHARE::TYPE_GROUP, $fileNode);
-			foreach ($groupShares as $groupShare) {
-				if ($groupShare->getSharedWith() === $groupId) {
-					return true;
-				}
-			}
-			$fileNode = $fileNode->getParent();
-		} while ($fileNode->getParentId() !== -1);
 		return false;
 	}
 
