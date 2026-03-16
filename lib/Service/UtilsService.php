@@ -14,7 +14,6 @@ use OCA\Circles\Exceptions\CircleNotFoundException;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
-
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Share\IManager as IShareManager;
@@ -153,6 +152,23 @@ class UtilsService {
 			}
 			$fileNode = $fileNode->getParent();
 		} while ($fileNode->getParentId() !== -1);
+		return false;
+	}
+
+	/**
+	 * Check if user can share a given file
+	 *
+	 * @param int $fileId
+	 * @param string|null $userId
+	 * @return bool
+	 */
+	public function userCanShareFile(int $fileId, ?string $userId): bool {
+		$user = $this->userManager->get($userId);
+		if ($user instanceof IUser) {
+			$userFolder = $this->root->getUserFolder($userId);
+			$node = $userFolder->getFirstNodeById($fileId);
+			return $node !== null && $node->isShareable();
+		}
 		return false;
 	}
 

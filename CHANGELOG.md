@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.7.2 – 2026-03-16
+
+### Fixed
+
+- Improve testing [#392](https://github.com/nextcloud/approval/pull/392) @lukasdotcom
+
 ## 2.7.1 - 2026-01-23
 
 ### Fixed
