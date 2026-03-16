@@ -68,14 +68,14 @@ class Notifier implements INotifier {
 				if ($user instanceof IUser) {
 					$richSubjectUser = [
 						'type' => 'user',
-						'id' => $p['approverId'],
+						'id' => (string)$p['approverId'],
 						'name' => $user->getDisplayName(),
 					];
 
 					$linkToFile = $this->url->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileid' => $p['fileId']]);
 					$richSubjectNode = [
 						'type' => 'file',
-						'id' => $p['fileId'],
+						'id' => (string)$p['fileId'],
 						'name' => $p['fileName'],
 						'path' => trim($p['relativePath'], '/'),
 						'link' => $linkToFile,
@@ -122,14 +122,14 @@ class Notifier implements INotifier {
 				if ($user instanceof IUser) {
 					$richSubjectUser = [
 						'type' => 'user',
-						'id' => $p['requesterId'],
+						'id' => (string)$p['requesterId'],
 						'name' => $user->getDisplayName(),
 					];
 
 					$linkToFile = $this->url->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileid' => $p['fileId']]);
 					$richSubjectNode = [
 						'type' => 'file',
-						'id' => $p['fileId'],
+						'id' => (string)$p['fileId'],
 						'name' => $p['fileName'],
 						'path' => trim($p['relativePath'], '/'),
 						'link' => $linkToFile,
