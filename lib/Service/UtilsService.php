@@ -135,6 +135,23 @@ class UtilsService {
 	}
 
 	/**
+	 * Check if user can share a given file
+	 *
+	 * @param int $fileId
+	 * @param string|null $userId
+	 * @return bool
+	 */
+	public function userCanShareFile(int $fileId, ?string $userId): bool {
+		$user = $this->userManager->get($userId);
+		if ($user instanceof IUser) {
+			$userFolder = $this->root->getUserFolder($userId);
+			$node = $userFolder->getFirstNodeById($fileId);
+			return $node !== null && $node->isShareable();
+		}
+		return false;
+	}
+
+	/**
 	 * @param string $name of the new tag
 	 * @return array
 	 */
