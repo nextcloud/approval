@@ -452,7 +452,7 @@ class ApprovalService {
 		}
 
 		if ($createShares && !$this->utilsService->userCanShareFile($fileId, $userId)) {
-			return ['error' => $this->l10n->t('You can not share this file')];
+			return ['error' => $this->l10n->t('You cannot share this file')];
 		}
 
 		$rule = $this->ruleService->getRule($ruleId);
