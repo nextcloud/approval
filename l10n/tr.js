@@ -26,7 +26,6 @@ OC.L10N.register(
     "%2$s requested your approval for %1$s" : "%2$s, %1$s için onayınızı istedi",
     "{user} requested your approval for {node}" : "{user}, {node} düğümü için onayınızı istedi",
     "You do not have access to this file" : "Bu dosyaya erişme izniniz yok",
-    "You can not share this file" : "Bu dosyayı paylaşamazsınız",
     "Rule does not exist" : "Kural bulunamadı",
     "This element is not shared with any user who is authorized to approve it" : "Bu bileşen, onu onaylama yetkisi olan herhangi bir kullanıcıyla paylaşılmaz",
     "Approval has already been requested with this rule for this file" : "Bu dosya için zaten bu kuralla onay istendi",
@@ -121,6 +120,7 @@ OC.L10N.register(
     "You approved {name}" : "{name} kullanıcısını onayladınız",
     "Failed to approve {name}" : "Onaylanamadı {name}",
     "You rejected {name}" : "{name} kullanıcısını reddettiniz",
-    "Failed to reject {name}" : "Reddedilemedi {name}"
+    "Failed to reject {name}" : "Reddedilemedi {name}",
+    "You can not share this file" : "Bu dosyayı paylaşamazsınız"
 },
 "nplurals=2; plural=(n > 1);");

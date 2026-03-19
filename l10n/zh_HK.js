@@ -120,6 +120,7 @@ OC.L10N.register(
     "You approved {name}" : "您批准了 {name}",
     "Failed to approve {name}" : "批准 {name} 失敗",
     "You rejected {name}" : "您不批准 {name}",
-    "Failed to reject {name}" : "拒絕 {name} 失敗"
+    "Failed to reject {name}" : "拒絕 {name} 失敗",
+    "You can not share this file" : "您無法分享此資料夾"
 },
 "nplurals=1; plural=0;");
