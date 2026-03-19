@@ -26,7 +26,6 @@ OC.L10N.register(
     "%2$s requested your approval for %1$s" : "%2$s hat deine Genehmigung für %1$s angefordert",
     "{user} requested your approval for {node}" : "{user} hat deine Genehmigung für {node} angefordert",
     "You do not have access to this file" : "Du hast keinen Zugriff auf diese Datei",
-    "You can not share this file" : "Du darfst diese Datei nicht teilen",
     "Rule does not exist" : "Regel existiert nicht",
     "This element is not shared with any user who is authorized to approve it" : "Dieses Element wurde mit keinem Benutzer geteilt, der autorisiert ist es zu genehmigen.",
     "Approval has already been requested with this rule for this file" : "Die Genehmigung wurde bereits mit dieser Regel für diese Datei angefragt.",
@@ -121,6 +120,7 @@ OC.L10N.register(
     "You approved {name}" : "Du hast {name} genehmigt",
     "Failed to approve {name}" : "{name} konnte nicht genehmigt werden",
     "You rejected {name}" : "Du hast {name} abgelehnt",
-    "Failed to reject {name}" : "{name} konnte nicht abgelehnt werden "
+    "Failed to reject {name}" : "{name} konnte nicht abgelehnt werden ",
+    "You can not share this file" : "Du darfst diese Datei nicht teilen"
 },
 "nplurals=2; plural=(n != 1);");
