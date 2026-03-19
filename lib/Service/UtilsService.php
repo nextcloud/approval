@@ -135,27 +135,6 @@ class UtilsService {
 	}
 
 	/**
-	 * Return false if this folder and no parents are shared with that group
-	 *
-	 * @param string $userId
-	 * @param Node $fileNode
-	 * @param string|null $groupId
-	 * @return bool
-	 */
-	public function groupHasAccessTo(string $userId, Node $fileNode, ?string $groupId): bool {
-		do {
-			$groupShares = $this->shareManager->getSharesBy($userId, ISHARE::TYPE_GROUP, $fileNode);
-			foreach ($groupShares as $groupShare) {
-				if ($groupShare->getSharedWith() === $groupId) {
-					return true;
-				}
-			}
-			$fileNode = $fileNode->getParent();
-		} while ($fileNode->getParentId() !== -1);
-		return false;
-	}
-
-	/**
 	 * Check if user can share a given file
 	 *
 	 * @param int $fileId

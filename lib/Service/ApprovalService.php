@@ -13,6 +13,8 @@ use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Exceptions\OutdatedEtagException;
 use OCA\DAV\Connector\Sabre\Node as SabreNode;
 use OCP\App\IAppManager;
+use OCP\Files\Config\ICachedMountFileInfo;
+use OCP\Files\Config\IUserMountCache;
 use OCP\Files\FileInfo;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
@@ -547,7 +549,7 @@ class ApprovalService {
 				$node = $ownerNodeResults[0];
 			}
 		} else {
-			return [];
+			return;
 		}
 		$label = $this->l10n->t('Please check my approval request');
 		$fileOwner = $node->getOwner()->getUID();
