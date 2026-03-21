@@ -20,7 +20,7 @@
 		"psalm:update-baseline:force": "psalm --threads=1 --update-baseline --set-baseline=tests/psalm-baseline.xml"
 	},
 	"require-dev": {
-		"christophwurst/nextcloud_testing": "^1.0.1",
+		"christophwurst/nextcloud_testing": "^2.0.0",
 		"nextcloud/coding-standard": "^1.3.2",
 		"phpunit/phpunit": "^9",
 		"nextcloud/ocp": "dev-master"
