@@ -26,6 +26,7 @@ OC.L10N.register(
     "%2$s requested your approval for %1$s" : "%2$s požádal(a) o vaše schválení u %1$s",
     "{user} requested your approval for {node}" : "{user} požádala o vaše schválení pro {node}",
     "You do not have access to this file" : "K tomuto souboru nemáte přístup",
+    "You cannot share this file" : "Tento soubor nemůžete nasdílet",
     "Rule does not exist" : "Pravidlo neexistuje",
     "This element is not shared with any user who is authorized to approve it" : "Tento prvek není sdílen s žádným z uživatelů, který je pověřen ho schválit",
     "Approval has already been requested with this rule for this file" : "O schválení už bylo požádáno s tímto pravidlem pro tento soubor",
@@ -120,6 +121,7 @@ OC.L10N.register(
     "You approved {name}" : "Schválili jste {name}",
     "Failed to approve {name}" : "Nepodařilo se schválit {name}",
     "You rejected {name}" : "Zamítli jste {name}",
-    "Failed to reject {name}" : "Nepodařilo se zamítnout {name}"
+    "Failed to reject {name}" : "Nepodařilo se zamítnout {name}",
+    "You can not share this file" : "Tento soubor nemůžete nasdílet"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");
