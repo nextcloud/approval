@@ -26,6 +26,7 @@ OC.L10N.register(
     "%2$s requested your approval for %1$s" : "%2$s requested your approval for %1$s",
     "{user} requested your approval for {node}" : "{user} requested your approval for {node}",
     "You do not have access to this file" : "You do not have access to this file",
+    "You cannot share this file" : "You cannot share this file",
     "Rule does not exist" : "Rule does not exist",
     "This element is not shared with any user who is authorized to approve it" : "This element is not shared with any user who is authorised to approve it",
     "Approval has already been requested with this rule for this file" : "Approval has already been requested with this rule for this file",
