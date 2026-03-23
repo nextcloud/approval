@@ -9,6 +9,8 @@
     "A guest user" : "Un utilisateur invité",
     "Approval" : "Approbation",
     "<strong>Approval</strong> events" : "Activité d'<strong>approbation</strong> ",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "Le fichier/dossier que vous essayer d'approuver a un contenu obsolète, veuillez le recharger et le réviser à nouveau",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "Le fichier/dossier que vous essayer de rejeter a un contenu obsolète, veuillez le recharger et le réviser à nouveau",
     "Pending approvals" : "Approbations en attente",
     "A file was approved" : "Un fichier a été approuvé",
     "A file was rejected" : "Un fichier a été rejeté",
@@ -22,6 +24,7 @@
     "%2$s requested your approval for %1$s" : "%2$s a demandé votre approbation pour %1$s",
     "{user} requested your approval for {node}" : "{user} a demandé votre approbation pour {node}",
     "You do not have access to this file" : "Vous n'avez pas accès à ce fichier",
+    "You cannot share this file" : "Vous ne pouvez pas partager ce fichier",
     "Rule does not exist" : "Cette règle n'existe pas",
     "This element is not shared with any user who is authorized to approve it" : "Cet élément n'est partagé à aucun utilisateur autorisé à l'approuver",
     "Approval has already been requested with this rule for this file" : "L'approbation a déjà été demandée avec cette règle pour ce fichier",
@@ -116,6 +119,7 @@
     "You approved {name}" : "Vous avez approuvé {name}",
     "Failed to approve {name}" : "Impossible d'approuver {name}",
     "You rejected {name}" : "Vous avez refusé {name}",
-    "Failed to reject {name}" : "Impossible de rejeter {name}"
+    "Failed to reject {name}" : "Impossible de rejeter {name}",
+    "You can not share this file" : "Vous ne pouvez pas partager ce fichier"
 },"pluralForm" :"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }
