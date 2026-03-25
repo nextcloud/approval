@@ -78,12 +78,12 @@ class ApprovalController extends OCSController {
 	 * Approve a file
 	 *
 	 * @param int $fileId
+	 * @param string $etag
 	 * @param string|null $message
-	 * @param string|null $etag
 	 * @return DataResponse
 	 */
 	#[NoAdminRequired]
-	public function approve(int $fileId, ?string $message = '', ?string $etag = ''): DataResponse {
+	public function approve(int $fileId, string $etag, ?string $message = ''): DataResponse {
 		try {
 			if ($this->approvalService->approve($fileId, $this->userId, $message, $etag)) {
 				return new DataResponse([]);
@@ -98,12 +98,12 @@ class ApprovalController extends OCSController {
 	 * Reject a file
 	 *
 	 * @param int $fileId
+	 * @param string $etag
 	 * @param string|null $message
-	 * @param string|null $etag
 	 * @return DataResponse
 	 */
 	#[NoAdminRequired]
-	public function reject(int $fileId, ?string $message = '', ?string $etag = ''): DataResponse {
+	public function reject(int $fileId, string $etag, ?string $message = ''): DataResponse {
 		try {
 			if ($this->approvalService->reject($fileId, $this->userId, $message, $etag)) {
 				return new DataResponse([]);
