@@ -20,9 +20,12 @@ OC.L10N.register(
     "{user} approved {node}" : "{user} kinnitas „{node}“ faili",
     "{user} rejected {node}" : "{user} lükkas tagasi „{node}“ faili",
     "You do not have access to this file" : "Sul puuduvad õigused selle faili kasutamiseks",
+    "You cannot share this file" : "Sa ei saa seda faili jagada",
     "Rule does not exist" : "Reeglit pole olemas",
     "Let users approve or reject files" : "Lahendus failide kinnitamiseks või tagasi lükkamseks",
     "Cancel" : "Loobu",
+    "Create workflow" : "Lisa töövoog",
+    "Delete workflow" : "Kustuta töövoog",
     "Create new restricted tag" : "Loo uus piirangutega silt",
     "Create" : "Loo",
     "Approve" : "Kinnita",
@@ -34,6 +37,8 @@ OC.L10N.register(
     "Rejected" : "Tagasilükatud",
     "Approval requested" : "Kinnituspäring",
     "you" : "sina",
+    "The related approval workflow is: {ruleDescription}" : "Vastav kinnituse töövoog on: {ruleDescription}",
+    "This user requested your approval" : "Kasutaja palus sinult kinnitust",
     "Approved by {user}" : "{user} kasutaja kinnitatud",
     "Approved by you" : "Sinu kinnitatud",
     "Rejected by {user}" : "{user} lükkas tagasi",
@@ -43,6 +48,7 @@ OC.L10N.register(
     "Reason for approval: {message}" : "Kinnituse selgitus: {message}",
     "Reason for rejection: {message}" : "Keeldumise põhjus: {message}",
     "Reason (optional)" : "Põhjus (pole kohustuslik)",
+    "There is no approval workflow allowing you to request approval." : "Pole ühtegi kinnituse töövoogu, mis lubaks sul kinnitust küsida.",
     "Approval information" : "Kinnitamise teave",
     "Who?" : "Kes?",
     "Impossible to get user/group/circle list" : "Kasutajate, gruppide või tiimide loendi laadimine ei õnnestu",
@@ -62,6 +68,7 @@ OC.L10N.register(
     "Warning" : "Hoiatus",
     "You approved {name}" : "Sina kinnitasid „{name}“ faili",
     "Failed to approve {name}" : "„{name}“ faili kinnitamine ei õnnestunud",
-    "You rejected {name}" : "Sa lükkasid tagasi „{name}“ faili"
+    "You rejected {name}" : "Sa lükkasid tagasi „{name}“ faili",
+    "You can not share this file" : "Sa ei saa seda faili jagada"
 },
 "nplurals=2; plural=(n != 1);");
