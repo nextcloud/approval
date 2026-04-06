@@ -188,7 +188,7 @@ export default {
 			return this.userId !== getCurrentUser().uid
 		},
 		canRequestApproval() {
-			return this.userRules.length > 0 && this.state !== states.APPROVED
+			return this.userRules.length > 0
 		},
 		ruleText() {
 			if (

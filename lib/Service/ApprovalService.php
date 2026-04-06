@@ -446,16 +446,7 @@ class ApprovalService {
 	 * @throws \OCP\Files\NotPermittedException
 	 * @throws \OC\User\NoUserException
 	 */
-	public function request(int $fileId, int $ruleId, ?string $userId, bool $createShares) {
-
-    $state = $this->getApprovalState($fileId, $userId);
-
-    if ($state['state'] === \OCA\Approval\AppInfo\Application::STATE_APPROVED) {
-        return [
-            'error' => 'File already approved. Cannot request approval again.'
-        ];
-    }
-
+	public function request(int $fileId, int $ruleId, ?string $userId, bool $createShares): array {
 		if (!$this->utilsService->userHasAccessTo($fileId, $userId)) {
 			return ['error' => $this->l10n->t('You do not have access to this file')];
 		}
@@ -470,6 +461,9 @@ class ApprovalService {
 		}
 
 		if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
+			if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagApproved'])) {
+				return ['error' => $this->l10n->t('Approval has already been granted with this rule for this file')];
+			}
 			// only request if it has not yet been requested for this rule
 			if (!$this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagPending'])) {
 				if ($createShares) {
