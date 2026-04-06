@@ -461,6 +461,9 @@ class ApprovalService {
 		}
 
 		if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
+			if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagApproved'])) {
+				return ['error' => $this->l10n->t('Approval has already been granted with this rule for this file')];
+			}
 			// only request if it has not yet been requested for this rule
 			if (!$this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagPending'])) {
 				if ($createShares) {
