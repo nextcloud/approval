@@ -11,6 +11,8 @@ OC.L10N.register(
     "A guest user" : "Egy vendég felhasználó",
     "Approval" : "Jóváhagyás",
     "<strong>Approval</strong> events" : "<strong>Jóváhagyási</strong> események",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "A fájl/mappa, melyet megpróbált jóváhagyni, elavult tartalommal rendelkezik, töltse újra, és nézze át újra",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "A fájl/mappa, melyet megpróbált elutasítani, elavult tartalommal rendelkezik, töltse újra, és nézze át újra",
     "Pending approvals" : "Függőben lévő jóváhagyások",
     "A file was approved" : "A fájl jóvá lett hagyva",
     "A file was rejected" : "A fájl el lett utasítva",
@@ -24,6 +26,7 @@ OC.L10N.register(
     "%2$s requested your approval for %1$s" : "%2$s a jóváhagyását kérte ehhez: %1$s",
     "{user} requested your approval for {node}" : "{user} a jóváhagyását kérte ehhez: {node}",
     "You do not have access to this file" : "Nincs hozzáférése ehhez a fájlhoz",
+    "You cannot share this file" : "Nem oszthatja meg ezt a fájlt",
     "Rule does not exist" : "A szabály nem létezik",
     "This element is not shared with any user who is authorized to approve it" : "Ez az elem nem lesz megosztva senki mással, aki jogosult a jóváhagyására",
     "Approval has already been requested with this rule for this file" : "Már kértek jóváhagyást ezen szabály alapján ehhez a fájlhoz",
@@ -118,6 +121,7 @@ OC.L10N.register(
     "You approved {name}" : "Jóváhagyta: {name}",
     "Failed to approve {name}" : "A(z) {name} jóváhagyása sikertelen",
     "You rejected {name}" : "Elutasította: {name}",
-    "Failed to reject {name}" : "A(z) {name} elutasítása sikertelen"
+    "Failed to reject {name}" : "A(z) {name} elutasítása sikertelen",
+    "You can not share this file" : "Nem oszthatja meg ezt a fájlt"
 },
 "nplurals=2; plural=(n != 1);");
