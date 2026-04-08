@@ -28,6 +28,7 @@ OC.L10N.register(
     "You do not have access to this file" : "Nincs hozzáférése ehhez a fájlhoz",
     "You cannot share this file" : "Nem oszthatja meg ezt a fájlt",
     "Rule does not exist" : "A szabály nem létezik",
+    "Approval has already been granted with this rule for this file" : "Már jóváhagyást adtak ezen szabály alapján ehhez a fájlhoz",
     "This element is not shared with any user who is authorized to approve it" : "Ez az elem nem lesz megosztva senki mással, aki jogosult a jóváhagyására",
     "Approval has already been requested with this rule for this file" : "Már kértek jóváhagyást ezen szabály alapján ehhez a fájlhoz",
     "You are not authorized to request with this rule" : "Nincs jogosultsága, hogy ezen szabály alapján adjon fel kérést",
