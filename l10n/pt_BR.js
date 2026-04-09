@@ -28,6 +28,7 @@ OC.L10N.register(
     "You do not have access to this file" : "Você não tem acesso a este arquivo",
     "You cannot share this file" : "Você não pode compartilhar este arquivo",
     "Rule does not exist" : "Regra não existe",
+    "Approval has already been granted with this rule for this file" : "A aprovação já foi concedida para este arquivo de acordo com esta regra",
     "This element is not shared with any user who is authorized to approve it" : "Este elemento não é compartilhado com nenhum usuário autorizado para aprová-lo",
     "Approval has already been requested with this rule for this file" : "A aprovação já foi solicitada com esta regra para este arquivo",
     "You are not authorized to request with this rule" : "Você não está autorizado a solicitar com esta regra",
