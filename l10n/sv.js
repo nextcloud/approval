@@ -11,6 +11,8 @@ OC.L10N.register(
     "A guest user" : "En gästanvändare",
     "Approval" : "Godkännande",
     "<strong>Approval</strong> events" : "<strong>Godkännanden</strong>",
+    "The file/folder you tried to approve has an outdated content, please reload and review it again" : "Filen/mappen du försökte godkänna har föråldrat innehåll. Ladda om och granska den igen.",
+    "The file/folder you tried to reject has an outdated content, please reload and review it again" : "Filen/mappen du försökte avslå har föråldrat innehåll. Ladda om och granska den igen.",
     "Pending approvals" : "Inväntar godkännande",
     "A file was approved" : "En fil godkändes",
     "A file was rejected" : "En fil avvisades",
@@ -24,7 +26,9 @@ OC.L10N.register(
     "%2$s requested your approval for %1$s" : "%2$s begärde ditt godkännande av %1$s",
     "{user} requested your approval for {node}" : "{user} begärde ditt godkännande av {node}",
     "You do not have access to this file" : "Du har inte åtkomst till denna fil",
+    "You cannot share this file" : "Du kan inte dela denna fil",
     "Rule does not exist" : "Regeln finns inte",
+    "Approval has already been granted with this rule for this file" : "Godkännande har redan beviljats med denna regel för denna fil",
     "This element is not shared with any user who is authorized to approve it" : "Detta element delas inte med någon användare som har rättigheter att godkänna det",
     "Approval has already been requested with this rule for this file" : "Godkännande av denna regel för denna fil har redan begärts",
     "You are not authorized to request with this rule" : "Du har inte rättigheter att skicka begäran med denna regel",
@@ -118,6 +122,7 @@ OC.L10N.register(
     "You approved {name}" : "Du godkände {name}",
     "Failed to approve {name}" : "Kunde inte godkänna {name}",
     "You rejected {name}" : "Du avvisade {name}",
-    "Failed to reject {name}" : "Kunde inte avvisa {name}"
+    "Failed to reject {name}" : "Kunde inte avvisa {name}",
+    "You can not share this file" : "Du kan inte dela denna fil"
 },
 "nplurals=2; plural=(n != 1);");
