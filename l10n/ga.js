@@ -28,6 +28,7 @@ OC.L10N.register(
     "You do not have access to this file" : "Níl rochtain agat ar an gcomhad seo",
     "You cannot share this file" : "Ní féidir leat an comhad seo a roinnt",
     "Rule does not exist" : "Ní riail ann",
+    "Approval has already been granted with this rule for this file" : "Tá cead tugtha cheana féin don chomhad seo leis an riail seo",
     "This element is not shared with any user who is authorized to approve it" : "Ní roinntear an eilimint seo le haon úsáideoir atá údaraithe chun é a cheadú",
     "Approval has already been requested with this rule for this file" : "Iarradh ceadú leis an riail seo don chomhad seo cheana féin",
     "You are not authorized to request with this rule" : "Níl tú údaraithe iarratas a dhéanamh leis an riail seo",
