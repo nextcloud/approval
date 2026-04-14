@@ -8,6 +8,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.2.1 - 2026-04-14
+
+### Changed
+
+- Change api signature to require etag [#403](https://github.com/nextcloud/approval/pull/403) @lukasdotcom
+
+### Fixed
+
+- Prevent re-requesting approval for already approved files [#399](https://github.com/nextcloud/approval/pull/399) @Amitdwivedi22
+- Fix grammar in error message for file sharing [#400](https://github.com/nextcloud/approval/pull/400) @rakekniven
+
 ## 3.2.0 – 2026-03-16
 
 ### Added
