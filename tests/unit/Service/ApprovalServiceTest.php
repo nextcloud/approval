@@ -20,14 +20,10 @@ use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IUserManager;
 use OCP\Notification\IManager as INotificationManager;
-
 use OCP\Share\IManager as IShareManager;
-
 use OCP\Share\IShare;
-
 use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\ISystemTagObjectMapper;
-
 use Psr\Log\LoggerInterface;
 
 class ApprovalServiceTest extends TestCase {
@@ -365,24 +361,24 @@ class ApprovalServiceTest extends TestCase {
 		// approve failures
 		// tag does not exist
 		$this->ruleService->saveRule($idRule3, $idTagPending3, -1, $idTagRejected3, $approvers, $requesters, $description, $unapproveWhenModified);
-		$result = $this->approvalService->approve($fileToReject->getId(), 'user1');
+		$result = $this->approvalService->approve($fileToReject->getId(), 'user1', $fileToReject->getEtag());
 		$this->assertFalse($result);
 		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approvers, $requesters, $description, $unapproveWhenModified);
 
 		// approve
-		$this->approvalService->approve($fileToApprove->getId(), 'user1');
+		$this->approvalService->approve($fileToApprove->getId(), 'user1', $fileToApprove->getEtag());
 		$stateForUser1 = $this->approvalService->getApprovalState($fileToApprove->getId(), 'user1');
 		$this->assertEquals(Application::STATE_APPROVED, $stateForUser1['state']);
 
 		// reject failures
 		// tag does not exist
 		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, -1, $approvers, $requesters, $description, $unapproveWhenModified);
-		$result = $this->approvalService->reject($fileToReject->getId(), 'user1');
+		$result = $this->approvalService->reject($fileToReject->getId(), 'user1', $fileToReject->getEtag());
 		$this->assertFalse($result);
 		$this->ruleService->saveRule($idRule3, $idTagPending3, $idTagApproved3, $idTagRejected3, $approvers, $requesters, $description, $unapproveWhenModified);
 
 		// reject
-		$this->approvalService->reject($fileToReject->getId(), 'user1');
+		$this->approvalService->reject($fileToReject->getId(), 'user1', $fileToReject->getEtag());
 		$stateForUser1 = $this->approvalService->getApprovalState($fileToReject->getId(), 'user1');
 		$this->assertEquals(Application::STATE_REJECTED, $stateForUser1['state']);
 	}
