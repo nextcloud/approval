@@ -351,14 +351,14 @@ class ApprovalService {
 	 *
 	 * @param int $fileId
 	 * @param string|null $userId
+	 * @param string $etag
 	 * @param string $message
-	 * @param string $etag optional etag of the file to check if it has changed since approval was requested
 	 * @return bool success
 	 * @throws OutdatedEtagException
 	 */
-	public function approve(int $fileId, ?string $userId, string $message = '', string $etag = ''): bool {
+	public function approve(int $fileId, ?string $userId, string $etag, string $message = ''): bool {
 		$fileState = $this->getApprovalState($fileId, $userId);
-		if ($etag !== '' && $etag !== $this->getEtag($fileId)) {
+		if ($etag !== $this->getEtag($fileId)) {
 			throw new OutdatedEtagException();
 		}
 		// if file has pending tag and user is authorized to approve it
@@ -394,14 +394,14 @@ class ApprovalService {
 	 *
 	 * @param int $fileId
 	 * @param string|null $userId
+	 * @param string $etag
 	 * @param string $message
-	 * @param string $etag optional etag of the file to check if it has changed since approval was requested
 	 * @return bool success
 	 * @throws OutdatedEtagException
 	 */
-	public function reject(int $fileId, ?string $userId, string $message = '', string $etag = ''): bool {
+	public function reject(int $fileId, ?string $userId, string $etag, string $message = ''): bool {
 		$fileState = $this->getApprovalState($fileId, $userId);
-		if ($etag !== '' && $etag !== $this->getEtag($fileId)) {
+		if ($etag !== $this->getEtag($fileId)) {
 			throw new OutdatedEtagException();
 		}
 		// if file has pending tag and user is authorized to approve it
