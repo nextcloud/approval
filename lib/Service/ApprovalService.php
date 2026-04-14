@@ -14,6 +14,7 @@ namespace OCA\Approval\Service;
 use DateTime;
 use OCA\Approval\Activity\ActivityManager;
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\Exceptions\OutdatedEtagException;
 use OCA\DAV\Connector\Sabre\Node as SabreNode;
 use OCP\App\IAppManager;
 use OCP\Files\FileInfo;
@@ -22,15 +23,12 @@ use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IUser;
 use OCP\IUserManager;
-
 use OCP\Notification\IManager as INotificationManager;
 use OCP\Share\IManager as IShareManager;
-
 use OCP\Share\IShare;
 use OCP\SystemTag\ISystemTagObjectMapper;
 use OCP\SystemTag\TagNotFoundException;
 use Psr\Log\LoggerInterface;
-
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 
@@ -269,6 +267,18 @@ class ApprovalService {
 	}
 
 	/**
+	 * @param int $fileId
+	 * @return string
+	 */
+	public function getEtag(int $fileId): string {
+		$file = $this->root->getById($fileId);
+		if (sizeof($file) > 0) {
+			return $file[0]->getEtag();
+		}
+		return '';
+	}
+
+	/**
 	 * Get approval state of a given file for a given user
 	 * @param int $fileId
 	 * @param string|null $userId
@@ -341,10 +351,15 @@ class ApprovalService {
 	 *
 	 * @param int $fileId
 	 * @param string|null $userId
+	 * @param string $etag optional etag of the file to check if it has changed since approval was requested
 	 * @return bool success
+	 * @throws OutdatedEtagException
 	 */
-	public function approve(int $fileId, ?string $userId): bool {
+	public function approve(int $fileId, ?string $userId, string $etag = ''): bool {
 		$fileState = $this->getApprovalState($fileId, $userId);
+		if ($etag !== '' && $etag !== $this->getEtag($fileId)) {
+			throw new OutdatedEtagException();
+		}
 		// if file has pending tag and user is authorized to approve it
 		if ($fileState['state'] === Application::STATE_APPROVABLE) {
 			$rules = $this->ruleService->getRules();
@@ -378,10 +393,15 @@ class ApprovalService {
 	 *
 	 * @param int $fileId
 	 * @param string|null $userId
+	 * @param string $etag optional etag of the file to check if it has changed since approval was requested
 	 * @return bool success
+	 * @throws OutdatedEtagException
 	 */
-	public function reject(int $fileId, ?string $userId): bool {
+	public function reject(int $fileId, ?string $userId, string $etag = ''): bool {
 		$fileState = $this->getApprovalState($fileId, $userId);
+		if ($etag !== '' && $etag !== $this->getEtag($fileId)) {
+			throw new OutdatedEtagException();
+		}
 		// if file has pending tag and user is authorized to approve it
 		if ($fileState['state'] === Application::STATE_APPROVABLE) {
 			$rules = $this->ruleService->getRules();
