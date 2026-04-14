@@ -81,13 +81,13 @@ class ApprovalController extends OCSController {
 	 * Approve a file
 	 *
 	 * @param int $fileId
-	 * @param string|null $etag
+	 * @param string $etag
 	 * @return DataResponse
 	 */
 	#[NoAdminRequired]
-	public function approve(int $fileId, ?string $etag = ''): DataResponse {
+	public function approve(int $fileId, string $etag): DataResponse {
 		try {
-			if ($this->approvalService->approve($fileId, $this->userId, $etag ?? '')) {
+			if ($this->approvalService->approve($fileId, $this->userId, $etag)) {
 				return new DataResponse([]);
 			}
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
@@ -103,13 +103,13 @@ class ApprovalController extends OCSController {
 	 * Reject a file
 	 *
 	 * @param int $fileId
-	 * @param string|null $etag
+	 * @param string $etag
 	 * @return DataResponse
 	 */
 	#[NoAdminRequired]
-	public function reject(int $fileId, ?string $etag = ''): DataResponse {
+	public function reject(int $fileId, string $etag): DataResponse {
 		try {
-			if ($this->approvalService->reject($fileId, $this->userId, $etag ?? '')) {
+			if ($this->approvalService->reject($fileId, $this->userId, $etag)) {
 				return new DataResponse([]);
 			}
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
