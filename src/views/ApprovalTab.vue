@@ -89,16 +89,26 @@ export default {
 		},
 		async onApprove() {
 			this.state = null
-			const fileId = this.fileInfo.id
-			const fileName = this.fileInfo.name
-			await approve(fileId, fileName)
+			const node = {
+				fileid: this.fileInfo.id,
+				basename: this.fileInfo.name,
+				attributes: {
+					etag: this.fileInfo.etag ?? '',
+				},
+			}
+			await approve(node, true)
 			this.update(this.fileInfo)
 		},
 		async onReject() {
 			this.state = null
-			const fileId = this.fileInfo.id
-			const fileName = this.fileInfo.name
-			await reject(fileId, fileName)
+			const node = {
+				fileid: this.fileInfo.id,
+				basename: this.fileInfo.name,
+				attributes: {
+					etag: this.fileInfo.etag ?? '',
+				},
+			}
+			await reject(node, true)
 			this.update(this.fileInfo)
 		},
 		async onRequestSubmit(ruleId, createShares) {

@@ -33,10 +33,10 @@ export function createInfoModal() {
 		console.debug('[Approval] modal closed')
 	})
 	OCA.Approval.InfoModalVue.$on('approve', (node) => {
-		approve(node.fileid, node.basename, node)
+		approve(node)
 	})
 	OCA.Approval.InfoModalVue.$on('reject', (node) => {
-		reject(node.fileid, node.basename, node)
+		reject(node)
 	})
 	OCA.Approval.InfoModalVue.$on('request', (node) => {
 		onRequestFileAction(node)
