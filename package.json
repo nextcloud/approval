@@ -1,6 +1,6 @@
 {
   "name": "approval",
-  "version": "1.0.12",
+  "version": "1.3.3",
   "description": "Approval",
   "main": "index.js",
   "scripts": {
