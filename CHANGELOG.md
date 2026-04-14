@@ -8,6 +8,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.7.3 - 2026-04-14
+
+### Changed
+
+- Change api signature to require etag [#403](https://github.com/nextcloud/approval/pull/403) @lukasdotcom
+
+### Fixed
+
+- Only share to users and groups when necessary [#389](https://github.com/nextcloud/approval/pull/389) @lukasdotcom
+
 ## 2.7.2 – 2026-03-16
 
 ### Fixed
