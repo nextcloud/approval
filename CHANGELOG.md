@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.3] - 2026-04-14
+
+### Changed
+
+- Change api signature to require etag [#403](https://github.com/nextcloud/approval/pull/403) @lukasdotcom
+
+### Fixed
+
+- Add better error message on users side for failed approval [#365](https://github.com/nextcloud/approval/pull/365) @lukasdotcom
+
 ## 1.3.2 – 2026-03-16
 
 ### Fixed
