@@ -8,6 +8,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## 2.7.4 - 2026-04-16
+
+### Fixed
+
+- Fix: Wrong order in controller [#411](https://github.com/nextcloud/approval/pull/411) @Lukasdotcom
+
 ## 2.7.3 - 2026-04-14
 
 ### Changed
