@@ -120,7 +120,6 @@
     "You approved {name}" : "Du hast {name} genehmigt",
     "Failed to approve {name}" : "{name} konnte nicht genehmigt werden",
     "You rejected {name}" : "Du hast {name} abgelehnt",
-    "Failed to reject {name}" : "{name} konnte nicht abgelehnt werden ",
-    "You can not share this file" : "Du darfst diese Datei nicht teilen"
+    "Failed to reject {name}" : "{name} konnte nicht abgelehnt werden "
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

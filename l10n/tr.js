@@ -121,7 +121,6 @@ OC.L10N.register(
     "You approved {name}" : "{name} kullanıcısını onayladınız",
     "Failed to approve {name}" : "Onaylanamadı {name}",
     "You rejected {name}" : "{name} kullanıcısını reddettiniz",
-    "Failed to reject {name}" : "Reddedilemedi {name}",
-    "You can not share this file" : "Bu dosyayı paylaşamazsınız"
+    "Failed to reject {name}" : "Reddedilemedi {name}"
 },
 "nplurals=2; plural=(n > 1);");
