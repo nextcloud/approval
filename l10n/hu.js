@@ -122,7 +122,6 @@ OC.L10N.register(
     "You approved {name}" : "Jóváhagyta: {name}",
     "Failed to approve {name}" : "A(z) {name} jóváhagyása sikertelen",
     "You rejected {name}" : "Elutasította: {name}",
-    "Failed to reject {name}" : "A(z) {name} elutasítása sikertelen",
-    "You can not share this file" : "Nem oszthatja meg ezt a fájlt"
+    "Failed to reject {name}" : "A(z) {name} elutasítása sikertelen"
 },
 "nplurals=2; plural=(n != 1);");

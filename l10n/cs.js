@@ -121,7 +121,6 @@ OC.L10N.register(
     "You approved {name}" : "Schválili jste {name}",
     "Failed to approve {name}" : "Nepodařilo se schválit {name}",
     "You rejected {name}" : "Zamítli jste {name}",
-    "Failed to reject {name}" : "Nepodařilo se zamítnout {name}",
-    "You can not share this file" : "Tento soubor nemůžete nasdílet"
+    "Failed to reject {name}" : "Nepodařilo se zamítnout {name}"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

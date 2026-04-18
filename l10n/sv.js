@@ -122,7 +122,6 @@ OC.L10N.register(
     "You approved {name}" : "Du godkände {name}",
     "Failed to approve {name}" : "Kunde inte godkänna {name}",
     "You rejected {name}" : "Du avvisade {name}",
-    "Failed to reject {name}" : "Kunde inte avvisa {name}",
-    "You can not share this file" : "Du kan inte dela denna fil"
+    "Failed to reject {name}" : "Kunde inte avvisa {name}"
 },
 "nplurals=2; plural=(n != 1);");

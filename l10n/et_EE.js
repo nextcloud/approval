@@ -68,7 +68,6 @@ OC.L10N.register(
     "Warning" : "Hoiatus",
     "You approved {name}" : "Sina kinnitasid „{name}“ faili",
     "Failed to approve {name}" : "„{name}“ faili kinnitamine ei õnnestunud",
-    "You rejected {name}" : "Sa lükkasid tagasi „{name}“ faili",
-    "You can not share this file" : "Sa ei saa seda faili jagada"
+    "You rejected {name}" : "Sa lükkasid tagasi „{name}“ faili"
 },
 "nplurals=2; plural=(n != 1);");

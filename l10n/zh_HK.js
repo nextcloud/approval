@@ -28,6 +28,7 @@ OC.L10N.register(
     "You do not have access to this file" : "您無權存取此檔案",
     "You cannot share this file" : "您無法分享此檔案",
     "Rule does not exist" : "規則不存在",
+    "Approval has already been granted with this rule for this file" : "此檔案已根據此規則獲得核准",
     "This element is not shared with any user who is authorized to approve it" : "此元素尚未與任何有權批准它的用戶共享",
     "Approval has already been requested with this rule for this file" : "已使用此規則請求審批此檔案",
     "You are not authorized to request with this rule" : "您無權使用此規則提出請求",
@@ -121,7 +122,6 @@ OC.L10N.register(
     "You approved {name}" : "您批准了 {name}",
     "Failed to approve {name}" : "批准 {name} 失敗",
     "You rejected {name}" : "您不批准 {name}",
-    "Failed to reject {name}" : "拒絕 {name} 失敗",
-    "You can not share this file" : "您無法分享此資料夾"
+    "Failed to reject {name}" : "拒絕 {name} 失敗"
 },
 "nplurals=1; plural=0;");

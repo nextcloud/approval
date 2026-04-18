@@ -122,7 +122,6 @@ OC.L10N.register(
     "You approved {name}" : "Sie haben {name} genehmigt",
     "Failed to approve {name}" : "{name} konnte nicht genehmigt werden",
     "You rejected {name}" : "Sie haben {name} abgelehnt",
-    "Failed to reject {name}" : "{name} konnte nicht abgelehnt werden ",
-    "You can not share this file" : "Sie dürfen diese Datei nicht teilen"
+    "Failed to reject {name}" : "{name} konnte nicht abgelehnt werden "
 },
 "nplurals=2; plural=(n != 1);");

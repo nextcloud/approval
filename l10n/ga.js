@@ -122,7 +122,6 @@ OC.L10N.register(
     "You approved {name}" : "Cheadaigh tú {name}",
     "Failed to approve {name}" : "Theip ar cheadú {name}",
     "You rejected {name}" : "Dhiúltaigh tú {name}",
-    "Failed to reject {name}" : "Theip ar {name} a dhiúltú",
-    "You can not share this file" : "Ní féidir leat an comhad seo a roinnt"
+    "Failed to reject {name}" : "Theip ar {name} a dhiúltú"
 },
 "nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);");
