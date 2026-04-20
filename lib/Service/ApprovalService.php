@@ -435,14 +435,14 @@ class ApprovalService {
 	 *
 	 * @param int $fileId
 	 * @param int $ruleId
-	 * @param string|null $userId
+	 * @param string|null $requesterUserId
 	 * @param bool $createShares
 	 * @return array potential error message
 	 * @throws \OCP\Files\NotPermittedException
 	 * @throws \OC\User\NoUserException
 	 */
-	public function request(int $fileId, int $ruleId, ?string $userId, bool $createShares): array {
-		if (!$this->utilsService->userHasAccessTo($fileId, $userId)) {
+	public function request(int $fileId, int $ruleId, ?string $requesterUserId, bool $createShares): array {
+		if (!$this->utilsService->userHasAccessTo($fileId, $requesterUserId)) {
 			return ['error' => $this->l10n->t('You do not have access to this file')];
 		}
 
@@ -459,12 +459,12 @@ class ApprovalService {
 			// only request if it has not yet been requested for this rule
 			if (!$this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagPending'])) {
 				if ($createShares) {
-					$this->shareWithApprovers($fileId, $rule, $userId);
+					$this->shareWithApprovers($fileId, $rule, $requesterUserId);
 					// if shares are auto created, request is actually done in a separated request with $createShares === false
 					return [];
 				}
 				// store activity in our tables
-				$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_PENDING);
+				$this->ruleService->storeAction($fileId, $ruleId, $requesterUserId, Application::STATE_PENDING);
 
 				$this->tagObjectMapper->assignTags((string) $fileId, 'files', $rule['tagPending']);
 
@@ -472,7 +472,7 @@ class ApprovalService {
 				$this->activityManager->triggerEvent(
 					ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
 					ActivityManager::SUBJECT_REQUESTED_ORIGIN,
-					['origin_user_id' => $userId]
+					['origin_user_id' => $requesterUserId]
 				);
 
 				// check if someone can actually approve
@@ -550,7 +550,6 @@ class ApprovalService {
 			return [];
 		}
 		$label = $this->l10n->t('Please check my approval request');
-		$fileOwner = $node->getOwner()->getUID();
 
 		foreach ($rule['approvers'] as $approver) {
 			if ($approver['type'] === 'user' && !$this->utilsService->userHasAccessTo($fileId, $approver['entityId'])) {
