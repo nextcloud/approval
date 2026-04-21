@@ -164,6 +164,9 @@ export default {
 			return !this.invalidRuleMessage
 		},
 		invalidRuleMessage() {
+			if (this.newRule === null) {
+				return null
+			}
 			const newRule = this.newRule
 			console.debug(newRule)
 			const noMissingField = newRule.description
@@ -206,7 +209,7 @@ export default {
 		loadRules() {
 			this.loadingRules = true
 			const url = generateUrl('/apps/approval/rules')
-			axios.get(url).then((response) => {
+			return axios.get(url).then((response) => {
 				this.rules = response.data
 				// add unique ids to approvers/requesters values
 				for (const id in this.rules) {
@@ -311,11 +314,11 @@ export default {
 					unapproveWhenModified: rule.unapproveWhenModified,
 				}
 				const url = generateUrl('/apps/approval/rule')
-				axios.post(url, req).then((response) => {
+				axios.post(url, req).then(() => {
 					showSuccess(t('approval', 'New approval workflow created'))
-					const id = response.data
-					this.newRule = null
-					this.rules[id] = rule
+					this.loadRules().then(() => {
+						this.newRule = null
+					})
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to create approval workflow')
