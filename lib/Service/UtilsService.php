@@ -85,10 +85,8 @@ class UtilsService {
 	public function createShare(Node $node, int $type, string $sharedWith, string $sharedBy, string $label): bool {
 		$share = $this->shareManager->newShare();
 		$share->setNode($node)
-			// share permission is not necessary for rule chaining
-			// because we get the file from its owner's storage so we can share it whatsoever
-			// ->setPermissions(Constants::PERMISSION_READ | Constants::PERMISSION_SHARE)
-			->setPermissions(Constants::PERMISSION_READ)
+			// share permission is necessary for rule chaining
+			->setPermissions(Constants::PERMISSION_READ | Constants::PERMISSION_SHARE)
 			->setSharedWith($sharedWith)
 			->setShareType($type)
 			->setSharedBy($sharedBy)
