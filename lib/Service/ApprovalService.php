@@ -458,7 +458,10 @@ class ApprovalService {
 			return ['error' => $this->l10n->t('Rule does not exist')];
 		}
 
-		if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
+		if ($this->userIsAuthorizedByRule($requesterUserId, $rule, 'requesters')) {
+			if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagApproved'])) {
+				return ['error' => $this->l10n->t('Approval has already been granted with this rule for this file')];
+			}
 			// only request if it has not yet been requested for this rule
 			if (!$this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagPending'])) {
 				if ($createShares) {
@@ -530,25 +533,16 @@ class ApprovalService {
 	 *
 	 * @param int $fileId
 	 * @param array $rule
-	 * @param string $userId
+	 * @param string $requesterUserId
 	 * @return void
 	 * @throws \OCP\Files\NotPermittedException
 	 * @throws \OC\User\NoUserException
 	 */
 	private function shareWithApprovers(int $fileId, array $rule, string $requesterUserId): void {
 		// get node
-		$userFolder = $this->root->getUserFolder($userId);
-		$nodeResults = $userFolder->getById($fileId);
-		if (count($nodeResults) > 0) {
-			$node = $nodeResults[0];
-			// get the node again from the owner's storage to avoid sharing permission issues
-			$ownerId = $node->getOwner()->getUID();
-			$ownerFolder = $this->root->getUserFolder($ownerId);
-			$ownerNodeResults = $ownerFolder->getById($fileId);
-			if (count($ownerNodeResults) > 0) {
-				$node = $ownerNodeResults[0];
-			}
-		} else {
+		$userFolder = $this->root->getUserFolder($requesterUserId);
+		$node = $userFolder->getFirstNodeById($fileId);
+		if ($node === null) {
 			return;
 		}
 		$label = $this->l10n->t('Please check my approval request');
