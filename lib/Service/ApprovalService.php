@@ -446,7 +446,7 @@ class ApprovalService {
 			return ['error' => $this->l10n->t('You do not have access to this file')];
 		}
 
-		if ($createShares && !$this->utilsService->userCanShareFile($fileId, $userId)) {
+		if ($createShares && !$this->utilsService->userCanShareFile($fileId, $requesterUserId)) {
 			return ['error' => $this->l10n->t('You can not share this file')];
 		}
 
@@ -455,7 +455,10 @@ class ApprovalService {
 			return ['error' => $this->l10n->t('Rule does not exist')];
 		}
 
-		if ($this->userIsAuthorizedByRule($userId, $rule, 'requesters')) {
+		if ($this->userIsAuthorizedByRule($requesterUserId, $rule, 'requesters')) {
+			if ($this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagApproved'])) {
+				return ['error' => $this->l10n->t('Approval has already been granted with this rule for this file')];
+			}
 			// only request if it has not yet been requested for this rule
 			if (!$this->tagObjectMapper->haveTag((string) $fileId, 'files', $rule['tagPending'])) {
 				if ($createShares) {
@@ -527,25 +530,18 @@ class ApprovalService {
 	 *
 	 * @param int $fileId
 	 * @param array $rule
-	 * @param string $userId
+	 * @param string $requesterUserId
 	 * @return array list of created shares
 	 * @throws \OCP\Files\NotPermittedException
 	 * @throws \OC\User\NoUserException
 	 */
-	private function shareWithApprovers(int $fileId, array $rule, string $userId): array {
+	private function shareWithApprovers(int $fileId, array $rule, string $requesterUserId): array {
 		$createdShares = [];
 		// get node
-		$userFolder = $this->root->getUserFolder($userId);
+		$userFolder = $this->root->getUserFolder($requesterUserId);
 		$nodeResults = $userFolder->getById($fileId);
 		if (count($nodeResults) > 0) {
 			$node = $nodeResults[0];
-			// get the node again from the owner's storage to avoid sharing permission issues
-			$ownerId = $node->getOwner()->getUID();
-			$ownerFolder = $this->root->getUserFolder($ownerId);
-			$ownerNodeResults = $ownerFolder->getById($fileId);
-			if (count($ownerNodeResults) > 0) {
-				$node = $ownerNodeResults[0];
-			}
 		} else {
 			return [];
 		}
@@ -554,7 +550,7 @@ class ApprovalService {
 		foreach ($rule['approvers'] as $approver) {
 			if ($approver['type'] === 'user' && !$this->utilsService->userHasAccessTo($fileId, $approver['entityId'])) {
 				// create user share
-				if ($this->utilsService->createShare($node, IShare::TYPE_USER, $approver['entityId'], $fileOwner, $label)) {
+				if ($this->utilsService->createShare($node, IShare::TYPE_USER, $approver['entityId'], $requesterUserId, $label)) {
 					$createdShares[] = $approver;
 				}
 			}
@@ -562,7 +558,7 @@ class ApprovalService {
 		if ($this->shareManager->allowGroupSharing()) {
 			foreach ($rule['approvers'] as $approver) {
 				if ($approver['type'] === 'group') {
-					if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $fileOwner, $label)) {
+					if ($this->utilsService->createShare($node, IShare::TYPE_GROUP, $approver['entityId'], $requesterUserId, $label)) {
 						$createdShares[] = $approver;
 					}
 				}
@@ -573,7 +569,7 @@ class ApprovalService {
 		if ($circlesEnabled) {
 			foreach ($rule['approvers'] as $approver) {
 				if ($approver['type'] === 'circle') {
-					if ($this->utilsService->createShare($node, IShare::TYPE_CIRCLE, $approver['entityId'], $fileOwner, $label)) {
+					if ($this->utilsService->createShare($node, IShare::TYPE_CIRCLE, $approver['entityId'], $requesterUserId, $label)) {
 						$createdShares[] = $approver;
 					}
 				}
