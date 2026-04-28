@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.8.0 - 2026-04-28
+
+### Fixed
+
+- Share as the requester, not as the owner [#420](https://github.com/nextcloud/approval/pull/420) @julien-nc
+- Fix grammar in error message for file sharing [#415](https://github.com/nextcloud/approval/pull/415) @rakekniven
 
 ## 2.7.4 - 2026-04-16
 
