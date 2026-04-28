@@ -8,6 +8,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.3.0 - 2026-04-28
+
+### Fixed
+
+- Share as the requester, not as the owner [#418](https://github.com/nextcloud/approval/pull/418) @julien-nc
+- Fix(adminSettings): Avoid a crash when adding the first rule by reloading the rules each time we add one [#417](https://github.com/nextcloud/approval/pull/417) @julien-nc
+
 ## 3.2.2 - 2026-04-16
 
 ### Fixed
