@@ -18,6 +18,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Share\IManager as IShareManager;
 use OCP\Share\IShare;
+use OCP\SystemTag\ISystemTag;
 use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\TagAlreadyExistsException;
 use OCP\SystemTag\TagNotFoundException;
@@ -173,5 +174,20 @@ class UtilsService {
 		} catch (TagNotFoundException $e) {
 			return ['error' => 'Tag not found'];
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getTags(): array {
+		return array_values(array_map(static function (ISystemTag $tag): array {
+			return [
+				'id' => $tag->getId(),
+				'displayName' => $tag->getName(),
+				'canAssign' => $tag->getAccessLevel() === ISystemTag::ACCESS_LEVEL_PUBLIC,
+				'userAssignable' => $tag->isUserAssignable(),
+				'userVisible' => $tag->isUserVisible(),
+			];
+		}, $this->tagManager->getAllTags()));
 	}
 }

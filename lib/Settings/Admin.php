@@ -8,14 +8,17 @@
 namespace OCA\Approval\Settings;
 
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\Service\UtilsService;
 use OCP\AppFramework\Http\TemplateResponse;
-
+use OCP\AppFramework\Services\IInitialState;
 use OCP\Settings\IDelegatedSettings;
 
 class Admin implements IDelegatedSettings {
 
 	public function __construct(
 		private string $appName,
+		private IInitialState $initialStateProvider,
+		private UtilsService $utilsService,
 	) {
 	}
 
@@ -23,6 +26,8 @@ class Admin implements IDelegatedSettings {
 	 * @return TemplateResponse
 	 */
 	public function getForm(): TemplateResponse {
+		$tags = $this->utilsService->getTags();
+		$this->initialStateProvider->provideInitialState('tags', $tags);
 		return new TemplateResponse(Application::APP_ID, 'adminSettings');
 	}
 

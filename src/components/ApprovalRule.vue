@@ -30,7 +30,9 @@
 				</span>
 				<NcSelectTags
 					class="tag-select"
-					:model-value="tagPendingAsString"
+					:options="tags"
+					:fetch-tags="false"
+					:model-value="value.tagPending"
 					:placeholder="t('approval', 'Select pending tag')"
 					:multiple="false"
 					:close-on-select="true"
@@ -39,6 +41,10 @@
 					:aria-label-combobox="pendingLabel"
 					:limit="null"
 					@update:model-value="update('tagPending', $event)" />
+				<NcNoteCard
+					v-if="isTagPublic(value.tagPending)"
+					:text="t('approval', 'Anyone can assign this tag and start this approval rule.')"
+					type="warning" />
 			</div>
 			<div class="users">
 				<span class="field-label">
@@ -82,7 +88,9 @@
 				</span>
 				<NcSelectTags
 					class="tag-select"
-					:model-value="tagApprovedAsString"
+					:options="tags"
+					:fetch-tags="false"
+					:model-value="value.tagApproved"
 					:placeholder="t('approval', 'Select approved tag')"
 					:multiple="false"
 					:close-on-select="true"
@@ -90,6 +98,10 @@
 					:aria-label-combobox="approvedLabel"
 					:limit="null"
 					@update:model-value="update('tagApproved', $event)" />
+				<NcNoteCard
+					v-if="isTagPublic(value.tagApproved)"
+					:text="t('approval', 'Anyone can assign this tag and approve a file.')"
+					type="warning" />
 			</div>
 			<div class="tag">
 				<span class="field-label">
@@ -105,7 +117,9 @@
 				</span>
 				<NcSelectTags
 					class="tag-select"
-					:model-value="tagRejectedAsString"
+					:options="tags"
+					:fetch-tags="false"
+					:model-value="value.tagRejected"
 					:placeholder="t('approval', 'Select rejected tag')"
 					:multiple="false"
 					:close-on-select="true"
@@ -113,6 +127,10 @@
 					:aria-label-combobox="rejectedLabel"
 					:limit="null"
 					@update:model-value="update('tagRejected', $event)" />
+				<NcNoteCard
+					v-if="isTagPublic(value.tagRejected)"
+					:text="t('approval', 'Anyone can assign this tag and reject a file.')"
+					type="warning" />
 			</div>
 			<div class="checkbox">
 				<NcFormBoxSwitch
@@ -135,6 +153,7 @@ import TagIcon from 'vue-material-design-icons/Tag.vue'
 
 import NcSelectTags from '@nextcloud/vue/components/NcSelectTags'
 import NcFormBoxSwitch from '@nextcloud/vue/components/NcFormBoxSwitch'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
 
 import { delay } from '../utils.js'
 import MultiselectWho from './MultiselectWho.vue'
@@ -149,6 +168,7 @@ export default {
 		NcSelectTags,
 		TagIcon,
 		NcFormBoxSwitch,
+		NcNoteCard,
 	},
 
 	props: {
@@ -159,6 +179,10 @@ export default {
 		focus: {
 			type: Boolean,
 			default: false,
+		},
+		tags: {
+			type: Array,
+			required: true,
 		},
 	},
 
@@ -180,18 +204,6 @@ export default {
 		}
 	},
 
-	computed: {
-		tagPendingAsString() {
-			return parseInt(this.value.tagPending, 10)
-		},
-		tagApprovedAsString() {
-			return parseInt(this.value.tagApproved, 10)
-		},
-		tagRejectedAsString() {
-			return parseInt(this.value.tagRejected, 10)
-		},
-	},
-
 	watch: {},
 
 	mounted() {
@@ -201,6 +213,9 @@ export default {
 	},
 
 	methods: {
+		isTagPublic(tagId) {
+			return this.tags.find((tag) => tag.id === tagId)?.canAssign
+		},
 		resetFocus() {
 			this.$refs.title.focus()
 		},
