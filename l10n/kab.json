@@ -1,0 +1,11 @@
+{ "translations": {
+    "Cancel" : "Sefsex",
+    "Create" : "Snulfu-d",
+    "Approve" : "Qbel",
+    "Reject" : "Agwi",
+    "Approved" : "Yettwaqbel",
+    "Rejected" : "Yerrad",
+    "Who?" : "Anwa?",
+    "Warning" : "Alɣu"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
