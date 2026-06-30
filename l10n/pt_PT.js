@@ -35,6 +35,7 @@ OC.L10N.register(
     "Approved by {user}" : "Aprovada por {user}",
     "Rejected by you" : "Recusada por você",
     "Approval requested by you" : "Aprovação solicitada por você",
+    "Impossible to get user/group/circle list" : "Impossível obter lista de usuários/grupos/círculos",
     "No recommendations. Start typing." : "Nenhuma recomendação. Comece a escrever ",
     "No result." : "Sem resultados",
     "Select approval workflow" : "Selecione o fluxo de aprovação",
