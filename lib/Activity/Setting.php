@@ -9,7 +9,6 @@ namespace OCA\Approval\Activity;
 
 use OCA\Approval\AppInfo\Application;
 use OCP\Activity\ISetting;
-
 use OCP\IL10N;
 
 class Setting implements ISetting {

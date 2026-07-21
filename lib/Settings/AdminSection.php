@@ -10,7 +10,6 @@ namespace OCA\Approval\Settings;
 use OCA\Approval\AppInfo\Application;
 use OCP\IL10N;
 use OCP\IURLGenerator;
-
 use OCP\Settings\IIconSection;
 
 class AdminSection implements IIconSection {

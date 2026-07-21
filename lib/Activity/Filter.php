@@ -10,7 +10,6 @@ namespace OCA\Approval\Activity;
 use OCA\Approval\AppInfo\Application;
 use OCP\Activity\IFilter;
 use OCP\IL10N;
-
 use OCP\IURLGenerator;
 
 class Filter implements IFilter {

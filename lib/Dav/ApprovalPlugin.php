@@ -13,7 +13,6 @@ use OCA\Approval\AppInfo\Application;
 use OCA\Approval\Service\ApprovalService;
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
-
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 
@@ -31,7 +30,6 @@ class ApprovalPlugin extends ServerPlugin {
 		$this->server = $server;
 		$server->on('propFind', [$this, 'getApprovalState']);
 	}
-
 
 	/**
 	 * @param PropFind $propFind

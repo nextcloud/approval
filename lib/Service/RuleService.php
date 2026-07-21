@@ -13,7 +13,6 @@ use OCP\App\IAppManager;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\ICacheFactory;
 use OCP\IDBConnection;
-
 use OCP\IUserManager;
 
 /**

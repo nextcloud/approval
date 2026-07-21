@@ -14,7 +14,6 @@ use OCA\Approval\Listener\LoadSidebarScripts;
 use OCA\Approval\Listener\UpdateFilesListener;
 use OCA\Approval\Notification\Notifier;
 use OCA\Approval\Service\ApprovalService;
-
 use OCA\DAV\Events\SabrePluginAddEvent;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCA\Files\Event\LoadSidebar;
@@ -23,7 +22,6 @@ use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\EventDispatcher\IEventDispatcher;
-
 use OCP\FilesMetadata\Event\MetadataBackgroundEvent;
 use OCP\SystemTag\TagAssignedEvent;
 use Override;
@@ -62,7 +60,6 @@ class Application extends App implements IBootstrap {
 			}
 		});
 	}
-
 
 	#[Override]
 	public function register(IRegistrationContext $context): void {

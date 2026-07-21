@@ -114,7 +114,6 @@ class Notifier implements INotifier {
 						->setIcon($iconUrl);
 				}
 				return $notification;
-
 			case 'manual_request':
 				$p = $notification->getSubjectParameters();
 
@@ -155,7 +154,6 @@ class Notifier implements INotifier {
 						->setIcon($iconUrl);
 				}
 				return $notification;
-
 			default:
 				// Unknown subject => Unknown notification => throw
 				throw new UnknownNotificationException();
