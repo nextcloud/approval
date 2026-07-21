@@ -51,6 +51,16 @@ class ConfigController extends Controller {
 	}
 
 	/**
+	 * List all tags
+	 *
+	 * @return DataResponse
+	 */
+	#[AuthorizedAdminSetting(settings: Admin::class)]
+	public function getTags(): DataResponse {
+		return new DataResponse($this->utilsService->getTags());
+	}
+
+	/**
 	 *
 	 * @return DataResponse
 	 */

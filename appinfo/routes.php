@@ -15,6 +15,7 @@ return [
 		['name' => 'Config#deleteRule', 'url' => '/rule/{id}', 'verb' => 'DELETE'],
 		['name' => 'Config#createRule', 'url' => '/rule', 'verb' => 'POST'],
 		['name' => 'Config#createTag', 'url' => '/tag', 'verb' => 'POST'],
+		['name' => 'Config#getTags', 'url' => '/tags', 'verb' => 'GET'],
 	],
 	'ocs' => [
 		/**

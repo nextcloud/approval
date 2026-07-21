@@ -30,6 +30,7 @@
 				<ApprovalRule v-for="(rule, id) in rules"
 					:key="id"
 					v-model:value="rules[id]"
+					:tags="tags"
 					class="approval-rule"
 					@input="onRuleInput(id, $event)"
 					@add-tag="onAddTagClick">
@@ -54,6 +55,7 @@
 				<div v-if="newRule" class="new-rule">
 					<ApprovalRule
 						v-model:value="newRule"
+						:tags="tags"
 						:delete-rule-label="newRuleDeleteLabel"
 						:focus="true"
 						@add-tag="onAddTagClick">
@@ -127,6 +129,7 @@ import ApprovalRule from './ApprovalRule.vue'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
+import { loadState } from '@nextcloud/initial-state'
 
 export default {
 	name: 'AdminSettings',
@@ -145,6 +148,7 @@ export default {
 
 	data() {
 		return {
+			tags: loadState('approval', 'tags'),
 			showRules: true,
 			newTagName: '',
 			rules: {},
@@ -206,6 +210,17 @@ export default {
 	},
 
 	methods: {
+		loadTags() {
+			const url = generateUrl('/apps/approval/tags')
+			axios.get(url).then((response) => {
+				this.tags = response.data
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to load tags'),
+				)
+				console.error(error)
+			})
+		},
 		loadRules() {
 			this.loadingRules = true
 			const url = generateUrl('/apps/approval/rules')
@@ -354,11 +369,7 @@ export default {
 				axios.post(url, req).then((response) => {
 					showSuccess(t('approval', 'Tag "{name}" created', { name: this.newTagName }))
 					this.newTagName = ''
-					// trick to reload tag list
-					this.showRules = false
-					this.$nextTick(() => {
-						this.showRules = true
-					})
+					this.loadTags()
 				}).catch((error) => {
 					showError(
 						t('approval', 'Failed to create tag "{name}"', { name: this.newTagName })
