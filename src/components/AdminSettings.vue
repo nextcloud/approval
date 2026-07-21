@@ -214,6 +214,11 @@ export default {
 			const url = generateUrl('/apps/approval/tags')
 			axios.get(url).then((response) => {
 				this.tags = response.data
+			}).catch((error) => {
+				showError(
+					t('approval', 'Failed to load tags'),
+				)
+				console.error(error)
 			})
 		},
 		loadRules() {
