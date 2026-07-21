@@ -10,7 +10,6 @@ namespace OCA\Approval\Dashboard;
 use OCA\Approval\AppInfo\Application;
 use OCP\Dashboard\IWidget;
 use OCP\IL10N;
-
 use OCP\Util;
 
 class ApprovalPendingWidget implements IWidget {

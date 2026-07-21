@@ -257,7 +257,6 @@ class ApprovalService {
 				'file_name' => $node->getName(),
 				'mimetype' => $node->getMimetype(),
 				'activity' => $this->ruleService->getLastAction($node->getId(), $ruleId, Application::STATE_PENDING),
-
 			];
 		}, array_values($pendingNodes));
 

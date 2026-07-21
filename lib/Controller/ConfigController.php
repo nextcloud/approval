@@ -9,15 +9,12 @@ namespace OCA\Approval\Controller;
 
 use OCA\Approval\Service\RuleService;
 use OCA\Approval\Service\UtilsService;
-
 use OCA\Approval\Settings\Admin;
 use OCP\App\IAppManager;
-
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Attribute\AuthorizedAdminSetting;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
-
 use OCP\IUserManager;
 
 class ConfigController extends Controller {

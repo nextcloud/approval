@@ -16,7 +16,6 @@ use OCP\Files\Node;
 use OCP\IL10N;
 use OCP\IUser;
 use OCP\IUserManager;
-
 use Psr\Log\LoggerInterface;
 
 class ActivityManager {

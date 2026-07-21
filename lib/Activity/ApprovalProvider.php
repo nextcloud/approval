@@ -14,7 +14,6 @@ use OCP\Activity\IEvent;
 use OCP\Activity\IProvider;
 use OCP\Files\IRootFolder;
 use OCP\IURLGenerator;
-
 use OCP\IUserManager;
 
 class ApprovalProvider implements IProvider {
