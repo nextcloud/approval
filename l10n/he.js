@@ -8,6 +8,7 @@ OC.L10N.register(
     "A guest user" : "אורח",
     "Approval" : "אישור",
     "Cancel" : "ביטול",
+    "Failed to load tags" : "טעינת התגיות נכשלה",
     "Create" : "יצירה",
     "Approve" : "אישור",
     "Reject" : "דחייה",

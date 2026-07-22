@@ -41,6 +41,7 @@ OC.L10N.register(
     "All tags must be different" : "همه برچسب‌ها باید متفاوت باشند",
     "Pending tag is already used in another workflow" : "برچسب در انتظار قبلاً در یک گردش کاری دیگر استفاده شده است",
     "Create workflow" : "ایجاد گردش کار",
+    "Failed to load tags" : "بارگذاری برچسب‌ها انجام نشد",
     "Failed to get approval workflows" : "دریافت گردش‌های کاری تأیید ناموفق بود",
     "Approval workflow saved" : "گردش کار تأیید ذخیره شد",
     "Failed to save approval workflow" : "ذخیره گردش کار تأیید ناموفق بود",

@@ -35,6 +35,7 @@ OC.L10N.register(
     "All tags must be different" : "Всички тагове трябва да са различни",
     "Pending tag is already used in another workflow" : "Чакащият маркер/етикет/ вече се използва в друг работен поток",
     "Create workflow" : "Създаване на работен поток",
+    "Failed to load tags" : "Неуспешно зареждане на етикети",
     "Failed to get approval workflows" : "Получаването на работни потоци за одобрение беше неуспешно",
     "Approval workflow saved" : "Работният поток за одобрение е запазен",
     "Failed to save approval workflow" : "Запазването на работния поток на одобрение беше неуспешно",

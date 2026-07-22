@@ -36,6 +36,7 @@ OC.L10N.register(
     "All tags must be different" : "كل الوسوم يجب أن تكون مختلفة",
     "Pending tag is already used in another workflow" : "وسم \"معلّق\" pending tag مستخدم سلفاً في أتمتة سير عمل آخر",
     "Create workflow" : "إنشاء أتمتة سير للعمل",
+    "Failed to load tags" : "فشل في تحميل الوسوم",
     "Failed to get approval workflows" : "تعذر الحصول على أتمتة سير العمل الخاصة بالموافقات",
     "Approval workflow saved" : "تم حفظ أتمتة سير العمل",
     "Failed to save approval workflow" : "تعذّر حفظ أتمتة سير العمل",

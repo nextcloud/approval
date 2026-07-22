@@ -36,6 +36,7 @@ OC.L10N.register(
     "All tags must be different" : "Усі мітки мають бути різними",
     "Pending tag is already used in another workflow" : "Мітку, що в стані очікування, вже використовується в іншому робочому процесі",
     "Create workflow" : "Створити робочий процес",
+    "Failed to load tags" : "Не вдалося завантажити мітки",
     "Failed to get approval workflows" : "Не вдалося отримати робочі процеси затвердження",
     "Approval workflow saved" : "Робочий цикл затвердження збережено",
     "Failed to save approval workflow" : "Не вдалося зберегти процес затвердження",

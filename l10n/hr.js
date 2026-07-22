@@ -31,6 +31,7 @@ OC.L10N.register(
     "All tags must be different" : "Sve oznake moraju biti različite",
     "Pending tag is already used in another workflow" : "Oznaka na čekanju već se upotrebljava u drugom tijeku rada",
     "Create workflow" : "Stvori tijek rada",
+    "Failed to load tags" : "Učitavanje oznaka nije uspjelo",
     "Failed to get approval workflows" : "Dobivanje tijeka rada odobrenja nije uspjelo",
     "Approval workflow saved" : "Tijek rada odobrenja je spremljen",
     "Failed to save approval workflow" : "Spremanje tijeka rada odobrenja nije uspjelo",

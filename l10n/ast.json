@@ -32,6 +32,7 @@
     "All tags must be different" : "Tolos etiquetes han ser diferentes",
     "Pending tag is already used in another workflow" : "La etiqueta pendiente yá s'usa n'otru fluxu de trabayu",
     "Create workflow" : "Crear un fluxu de trabayu",
+    "Failed to load tags" : "Nun se puen cargar les etiquetes",
     "Approval workflow saved" : "Guardóse'l fluxu de trabayu d'aprobación",
     "New approval workflow created" : "Creóse un fluxu de trabayu d'aprobación",
     "Tag \"{name}\" created" : "Creóse la etiqueta «{name}»",

@@ -41,6 +41,7 @@ OC.L10N.register(
     "All tags must be different" : "Az összes címkének különbözőnek kell lennie",
     "Pending tag is already used in another workflow" : "Egy függőben lévő címke már létezik egy másik munkafolyamatban",
     "Create workflow" : "Munkafolyamat létrehozása",
+    "Failed to load tags" : "A címkék betöltése sikertelen",
     "Failed to get approval workflows" : "A jóváhagyási munkafolyamatok lekérése sikertelen",
     "Approval workflow saved" : "Jóváhagyási munkafolyamat elmentve",
     "Failed to save approval workflow" : "A jóváhagyási munkafolyamat mentése sikertelen",

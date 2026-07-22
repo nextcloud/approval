@@ -34,6 +34,7 @@
     "All tags must be different" : "모든 태그는 달라야만 합니다.",
     "Pending tag is already used in another workflow" : "보류 태그는 이미 다른 워크플로에서 사용됐습니다.",
     "Create workflow" : "워크플로 생성",
+    "Failed to load tags" : "태그 불러오기 실패",
     "Failed to get approval workflows" : "승인 워크플로를 불러오는데 실패했습니다.",
     "Approval workflow saved" : "승인 워크플로가 저장됐습니다.",
     "Failed to save approval workflow" : "승인 워크플로를 저장하는데 실패했습니다.",

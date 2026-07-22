@@ -36,6 +36,7 @@ OC.L10N.register(
     "All tags must be different" : "Alle tags moeten anders zijn",
     "Pending tag is already used in another workflow" : "De behandelingstag is al in gebruik door een andere werkstroom",
     "Create workflow" : "Creëer werkstroom",
+    "Failed to load tags" : "Kon tags niet laden",
     "Failed to get approval workflows" : "Kon goedkeuringswerkstromen niet ophalen",
     "Approval workflow saved" : "Goedkeuringswerkstroom opgeslagen",
     "Failed to save approval workflow" : "Kon goedkeuringswerkstroom niet bewaren",

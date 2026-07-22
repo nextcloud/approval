@@ -37,6 +37,7 @@ OC.L10N.register(
     "All tags must be different" : "بارلىق بەلگىلەر ئوخشىماسلىقى كېرەك",
     "Pending tag is already used in another workflow" : "ساقلىنىۋاتقان بەلگە باشقا خىزمەت ئېقىمىدا ئاللىبۇرۇن ئىشلىتىلگەن",
     "Create workflow" : "خىزمەت ئېقىمى قۇرۇش",
+    "Failed to load tags" : "خەتكۈچلەرنى يۈكلىيەلمىدى",
     "Failed to get approval workflows" : "تەستىق خىزمەت جەدۋىلىگە ئېرىشەلمىدى",
     "Approval workflow saved" : "خىزمەت ئېقىمى ساقلاندى",
     "Failed to save approval workflow" : "تەستىقلاش جەريانىنى تېجەلمىدى",

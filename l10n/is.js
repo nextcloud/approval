@@ -2,6 +2,7 @@ OC.L10N.register(
     "approval",
     {
     "Cancel" : "Hætta við",
+    "Failed to load tags" : "Mistókst að hlaða inn merkjum",
     "Create" : "Búa til",
     "Approve" : "Samþykkja",
     "Reject" : "Hafna",

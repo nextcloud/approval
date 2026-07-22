@@ -38,6 +38,7 @@ OC.L10N.register(
     "All tags must be different" : "Kõik sildid peavad olema erinevad",
     "Pending tag is already used in another workflow" : "Ootel silt on juba kasutusel muus töövoos",
     "Create workflow" : "Lisa töövoog",
+    "Failed to load tags" : "Siltide laadimine ei õnnestunud",
     "Failed to get approval workflows" : "Heakskiitimise töövoogude tuvastamine/laadimine ei õnnestunud",
     "Approval workflow saved" : "Heakskiitmise/kinnitamise töövoog on salvestatud",
     "Failed to save approval workflow" : "Heakskiitmise/kinnitamise töövoo salvestamine ei õnnestunud",

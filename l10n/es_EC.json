@@ -33,6 +33,7 @@
     "All tags must be different" : "Todas las etiquetas deben ser diferentes",
     "Pending tag is already used in another workflow" : "La etiqueta pendiente ya se usa en otro flujo de trabajo",
     "Create workflow" : "Crear flujo de trabajo",
+    "Failed to load tags" : "Error al cargar las etiquetas",
     "Failed to get approval workflows" : "Error al obtener los flujos de trabajo de aprobación",
     "Approval workflow saved" : "Flujo de trabajo de aprobación guardado",
     "Failed to save approval workflow" : "Error al guardar el flujo de trabajo de aprobación",

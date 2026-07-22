@@ -39,6 +39,7 @@
     "All tags must be different" : "Alla markörer måste vara unika",
     "Pending tag is already used in another workflow" : "Väntande markör används redan i ett annat arbetsflöde",
     "Create workflow" : "Skapa arbetsflöde",
+    "Failed to load tags" : "Det gick inte att läsa in taggarna",
     "Failed to get approval workflows" : "Det gick inte att hämta arbetsflöden för godkännande",
     "Approval workflow saved" : "Arbetsflödet för godkännande har sparats",
     "Failed to save approval workflow" : "Det gick inte att spara arbetsflödet för godkännande",

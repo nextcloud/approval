@@ -2,6 +2,7 @@ OC.L10N.register(
     "approval",
     {
     "Cancel" : "болиулах",
+    "Failed to load tags" : "Тагуудыг ачаалж чадсангүй",
     "Create" : "Үүсгэх",
     "Approve" : "Зөвшөөрөх",
     "Reject" : "Татгалзах",

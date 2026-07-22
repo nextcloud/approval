@@ -39,6 +39,7 @@ OC.L10N.register(
     "All tags must be different" : "Lebo zote lazima ziwe tofauti",
     "Pending tag is already used in another workflow" : "Lebo inayosubiri tayari inatumika katika mtiririko mwingine wa kazi",
     "Create workflow" : "Unda mtiririko wa kazi",
+    "Failed to load tags" : "Imeshindwa kupakia lebo",
     "Failed to get approval workflows" : "Imeshindwa kupata utendakazi wa kuidhinishwa",
     "Approval workflow saved" : "Mtiririko wa kazi wa idhini umehifadhiwa",
     "Failed to save approval workflow" : "Imeshindwa kuhifadhi utendakazi wa kuidhinisha",
