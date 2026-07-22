@@ -36,6 +36,7 @@ OC.L10N.register(
     "All tags must be different" : "Alle merkelappene må være forskjellige",
     "Pending tag is already used in another workflow" : "Avvente-merkelapp er allerede brukt i en annen flyt",
     "Create workflow" : "Lag flyt",
+    "Failed to load tags" : "Lasting av merkelapper feilet",
     "Failed to get approval workflows" : "Kunne ikke hente godkjenningsflyter",
     "Approval workflow saved" : "Godkjenningsflyt lagret",
     "Failed to save approval workflow" : "Kunne ikke lagre godkjenningsflyten",

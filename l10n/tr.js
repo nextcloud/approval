@@ -41,6 +41,7 @@ OC.L10N.register(
     "All tags must be different" : "Tüm etiketler farklı olmalıdır",
     "Pending tag is already used in another workflow" : "Bekleyen etiket başka bir iş akışında zaten kullanılmış",
     "Create workflow" : "İş akışı oluştur",
+    "Failed to load tags" : "Etiketler yüklenemedi",
     "Failed to get approval workflows" : "Onay iş akışları alınamadı",
     "Approval workflow saved" : "Onay iş akışı kaydedildi",
     "Failed to save approval workflow" : "Onay iş akışı kaydedilemedi",

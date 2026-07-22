@@ -33,6 +33,7 @@ OC.L10N.register(
     "All fields are required" : "Zahtevana so vsa polja",
     "All tags must be different" : "Vse oznake morajo biti različne",
     "Create workflow" : "Ustvari postopek",
+    "Failed to load tags" : "Nalaganje oznak je spodletelo",
     "Failed to get approval workflows" : "Pridobivanje postopka potrjevanja je spodletelo.",
     "Approval workflow saved" : "Postopek potrjevanja je shranjen.",
     "Failed to save approval workflow" : "Shranjevanje postopka potrjevanja je spodletelo.",

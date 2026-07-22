@@ -41,6 +41,7 @@ OC.L10N.register(
     "All tags must be different" : "所有標籤必須不同",
     "Pending tag is already used in another workflow" : "待定標籤已在另一個工作流中使用",
     "Create workflow" : "創建工作流程",
+    "Failed to load tags" : "載入標記失敗",
     "Failed to get approval workflows" : "未能獲得審批工作流程",
     "Approval workflow saved" : "審批工作流程",
     "Failed to save approval workflow" : "儲存審批工作流程失敗",

@@ -32,6 +32,7 @@ OC.L10N.register(
     "Cancel" : "Peruuta",
     "All fields are required" : "Kaikki kentät ovat pakollisia",
     "Create workflow" : "Luo työnkulku",
+    "Failed to load tags" : "Tunnisteiden lataaminen epäonnistui",
     "Approval workflow saved" : "Hyväksynnän työnkulku tallennettu",
     "Failed to save approval workflow" : "Hyväksynnän työnkulun tallentaminen epäonnistui",
     "New approval workflow created" : "Uusi hyväksynnän työnkulku luotu",

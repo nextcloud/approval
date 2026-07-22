@@ -36,6 +36,7 @@ OC.L10N.register(
     "All tags must be different" : "Όλες οι ετικέτες πρέπει να είναι διαφορετικές",
     "Pending tag is already used in another workflow" : "Η ετικέτα εκκρεμότητας χρησιμοποιείται ήδη σε άλλη ροή εργασιών",
     "Create workflow" : "Δημιουργία ροής εργασιών",
+    "Failed to load tags" : "Απέτυχε η φόρτωση ετικετών",
     "Failed to get approval workflows" : "Αποτυχία λήψης ροών εργασιών έγκρισης",
     "Approval workflow saved" : "Η ροή εργασιών έγκρισης αποθηκεύτηκε",
     "Failed to save approval workflow" : "Αποτυχία αποθήκευσης ροής εργασιών έγκρισης",

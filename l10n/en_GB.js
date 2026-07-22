@@ -41,6 +41,7 @@ OC.L10N.register(
     "All tags must be different" : "All tags must be different",
     "Pending tag is already used in another workflow" : "Pending tag is already used in another workflow",
     "Create workflow" : "Create workflow",
+    "Failed to load tags" : "Failed to load tags",
     "Failed to get approval workflows" : "Failed to get approval workflows",
     "Approval workflow saved" : "Approval workflow saved",
     "Failed to save approval workflow" : "Failed to save approval workflow",

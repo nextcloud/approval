@@ -29,6 +29,7 @@
     "All tags must be different" : "Totu is etichetas depent èssere diversas",
     "Pending tag is already used in another workflow" : "S'eticheta in suspesu est giai impreada in un'àteru flussu de traballu",
     "Create workflow" : "Crea flussu de traballu",
+    "Failed to load tags" : "No at fatu a carrigare is etichetas",
     "Failed to get approval workflows" : "No at fatu a otènnere is flussos de traballu de aprovatzione",
     "Approval workflow saved" : "Flussu de traballu de aprovatzione sarvadu",
     "Failed to save approval workflow" : "No at fatu a sarvare su flussu de traballu de aprovatzione",

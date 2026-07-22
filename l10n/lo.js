@@ -37,6 +37,7 @@ OC.L10N.register(
     "All tags must be different" : "ທຸກປ້າຍກຳກັບຕ້ອງແຕກຕ່າງກັນ",
     "Pending tag is already used in another workflow" : "ປ້າຍກຳກັບທີ່ລໍຖ້າຢູ່ໄດ້ຖືກໃຊ້ໃນຂັ້ນຕອນອື່ນແລ້ວ",
     "Create workflow" : "ສ້າງຂັ້ນຕອນການເຮັດວຽກ",
+    "Failed to load tags" : "ໂຫຼດແທັກບໍ່ສຳເລັດ",
     "Failed to get approval workflows" : "ລົ້ມເຫຼວໃນການດຶງຂໍ້ມູນຂັ້ນຕອນການອະນຸມັດ",
     "Approval workflow saved" : "ບັນທຶກຂັ້ນຕອນການອະນຸມັດແລ້ວ",
     "Failed to save approval workflow" : "ລົ້ມເຫຼວໃນການບັນທຶກຂັ້ນຕອນການອະນຸມັດ",

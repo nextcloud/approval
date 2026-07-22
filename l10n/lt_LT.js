@@ -41,6 +41,7 @@ OC.L10N.register(
     "All tags must be different" : "Visos žymės turi būti skirtingos",
     "Pending tag is already used in another workflow" : "Laukimo žymė jau naudojama kitoje darbo eigoje",
     "Create workflow" : "Sukurti darbo eigą",
+    "Failed to load tags" : "Nepavyko įkelti žymų",
     "Failed to get approval workflows" : "Nepavyko gauti patvirtinimo darbo eigų",
     "Approval workflow saved" : "Patvirtinimo darbo eiga išsaugota",
     "Failed to save approval workflow" : "Nepavyko išsaugoti darbo eigos patvirtinimo",

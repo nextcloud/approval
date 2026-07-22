@@ -18,6 +18,7 @@ OC.L10N.register(
     "A directory was rejected" : "Se ha rechazado un directorio",
     "%1$s approved %2$s" : "%1$s ha aprobado %2$s",
     "Cancel" : "Cancelar",
+    "Failed to load tags" : "No se pudieron cargar las etiquetas",
     "Create" : "Crear",
     "Approve" : "Aprobar",
     "Reject" : "Rechazar",

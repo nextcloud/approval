@@ -36,6 +36,7 @@ OC.L10N.register(
     "All tags must be different" : "Tutte le etichette devono essere diverse",
     "Pending tag is already used in another workflow" : "L'etichetta pendente è già usata in un altro workflow",
     "Create workflow" : "Crea workflow",
+    "Failed to load tags" : "Caricamento etichette non riuscito",
     "Failed to get approval workflows" : "Errore nel recupero dei workflow di approvazione",
     "Approval workflow saved" : "Workflow di approvazione salvato",
     "Failed to save approval workflow" : "Errore nel salvataggio del workflow di approvazione",

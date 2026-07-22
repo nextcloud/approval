@@ -39,6 +39,7 @@
     "All tags must be different" : "Caithfidh gach clib a bheith difriúil",
     "Pending tag is already used in another workflow" : "Úsáidtear clib ar feitheamh cheana féin i sreabhadh oibre eile",
     "Create workflow" : "Cruthaigh sreabhadh oibre",
+    "Failed to load tags" : "Theip ar lódáil clibeanna",
     "Failed to get approval workflows" : "Theip ar sreafaí oibre faofa a fháil",
     "Approval workflow saved" : "Sábháladh sreabhadh oibre formheasa",
     "Failed to save approval workflow" : "Theip ar an sreabhadh oibre ceadaithe a shábháil",

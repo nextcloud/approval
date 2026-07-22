@@ -36,6 +36,7 @@ OC.L10N.register(
     "All tags must be different" : "Etiketa guztiek desberdinak izan behar dute",
     "Pending tag is already used in another workflow" : "Ebatzi gabeko etiketa hori dagoeneko erabilita dago beste lan-fluxu batean",
     "Create workflow" : "Sortu lan-fluxua",
+    "Failed to load tags" : "Etiketak kargatzeak huts egin du",
     "Failed to get approval workflows" : "Onarpen lan-fluxuak eskuratzeak huts egin du",
     "Approval workflow saved" : "Onarpen lan-fluxua gorde da",
     "Failed to save approval workflow" : "Onarpen lan-fluxua gordetzeak huts egin du",

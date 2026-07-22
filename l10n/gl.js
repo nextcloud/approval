@@ -41,6 +41,7 @@ OC.L10N.register(
     "All tags must be different" : "Todas as etiquetas deben ser diferentes",
     "Pending tag is already used in another workflow" : "A etiqueta pendente xa se está en uso noutro fluxo de traballo",
     "Create workflow" : "Crear fluxo de traballo",
+    "Failed to load tags" : "Produciuse un fallo ao cargar as etiquetas",
     "Failed to get approval workflows" : "Produciuse un fallo ao obter os fluxos de traballo de aprobación",
     "Approval workflow saved" : "Gardouse o fluxo de traballo de aprobación",
     "Failed to save approval workflow" : "Produciuse un fallo ao gardar o fluxo de traballo de aprobación",

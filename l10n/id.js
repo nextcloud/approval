@@ -37,6 +37,7 @@ OC.L10N.register(
     "All tags must be different" : "Semua tag harus berbeda",
     "Pending tag is already used in another workflow" : "Tag tertunda sudah digunakan di alur kerja lain",
     "Create workflow" : "Buat alur kerja",
+    "Failed to load tags" : "Gagal memuat tag",
     "Failed to get approval workflows" : "Gagal mendapatkan alur kerja persetujuan",
     "Approval workflow saved" : "Alur kerja persetujuan disimpan",
     "Failed to save approval workflow" : "Gagal menyimpan alur kerja persetujuan",

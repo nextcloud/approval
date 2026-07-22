@@ -34,6 +34,7 @@
     "All tags must be different" : "Alle tags skal være forskellige",
     "Pending tag is already used in another workflow" : "Afventende tag er allerede anvendt i en anden arbejdsgang",
     "Create workflow" : "Opret arbejdsgang",
+    "Failed to load tags" : "Kunne ikke indlæse tags",
     "Failed to get approval workflows" : "Kunne ikke få godkendelsesarbejdsgange",
     "Approval workflow saved" : "Godkendelsesarbejdsgang gemt",
     "Failed to save approval workflow" : "Kunne ikke gemme godkendelsesarbejdsgang",

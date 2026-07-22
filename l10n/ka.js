@@ -2,6 +2,7 @@ OC.L10N.register(
     "approval",
     {
     "Cancel" : "Cancel",
+    "Failed to load tags" : "Failed to load tags",
     "Create" : "Create",
     "Approve" : "Approve",
     "Reject" : "Reject",

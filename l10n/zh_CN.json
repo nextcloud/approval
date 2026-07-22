@@ -39,6 +39,7 @@
     "All tags must be different" : "所有标签必须不同",
     "Pending tag is already used in another workflow" : "挂起标签已经在另一个工作流中使用",
     "Create workflow" : "创建工作流",
+    "Failed to load tags" : "无法加载标签",
     "Failed to get approval workflows" : "获取批准工作流失败",
     "Approval workflow saved" : "已保存批准流程",
     "Failed to save approval workflow" : "保存批准流程失败",

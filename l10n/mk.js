@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "A guest user" : "Корисник гостин",
     "Cancel" : "Откажи",
+    "Failed to load tags" : "Неуспешно вчитување на ознаки",
     "Create" : "Креирај",
     "Approve" : "Одобри",
     "Reject" : "Одбиј",

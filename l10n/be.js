@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "You do not have access to this file" : "У вас няма доступу да гэтага файла",
     "Cancel" : "Скасаваць",
+    "Failed to load tags" : "Не ўдалося загрузіць тэгі",
     "New tag name" : "Назва новага тэга",
     "Create" : "Стварыць",
     "Approve" : "Ухваліць",

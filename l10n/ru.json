@@ -39,6 +39,7 @@
     "All tags must be different" : "Все метки должны быть разными",
     "Pending tag is already used in another workflow" : "Метка выбранная в качестве ожидающей уже используется в другом процессе",
     "Create workflow" : "Создать процесс",
+    "Failed to load tags" : "Не удалось загрузить метки",
     "Failed to get approval workflows" : "Не удалось получить процессы согласований",
     "Approval workflow saved" : "Процесс согласования сохранен",
     "Failed to save approval workflow" : "Не удалось сохранить процесс согласования",
