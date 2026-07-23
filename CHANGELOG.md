@@ -8,6 +8,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.3.1 - 2026-07-23
+
+### Added
+
+- Add support for Nextcloud 35
+
+### Changed
+
+- Update dependencies and workflows [#440](https://github.com/nextcloud/approval/pull/440) @lukasdotcom
+
+### Fixed
+
+- Add warning when public tag used for rule and only load tags once for all rules [#437](https://github.com/nextcloud/approval/pull/437) @lukasdotcom
+
 ## 3.3.0 - 2026-04-28
 
 ### Fixed
