@@ -41,7 +41,9 @@
 				<referencedClass name="Sabre\DAV\ServerPlugin" />
 				<referencedClass name="Sabre\DAV\Server" />
 				<referencedClass name="OCA\DAV\Connector\Sabre\Node" />
+                <referencedClass name="OCA\DAV\Connector\Sabre\Directory" />
 				<referencedClass name="OC\Files\Node\Node" />
+                <referencedClass name="Sabre\DAV\ICollection" />
 			</errorLevel>
 		</UndefinedClass>
 		<UndefinedDocblockClass>
