@@ -48,6 +48,7 @@ OC.L10N.register(
     "Approval workflow deleted" : "Heakskiitmise/kinnitamise töövoog on kustutatud",
     "Failed to delete approval workflow" : "Heakskiitmise/kinnitamise töövoo kustutamine ei õnnestunud",
     "Tag \"{name}\" created" : "„{name}“ silt on lisatud",
+    "Failed to create tag \"{name}\"" : "„{name}“ sildi loomine ei õnnestunud",
     "Delete workflow" : "Kustuta töövoog",
     "No workflow yet" : "Ühtegi töövoogu veel pole",
     "New workflow" : "Uus töövoog",
