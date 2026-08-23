@@ -6,7 +6,7 @@
     "Your approval was requested on {file}" : "Sua aprovação foi solicitada para {file}",
     "Your approval was requested on {file} by {who}" : "Sua aprovação foi solicitada para {file} por {who}",
     "You requested approval on {file}" : "Você solicitou aprovação para {file}",
-    "A guest user" : "Um usuário convidado",
+    "A guest user" : "Um usuário visitante",
     "Approval" : "Aprovação",
     "<strong>Approval</strong> events" : "<strong>Aprovação</strong> eventos",
     "The file/folder you tried to approve has an outdated content, please reload and review it again" : "O arquivo/pasta que você tentou aprovar tem um conteúdo desatualizado. Recarregue e revise novamente",
