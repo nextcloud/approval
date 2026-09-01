@@ -1,0 +1,13 @@
+{ "translations": {
+    "Approval" : "Geneemegung",
+    "Cancel" : "Ofbriechen",
+    "Create" : "Erstellen",
+    "Approve" : "Zoustëmmen",
+    "Reject" : "Ofleenen",
+    "Approved" : "Zougestëmmt",
+    "Rejected" : "Ofgeleent",
+    "you" : "Du",
+    "Who?" : "Wien?",
+    "Warning" : "Warnung"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
