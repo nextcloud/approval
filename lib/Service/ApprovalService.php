@@ -123,6 +123,8 @@ class ApprovalService {
 		}
 		// get display names
 		foreach ($userNames as $k => $v) {
+			// Cast keys to string: PHP coerces numeric string array keys to int
+			$k = (string)$k;
 			$user = $this->userManager->get($k);
 			$userNames[$k] = $user ? $user->getDisplayName() : $k;
 		}
@@ -130,6 +132,8 @@ class ApprovalService {
 			$circlesManager = \OC::$server->get(\OCA\Circles\CirclesManager::class);
 			$circlesManager->startSuperSession();
 			foreach ($circleNames as $k => $v) {
+				// Cast keys to string: PHP coerces numeric string array keys to int
+				$k = (string)$k;
 				try {
 					$circle = $circlesManager->getCircle($k);
 					$circleNames[$k] = $circle->getDisplayName();
@@ -852,7 +856,6 @@ class ApprovalService {
 		$state = $this->getApprovalState($nodeId, $this->userId, true);
 		return $state['state'];
 	}
-
 
 	/**
 	 * Get approval state for multiple files and loads all the tags at once
