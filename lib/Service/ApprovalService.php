@@ -853,7 +853,6 @@ class ApprovalService {
 		return $state['state'];
 	}
 
-
 	/**
 	 * Get approval state for multiple files and loads all the tags at once
 	 *
