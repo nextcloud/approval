@@ -20,7 +20,7 @@ OC.L10N.register(
     "A directory was rejected" : "Prístup k adresáru bol zamietnutý",
     "%1$s approved %2$s" : "%1$s povolené %2$s",
     "%1$s rejected %2$s" : "%1$s zamietnuté %2$s",
-    "{user} approved {node}" : "{user} povolil {node}",
+    "{user} approved {node}" : "{user} schválil {node}",
     "{user} rejected {node}" : "{user} odmietol {node}",
     "Your approval was requested" : "Požadované vaše schválenie",
     "%2$s requested your approval for %1$s" : "%2$s požiadal o schválenie k %1$s",
