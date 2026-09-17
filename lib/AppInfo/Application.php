@@ -12,6 +12,7 @@ use OCA\Approval\Dav\ApprovalPlugin;
 use OCA\Approval\Listener\LoadAdditionalScriptsListener;
 use OCA\Approval\Listener\LoadSidebarScripts;
 use OCA\Approval\Listener\UpdateFilesListener;
+use OCA\Approval\Listener\UserDeletedListener;
 use OCA\Approval\Notification\Notifier;
 use OCA\Approval\Service\ApprovalService;
 
@@ -26,6 +27,7 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\FilesMetadata\Event\MetadataBackgroundEvent;
 use OCP\SabrePluginEvent;
 use OCP\SystemTag\MapperEvent;
+use OCP\User\Events\UserDeletedEvent;
 
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'approval';
@@ -66,6 +68,7 @@ class Application extends App implements IBootstrap {
 		$context->registerNotifierService(Notifier::class);
 		$context->registerDashboardWidget(ApprovalPendingWidget::class);
 		$context->registerEventListener(MetadataBackgroundEvent::class, UpdateFilesListener::class);
+		$context->registerEventListener(UserDeletedEvent::class, UserDeletedListener::class);
 	}
 
 	public function boot(IBootContext $context): void {
