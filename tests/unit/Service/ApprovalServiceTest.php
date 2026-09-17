@@ -240,6 +240,15 @@ class ApprovalServiceTest extends TestCase {
 		$this->assertEquals('user1', $uidRequesters[0]);
 	}
 
+	public function testDeleteUserFromRules(): void {
+		$this->ruleService->deleteUserFromRules('user1');
+
+		$rule = $this->ruleService->getRule($this->idRule1);
+		$this->assertNotNull($rule);
+		$this->assertCount(0, $rule['approvers']);
+		$this->assertCount(0, $rule['requesters']);
+	}
+
 	public function testGetApprovalState(): void {
 		$uf = $this->root->getUserFolder('user1');
 		$file1 = $uf->newFile('file1.txt', 'content');

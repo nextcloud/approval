@@ -12,6 +12,7 @@ use OCA\Approval\Dav\ApprovalPlugin;
 use OCA\Approval\Listener\LoadAdditionalScriptsListener;
 use OCA\Approval\Listener\LoadSidebarScripts;
 use OCA\Approval\Listener\UpdateFilesListener;
+use OCA\Approval\Listener\UserDeletedListener;
 use OCA\Approval\Notification\Notifier;
 use OCA\Approval\Service\ApprovalService;
 use OCA\DAV\Events\SabrePluginAddEvent;
@@ -24,6 +25,7 @@ use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\FilesMetadata\Event\MetadataBackgroundEvent;
 use OCP\SystemTag\TagAssignedEvent;
+use OCP\User\Events\UserDeletedEvent;
 use Override;
 
 class Application extends App implements IBootstrap {
@@ -68,6 +70,7 @@ class Application extends App implements IBootstrap {
 		$context->registerNotifierService(Notifier::class);
 		$context->registerDashboardWidget(ApprovalPendingWidget::class);
 		$context->registerEventListener(MetadataBackgroundEvent::class, UpdateFilesListener::class);
+		$context->registerEventListener(UserDeletedEvent::class, UserDeletedListener::class);
 	}
 
 	#[Override]
