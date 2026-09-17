@@ -8,6 +8,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.3.2 - 2026-09-17
+
+### Changed
+
+- Use new preloadCollection event to fetch all data for a directory [#371](https://github.com/nextcloud/approval/pull/371) @lukasdotcom
+
+### Fixed
+
+- Fix string array keys being converted to int when numeric [#442](https://github.com/nextcloud/approval/pull/442) @lukasdotcom
+- Delete user from rules when user is deleted [#444](https://github.com/nextcloud/approval/pull/444) @lukasdotcom
+
 ## 3.3.1 - 2026-07-23
 
 ### Added
