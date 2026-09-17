@@ -573,6 +573,28 @@ class RuleService {
 	}
 
 	/**
+	 * Remove a user from approval approvers and requesters.
+	 */
+	public function deleteUserFromRules(string $userId): void {
+		$this->cachedRules = null;
+		$qb = $this->db->getQueryBuilder();
+
+		foreach (['approvers', 'requesters'] as $role) {
+			$qb->delete('approval_rule_' . $role)
+				->where(
+					$qb->expr()->eq('entity_type', $qb->createNamedParameter(Application::TYPE_USER, IQueryBuilder::PARAM_INT))
+				)
+				->andWhere(
+					$qb->expr()->eq('entity_id', $qb->createNamedParameter($userId, IQueryBuilder::PARAM_STR))
+				);
+			$qb->executeStatement();
+			$qb = $qb->resetQueryParts();
+		}
+
+		$this->clearRuleCaches();
+	}
+
+	/**
 	 * Checks that the approval of the file was after the time given.
 	 * This does not verify that the file was actually approved.
 	 *
