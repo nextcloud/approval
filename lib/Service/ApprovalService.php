@@ -10,8 +10,10 @@ namespace OCA\Approval\Service;
 use DateTime;
 use OCA\Approval\Activity\ActivityManager;
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\Events\ApprovalStateChangedEvent;
 use OCA\Approval\Exceptions\OutdatedEtagException;
 use OCP\App\IAppManager;
+use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Files\Config\ICachedMountFileInfo;
 use OCP\Files\Config\IUserMountCache;
 use OCP\Files\FileInfo;
@@ -50,6 +52,7 @@ class ApprovalService {
 		private LoggerInterface $logger,
 		private ?string $userId,
 		private IUserMountCache $userMountCache,
+		private IEventDispatcher $eventDispatcher,
 	) {
 	}
 
@@ -381,8 +384,17 @@ class ApprovalService {
 				try {
 					if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagPending'])
 						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
+						// get the requester before storeAction() replaces the pending activity row
+						$pendingAction = $this->ruleService->getLastAction($fileId, $ruleId, Application::STATE_PENDING);
+
 						// store activity in our tables
 						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_APPROVED, $message);
+
+						// dispatch before the tags change so listeners reacting to the tag events have the context
+						$this->eventDispatcher->dispatchTyped(
+							new ApprovalStateChangedEvent($fileId, $ruleId, Application::STATE_APPROVED, $userId, $pendingAction['userId'] ?? null)
+						);
+
 						// Change tags
 						$this->tagObjectMapper->assignTags((string)$fileId, 'files', $rule['tagApproved']);
 						$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $rule['tagPending']);
@@ -424,8 +436,16 @@ class ApprovalService {
 				try {
 					if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagPending'])
 						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
+						// get the requester before storeAction() replaces the pending activity row
+						$pendingAction = $this->ruleService->getLastAction($fileId, $ruleId, Application::STATE_PENDING);
+
 						// store activity in our tables
 						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_REJECTED, $message);
+
+						// dispatch before the tags change so listeners reacting to the tag events have the context
+						$this->eventDispatcher->dispatchTyped(
+							new ApprovalStateChangedEvent($fileId, $ruleId, Application::STATE_REJECTED, $userId, $pendingAction['userId'] ?? null)
+						);
 
 						// Change tags
 						$this->tagObjectMapper->assignTags((string)$fileId, 'files', $rule['tagRejected']);
@@ -485,6 +505,11 @@ class ApprovalService {
 				// store activity in our tables
 				$this->ruleService->storeAction($fileId, $ruleId, $requesterUserId, Application::STATE_PENDING);
 
+				// dispatch before the tag is assigned so listeners reacting to the tag event have the context
+				$this->eventDispatcher->dispatchTyped(
+					new ApprovalStateChangedEvent($fileId, $ruleId, Application::STATE_PENDING, $requesterUserId, $requesterUserId)
+				);
+
 				$this->tagObjectMapper->assignTags((string)$fileId, 'files', $rule['tagPending']);
 
 				// still produce an activity entry for the user who requests
@@ -529,6 +554,10 @@ class ApprovalService {
 		$this->shareWithApprovers($fileId, $rule, $requesterUserId);
 		// store activity in our tables
 		$this->ruleService->storeAction($fileId, $ruleId, $requesterUserId, Application::STATE_PENDING);
+
+		$this->eventDispatcher->dispatchTyped(
+			new ApprovalStateChangedEvent($fileId, $ruleId, Application::STATE_PENDING, $requesterUserId, $requesterUserId)
+		);
 
 		// still produce an activity entry for the user who requests
 		$this->activityManager->triggerEvent(
