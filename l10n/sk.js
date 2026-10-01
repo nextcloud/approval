@@ -6,7 +6,7 @@ OC.L10N.register(
     "You rejected {file}" : "Odmietli ste {file}",
     "{user} rejected {file}" : "{user} odmietol {file}",
     "Your approval was requested on {file}" : "Požadované vaše schválenie pre {file}",
-    "Your approval was requested on {file} by {who}" : "Vaše schválenie bolo požiadané pre {file} od {who}",
+    "Your approval was requested on {file} by {who}" : "Používateľ {who} požiadal o vaše schválenie pre {file}",
     "You requested approval on {file}" : "Požiadali ste o schválenie k {file}",
     "A guest user" : "Návštevník",
     "Approval" : "Schválenie",
