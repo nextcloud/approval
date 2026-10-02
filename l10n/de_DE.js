@@ -121,7 +121,7 @@ OC.L10N.register(
     "Approve or Reject" : "Genehmigen oder ablehnen",
     "Failed to check approval status" : "Genehmigungsstatus konnte nicht überprüft werden",
     "Approval requested for {name}" : "Genehmigung erforderlich für {name}",
-    "Warning" : "Warnung",
+    "Warning" : "Achtung",
     "Failed to request approval for {name}" : "Genehmigung für {name} konnte nicht beantragt werden",
     "You approved {name}" : "Sie haben {name} genehmigt",
     "Failed to approve {name}" : "{name} konnte nicht genehmigt werden",
