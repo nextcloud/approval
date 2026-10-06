@@ -96,7 +96,7 @@ OC.L10N.register(
     "Approval requested by you" : "Požiadali ste o schválenie",
     "Reason for approval: {message}" : "Dôvod schválenia: {message}",
     "Reason for rejection: {message}" : "Dôvod zamietnutia: {message}",
-    "Reason (optional)" : "Dôvod (voliteľné)",
+    "Reason (optional)" : "Dôvod (voliteľný)",
     "Request approval" : "Požiadať o schválenie",
     "There is no approval workflow allowing you to request approval." : "Neexistuje žiadny pracovný postup schvaľovania, ktorý by vám umožnil požiadať o schválenie.",
     "Approval information" : "Informácie o schválení",
