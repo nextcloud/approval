@@ -40,7 +40,7 @@ OC.L10N.register(
     "All fields are required" : "Všetky polia su povinné",
     "All tags must be different" : "Každý štítok musí byť unikátny",
     "Pending tag is already used in another workflow" : "Čakajúci štítok je už použitý v inom procese",
-    "Create workflow" : "Vytvoriť proces",
+    "Create workflow" : "Vytvoriť pracovný postup",
     "Failed to load tags" : "Nepodarilo sa načítať štítky",
     "Failed to get approval workflows" : "Nepodarilo sa získať schvaľovacie procesy",
     "Approval workflow saved" : "Schvaľovacie procesy uložené",
