@@ -10,7 +10,9 @@ namespace OCA\Approval\Service;
 use ChristophWurst\Nextcloud\Testing\TestCase;
 use OCA\Approval\Activity\ActivityManager;
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\Events\ApprovalStateChangedEvent;
 use OCP\App\IAppManager;
+use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Files\Config\IUserMountCache;
 use OCP\Files\IRootFolder;
 use OCP\ICacheFactory;
@@ -97,7 +99,8 @@ class ApprovalServiceTest extends TestCase {
 			$c->get(IL10N::class),
 			$c->get(LoggerInterface::class),
 			'user1',
-			$c->get(IUserMountCache::class)
+			$c->get(IUserMountCache::class),
+			$c->get(IEventDispatcher::class)
 		);
 
 		// add some tags
@@ -426,5 +429,39 @@ class ApprovalServiceTest extends TestCase {
 		$this->assertArrayHasKey('error', $result);
 
 		$this->ruleService->deleteRule($ruleId);
+	}
+
+	public function testApprovalStateChangedEventIsEmitted(): void {
+		$app = new Application();
+		$eventDispatcher = $app->getContainer()->get(IEventDispatcher::class);
+
+		$emittedEvents = [];
+		$eventDispatcher->addListener(ApprovalStateChangedEvent::class, function (ApprovalStateChangedEvent $event) use (&$emittedEvents) {
+			$emittedEvents[] = $event;
+		});
+
+		// create a file
+		$uf1 = $this->root->getUserFolder('user1');
+		$file = $uf1->newFile('eventFile.txt', 'content');
+
+		// requesting approval emits an event carrying the requester
+		$this->approvalService->request($file->getId(), $this->idRule1, 'user1', false);
+		$this->assertCount(1, $emittedEvents);
+		$event = $emittedEvents[0];
+		$this->assertSame($file->getId(), $event->getFileId());
+		$this->assertEquals($this->idRule1, $event->getRuleId());
+		$this->assertSame(Application::STATE_PENDING, $event->getNewState());
+		$this->assertSame('user1', $event->getActorUserId());
+		$this->assertSame('user1', $event->getRequesterUserId());
+
+		// approving emits an event still carrying the requester
+		$this->approvalService->approve($file->getId(), 'user1', $file->getEtag());
+		$this->assertCount(2, $emittedEvents);
+		$event = $emittedEvents[1];
+		$this->assertSame($file->getId(), $event->getFileId());
+		$this->assertEquals($this->idRule1, $event->getRuleId());
+		$this->assertSame(Application::STATE_APPROVED, $event->getNewState());
+		$this->assertSame('user1', $event->getActorUserId());
+		$this->assertSame('user1', $event->getRequesterUserId());
 	}
 }
