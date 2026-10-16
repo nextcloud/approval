@@ -73,7 +73,7 @@
     "Create new hidden tag" : "Создать скрытую метку",
     "Select pending tag" : "Метка для ожидающего запроса",
     "Anyone can assign this tag and start this approval rule." : "Любой пользователь может назначить эту метку и запустить это правило согласования.",
-    "Who can request approval?" : "Кто может запрашивать согласование?",
+    "Who can request approval?" : "Кто может запрашивать?",
     "Who can approve?" : "Кто может согласовывать?",
     "Select approved tag" : "Метка для согласования",
     "Anyone can assign this tag and approve a file." : "Любой пользователь может назначить эту метку и согласовать файл.",
