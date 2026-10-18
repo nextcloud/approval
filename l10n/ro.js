@@ -2,6 +2,7 @@ OC.L10N.register(
     "approval",
     {
     "Cancel" : "Anulare",
+    "Failed to load tags" : "Etichetele nu au putut fi încărcate",
     "Create" : "Crează",
     "Approve" : "Aprobă",
     "Reject" : "Respinge",
