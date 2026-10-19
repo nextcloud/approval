@@ -10,6 +10,7 @@ OC.L10N.register(
     "Who?" : "Хэн?",
     "No recommendations. Start typing." : "Санал байхгүй. Бичиж эхлээрэй.",
     "No result." : "Үр дүн байхгүй.",
+    "Pending approval" : "Зөвшөөрөл хүлээж буй",
     "Warning" : "Warning"
 },
 "nplurals=2; plural=(n != 1);");
