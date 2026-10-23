@@ -30,7 +30,7 @@
     "This element is not shared with any user who is authorized to approve it" : "Dette element er ikke delt med nogen brugere som er autoriseret til at godkende det",
     "Approval has already been requested with this rule for this file" : "Godkendelse er allerede blevet efterspurgt med denne regel for denne fil",
     "You are not authorized to request with this rule" : "Du er ikke autoriseret til at efterspørge med denne regel",
-    "Please check my approval request" : "Kontroller venligst min godkendelsesforespørgsel",
+    "Please check my approval request" : "Tjek min anmodning om godkendelse",
     "Approval workflows" : "Godkendelsesarbejdsgange",
     "Let users approve or reject files" : "Lad brugere godkende eller afvise filer",
     "Approve/reject files based on workflows defined by admins.\n\n**Warning**: The DocuSign integration is no longer part of this app\nand can be installed with [this app](https://apps.nextcloud.com/apps/integration_docusign)." : "Godkend/afvis filer baseret på arbejdsgange, defineret af admins.\n\n**Advarsel**: DocuSign integrationen er ikke længere en del af denne app\nog kan installeres med [this app](https://apps.nextcloud.com/apps/integration_docusign).",
