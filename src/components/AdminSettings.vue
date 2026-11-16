@@ -195,6 +195,10 @@ export default {
 				return t('approval', 'Pending tag is already used in another workflow')
 			}
 
+			if (!this.isThresholdValid(newRule.threshold)) {
+				return t('approval', 'The approval pass ratio must be greater than 0 and at most 1')
+			}
+
 			return null
 		},
 		createTooltip() {
@@ -251,9 +255,16 @@ export default {
 				this.loadingRules = false
 			})
 		},
+		isThresholdValid(threshold) {
+			// empty input (''/null/undefined) = legacy (first decision wins)
+			if (threshold === '' || threshold === null || threshold === undefined) {
+				return true
+			}
+			return typeof threshold === 'number' && threshold > 0 && threshold <= 1
+		},
 		onRuleInput(id, rule) {
 			// save if all values are set
-			if (rule.description && rule.tagPending && rule.tagApproved && rule.tagRejected && rule.approvers.length > 0) {
+			if (rule.description && rule.tagPending && rule.tagApproved && rule.tagRejected && rule.approvers.length > 0 && this.isThresholdValid(rule.threshold)) {
 				this.savingRule = true
 				const req = {
 					tagPending: rule.tagPending,
@@ -273,6 +284,11 @@ export default {
 						}
 					}),
 					unapproveWhenModified: rule.unapproveWhenModified,
+					// always send the key: '' = clear to legacy, numeric string = set;
+					// absent would mean "preserve" (only for stale clients).
+					// sent as a STRING: the strict AppFramework dispatcher would
+					// raise a TypeError on a JSON number for the ?string param
+					threshold: rule.threshold === null || rule.threshold === undefined ? '' : String(rule.threshold),
 				}
 				const url = generateUrl('/apps/approval/rule/' + id)
 				axios.put(url, req).then((response) => {
@@ -299,6 +315,7 @@ export default {
 				approvers: [],
 				requesters: [],
 				unapproveWhenModified: false,
+				threshold: '',
 			}
 		},
 		onNewRuleDelete() {
@@ -306,7 +323,7 @@ export default {
 		},
 		onValidateNewRule() {
 			const rule = this.newRule
-			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.approvers.length > 0) {
+			if (rule.tagPending && rule.tagApproved && rule.tagRejected && rule.approvers.length > 0 && this.isThresholdValid(rule.threshold)) {
 				this.savingRule = true
 				// create
 				const req = {
@@ -327,6 +344,9 @@ export default {
 						}
 					}),
 					unapproveWhenModified: rule.unapproveWhenModified,
+					// always send the key: '' = clear to legacy, numeric string = set
+					// (a STRING: the strict dispatcher TypeErrors on JSON numbers)
+					threshold: rule.threshold === null || rule.threshold === undefined ? '' : String(rule.threshold),
 				}
 				const url = generateUrl('/apps/approval/rule')
 				axios.post(url, req).then(() => {

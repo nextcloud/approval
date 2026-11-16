@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.4.0 - 2026-11-17
+
+### Added
+
+- Add an optional approval threshold per workflow: when set (0 < threshold ≤ 1), a file is approved once approvals reach that share of the authorized approvers and rejected once rejections exceed the complementary share, with vote progress shown in the files sidebar; empty keeps the current first-decision behaviour
+
 ## 3.3.2 - 2026-09-17
 
 ### Changed

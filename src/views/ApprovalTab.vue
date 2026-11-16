@@ -13,6 +13,9 @@
 			:user-id="userId"
 			:rule="rule"
 			:user-rules="userRules"
+			:progress="progress"
+			:my-vote="myVote"
+			:threshold="threshold"
 			@approve="onApprove"
 			@reject="onReject"
 			@request="showRequestModal = true" />
@@ -65,6 +68,9 @@ export default {
 			message: '',
 			userRules: [],
 			showRequestModal: false,
+			progress: null,
+			myVote: null,
+			threshold: null,
 		}
 	},
 
@@ -94,6 +100,9 @@ export default {
 		update() {
 			console.debug('[Approval] sidebar tab update', this.fileId, this.fileName)
 			this.state = null
+			this.progress = null
+			this.myVote = null
+			this.threshold = null
 			getApprovalState(this.fileId).then(response => {
 				this.state = response.data.ocs.data.state
 				this.timestamp = response.data.ocs.data.timestamp
@@ -101,6 +110,10 @@ export default {
 				this.userId = response.data.ocs.data.userId
 				this.userName = response.data.ocs.data.userName
 				this.rule = response.data.ocs.data.rule
+				// ratio mode only: absent on legacy rules
+				this.progress = response.data.ocs.data.progress ?? null
+				this.myVote = response.data.ocs.data.myVote ?? null
+				this.threshold = response.data.ocs.data.threshold ?? null
 			}).catch(error => {
 				console.error(error)
 			})

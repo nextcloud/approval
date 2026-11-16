@@ -363,6 +363,45 @@ class ApprovalService {
 	}
 
 	/**
+	 * Decide whether a threshold (quorum) approval round reached a final outcome
+	 * Pure function with exact integer arithmetic: no state is read or written
+	 *
+	 * @param int $approvedCount number of distinct approvers who approved
+	 * @param int $rejectedCount number of distinct approvers who rejected
+	 * @param int $totalApprovers number of distinct users authorized to approve
+	 * @param int $thresholdBp approval pass ratio in basis points x10000 (1..10000)
+	 * @return 'approved'|'rejected'|null null while still pending
+	 */
+	public static function evaluateThreshold(int $approvedCount, int $rejectedCount, int $totalApprovers, int $thresholdBp): ?string {
+		$total = max(1, $totalApprovers);
+		if ($approvedCount * 10000 >= $thresholdBp * $total) {
+			return 'approved';
+		}
+		if ($rejectedCount * 10000 > (10000 - $thresholdBp) * $total) {
+			return 'rejected';
+		}
+		return null;
+	}
+
+	/**
+	 * Get the current vote progress for a file under a given rule
+	 * Used by ApprovalController to build the payload of threshold rules
+	 *
+	 * @param int $fileId
+	 * @param Rule $rule
+	 * @return array{approved: int, rejected: int, total: int}
+	 */
+	public function getProgress(int $fileId, array $rule): array {
+		$votes = $this->ruleService->getVotes($fileId, $rule['id']);
+		$totalApprovers = count($this->getRuleAuthorizedUserIds($rule, 'approvers'));
+		return [
+			'approved' => count($votes['approved']),
+			'rejected' => count($votes['rejected']),
+			'total' => max(1, $totalApprovers),
+		];
+	}
+
+	/**
 	 * Approve a file
 	 *
 	 * @param int $fileId
@@ -384,11 +423,41 @@ class ApprovalService {
 				try {
 					if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagPending'])
 						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
-						// get the requester before storeAction() replaces the pending activity row
-						$pendingAction = $this->ruleService->getLastAction($fileId, $ruleId, Application::STATE_PENDING);
+						$threshold = $rule['threshold'] ?? null;
+						if (is_null($threshold)) {
+							// get the requester before storeAction() replaces the pending activity row
+							$pendingAction = $this->ruleService->getLastAction($fileId, $ruleId, Application::STATE_PENDING);
 
-						// store activity in our tables
-						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_APPROVED, $message);
+							// store activity in our tables
+							$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_APPROVED, $message);
+						} else {
+							// threshold rule: record this vote, only a reached threshold decides
+							$votes = $this->ruleService->getVotes($fileId, $ruleId);
+							if (in_array($userId, $votes['approved'], true) || in_array($userId, $votes['rejected'], true)) {
+								// one vote per user and file: double voting is refused
+								return false;
+							}
+							$this->ruleService->recordVote($fileId, $ruleId, $userId, Application::STATE_APPROVED, $message);
+
+							// recount against the live set of authorized approvers
+							$votes = $this->ruleService->getVotes($fileId, $ruleId);
+							$totalApprovers = count($this->getRuleAuthorizedUserIds($rule, 'approvers'));
+							$thresholdBp = $rule['thresholdBp'] ?? max(1, (int)round($threshold * 10000));
+							$result = self::evaluateThreshold(
+								count($votes['approved']),
+								count($votes['rejected']),
+								$totalApprovers,
+								$thresholdBp
+							);
+							if ($result !== 'approved') {
+								// own-outcome-only: intermediate vote, or the other side reached
+								// its outcome first — the vote is recorded and nothing else happens
+								return true;
+							}
+							// final tail: keep the vote rows, drop only the PENDING request row
+							$pendingAction = $this->ruleService->getLastAction($fileId, $ruleId, Application::STATE_PENDING);
+							$this->ruleService->deletePendingAction($fileId, $ruleId);
+						}
 
 						// dispatch before the tags change so listeners reacting to the tag events have the context
 						$this->eventDispatcher->dispatchTyped(
@@ -436,11 +505,41 @@ class ApprovalService {
 				try {
 					if ($this->tagObjectMapper->haveTag((string)$fileId, 'files', $rule['tagPending'])
 						&& $this->userIsAuthorizedByRule($userId, $rule, 'approvers')) {
-						// get the requester before storeAction() replaces the pending activity row
-						$pendingAction = $this->ruleService->getLastAction($fileId, $ruleId, Application::STATE_PENDING);
+						$threshold = $rule['threshold'] ?? null;
+						if (is_null($threshold)) {
+							// get the requester before storeAction() replaces the pending activity row
+							$pendingAction = $this->ruleService->getLastAction($fileId, $ruleId, Application::STATE_PENDING);
 
-						// store activity in our tables
-						$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_REJECTED, $message);
+							// store activity in our tables
+							$this->ruleService->storeAction($fileId, $ruleId, $userId, Application::STATE_REJECTED, $message);
+						} else {
+							// threshold rule: record this vote, only a reached threshold decides
+							$votes = $this->ruleService->getVotes($fileId, $ruleId);
+							if (in_array($userId, $votes['approved'], true) || in_array($userId, $votes['rejected'], true)) {
+								// one vote per user and file: double voting is refused
+								return false;
+							}
+							$this->ruleService->recordVote($fileId, $ruleId, $userId, Application::STATE_REJECTED, $message);
+
+							// recount against the live set of authorized approvers
+							$votes = $this->ruleService->getVotes($fileId, $ruleId);
+							$totalApprovers = count($this->getRuleAuthorizedUserIds($rule, 'approvers'));
+							$thresholdBp = $rule['thresholdBp'] ?? max(1, (int)round($threshold * 10000));
+							$result = self::evaluateThreshold(
+								count($votes['approved']),
+								count($votes['rejected']),
+								$totalApprovers,
+								$thresholdBp
+							);
+							if ($result !== 'rejected') {
+								// own-outcome-only: intermediate vote, or the other side reached
+								// its outcome first — the vote is recorded and nothing else happens
+								return true;
+							}
+							// final tail: keep the vote rows, drop only the PENDING request row
+							$pendingAction = $this->ruleService->getLastAction($fileId, $ruleId, Application::STATE_PENDING);
+							$this->ruleService->deletePendingAction($fileId, $ruleId);
+						}
 
 						// dispatch before the tags change so listeners reacting to the tag events have the context
 						$this->eventDispatcher->dispatchTyped(

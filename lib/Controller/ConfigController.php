@@ -122,12 +122,14 @@ class ConfigController extends Controller {
 	 * @param array $requesters
 	 * @param string $description
 	 * @param bool $unapproveWhenModified
+	 * @param string|null $threshold absent/null = no threshold, '' = legacy, numeric = pass ratio
 	 * @return DataResponse
 	 */
 	#[AuthorizedAdminSetting(settings: Admin::class)]
 	public function createRule(int $tagPending, int $tagApproved, int $tagRejected,
-		array $approvers, array $requesters, string $description, bool $unapproveWhenModified): DataResponse {
-		$result = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $approvers, $requesters, $description, $unapproveWhenModified);
+		array $approvers, array $requesters, string $description, bool $unapproveWhenModified,
+		?string $threshold = null): DataResponse {
+		$result = $this->ruleService->createRule($tagPending, $tagApproved, $tagRejected, $approvers, $requesters, $description, $unapproveWhenModified, $this->parseThreshold($threshold, null));
 		return isset($result['error'])
 			? new DataResponse($result, 400)
 			: new DataResponse($result['id']);
@@ -142,15 +144,37 @@ class ConfigController extends Controller {
 	 * @param array $requesters
 	 * @param string $description
 	 * @param bool $unapproveWhenModified
+	 * @param string|null $threshold absent/null = keep current value, '' = clear to legacy, numeric = new pass ratio
 	 * @return DataResponse
 	 */
 	#[AuthorizedAdminSetting(settings: Admin::class)]
 	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected,
-		array $approvers, array $requesters, string $description, bool $unapproveWhenModified): DataResponse {
-		$result = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $approvers, $requesters, $description, $unapproveWhenModified);
+		array $approvers, array $requesters, string $description, bool $unapproveWhenModified,
+		?string $threshold = null): DataResponse {
+		$currentRule = $this->ruleService->getRule($id);
+		$result = $this->ruleService->saveRule($id, $tagPending, $tagApproved, $tagRejected, $approvers, $requesters, $description, $unapproveWhenModified, $this->parseThreshold($threshold, $currentRule['threshold'] ?? null));
 		return isset($result['error'])
 			? new DataResponse($result, 400)
 			: new DataResponse($result['id']);
+	}
+
+	/**
+	 * Resolve the threshold request parameter to a RuleService value
+	 * Absent/null keeps the existing value (stale cached JS), '' clears it,
+	 * a numeric string is cast to float and validated by RuleService
+	 *
+	 * @param string|null $threshold raw request parameter
+	 * @param float|null $preserve value to keep when the parameter is absent
+	 * @return float|null
+	 */
+	private function parseThreshold(?string $threshold, ?float $preserve): ?float {
+		if ($threshold === null) {
+			return $preserve;
+		}
+		if ($threshold === '') {
+			return null;
+		}
+		return (float)$threshold;
 	}
 
 	/**

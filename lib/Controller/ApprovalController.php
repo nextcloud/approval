@@ -61,6 +61,23 @@ class ApprovalController extends OCSController {
 				$state['message'] = $activity['message'];
 			}
 		}
+		// threshold rules carry the quorum payload here (not in the service:
+		// the Dav hot path must stay free of vote queries); absence = legacy
+		$threshold = $state['rule']['threshold'] ?? null;
+		if (!is_null($threshold)
+			&& ($state['state'] === Application::STATE_APPROVABLE || $state['state'] === Application::STATE_PENDING)) {
+			$state['threshold'] = $threshold;
+			$state['progress'] = $this->approvalService->getProgress($fileId, $state['rule']);
+			$state['myVote'] = null;
+			if ($state['state'] === Application::STATE_APPROVABLE) {
+				$votes = $this->ruleService->getVotes($fileId, $state['rule']['id']);
+				if (in_array($this->userId, $votes['approved'], true)) {
+					$state['myVote'] = 'approved';
+				} elseif (in_array($this->userId, $votes['rejected'], true)) {
+					$state['myVote'] = 'rejected';
+				}
+			}
+		}
 		return new DataResponse($state);
 	}
 

@@ -11,7 +11,16 @@ import { openApprovalInfoModal, updateNodeApprovalState } from '../helpers.js'
 
 export const respondAction: IFileAction = {
 	id: 'approval-respond',
-	displayName: () => {
+	displayName: ({ nodes }) => {
+		// ratio mode: the user already voted, do not invite another decision
+		if (nodes.length === 1) {
+			const myVote = nodes[0].attributes['approval-myVote']
+			if (myVote === 'approved' || myVote === 'rejected') {
+				return myVote === 'approved'
+					? t('approval', 'You approved.')
+					: t('approval', 'You rejected.')
+			}
+		}
 		return t('approval', 'Approve or Reject')
 	},
 	enabled({ nodes, view }) {

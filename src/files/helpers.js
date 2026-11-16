@@ -13,6 +13,28 @@ export async function getApprovalState(fileId) {
 	return await axios.get(url)
 }
 
+/**
+ * Check the freshly fetched state for an existing vote of the current user
+ * and show a toast when there is one, so callers can abort instead of calling
+ * the approve/reject endpoint (which would return HTTP 400 anyway).
+ * Legacy rules report no `myVote` key at all and always pass.
+ * @param {object} node the file node
+ * @return {Promise<boolean>} true when the caller must abort
+ */
+export async function abortIfAlreadyVoted(node) {
+	try {
+		const response = await getApprovalState(node.fileid)
+		const myVote = response.data?.ocs?.data?.myVote
+		if (myVote !== undefined && myVote !== null) {
+			showError(t('approval', 'You already voted on {name}', { name: node.basename }))
+			return true
+		}
+	} catch (error) {
+		console.error(error)
+	}
+	return false
+}
+
 export async function updateNodeApprovalState(node) {
 	try {
 		const response = await getApprovalState(node.fileid)
@@ -21,6 +43,10 @@ export async function updateNodeApprovalState(node) {
 		node.attributes['approval-timestamp'] = response.data.ocs.data.timestamp
 		node.attributes['approval-userId'] = response.data.ocs.data.userId
 		node.attributes['approval-userName'] = response.data.ocs.data.userName
+		// ratio mode only: absent (undefined) on legacy rules
+		node.attributes['approval-progress'] = response.data.ocs.data.progress
+		node.attributes['approval-myVote'] = response.data.ocs.data.myVote
+		node.attributes['approval-threshold'] = response.data.ocs.data.threshold
 		emit('files:node:updated', node)
 	} catch (error) {
 		showError(
