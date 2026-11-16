@@ -4,6 +4,9 @@
 -->
 <template>
 	<div class="info-content">
+		<span v-if="progress" class="progress-label">
+			{{ progressText }}
+		</span>
 		<NcButton v-if="canRequestApproval" @click="onRequest">
 			<template #icon>
 				<CheckIcon :size="20" />
@@ -19,8 +22,11 @@
 			}}
 		</div>
 		<NcInputField v-if="stateApprovable" v-model="newMessage" :label="t('approval', 'Reason (optional)')" />
+		<span v-if="stateApprovable && myVote !== null" class="vote-status">
+			{{ voteStatusText }}
+		</span>
 		<ApprovalButtons
-			v-if="stateApprovable"
+			v-if="stateApprovable && myVote === null"
 			class="buttons"
 			:approve-text="approveText"
 			:reject-text="rejectText"
@@ -129,6 +135,18 @@ export default {
 			type: Array,
 			required: true,
 		},
+		progress: {
+			type: [Object, null],
+			default: null,
+		},
+		myVote: {
+			type: [String, null],
+			default: null,
+		},
+		threshold: {
+			type: [Number, null],
+			default: null,
+		},
 		approveText: {
 			type: String,
 			default: t('approval', 'Approve'),
@@ -161,6 +179,18 @@ export default {
 	},
 
 	computed: {
+		progressText() {
+			return t('approval', '{approved}/{total} approved · {rejected}/{total} rejected', {
+				approved: this.progress.approved,
+				rejected: this.progress.rejected,
+				total: this.progress.total,
+			})
+		},
+		voteStatusText() {
+			return this.myVote === 'approved'
+				? t('approval', 'You approved.')
+				: t('approval', 'You rejected.')
+		},
 		pendingTextWithTime() {
 			return this.timestamp
 				? this.pendingText + ' ' + this.relativeTime
@@ -282,6 +312,11 @@ export default {
 
   .buttons {
     justify-content: center;
+  }
+
+  .progress-label,
+  .vote-status {
+    color: var(--color-text-maxcontrast);
   }
 
   .approved {

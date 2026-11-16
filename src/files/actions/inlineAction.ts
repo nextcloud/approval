@@ -19,6 +19,13 @@ export const inlineAction: IFileAction = {
 		}
 		const node = nodes[0]
 		const state = node.attributes['approval-state']
+		const myVote = node.attributes['approval-myVote']
+		// ratio mode: the user already voted, do not invite another decision
+		if (myVote === 'approved' || myVote === 'rejected') {
+			return myVote === 'approved'
+				? t('approval', 'You approved.')
+				: t('approval', 'You rejected.')
+		}
 		return state === states.PENDING
 			? t('approval', 'Waiting for authorized users to approve this file')
 			: state === states.APPROVABLE
@@ -34,6 +41,13 @@ export const inlineAction: IFileAction = {
 		const node = nodes[0]
 
 		const state = node.attributes['approval-state']
+		const myVote = node.attributes['approval-myVote']
+		// ratio mode: never show "Waiting for your approval" once voted
+		if (myVote === 'approved' || myVote === 'rejected') {
+			return myVote === 'approved'
+				? t('approval', 'You approved.')
+				: t('approval', 'You rejected.')
+		}
 		return state === states.PENDING
 			? t('approval', 'Pending approval')
 			: state === states.APPROVABLE

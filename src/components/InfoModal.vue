@@ -15,6 +15,9 @@
 			:user-id="userId"
 			:rule="rule"
 			:user-rules="userRules"
+			:progress="progress"
+			:my-vote="myVote"
+			:threshold="threshold"
 			@approve="onApprove"
 			@reject="onReject"
 			@request="onRequest" />
@@ -61,6 +64,15 @@ export default {
 		},
 		rule() {
 			return this.node.attributes['approval-rule']
+		},
+		progress() {
+			return this.node.attributes['approval-progress'] ?? null
+		},
+		myVote() {
+			return this.node.attributes['approval-myVote'] ?? null
+		},
+		threshold() {
+			return this.node.attributes['approval-threshold'] ?? null
 		},
 	},
 

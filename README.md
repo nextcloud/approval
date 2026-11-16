@@ -38,6 +38,26 @@ request that needs to be approved by a manager and then the department head, the
 
 ![Workflow chain](https://github.com/nextcloud/approval/raw/main/img/screenshot_chained.jpg)
 
+### Approval threshold
+
+Each workflow has an optional approval threshold, a number greater than 0 and up to 1 (1 means all approvers must approve, 0 is not allowed).
+When it is set, a file is approved once the approvals reach that share of the authorized approvers and rejected once the rejections exceed the complementary share.
+For example with a threshold of 0.5 and three approvers, two approvals approve the file and two rejections reject it.
+The share is computed against the users who can approve the workflow at that moment, including the members of the configured groups and circles.
+When the field is left empty, the first decision wins, like before.
+
+**Notice**: In threshold mode each approver can only decide once per file and workflow; notifications and activities are sent only when the final outcome is reached.
+
+The value is stored server-side as an integer number of basis points (one basis point = 0.0001, column `approval_threshold_bp`), while the settings interface and the API keep using a number between 0 and 1 with at most four decimals. Saving from an older interface that does not send the field keeps the current value; saving an empty field clears it and switches the workflow back to first-decision mode. The vote progress shown in the sidebar is computed by the controller when the state is requested, so listing files over WebDAV stays as fast as before.
+
+**Known limitations**:
+
+* The threshold is only evaluated when someone votes. If the approver list or the threshold changes while a file is pending, the file is resolved by the next vote, not automatically.
+* The number of approvers is read live on every decision. If group membership changes during a vote, the votes of users who left the group still count while the denominator changes, so the ratio can shift between votes.
+* Double votes are checked before the vote is stored; two racing requests can still store a second vote in theory. The user interface re-fetches the latest state before acting and refuses a second vote with a notice, and the server-side check is the backstop. This is accepted for the first version.
+* A threshold of 1 means every approver must approve, and any single rejection already decides the file, because one rejection is always greater than 1 − 1 = 0: unanimity includes an immediate veto.
+* The stored value is an integer number of basis points, so only multiples of 0.0001 are exact; every value the interface can enter (steps of 0.01) is unaffected.
+
 ## Tag assignment
 
 There are 3 ways to assign a hidden tag to a file/folder:

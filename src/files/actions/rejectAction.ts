@@ -7,7 +7,7 @@ import CloseCircleSvgIcon from '@mdi/svg/svg/close-circle.svg?raw'
 import { states } from '../../states.js'
 import { Permission } from '@nextcloud/files'
 import type { IFileAction } from '@nextcloud/files'
-import { reject } from '../helpers.js'
+import { reject, abortIfAlreadyVoted } from '../helpers.js'
 
 export const rejectAction: IFileAction = {
 	id: 'approval-reject',
@@ -27,6 +27,12 @@ export const rejectAction: IFileAction = {
 	async exec({ nodes }) {
 		const node = nodes[0]
 		try {
+			// enabled()/title() stay APPROVABLE-driven until the state is
+			// refetched; the server 400 is the backstop, this guard aborts
+			// as soon as the freshly fetched state shows an existing vote
+			if (await abortIfAlreadyVoted(node)) {
+				return null
+			}
 			await reject(node)
 		} catch (error) {
 			console.debug('Reject action failed')
@@ -36,7 +42,14 @@ export const rejectAction: IFileAction = {
 	async execBatch({ nodes }) {
 		const promises = nodes
 			.filter(node => node.attributes['approval-state'] === states.APPROVABLE)
-			.map(node => reject(node, false))
+			.map(async (node) => {
+				if (await abortIfAlreadyVoted(node)) {
+					// nothing was decided on this node: report it as failed
+					// instead of counting the skipped vote as a success
+					throw new Error('Already voted')
+				}
+				await reject(node, false)
+			})
 		const results = await Promise.allSettled(promises)
 		return results.map(promise => promise.status === 'fulfilled')
 	},

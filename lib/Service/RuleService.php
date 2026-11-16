@@ -25,6 +25,8 @@ use OCP\IUserManager;
  *      approvers: array,
  *      requesters: array,
  *      unapproveWhenModified: bool,
+ *      threshold: float|null,
+ *      thresholdBp: int|null,
  *  }
  */
 class RuleService {
@@ -66,6 +68,18 @@ class RuleService {
 		return $tagPending !== $tagApproved
 			&& $tagPending !== $tagRejected
 			&& $tagApproved !== $tagRejected;
+	}
+
+	/**
+	 * Check if an approval threshold is valid
+	 * NULL means legacy behavior (first decision wins),
+	 * otherwise the pass ratio must be in (0, 1]
+	 *
+	 * @param float|null $t threshold to check
+	 * @return bool true if the threshold is valid
+	 */
+	private function isValidThreshold(?float $t): bool {
+		return $t === null || ($t > 0.0 && $t <= 1.0);
 	}
 
 	/**
@@ -116,18 +130,25 @@ class RuleService {
 	 * @param array $requesters
 	 * @param string $description
 	 * @param bool $unapproveWhenModified
+	 * @param float|null $threshold approval pass ratio in (0, 1], null for legacy behavior
 	 * @return array Error string or id of saved rule
 	 * @throws \OCP\DB\Exception
 	 */
 	public function saveRule(int $id, int $tagPending, int $tagApproved, int $tagRejected,
-		array $approvers, array $requesters, string $description, bool $unapproveWhenModified): array {
+		array $approvers, array $requesters, string $description, bool $unapproveWhenModified,
+		?float $threshold = null): array {
 		$this->cachedRules = null;
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Invalid rule'];
 		}
+		if (!$this->isValidThreshold($threshold)) {
+			return ['error' => 'Invalid threshold'];
+		}
 		if ($this->hasConflict($id, $tagPending)) {
 			return ['error' => 'Rule conflict'];
 		}
+
+		$bp = $threshold === null ? null : max(1, (int)round($threshold * 10000));
 
 		$qb = $this->db->getQueryBuilder();
 
@@ -137,6 +158,7 @@ class RuleService {
 		$qb->set('tag_rejected', $qb->createNamedParameter($tagRejected, IQueryBuilder::PARAM_INT));
 		$qb->set('description', $qb->createNamedParameter($description, IQueryBuilder::PARAM_STR));
 		$qb->set('unapprove_when_modified', $qb->createNamedParameter($unapproveWhenModified ? 1 : 0, IQueryBuilder::PARAM_INT));
+		$qb->set('approval_threshold_bp', $qb->createNamedParameter($bp, $bp === null ? IQueryBuilder::PARAM_NULL : IQueryBuilder::PARAM_INT));
 		$qb->where(
 			$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 		);
@@ -228,17 +250,24 @@ class RuleService {
 	 * @param array $requesters
 	 * @param string $description
 	 * @param bool $unapproveWhenModified
+	 * @param float|null $threshold approval pass ratio in (0, 1], null for legacy behavior
 	 * @return array id of created rule or error string
 	 */
 	public function createRule(int $tagPending, int $tagApproved, int $tagRejected,
-		array $approvers, array $requesters, string $description, bool $unapproveWhenModified): array {
+		array $approvers, array $requesters, string $description, bool $unapproveWhenModified,
+		?float $threshold = null): array {
 		$this->cachedRules = null;
 		if (!$this->isValid($tagPending, $tagApproved, $tagRejected)) {
 			return ['error' => 'Rule is invalid'];
 		}
+		if (!$this->isValidThreshold($threshold)) {
+			return ['error' => 'Invalid threshold'];
+		}
 		if ($this->hasConflict(null, $tagPending)) {
 			return ['error' => 'Rule conflict'];
 		}
+
+		$bp = $threshold === null ? null : max(1, (int)round($threshold * 10000));
 
 		$qb = $this->db->getQueryBuilder();
 
@@ -249,6 +278,7 @@ class RuleService {
 				'tag_rejected' => $qb->createNamedParameter($tagRejected, IQueryBuilder::PARAM_INT),
 				'description' => $qb->createNamedParameter($description, IQueryBuilder::PARAM_STR),
 				'unapprove_when_modified' => $qb->createNamedParameter($unapproveWhenModified ? 1 : 0, IQueryBuilder::PARAM_INT),
+				'approval_threshold_bp' => $qb->createNamedParameter($bp, $bp === null ? IQueryBuilder::PARAM_NULL : IQueryBuilder::PARAM_INT),
 			]);
 		$qb->executeStatement();
 		$qb = $qb->resetQueryParts();
@@ -346,12 +376,16 @@ class RuleService {
 			$tagApproved = (string)$row['tag_approved'];
 			$tagRejected = (string)$row['tag_rejected'];
 			$description = $row['description'];
+			$thresholdBp = isset($row['approval_threshold_bp']) ? (int)$row['approval_threshold_bp'] : null;
+			$threshold = $thresholdBp === null ? null : round($thresholdBp / 10000.0, 4);
 			$rule = [
 				'id' => $id,
 				'tagPending' => $tagPending,
 				'tagApproved' => $tagApproved,
 				'tagRejected' => $tagRejected,
 				'description' => $description,
+				'threshold' => $threshold,
+				'thresholdBp' => $thresholdBp,
 				'approvers' => [],
 				'requesters' => [],
 			];
@@ -389,6 +423,8 @@ class RuleService {
 				$tagApproved = (string)$row['tag_approved'];
 				$tagRejected = (string)$row['tag_rejected'];
 				$description = $row['description'];
+				$thresholdBp = isset($row['approval_threshold_bp']) ? (int)$row['approval_threshold_bp'] : null;
+				$threshold = $thresholdBp === null ? null : round($thresholdBp / 10000.0, 4);
 				$rules[$id] = [
 					'id' => $id,
 					'tagPending' => $tagPending,
@@ -398,6 +434,8 @@ class RuleService {
 					'approvers' => [],
 					'requesters' => [],
 					'unapproveWhenModified' => (int)$row['unapprove_when_modified'] === 1,
+					'threshold' => $threshold,
+					'thresholdBp' => $thresholdBp,
 				];
 			}
 			$req->closeCursor();
@@ -482,6 +520,109 @@ class RuleService {
 	}
 
 	/**
+	 * Record a vote without deleting any previous action (append-only)
+	 * Used by threshold rules where several votes coexist for the same file,
+	 * unlike storeAction() which always replaces all previous actions
+	 *
+	 * @param int $fileId
+	 * @param int $ruleId
+	 * @param string $userId
+	 * @param int $newState
+	 * @param string $message
+	 * @return void
+	 */
+	public function recordVote(int $fileId, int $ruleId, string $userId, int $newState, string $message = ''): void {
+		$timestamp = (new DateTime())->getTimestamp();
+		$qb = $this->db->getQueryBuilder();
+		$qb->insert('approval_activity')
+			->values([
+				'file_id' => $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT),
+				'rule_id' => $qb->createNamedParameter($ruleId, IQueryBuilder::PARAM_INT),
+				'user_id' => $qb->createNamedParameter($userId, IQueryBuilder::PARAM_STR),
+				'new_state' => $qb->createNamedParameter($newState, IQueryBuilder::PARAM_INT),
+				'timestamp' => $qb->createNamedParameter($timestamp, IQueryBuilder::PARAM_INT),
+				'message' => $qb->createNamedParameter($message, IQueryBuilder::PARAM_STR),
+			]);
+		$qb->executeStatement();
+		$qb->resetQueryParts();
+	}
+
+	/**
+	 * Delete only the PENDING request row(s) for a file and rule
+	 * The vote rows recorded by threshold rules are preserved, so the
+	 * accumulated votes stay auditable after the final outcome
+	 *
+	 * @param int $fileId
+	 * @param int $ruleId
+	 * @return void
+	 */
+	public function deletePendingAction(int $fileId, int $ruleId): void {
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('approval_activity')
+			->where(
+				$qb->expr()->eq('rule_id', $qb->createNamedParameter($ruleId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('file_id', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('new_state', $qb->createNamedParameter(Application::STATE_PENDING, IQueryBuilder::PARAM_INT))
+			);
+		$qb->executeStatement();
+		$qb->resetQueryParts();
+	}
+
+	/**
+	 * Get the votes cast so far for a file under a rule
+	 * Rows are read in chronological order (timestamp ASC, id ASC): a single
+	 * user => state map is overwritten by every row, so each user ends in
+	 * exactly one state; PENDING rows (the request itself) are ignored
+	 *
+	 * @param int $fileId
+	 * @param int $ruleId
+	 * @return array{approved: string[], rejected: string[]}
+	 */
+	public function getVotes(int $fileId, int $ruleId): array {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('user_id', 'new_state')
+			->from('approval_activity')
+			->where(
+				$qb->expr()->eq('file_id', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('rule_id', $qb->createNamedParameter($ruleId, IQueryBuilder::PARAM_INT))
+			);
+		$qb->orderBy('timestamp', 'ASC');
+		$qb->addOrderBy('id', 'ASC');
+		$req = $qb->executeQuery();
+		$voteByUser = [];
+		while ($row = $req->fetch()) {
+			$newState = (int)$row['new_state'];
+			if ($newState === Application::STATE_PENDING) {
+				continue;
+			}
+			// rows are read oldest first: the latest row for this user wins,
+			// so the approved and rejected lists can never contain the same user
+			$voteByUser[(string)$row['user_id']] = $newState;
+		}
+		$req->closeCursor();
+		$qb->resetQueryParts();
+
+		$votes = [
+			'approved' => [],
+			'rejected' => [],
+		];
+		foreach ($voteByUser as $userId => $newState) {
+			if ($newState === Application::STATE_APPROVED) {
+				$votes['approved'][] = (string)$userId;
+			} elseif ($newState === Application::STATE_REJECTED) {
+				$votes['rejected'][] = (string)$userId;
+			}
+		}
+		return $votes;
+	}
+
+	/**
 	 * Get last action that brought a file to a given state
 	 *
 	 * @param int $fileId
@@ -503,6 +644,8 @@ class RuleService {
 				$qb->expr()->eq('new_state', $qb->createNamedParameter($newState, IQueryBuilder::PARAM_INT))
 			);
 		$qb->orderBy('timestamp', 'DESC');
+		// append-only voting can produce same-second rows: resolve to the latest deterministically
+		$qb->addOrderBy('id', 'DESC');
 		$qb->setMaxResults(1);
 		$req = $qb->executeQuery();
 		$activity = null;
@@ -597,6 +740,9 @@ class RuleService {
 	/**
 	 * Checks that the approval of the file was after the time given.
 	 * This does not verify that the file was actually approved.
+	 * Uses the latest APPROVED row: append-only voting can leave an
+	 * intermediate APPROVED row older than a content modification
+	 * while the final approval is newer (legacy: single row, unchanged).
 	 *
 	 * @param int $fileId
 	 * @param int $time
@@ -612,6 +758,9 @@ class RuleService {
 			->andWhere(
 				$qb->expr()->eq('new_state', $qb->createNamedParameter(Application::STATE_APPROVED, IQueryBuilder::PARAM_INT))
 			);
+		$qb->orderBy('timestamp', 'DESC');
+		$qb->addOrderBy('id', 'DESC');
+		$qb->setMaxResults(1);
 		$req = $qb->executeQuery();
 		$timestamp = $req->fetchOne();
 		$req->closeCursor();

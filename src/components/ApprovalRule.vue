@@ -74,6 +74,19 @@
 						@update:value="update('approvers', $event)" />
 				</div>
 			</div>
+			<div class="threshold">
+				<span class="field-label">
+					{{ thresholdLabel }}
+				</span>
+				<input type="number"
+					:value="value.threshold ?? ''"
+					min="0"
+					max="1"
+					step="0.01"
+					:placeholder="thresholdPlaceholder"
+					@input="onThresholdInput">
+				<span class="field-hint">{{ thresholdHint }}</span>
+			</div>
 			<div class="tag">
 				<span class="field-label">
 					<TagIcon :size="16" class="icon color-success" />
@@ -201,6 +214,13 @@ export default {
 				'approval',
 				'What is the purpose of this workflow?',
 			),
+			thresholdLabel: t('approval', 'Approval pass ratio'),
+			thresholdPlaceholder: t('approval', 'e.g. 0.5'),
+			thresholdHint: t(
+				'approval',
+				'Approve when approvals ÷ total approvers ≥ this value; reject when rejections ÷ total > 1 − value. Empty = first decision wins. 1 = all must approve and any single rejection rejects.',
+			),
+			thresholdTimer: null,
 		}
 	},
 
@@ -223,6 +243,28 @@ export default {
 			delay(() => {
 				this.update('description', e.target.value)
 			}, 2000)()
+		},
+		onThresholdInput(e) {
+			// debounced like the description field, but with a component local
+			// timer so it does not cancel the shared description delay timer
+			clearTimeout(this.thresholdTimer)
+			this.thresholdTimer = setTimeout(() => {
+				this.updateThreshold(e.target.value)
+			}, 2000)
+		},
+		updateThreshold(rawValue) {
+			// hard contract with the backend (absent = preserve, '' = clear):
+			// the empty input must serialize as the empty string, never as
+			// 0/null/undefined, and the key must always be sent
+			const threshold = rawValue === '' ? '' : Number(rawValue)
+			// unlike update(), always emit: clearing the field must send ''
+			const backupRule = {
+				...this.value,
+				approvers: this.value.approvers.map((e) => e),
+				requesters: this.value.requesters.map((e) => e),
+			}
+			this.$emit('update:value', { ...this.value, threshold })
+			this.$emit('input', { ...this.value, threshold, backupRule })
 		},
 		update(key, value) {
 			console.debug('update', key, value)
@@ -271,6 +313,7 @@ export default {
     .tag,
     .text,
 	.checkbox,
+    .threshold,
     .users {
       display: flex;
       flex-direction: column;
@@ -284,6 +327,18 @@ export default {
     .text {
       input {
         width: 310px;
+      }
+    }
+
+    .threshold {
+      input {
+        width: 310px;
+      }
+      .field-hint {
+        display: block;
+        width: 310px;
+        margin: 4px 0 0 0;
+        color: var(--color-text-maxcontrast);
       }
     }
 
