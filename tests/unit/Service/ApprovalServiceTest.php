@@ -10,6 +10,7 @@ namespace OCA\Approval\Service;
 use ChristophWurst\Nextcloud\Testing\TestCase;
 use OCA\Approval\Activity\ActivityManager;
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\AuditLog\AuditLogger;
 use OCA\Approval\Events\ApprovalStateChangedEvent;
 use OCP\App\IAppManager;
 use OCP\EventDispatcher\IEventDispatcher;
@@ -82,7 +83,8 @@ class ApprovalServiceTest extends TestCase {
 			$c->get(IDBConnection::class),
 			$c->get(IUserManager::class),
 			$c->get(IAppManager::class),
-			$c->get(ICacheFactory::class)
+			$c->get(ICacheFactory::class),
+			$c->get(AuditLogger::class)
 		);
 		$this->approvalService = new ApprovalService(
 			'approval',
@@ -100,7 +102,8 @@ class ApprovalServiceTest extends TestCase {
 			$c->get(LoggerInterface::class),
 			'user1',
 			$c->get(IUserMountCache::class),
-			$c->get(IEventDispatcher::class)
+			$c->get(IEventDispatcher::class),
+			$c->get(AuditLogger::class)
 		);
 
 		// add some tags
