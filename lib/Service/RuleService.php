@@ -9,6 +9,8 @@ namespace OCA\Approval\Service;
 
 use DateTime;
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\AuditLog\AuditLogger;
+use OCA\Approval\AuditLog\Operation;
 use OCP\App\IAppManager;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\ICacheFactory;
@@ -40,6 +42,7 @@ class RuleService {
 		private IUserManager $userManager,
 		private IAppManager $appManager,
 		private ICacheFactory $cacheFactory,
+		private AuditLogger $auditLogger,
 	) {
 		$this->strTypeToInt = [
 			'user' => Application::TYPE_USER,
@@ -129,6 +132,8 @@ class RuleService {
 			return ['error' => 'Rule conflict'];
 		}
 
+		$previous = $this->getRules()[$id] ?? null;
+
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->update('approval_rules');
@@ -215,6 +220,37 @@ class RuleService {
 			}
 		}
 
+		if ($previous !== null) {
+			$changed = [];
+			if ((string)$previous['tagPending'] !== (string)$tagPending) {
+				$changed[] = 'tagPending';
+			}
+			if ((string)$previous['tagApproved'] !== (string)$tagApproved) {
+				$changed[] = 'tagApproved';
+			}
+			if ((string)$previous['tagRejected'] !== (string)$tagRejected) {
+				$changed[] = 'tagRejected';
+			}
+			if (($previous['description'] ?? '') !== $description) {
+				$changed[] = 'description';
+			}
+			if (($previous['unapproveWhenModified'] ?? false) !== $unapproveWhenModified) {
+				$changed[] = 'unapproveWhenModified';
+			}
+			if ($this->partiesSignature($previous['approvers'] ?? []) !== $this->partiesSignature($approvers)) {
+				$changed[] = 'approvers';
+			}
+			if ($this->partiesSignature($previous['requesters'] ?? []) !== $this->partiesSignature($requesters)) {
+				$changed[] = 'requesters';
+			}
+			if ($changed !== []) {
+				$this->auditLogger->log(Operation::RuleUpdated, 'Approval rule %s was updated', [
+					'ruleId' => $id,
+					'changed' => implode(',', $changed),
+				]);
+			}
+		}
+
 		return ['id' => $id];
 	}
 
@@ -277,6 +313,14 @@ class RuleService {
 			$qb = $qb->resetQueryParts();
 		}
 
+		$this->auditLogger->log(Operation::RuleCreated, 'Approval rule %s was created', [
+			'ruleId' => $insertedRuleId,
+			'tagPending' => $tagPending,
+			'tagApproved' => $tagApproved,
+			'tagRejected' => $tagRejected,
+			'unapproveWhenModified' => $unapproveWhenModified,
+		]);
+
 		return ['id' => $insertedRuleId];
 	}
 
@@ -323,7 +367,25 @@ class RuleService {
 		$qb->resetQueryParts();
 		$this->clearRuleCaches();
 
+		$this->auditLogger->log(Operation::RuleDeleted, 'Approval rule %s was deleted', [
+			'ruleId' => $id,
+		]);
+
 		return [];
+	}
+
+	/**
+	 * Stable signature of rule parties for change detection (type+id only)
+	 *
+	 * @param list<array{type: string, entityId: string}> $parties
+	 */
+	private function partiesSignature(array $parties): string {
+		$normalized = array_map(
+			static fn (array $elem): string => $elem['type'] . ':' . $elem['entityId'],
+			$parties
+		);
+		sort($normalized);
+		return implode(',', $normalized);
 	}
 
 	/**
@@ -568,6 +630,7 @@ class RuleService {
 	 * Clear caches based on rule changes
 	 */
 	public function clearRuleCaches(): void {
+		$this->cachedRules = null;
 		$cache = $this->cacheFactory->createDistributed(Application::APP_ID);
 		$cache->remove('approval_tags');
 	}
