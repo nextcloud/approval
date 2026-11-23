@@ -10,6 +10,8 @@ namespace OCA\Approval\Service;
 use DateTime;
 use OCA\Approval\Activity\ActivityManager;
 use OCA\Approval\AppInfo\Application;
+use OCA\Approval\AuditLog\AuditLogger;
+use OCA\Approval\AuditLog\Operation;
 use OCA\Approval\Events\ApprovalStateChangedEvent;
 use OCA\Approval\Exceptions\OutdatedEtagException;
 use OCP\App\IAppManager;
@@ -53,6 +55,7 @@ class ApprovalService {
 		private ?string $userId,
 		private IUserMountCache $userMountCache,
 		private IEventDispatcher $eventDispatcher,
+		private AuditLogger $auditLogger,
 	) {
 	}
 
@@ -399,6 +402,13 @@ class ApprovalService {
 						$this->tagObjectMapper->assignTags((string)$fileId, 'files', $rule['tagApproved']);
 						$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $rule['tagPending']);
 
+						$this->auditLogger->log(Operation::ApprovalApproved, 'File %s was approved with rule %s by "%s"', [
+							'fileId' => $fileId,
+							'ruleId' => $ruleId,
+							'actorUserId' => $userId,
+							'requesterUserId' => $pendingAction['userId'] ?? null,
+						]);
+
 						$this->sendApprovalNotification($fileId, $userId, true);
 						$this->activityManager->triggerEvent(
 							ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
@@ -450,6 +460,13 @@ class ApprovalService {
 						// Change tags
 						$this->tagObjectMapper->assignTags((string)$fileId, 'files', $rule['tagRejected']);
 						$this->tagObjectMapper->unassignTags((string)$fileId, 'files', $rule['tagPending']);
+
+						$this->auditLogger->log(Operation::ApprovalRejected, 'File %s was rejected with rule %s by "%s"', [
+							'fileId' => $fileId,
+							'ruleId' => $ruleId,
+							'actorUserId' => $userId,
+							'requesterUserId' => $pendingAction['userId'] ?? null,
+						]);
 
 						$this->sendApprovalNotification($fileId, $userId, false);
 						$this->activityManager->triggerEvent(
@@ -512,6 +529,12 @@ class ApprovalService {
 
 				$this->tagObjectMapper->assignTags((string)$fileId, 'files', $rule['tagPending']);
 
+				$this->auditLogger->log(Operation::ApprovalRequested, 'Approval for file %s was requested with rule %s by "%s"', [
+					'fileId' => $fileId,
+					'ruleId' => $ruleId,
+					'actorUserId' => $requesterUserId,
+				]);
+
 				// still produce an activity entry for the user who requests
 				$this->activityManager->triggerEvent(
 					ActivityManager::APPROVAL_OBJECT_NODE, $fileId,
@@ -558,6 +581,12 @@ class ApprovalService {
 		$this->eventDispatcher->dispatchTyped(
 			new ApprovalStateChangedEvent($fileId, $ruleId, Application::STATE_PENDING, $requesterUserId, $requesterUserId)
 		);
+
+		$this->auditLogger->log(Operation::ApprovalRequested, 'Approval for file %s was requested with rule %s via tag assignment by "%s"', [
+			'fileId' => $fileId,
+			'ruleId' => $ruleId,
+			'actorUserId' => $requesterUserId,
+		]);
 
 		// still produce an activity entry for the user who requests
 		$this->activityManager->triggerEvent(
