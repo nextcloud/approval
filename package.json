@@ -51,13 +51,13 @@
     "vue-material-design-icons": "^5.1.1"
   },
   "devDependencies": {
-    "@types/node": "^24.0.0",
     "@nextcloud/babel-config": "^1.2.0",
     "@nextcloud/browserslist-config": "^3.0.1",
     "@nextcloud/eslint-config": "^8.4.2",
     "@nextcloud/stylelint-config": "^3.0.1",
     "@nextcloud/vite-config": "^2.3.5",
-    "typescript": "~5.5.4",
+    "@types/node": "^24.0.0",
+    "typescript": "~5.9.3",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-stylelint": "^6.0.0"
   }
